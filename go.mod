@@ -1,4 +1,4 @@
-module github.com/form3tech/haproxy-dataplane-api-client
+module github.com/form3tech-oss/haproxy-data-plane-api-client
 
 go 1.13
 
