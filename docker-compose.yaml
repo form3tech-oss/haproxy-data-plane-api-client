@@ -1,0 +1,11 @@
+--- 
+services: 
+  haproxy: 
+    image: haproxytech/haproxy-debian:2.1.2
+    ports:
+      - "5555:5555"
+      - "8404:8404"
+    volumes:
+      - ./hack/docker-compose/dataplaneapi-v1.2.4:/etc/haproxy/dataplaneapi-v1.2.4:ro
+      - ./hack/docker-compose/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+version: "3.7"

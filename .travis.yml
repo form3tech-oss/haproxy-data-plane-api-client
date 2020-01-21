@@ -1,0 +1,8 @@
+language: go
+go:
+  - 1.13.x
+services:
+  - docker
+script:
+  - docker-compose up -d
+  - go test -count 1 -v ./...
