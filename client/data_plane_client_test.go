@@ -8,7 +8,7 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/form3tech/haproxy-dataplane-api-client/client/frontend"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/frontend"
 )
 
 const (
@@ -23,10 +23,10 @@ var (
 )
 
 func init() {
-	flag.StringVar(&addr, "haproxy-dataplane-api-addr", "localhost:5555", "the address at which the haproxy dataplane api can be reached")
-	flag.StringVar(&path, "haproxy-dataplane-api-path", "/v1", "the path at which the haproxy dataplane api can be reached")
-	flag.StringVar(&user, "haproxy-dataplane-api-user", "dataplane-api", "the username to use when authenticating against the haproxy dataplane api")
-	flag.StringVar(&pass, "haproxy-dataplane-api-pass", "dataplane-api", "the password to use when authenticating against the haproxy dataplane api")
+	flag.StringVar(&addr, "haproxy-data-plane-api-addr", "localhost:5555", "the address at which the haproxy dataplane api can be reached")
+	flag.StringVar(&path, "haproxy-data-plane-api-path", "/v1", "the path at which the haproxy dataplane api can be reached")
+	flag.StringVar(&user, "haproxy-data-plane-api-user", "dataplane-api", "the username to use when authenticating against the haproxy dataplane api")
+	flag.StringVar(&pass, "haproxy-data-plane-api-pass", "dataplane-api", "the password to use when authenticating against the haproxy dataplane api")
 }
 
 func TestGetFrontend(t *testing.T) {
