@@ -22,12 +22,11 @@ package discovery
 
 import (
 	"github.com/go-openapi/runtime"
-
-	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/strfmt"
 )
 
 // New creates a new discovery API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -39,10 +38,27 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-/*
-GetAPIEndpoints returns list of root endpoints
+// ClientService is the interface for Client methods
+type ClientService interface {
+	GetAPIEndpoints(params *GetAPIEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetAPIEndpointsOK, error)
 
-Returns a list of root endpoints.
+	GetConfigurationEndpoints(params *GetConfigurationEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetConfigurationEndpointsOK, error)
+
+	GetHaproxyEndpoints(params *GetHaproxyEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetHaproxyEndpointsOK, error)
+
+	GetRuntimeEndpoints(params *GetRuntimeEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetRuntimeEndpointsOK, error)
+
+	GetServicesEndpoints(params *GetServicesEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetServicesEndpointsOK, error)
+
+	GetStatsEndpoints(params *GetStatsEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetStatsEndpointsOK, error)
+
+	SetTransport(transport runtime.ClientTransport)
+}
+
+/*
+  GetAPIEndpoints returns list of root endpoints
+
+  Returns a list of root endpoints.
 */
 func (a *Client) GetAPIEndpoints(params *GetAPIEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetAPIEndpointsOK, error) {
 	// TODO: Validate the params before sending
@@ -76,9 +92,9 @@ func (a *Client) GetAPIEndpoints(params *GetAPIEndpointsParams, authInfo runtime
 }
 
 /*
-GetConfigurationEndpoints returns list of h a proxy advanced configuration endpoints
+  GetConfigurationEndpoints returns list of h a proxy advanced configuration endpoints
 
-Returns a list of endpoints to be used for advanced configuration of HAProxy objects.
+  Returns a list of endpoints to be used for advanced configuration of HAProxy objects.
 */
 func (a *Client) GetConfigurationEndpoints(params *GetConfigurationEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetConfigurationEndpointsOK, error) {
 	// TODO: Validate the params before sending
@@ -112,9 +128,9 @@ func (a *Client) GetConfigurationEndpoints(params *GetConfigurationEndpointsPara
 }
 
 /*
-GetHaproxyEndpoints returns list of h a proxy related endpoints
+  GetHaproxyEndpoints returns list of h a proxy related endpoints
 
-Returns a list of HAProxy related endpoints.
+  Returns a list of HAProxy related endpoints.
 */
 func (a *Client) GetHaproxyEndpoints(params *GetHaproxyEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetHaproxyEndpointsOK, error) {
 	// TODO: Validate the params before sending
@@ -148,9 +164,45 @@ func (a *Client) GetHaproxyEndpoints(params *GetHaproxyEndpointsParams, authInfo
 }
 
 /*
-GetServicesEndpoints returns list of service endpoints
+  GetRuntimeEndpoints returns list of h a proxy advanced runtime endpoints
 
-Returns a list of API managed services endpoints.
+  Returns a list of endpoints to be used for advanced runtime settings of HAProxy objects.
+*/
+func (a *Client) GetRuntimeEndpoints(params *GetRuntimeEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetRuntimeEndpointsOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetRuntimeEndpointsParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getRuntimeEndpoints",
+		Method:             "GET",
+		PathPattern:        "/services/haproxy/runtime",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &GetRuntimeEndpointsReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*GetRuntimeEndpointsOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetRuntimeEndpointsDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+}
+
+/*
+  GetServicesEndpoints returns list of service endpoints
+
+  Returns a list of API managed services endpoints.
 */
 func (a *Client) GetServicesEndpoints(params *GetServicesEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetServicesEndpointsOK, error) {
 	// TODO: Validate the params before sending
@@ -184,9 +236,9 @@ func (a *Client) GetServicesEndpoints(params *GetServicesEndpointsParams, authIn
 }
 
 /*
-GetStatsEndpoints returns list of h a proxy stats endpoints
+  GetStatsEndpoints returns list of h a proxy stats endpoints
 
-Returns a list of HAProxy stats endpoints.
+  Returns a list of HAProxy stats endpoints.
 */
 func (a *Client) GetStatsEndpoints(params *GetStatsEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetStatsEndpointsOK, error) {
 	// TODO: Validate the params before sending

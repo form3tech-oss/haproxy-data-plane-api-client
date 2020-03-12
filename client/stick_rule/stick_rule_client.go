@@ -22,12 +22,11 @@ package stick_rule
 
 import (
 	"github.com/go-openapi/runtime"
-
-	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/strfmt"
 )
 
 // New creates a new stick rule API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -39,10 +38,25 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-/*
-CreateStickRule adds a new stick rule
+// ClientService is the interface for Client methods
+type ClientService interface {
+	CreateStickRule(params *CreateStickRuleParams, authInfo runtime.ClientAuthInfoWriter) (*CreateStickRuleCreated, *CreateStickRuleAccepted, error)
 
-Adds a new Stick Rule of the specified type in the specified backend.
+	DeleteStickRule(params *DeleteStickRuleParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteStickRuleAccepted, *DeleteStickRuleNoContent, error)
+
+	GetStickRule(params *GetStickRuleParams, authInfo runtime.ClientAuthInfoWriter) (*GetStickRuleOK, error)
+
+	GetStickRules(params *GetStickRulesParams, authInfo runtime.ClientAuthInfoWriter) (*GetStickRulesOK, error)
+
+	ReplaceStickRule(params *ReplaceStickRuleParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceStickRuleOK, *ReplaceStickRuleAccepted, error)
+
+	SetTransport(transport runtime.ClientTransport)
+}
+
+/*
+  CreateStickRule adds a new stick rule
+
+  Adds a new Stick Rule of the specified type in the specified backend.
 */
 func (a *Client) CreateStickRule(params *CreateStickRuleParams, authInfo runtime.ClientAuthInfoWriter) (*CreateStickRuleCreated, *CreateStickRuleAccepted, error) {
 	// TODO: Validate the params before sending
@@ -78,9 +92,9 @@ func (a *Client) CreateStickRule(params *CreateStickRuleParams, authInfo runtime
 }
 
 /*
-DeleteStickRule deletes a stick rule
+  DeleteStickRule deletes a stick rule
 
-Deletes a Stick Rule configuration by it's ID from the specified backend.
+  Deletes a Stick Rule configuration by it's ID from the specified backend.
 */
 func (a *Client) DeleteStickRule(params *DeleteStickRuleParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteStickRuleAccepted, *DeleteStickRuleNoContent, error) {
 	// TODO: Validate the params before sending
@@ -116,9 +130,9 @@ func (a *Client) DeleteStickRule(params *DeleteStickRuleParams, authInfo runtime
 }
 
 /*
-GetStickRule returns one stick rule
+  GetStickRule returns one stick rule
 
-Returns one Stick Rule configuration by it's ID in the specified backend.
+  Returns one Stick Rule configuration by it's ID in the specified backend.
 */
 func (a *Client) GetStickRule(params *GetStickRuleParams, authInfo runtime.ClientAuthInfoWriter) (*GetStickRuleOK, error) {
 	// TODO: Validate the params before sending
@@ -152,9 +166,9 @@ func (a *Client) GetStickRule(params *GetStickRuleParams, authInfo runtime.Clien
 }
 
 /*
-GetStickRules returns an array of all stick rules
+  GetStickRules returns an array of all stick rules
 
-Returns all Stick Rules that are configured in specified backend.
+  Returns all Stick Rules that are configured in specified backend.
 */
 func (a *Client) GetStickRules(params *GetStickRulesParams, authInfo runtime.ClientAuthInfoWriter) (*GetStickRulesOK, error) {
 	// TODO: Validate the params before sending
@@ -188,9 +202,9 @@ func (a *Client) GetStickRules(params *GetStickRulesParams, authInfo runtime.Cli
 }
 
 /*
-ReplaceStickRule replaces a stick rule
+  ReplaceStickRule replaces a stick rule
 
-Replaces a Stick Rule configuration by it's ID in the specified backend.
+  Replaces a Stick Rule configuration by it's ID in the specified backend.
 */
 func (a *Client) ReplaceStickRule(params *ReplaceStickRuleParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceStickRuleOK, *ReplaceStickRuleAccepted, error) {
 	// TODO: Validate the params before sending

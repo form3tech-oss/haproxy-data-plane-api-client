@@ -8,6 +8,6 @@ require (
 	github.com/go-openapi/strfmt v0.19.4
 	github.com/go-openapi/swag v0.19.6
 	github.com/go-openapi/validate v0.19.5
-	github.com/haproxytech/models v1.2.4
+	github.com/haproxytech/models v1.2.5-0.20200303114537-404064db6c6c
 	github.com/stretchr/testify v1.4.0
 )

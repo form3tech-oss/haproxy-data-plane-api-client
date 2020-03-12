@@ -21,10 +21,10 @@ package client
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	"github.com/go-openapi/runtime"
 	httptransport "github.com/go-openapi/runtime/client"
 
-	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/acl"
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/backend"
@@ -47,6 +47,7 @@ import (
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/specification"
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/stats"
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/stick_rule"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/stick_table"
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/tcp_request_rule"
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/tcp_response_rule"
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/transactions"
@@ -61,7 +62,7 @@ const (
 	DefaultHost string = "localhost"
 	// DefaultBasePath is the default BasePath
 	// found in Meta (info) section of spec file
-	DefaultBasePath string = "/v1"
+	DefaultBasePath string = "/v2"
 )
 
 // DefaultSchemes are the default schemes found in Meta (info) section of spec file
@@ -94,55 +95,31 @@ func New(transport runtime.ClientTransport, formats strfmt.Registry) *DataPlane 
 
 	cli := new(DataPlane)
 	cli.Transport = transport
-
 	cli.ACL = acl.New(transport, formats)
-
 	cli.Backend = backend.New(transport, formats)
-
 	cli.BackendSwitchingRule = backend_switching_rule.New(transport, formats)
-
 	cli.Bind = bind.New(transport, formats)
-
 	cli.Configuration = configuration.New(transport, formats)
-
 	cli.Defaults = defaults.New(transport, formats)
-
 	cli.Discovery = discovery.New(transport, formats)
-
 	cli.Filter = filter.New(transport, formats)
-
 	cli.Frontend = frontend.New(transport, formats)
-
 	cli.Global = global.New(transport, formats)
-
 	cli.HTTPRequestRule = http_request_rule.New(transport, formats)
-
 	cli.HTTPResponseRule = http_response_rule.New(transport, formats)
-
 	cli.Information = information.New(transport, formats)
-
 	cli.LogTarget = log_target.New(transport, formats)
-
 	cli.Reloads = reloads.New(transport, formats)
-
 	cli.Server = server.New(transport, formats)
-
 	cli.ServerSwitchingRule = server_switching_rule.New(transport, formats)
-
 	cli.Sites = sites.New(transport, formats)
-
 	cli.Specification = specification.New(transport, formats)
-
 	cli.Stats = stats.New(transport, formats)
-
 	cli.StickRule = stick_rule.New(transport, formats)
-
+	cli.StickTable = stick_table.New(transport, formats)
 	cli.TCPRequestRule = tcp_request_rule.New(transport, formats)
-
 	cli.TCPResponseRule = tcp_response_rule.New(transport, formats)
-
 	cli.Transactions = transactions.New(transport, formats)
-
 	return cli
 }
 
@@ -187,53 +164,55 @@ func (cfg *TransportConfig) WithSchemes(schemes []string) *TransportConfig {
 
 // DataPlane is a client for data plane
 type DataPlane struct {
-	ACL *acl.Client
+	ACL acl.ClientService
 
-	Backend *backend.Client
+	Backend backend.ClientService
 
-	BackendSwitchingRule *backend_switching_rule.Client
+	BackendSwitchingRule backend_switching_rule.ClientService
 
-	Bind *bind.Client
+	Bind bind.ClientService
 
-	Configuration *configuration.Client
+	Configuration configuration.ClientService
 
-	Defaults *defaults.Client
+	Defaults defaults.ClientService
 
-	Discovery *discovery.Client
+	Discovery discovery.ClientService
 
-	Filter *filter.Client
+	Filter filter.ClientService
 
-	Frontend *frontend.Client
+	Frontend frontend.ClientService
 
-	Global *global.Client
+	Global global.ClientService
 
-	HTTPRequestRule *http_request_rule.Client
+	HTTPRequestRule http_request_rule.ClientService
 
-	HTTPResponseRule *http_response_rule.Client
+	HTTPResponseRule http_response_rule.ClientService
 
-	Information *information.Client
+	Information information.ClientService
 
-	LogTarget *log_target.Client
+	LogTarget log_target.ClientService
 
-	Reloads *reloads.Client
+	Reloads reloads.ClientService
 
-	Server *server.Client
+	Server server.ClientService
 
-	ServerSwitchingRule *server_switching_rule.Client
+	ServerSwitchingRule server_switching_rule.ClientService
 
-	Sites *sites.Client
+	Sites sites.ClientService
 
-	Specification *specification.Client
+	Specification specification.ClientService
 
-	Stats *stats.Client
+	Stats stats.ClientService
 
-	StickRule *stick_rule.Client
+	StickRule stick_rule.ClientService
 
-	TCPRequestRule *tcp_request_rule.Client
+	StickTable stick_table.ClientService
 
-	TCPResponseRule *tcp_response_rule.Client
+	TCPRequestRule tcp_request_rule.ClientService
 
-	Transactions *transactions.Client
+	TCPResponseRule tcp_response_rule.ClientService
+
+	Transactions transactions.ClientService
 
 	Transport runtime.ClientTransport
 }
@@ -241,53 +220,29 @@ type DataPlane struct {
 // SetTransport changes the transport on the client and all its subresources
 func (c *DataPlane) SetTransport(transport runtime.ClientTransport) {
 	c.Transport = transport
-
 	c.ACL.SetTransport(transport)
-
 	c.Backend.SetTransport(transport)
-
 	c.BackendSwitchingRule.SetTransport(transport)
-
 	c.Bind.SetTransport(transport)
-
 	c.Configuration.SetTransport(transport)
-
 	c.Defaults.SetTransport(transport)
-
 	c.Discovery.SetTransport(transport)
-
 	c.Filter.SetTransport(transport)
-
 	c.Frontend.SetTransport(transport)
-
 	c.Global.SetTransport(transport)
-
 	c.HTTPRequestRule.SetTransport(transport)
-
 	c.HTTPResponseRule.SetTransport(transport)
-
 	c.Information.SetTransport(transport)
-
 	c.LogTarget.SetTransport(transport)
-
 	c.Reloads.SetTransport(transport)
-
 	c.Server.SetTransport(transport)
-
 	c.ServerSwitchingRule.SetTransport(transport)
-
 	c.Sites.SetTransport(transport)
-
 	c.Specification.SetTransport(transport)
-
 	c.Stats.SetTransport(transport)
-
 	c.StickRule.SetTransport(transport)
-
+	c.StickTable.SetTransport(transport)
 	c.TCPRequestRule.SetTransport(transport)
-
 	c.TCPResponseRule.SetTransport(transport)
-
 	c.Transactions.SetTransport(transport)
-
 }

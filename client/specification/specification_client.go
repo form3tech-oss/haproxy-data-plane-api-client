@@ -22,12 +22,11 @@ package specification
 
 import (
 	"github.com/go-openapi/runtime"
-
-	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/strfmt"
 )
 
 // New creates a new specification API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -39,10 +38,17 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-/*
-GetSpecification data plane API specification
+// ClientService is the interface for Client methods
+type ClientService interface {
+	GetSpecification(params *GetSpecificationParams, authInfo runtime.ClientAuthInfoWriter) (*GetSpecificationOK, error)
 
-Return Data Plane API OpenAPI specification
+	SetTransport(transport runtime.ClientTransport)
+}
+
+/*
+  GetSpecification data plane API specification
+
+  Return Data Plane API OpenAPI specification
 */
 func (a *Client) GetSpecification(params *GetSpecificationParams, authInfo runtime.ClientAuthInfoWriter) (*GetSpecificationOK, error) {
 	// TODO: Validate the params before sending

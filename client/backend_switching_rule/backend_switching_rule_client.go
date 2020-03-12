@@ -22,12 +22,11 @@ package backend_switching_rule
 
 import (
 	"github.com/go-openapi/runtime"
-
-	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/strfmt"
 )
 
 // New creates a new backend switching rule API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -39,10 +38,25 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-/*
-CreateBackendSwitchingRule adds a new backend switching rule
+// ClientService is the interface for Client methods
+type ClientService interface {
+	CreateBackendSwitchingRule(params *CreateBackendSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter) (*CreateBackendSwitchingRuleCreated, *CreateBackendSwitchingRuleAccepted, error)
 
-Adds a new Backend Switching Rule of the specified type in the specified frontend.
+	DeleteBackendSwitchingRule(params *DeleteBackendSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteBackendSwitchingRuleAccepted, *DeleteBackendSwitchingRuleNoContent, error)
+
+	GetBackendSwitchingRule(params *GetBackendSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter) (*GetBackendSwitchingRuleOK, error)
+
+	GetBackendSwitchingRules(params *GetBackendSwitchingRulesParams, authInfo runtime.ClientAuthInfoWriter) (*GetBackendSwitchingRulesOK, error)
+
+	ReplaceBackendSwitchingRule(params *ReplaceBackendSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceBackendSwitchingRuleOK, *ReplaceBackendSwitchingRuleAccepted, error)
+
+	SetTransport(transport runtime.ClientTransport)
+}
+
+/*
+  CreateBackendSwitchingRule adds a new backend switching rule
+
+  Adds a new Backend Switching Rule of the specified type in the specified frontend.
 */
 func (a *Client) CreateBackendSwitchingRule(params *CreateBackendSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter) (*CreateBackendSwitchingRuleCreated, *CreateBackendSwitchingRuleAccepted, error) {
 	// TODO: Validate the params before sending
@@ -78,9 +92,9 @@ func (a *Client) CreateBackendSwitchingRule(params *CreateBackendSwitchingRulePa
 }
 
 /*
-DeleteBackendSwitchingRule deletes a backend switching rule
+  DeleteBackendSwitchingRule deletes a backend switching rule
 
-Deletes a Backend Switching Rule configuration by it's ID from the specified frontend.
+  Deletes a Backend Switching Rule configuration by it's ID from the specified frontend.
 */
 func (a *Client) DeleteBackendSwitchingRule(params *DeleteBackendSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteBackendSwitchingRuleAccepted, *DeleteBackendSwitchingRuleNoContent, error) {
 	// TODO: Validate the params before sending
@@ -116,9 +130,9 @@ func (a *Client) DeleteBackendSwitchingRule(params *DeleteBackendSwitchingRulePa
 }
 
 /*
-GetBackendSwitchingRule returns one backend switching rule
+  GetBackendSwitchingRule returns one backend switching rule
 
-Returns one Backend Switching Rule configuration by it's ID in the specified frontend.
+  Returns one Backend Switching Rule configuration by it's ID in the specified frontend.
 */
 func (a *Client) GetBackendSwitchingRule(params *GetBackendSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter) (*GetBackendSwitchingRuleOK, error) {
 	// TODO: Validate the params before sending
@@ -152,9 +166,9 @@ func (a *Client) GetBackendSwitchingRule(params *GetBackendSwitchingRuleParams, 
 }
 
 /*
-GetBackendSwitchingRules returns an array of all backend switching rules
+  GetBackendSwitchingRules returns an array of all backend switching rules
 
-Returns all Backend Switching Rules that are configured in specified frontend.
+  Returns all Backend Switching Rules that are configured in specified frontend.
 */
 func (a *Client) GetBackendSwitchingRules(params *GetBackendSwitchingRulesParams, authInfo runtime.ClientAuthInfoWriter) (*GetBackendSwitchingRulesOK, error) {
 	// TODO: Validate the params before sending
@@ -188,9 +202,9 @@ func (a *Client) GetBackendSwitchingRules(params *GetBackendSwitchingRulesParams
 }
 
 /*
-ReplaceBackendSwitchingRule replaces a backend switching rule
+  ReplaceBackendSwitchingRule replaces a backend switching rule
 
-Replaces a Backend Switching Rule configuration by it's ID in the specified frontend.
+  Replaces a Backend Switching Rule configuration by it's ID in the specified frontend.
 */
 func (a *Client) ReplaceBackendSwitchingRule(params *ReplaceBackendSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceBackendSwitchingRuleOK, *ReplaceBackendSwitchingRuleAccepted, error) {
 	// TODO: Validate the params before sending

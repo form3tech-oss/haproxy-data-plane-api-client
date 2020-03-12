@@ -82,8 +82,8 @@ github.com/google/go-cmp v0.3.0/go.mod h1:8QqcDgzrUqlUb/G2PQTWiueGozuR1884gddMyw
 github.com/google/uuid v1.0.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
 github.com/google/uuid v1.1.1 h1:Gkbcsh/GbpXz7lPftLA3P6TYMwjCLYm83jiFQZF/3gY=
 github.com/google/uuid v1.1.1/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
-github.com/haproxytech/models v1.2.4 h1:KYWMzEVVRxAPI6F64xF6oISY10TGm6VWvo/T2rXp4x4=
-github.com/haproxytech/models v1.2.4/go.mod h1:UXZVErm/XN6z10sM/enmxrdeEnwo7vz1JI+a8ycEvOQ=
+github.com/haproxytech/models v1.2.5-0.20200303114537-404064db6c6c h1:E6JAhkWK6zo1ssKRMbLrITC9v7HeiVsRvfoxZS573Vs=
+github.com/haproxytech/models v1.2.5-0.20200303114537-404064db6c6c/go.mod h1:UXZVErm/XN6z10sM/enmxrdeEnwo7vz1JI+a8ycEvOQ=
 github.com/kr/pretty v0.1.0 h1:L/CwN0zerZDmRFUapSPitk6f+Q3+0za1rQkzVuMiMFI=
 github.com/kr/pretty v0.1.0/go.mod h1:dAy3ld7l9f0ibDNOQOHHMYYIIbhfbHSm3C4ZsoJORNo=
 github.com/kr/pty v1.1.1/go.mod h1:pFQYn66WHrOpPYNljwOMqo10TkYh1fy3cYio2l3bCsQ=
