@@ -10,18 +10,18 @@ Golang client for the HAProxy Data Plane API.
 
 ```shell
 # Clone https://github.com/haproxytech/models.git.
-$ git clone \
-    --branch v1.2.4 \
-    --depth 1 https://github.com/haproxytech/models.git \
+$ git clone https://github.com/haproxytech/models.git \
     $GOPATH/src/github.com/haproxytech/models
+$ cd $GOPATH/src/github.com/haproxytech/models
+$ git checkout 404064d
 ```
 
 ```shell
 # Clone https://github.com/haproxytech/dataplaneapi-specification.git.
-$ git clone \
-    --branch v1.2.4 \
-    --depth 1 https://github.com/haproxytech/dataplaneapi-specification.git \
+$ git clone ttps://github.com/haproxytech/dataplaneapi-specification.git \
     $GOPATH/src/github.com/haproxytech/dataplaceapi-specification
+$ cd $GOPATH/src/github.com/haproxytech/dataplaceapi-specification
+$ git checkout 6f4c2f6
 ```
 
 ```shell
@@ -37,7 +37,6 @@ $ swagger generate client -f haproxy_spec.yaml \
     -t $GOPATH/src/github.com/form3tech-oss/haproxy-data-plane-api-client \
     --existing-models github.com/haproxytech/models \
     --skip-models \
-    -s dataplaneapi \
     --tags=Discovery \
     --tags=Information \
     --tags=Specification \

@@ -22,12 +22,11 @@ package global
 
 import (
 	"github.com/go-openapi/runtime"
-
-	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/strfmt"
 )
 
 // New creates a new global API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -39,10 +38,19 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-/*
-GetGlobal returns a global part of configuration
+// ClientService is the interface for Client methods
+type ClientService interface {
+	GetGlobal(params *GetGlobalParams, authInfo runtime.ClientAuthInfoWriter) (*GetGlobalOK, error)
 
-Returns global part of configuration.
+	ReplaceGlobal(params *ReplaceGlobalParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceGlobalOK, *ReplaceGlobalAccepted, error)
+
+	SetTransport(transport runtime.ClientTransport)
+}
+
+/*
+  GetGlobal returns a global part of configuration
+
+  Returns global part of configuration.
 */
 func (a *Client) GetGlobal(params *GetGlobalParams, authInfo runtime.ClientAuthInfoWriter) (*GetGlobalOK, error) {
 	// TODO: Validate the params before sending
@@ -76,9 +84,9 @@ func (a *Client) GetGlobal(params *GetGlobalParams, authInfo runtime.ClientAuthI
 }
 
 /*
-ReplaceGlobal replaces global
+  ReplaceGlobal replaces global
 
-Replace global part of config
+  Replace global part of config
 */
 func (a *Client) ReplaceGlobal(params *ReplaceGlobalParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceGlobalOK, *ReplaceGlobalAccepted, error) {
 	// TODO: Validate the params before sending

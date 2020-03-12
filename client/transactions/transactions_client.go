@@ -22,12 +22,11 @@ package transactions
 
 import (
 	"github.com/go-openapi/runtime"
-
-	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/strfmt"
 )
 
 // New creates a new transactions API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -39,10 +38,25 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-/*
-CommitTransaction commits transaction
+// ClientService is the interface for Client methods
+type ClientService interface {
+	CommitTransaction(params *CommitTransactionParams, authInfo runtime.ClientAuthInfoWriter) (*CommitTransactionOK, *CommitTransactionAccepted, error)
 
-Commit transaction, execute all operations in transaction and return msg
+	DeleteTransaction(params *DeleteTransactionParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteTransactionNoContent, error)
+
+	GetTransaction(params *GetTransactionParams, authInfo runtime.ClientAuthInfoWriter) (*GetTransactionOK, error)
+
+	GetTransactions(params *GetTransactionsParams, authInfo runtime.ClientAuthInfoWriter) (*GetTransactionsOK, error)
+
+	StartTransaction(params *StartTransactionParams, authInfo runtime.ClientAuthInfoWriter) (*StartTransactionCreated, error)
+
+	SetTransport(transport runtime.ClientTransport)
+}
+
+/*
+  CommitTransaction commits transaction
+
+  Commit transaction, execute all operations in transaction and return msg
 */
 func (a *Client) CommitTransaction(params *CommitTransactionParams, authInfo runtime.ClientAuthInfoWriter) (*CommitTransactionOK, *CommitTransactionAccepted, error) {
 	// TODO: Validate the params before sending
@@ -78,9 +92,9 @@ func (a *Client) CommitTransaction(params *CommitTransactionParams, authInfo run
 }
 
 /*
-DeleteTransaction deletes a transaction
+  DeleteTransaction deletes a transaction
 
-Deletes a transaction.
+  Deletes a transaction.
 */
 func (a *Client) DeleteTransaction(params *DeleteTransactionParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteTransactionNoContent, error) {
 	// TODO: Validate the params before sending
@@ -114,9 +128,9 @@ func (a *Client) DeleteTransaction(params *DeleteTransactionParams, authInfo run
 }
 
 /*
-GetTransaction returns one h a proxy configuration transactions
+  GetTransaction returns one h a proxy configuration transactions
 
-Returns one HAProxy configuration transactions.
+  Returns one HAProxy configuration transactions.
 */
 func (a *Client) GetTransaction(params *GetTransactionParams, authInfo runtime.ClientAuthInfoWriter) (*GetTransactionOK, error) {
 	// TODO: Validate the params before sending
@@ -150,9 +164,9 @@ func (a *Client) GetTransaction(params *GetTransactionParams, authInfo runtime.C
 }
 
 /*
-GetTransactions returns list of h a proxy configuration transactions
+  GetTransactions returns list of h a proxy configuration transactions
 
-Returns a list of HAProxy configuration transactions. Transactions can be filtered by their status.
+  Returns a list of HAProxy configuration transactions. Transactions can be filtered by their status.
 */
 func (a *Client) GetTransactions(params *GetTransactionsParams, authInfo runtime.ClientAuthInfoWriter) (*GetTransactionsOK, error) {
 	// TODO: Validate the params before sending
@@ -186,9 +200,9 @@ func (a *Client) GetTransactions(params *GetTransactionsParams, authInfo runtime
 }
 
 /*
-StartTransaction starts a new transaction
+  StartTransaction starts a new transaction
 
-Starts a new transaction and returns it's id
+  Starts a new transaction and returns it's id
 */
 func (a *Client) StartTransaction(params *StartTransactionParams, authInfo runtime.ClientAuthInfoWriter) (*StartTransactionCreated, error) {
 	// TODO: Validate the params before sending

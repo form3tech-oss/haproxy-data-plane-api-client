@@ -22,12 +22,11 @@ package http_request_rule
 
 import (
 	"github.com/go-openapi/runtime"
-
-	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/strfmt"
 )
 
 // New creates a new http request rule API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -39,10 +38,25 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-/*
-CreateHTTPRequestRule adds a new HTTP request rule
+// ClientService is the interface for Client methods
+type ClientService interface {
+	CreateHTTPRequestRule(params *CreateHTTPRequestRuleParams, authInfo runtime.ClientAuthInfoWriter) (*CreateHTTPRequestRuleCreated, *CreateHTTPRequestRuleAccepted, error)
 
-Adds a new HTTP Request Rule of the specified type in the specified parent.
+	DeleteHTTPRequestRule(params *DeleteHTTPRequestRuleParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteHTTPRequestRuleAccepted, *DeleteHTTPRequestRuleNoContent, error)
+
+	GetHTTPRequestRule(params *GetHTTPRequestRuleParams, authInfo runtime.ClientAuthInfoWriter) (*GetHTTPRequestRuleOK, error)
+
+	GetHTTPRequestRules(params *GetHTTPRequestRulesParams, authInfo runtime.ClientAuthInfoWriter) (*GetHTTPRequestRulesOK, error)
+
+	ReplaceHTTPRequestRule(params *ReplaceHTTPRequestRuleParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceHTTPRequestRuleOK, *ReplaceHTTPRequestRuleAccepted, error)
+
+	SetTransport(transport runtime.ClientTransport)
+}
+
+/*
+  CreateHTTPRequestRule adds a new HTTP request rule
+
+  Adds a new HTTP Request Rule of the specified type in the specified parent.
 */
 func (a *Client) CreateHTTPRequestRule(params *CreateHTTPRequestRuleParams, authInfo runtime.ClientAuthInfoWriter) (*CreateHTTPRequestRuleCreated, *CreateHTTPRequestRuleAccepted, error) {
 	// TODO: Validate the params before sending
@@ -78,9 +92,9 @@ func (a *Client) CreateHTTPRequestRule(params *CreateHTTPRequestRuleParams, auth
 }
 
 /*
-DeleteHTTPRequestRule deletes a HTTP request rule
+  DeleteHTTPRequestRule deletes a HTTP request rule
 
-Deletes a HTTP Request Rule configuration by it's ID from the specified parent.
+  Deletes a HTTP Request Rule configuration by it's ID from the specified parent.
 */
 func (a *Client) DeleteHTTPRequestRule(params *DeleteHTTPRequestRuleParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteHTTPRequestRuleAccepted, *DeleteHTTPRequestRuleNoContent, error) {
 	// TODO: Validate the params before sending
@@ -116,9 +130,9 @@ func (a *Client) DeleteHTTPRequestRule(params *DeleteHTTPRequestRuleParams, auth
 }
 
 /*
-GetHTTPRequestRule returns one HTTP request rule
+  GetHTTPRequestRule returns one HTTP request rule
 
-Returns one HTTP Request Rule configuration by it's ID in the specified parent.
+  Returns one HTTP Request Rule configuration by it's ID in the specified parent.
 */
 func (a *Client) GetHTTPRequestRule(params *GetHTTPRequestRuleParams, authInfo runtime.ClientAuthInfoWriter) (*GetHTTPRequestRuleOK, error) {
 	// TODO: Validate the params before sending
@@ -152,9 +166,9 @@ func (a *Client) GetHTTPRequestRule(params *GetHTTPRequestRuleParams, authInfo r
 }
 
 /*
-GetHTTPRequestRules returns an array of all HTTP request rules
+  GetHTTPRequestRules returns an array of all HTTP request rules
 
-Returns all HTTP Request Rules that are configured in specified parent.
+  Returns all HTTP Request Rules that are configured in specified parent.
 */
 func (a *Client) GetHTTPRequestRules(params *GetHTTPRequestRulesParams, authInfo runtime.ClientAuthInfoWriter) (*GetHTTPRequestRulesOK, error) {
 	// TODO: Validate the params before sending
@@ -188,9 +202,9 @@ func (a *Client) GetHTTPRequestRules(params *GetHTTPRequestRulesParams, authInfo
 }
 
 /*
-ReplaceHTTPRequestRule replaces a HTTP request rule
+  ReplaceHTTPRequestRule replaces a HTTP request rule
 
-Replaces a HTTP Request Rule configuration by it's ID in the specified parent.
+  Replaces a HTTP Request Rule configuration by it's ID in the specified parent.
 */
 func (a *Client) ReplaceHTTPRequestRule(params *ReplaceHTTPRequestRuleParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceHTTPRequestRuleOK, *ReplaceHTTPRequestRuleAccepted, error) {
 	// TODO: Validate the params before sending

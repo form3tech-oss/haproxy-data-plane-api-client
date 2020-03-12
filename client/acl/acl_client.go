@@ -22,12 +22,11 @@ package acl
 
 import (
 	"github.com/go-openapi/runtime"
-
-	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/strfmt"
 )
 
 // New creates a new acl API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -39,10 +38,25 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-/*
-CreateACL adds a new ACL line
+// ClientService is the interface for Client methods
+type ClientService interface {
+	CreateACL(params *CreateACLParams, authInfo runtime.ClientAuthInfoWriter) (*CreateACLCreated, *CreateACLAccepted, error)
 
-Adds a new ACL line of the specified type in the specified parent.
+	DeleteACL(params *DeleteACLParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteACLAccepted, *DeleteACLNoContent, error)
+
+	GetACL(params *GetACLParams, authInfo runtime.ClientAuthInfoWriter) (*GetACLOK, error)
+
+	GetAcls(params *GetAclsParams, authInfo runtime.ClientAuthInfoWriter) (*GetAclsOK, error)
+
+	ReplaceACL(params *ReplaceACLParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceACLOK, *ReplaceACLAccepted, error)
+
+	SetTransport(transport runtime.ClientTransport)
+}
+
+/*
+  CreateACL adds a new ACL line
+
+  Adds a new ACL line of the specified type in the specified parent.
 */
 func (a *Client) CreateACL(params *CreateACLParams, authInfo runtime.ClientAuthInfoWriter) (*CreateACLCreated, *CreateACLAccepted, error) {
 	// TODO: Validate the params before sending
@@ -78,9 +92,9 @@ func (a *Client) CreateACL(params *CreateACLParams, authInfo runtime.ClientAuthI
 }
 
 /*
-DeleteACL deletes a ACL line
+  DeleteACL deletes a ACL line
 
-Deletes a ACL line configuration by it's ID from the specified parent.
+  Deletes a ACL line configuration by it's ID from the specified parent.
 */
 func (a *Client) DeleteACL(params *DeleteACLParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteACLAccepted, *DeleteACLNoContent, error) {
 	// TODO: Validate the params before sending
@@ -116,9 +130,9 @@ func (a *Client) DeleteACL(params *DeleteACLParams, authInfo runtime.ClientAuthI
 }
 
 /*
-GetACL returns one ACL line
+  GetACL returns one ACL line
 
-Returns one ACL line configuration by it's ID in the specified parent.
+  Returns one ACL line configuration by it's ID in the specified parent.
 */
 func (a *Client) GetACL(params *GetACLParams, authInfo runtime.ClientAuthInfoWriter) (*GetACLOK, error) {
 	// TODO: Validate the params before sending
@@ -152,9 +166,9 @@ func (a *Client) GetACL(params *GetACLParams, authInfo runtime.ClientAuthInfoWri
 }
 
 /*
-GetAcls returns an array of all ACL lines
+  GetAcls returns an array of all ACL lines
 
-Returns all ACL lines that are configured in specified parent.
+  Returns all ACL lines that are configured in specified parent.
 */
 func (a *Client) GetAcls(params *GetAclsParams, authInfo runtime.ClientAuthInfoWriter) (*GetAclsOK, error) {
 	// TODO: Validate the params before sending
@@ -188,9 +202,9 @@ func (a *Client) GetAcls(params *GetAclsParams, authInfo runtime.ClientAuthInfoW
 }
 
 /*
-ReplaceACL replaces a ACL line
+  ReplaceACL replaces a ACL line
 
-Replaces a ACL line configuration by it's ID in the specified parent.
+  Replaces a ACL line configuration by it's ID in the specified parent.
 */
 func (a *Client) ReplaceACL(params *ReplaceACLParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceACLOK, *ReplaceACLAccepted, error) {
 	// TODO: Validate the params before sending

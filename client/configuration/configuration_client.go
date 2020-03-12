@@ -22,12 +22,11 @@ package configuration
 
 import (
 	"github.com/go-openapi/runtime"
-
-	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/strfmt"
 )
 
 // New creates a new configuration API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -39,10 +38,19 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-/*
-GetHAProxyConfiguration returns h a proxy configuration
+// ClientService is the interface for Client methods
+type ClientService interface {
+	GetHAProxyConfiguration(params *GetHAProxyConfigurationParams, authInfo runtime.ClientAuthInfoWriter) (*GetHAProxyConfigurationOK, error)
 
-Returns HAProxy configuration file in plain text
+	PostHAProxyConfiguration(params *PostHAProxyConfigurationParams, authInfo runtime.ClientAuthInfoWriter) (*PostHAProxyConfigurationCreated, *PostHAProxyConfigurationAccepted, error)
+
+	SetTransport(transport runtime.ClientTransport)
+}
+
+/*
+  GetHAProxyConfiguration returns h a proxy configuration
+
+  Returns HAProxy configuration file in plain text
 */
 func (a *Client) GetHAProxyConfiguration(params *GetHAProxyConfigurationParams, authInfo runtime.ClientAuthInfoWriter) (*GetHAProxyConfigurationOK, error) {
 	// TODO: Validate the params before sending
@@ -76,9 +84,9 @@ func (a *Client) GetHAProxyConfiguration(params *GetHAProxyConfigurationParams, 
 }
 
 /*
-PostHAProxyConfiguration pushes new haproxy configuration
+  PostHAProxyConfiguration pushes new haproxy configuration
 
-Push a new haproxy configuration file in plain text
+  Push a new haproxy configuration file in plain text
 */
 func (a *Client) PostHAProxyConfiguration(params *PostHAProxyConfigurationParams, authInfo runtime.ClientAuthInfoWriter) (*PostHAProxyConfigurationCreated, *PostHAProxyConfigurationAccepted, error) {
 	// TODO: Validate the params before sending

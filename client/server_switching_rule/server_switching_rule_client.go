@@ -22,12 +22,11 @@ package server_switching_rule
 
 import (
 	"github.com/go-openapi/runtime"
-
-	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/strfmt"
 )
 
 // New creates a new server switching rule API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -39,10 +38,25 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-/*
-CreateServerSwitchingRule adds a new server switching rule
+// ClientService is the interface for Client methods
+type ClientService interface {
+	CreateServerSwitchingRule(params *CreateServerSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter) (*CreateServerSwitchingRuleCreated, *CreateServerSwitchingRuleAccepted, error)
 
-Adds a new Server Switching Rule of the specified type in the specified backend.
+	DeleteServerSwitchingRule(params *DeleteServerSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteServerSwitchingRuleAccepted, *DeleteServerSwitchingRuleNoContent, error)
+
+	GetServerSwitchingRule(params *GetServerSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter) (*GetServerSwitchingRuleOK, error)
+
+	GetServerSwitchingRules(params *GetServerSwitchingRulesParams, authInfo runtime.ClientAuthInfoWriter) (*GetServerSwitchingRulesOK, error)
+
+	ReplaceServerSwitchingRule(params *ReplaceServerSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceServerSwitchingRuleOK, *ReplaceServerSwitchingRuleAccepted, error)
+
+	SetTransport(transport runtime.ClientTransport)
+}
+
+/*
+  CreateServerSwitchingRule adds a new server switching rule
+
+  Adds a new Server Switching Rule of the specified type in the specified backend.
 */
 func (a *Client) CreateServerSwitchingRule(params *CreateServerSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter) (*CreateServerSwitchingRuleCreated, *CreateServerSwitchingRuleAccepted, error) {
 	// TODO: Validate the params before sending
@@ -78,9 +92,9 @@ func (a *Client) CreateServerSwitchingRule(params *CreateServerSwitchingRulePara
 }
 
 /*
-DeleteServerSwitchingRule deletes a server switching rule
+  DeleteServerSwitchingRule deletes a server switching rule
 
-Deletes a Server Switching Rule configuration by it's ID from the specified backend.
+  Deletes a Server Switching Rule configuration by it's ID from the specified backend.
 */
 func (a *Client) DeleteServerSwitchingRule(params *DeleteServerSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteServerSwitchingRuleAccepted, *DeleteServerSwitchingRuleNoContent, error) {
 	// TODO: Validate the params before sending
@@ -116,9 +130,9 @@ func (a *Client) DeleteServerSwitchingRule(params *DeleteServerSwitchingRulePara
 }
 
 /*
-GetServerSwitchingRule returns one server switching rule
+  GetServerSwitchingRule returns one server switching rule
 
-Returns one Server Switching Rule configuration by it's ID in the specified backend.
+  Returns one Server Switching Rule configuration by it's ID in the specified backend.
 */
 func (a *Client) GetServerSwitchingRule(params *GetServerSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter) (*GetServerSwitchingRuleOK, error) {
 	// TODO: Validate the params before sending
@@ -152,9 +166,9 @@ func (a *Client) GetServerSwitchingRule(params *GetServerSwitchingRuleParams, au
 }
 
 /*
-GetServerSwitchingRules returns an array of all server switching rules
+  GetServerSwitchingRules returns an array of all server switching rules
 
-Returns all Backend Switching Rules that are configured in specified backend.
+  Returns all Backend Switching Rules that are configured in specified backend.
 */
 func (a *Client) GetServerSwitchingRules(params *GetServerSwitchingRulesParams, authInfo runtime.ClientAuthInfoWriter) (*GetServerSwitchingRulesOK, error) {
 	// TODO: Validate the params before sending
@@ -188,9 +202,9 @@ func (a *Client) GetServerSwitchingRules(params *GetServerSwitchingRulesParams, 
 }
 
 /*
-ReplaceServerSwitchingRule replaces a server switching rule
+  ReplaceServerSwitchingRule replaces a server switching rule
 
-Replaces a Server Switching Rule configuration by it's ID in the specified backend.
+  Replaces a Server Switching Rule configuration by it's ID in the specified backend.
 */
 func (a *Client) ReplaceServerSwitchingRule(params *ReplaceServerSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceServerSwitchingRuleOK, *ReplaceServerSwitchingRuleAccepted, error) {
 	// TODO: Validate the params before sending

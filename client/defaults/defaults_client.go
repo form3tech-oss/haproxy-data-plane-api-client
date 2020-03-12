@@ -22,12 +22,11 @@ package defaults
 
 import (
 	"github.com/go-openapi/runtime"
-
-	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/strfmt"
 )
 
 // New creates a new defaults API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -39,10 +38,19 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-/*
-GetDefaults returns defaults part of configuration
+// ClientService is the interface for Client methods
+type ClientService interface {
+	GetDefaults(params *GetDefaultsParams, authInfo runtime.ClientAuthInfoWriter) (*GetDefaultsOK, error)
 
-Returns defaults part of configuration.
+	ReplaceDefaults(params *ReplaceDefaultsParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceDefaultsOK, *ReplaceDefaultsAccepted, error)
+
+	SetTransport(transport runtime.ClientTransport)
+}
+
+/*
+  GetDefaults returns defaults part of configuration
+
+  Returns defaults part of configuration.
 */
 func (a *Client) GetDefaults(params *GetDefaultsParams, authInfo runtime.ClientAuthInfoWriter) (*GetDefaultsOK, error) {
 	// TODO: Validate the params before sending
@@ -76,9 +84,9 @@ func (a *Client) GetDefaults(params *GetDefaultsParams, authInfo runtime.ClientA
 }
 
 /*
-ReplaceDefaults replaces defaults
+  ReplaceDefaults replaces defaults
 
-Replace defaults part of config
+  Replace defaults part of config
 */
 func (a *Client) ReplaceDefaults(params *ReplaceDefaultsParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceDefaultsOK, *ReplaceDefaultsAccepted, error) {
 	// TODO: Validate the params before sending

@@ -22,12 +22,11 @@ package tcp_request_rule
 
 import (
 	"github.com/go-openapi/runtime"
-
-	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/strfmt"
 )
 
 // New creates a new tcp request rule API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -39,10 +38,25 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-/*
-CreateTCPRequestRule adds a new TCP request rule
+// ClientService is the interface for Client methods
+type ClientService interface {
+	CreateTCPRequestRule(params *CreateTCPRequestRuleParams, authInfo runtime.ClientAuthInfoWriter) (*CreateTCPRequestRuleCreated, *CreateTCPRequestRuleAccepted, error)
 
-Adds a new TCP Request Rule of the specified type in the specified parent.
+	DeleteTCPRequestRule(params *DeleteTCPRequestRuleParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteTCPRequestRuleAccepted, *DeleteTCPRequestRuleNoContent, error)
+
+	GetTCPRequestRule(params *GetTCPRequestRuleParams, authInfo runtime.ClientAuthInfoWriter) (*GetTCPRequestRuleOK, error)
+
+	GetTCPRequestRules(params *GetTCPRequestRulesParams, authInfo runtime.ClientAuthInfoWriter) (*GetTCPRequestRulesOK, error)
+
+	ReplaceTCPRequestRule(params *ReplaceTCPRequestRuleParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceTCPRequestRuleOK, *ReplaceTCPRequestRuleAccepted, error)
+
+	SetTransport(transport runtime.ClientTransport)
+}
+
+/*
+  CreateTCPRequestRule adds a new TCP request rule
+
+  Adds a new TCP Request Rule of the specified type in the specified parent.
 */
 func (a *Client) CreateTCPRequestRule(params *CreateTCPRequestRuleParams, authInfo runtime.ClientAuthInfoWriter) (*CreateTCPRequestRuleCreated, *CreateTCPRequestRuleAccepted, error) {
 	// TODO: Validate the params before sending
@@ -78,9 +92,9 @@ func (a *Client) CreateTCPRequestRule(params *CreateTCPRequestRuleParams, authIn
 }
 
 /*
-DeleteTCPRequestRule deletes a TCP request rule
+  DeleteTCPRequestRule deletes a TCP request rule
 
-Deletes a TCP Request Rule configuration by it's ID from the specified parent.
+  Deletes a TCP Request Rule configuration by it's ID from the specified parent.
 */
 func (a *Client) DeleteTCPRequestRule(params *DeleteTCPRequestRuleParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteTCPRequestRuleAccepted, *DeleteTCPRequestRuleNoContent, error) {
 	// TODO: Validate the params before sending
@@ -116,9 +130,9 @@ func (a *Client) DeleteTCPRequestRule(params *DeleteTCPRequestRuleParams, authIn
 }
 
 /*
-GetTCPRequestRule returns one TCP request rule
+  GetTCPRequestRule returns one TCP request rule
 
-Returns one TCP Request Rule configuration by it's ID in the specified parent.
+  Returns one TCP Request Rule configuration by it's ID in the specified parent.
 */
 func (a *Client) GetTCPRequestRule(params *GetTCPRequestRuleParams, authInfo runtime.ClientAuthInfoWriter) (*GetTCPRequestRuleOK, error) {
 	// TODO: Validate the params before sending
@@ -152,9 +166,9 @@ func (a *Client) GetTCPRequestRule(params *GetTCPRequestRuleParams, authInfo run
 }
 
 /*
-GetTCPRequestRules returns an array of all TCP request rules
+  GetTCPRequestRules returns an array of all TCP request rules
 
-Returns all TCP Request Rules that are configured in specified parent and parent type.
+  Returns all TCP Request Rules that are configured in specified parent and parent type.
 */
 func (a *Client) GetTCPRequestRules(params *GetTCPRequestRulesParams, authInfo runtime.ClientAuthInfoWriter) (*GetTCPRequestRulesOK, error) {
 	// TODO: Validate the params before sending
@@ -188,9 +202,9 @@ func (a *Client) GetTCPRequestRules(params *GetTCPRequestRulesParams, authInfo r
 }
 
 /*
-ReplaceTCPRequestRule replaces a TCP request rule
+  ReplaceTCPRequestRule replaces a TCP request rule
 
-Replaces a TCP Request Rule configuration by it's ID in the specified parent.
+  Replaces a TCP Request Rule configuration by it's ID in the specified parent.
 */
 func (a *Client) ReplaceTCPRequestRule(params *ReplaceTCPRequestRuleParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceTCPRequestRuleOK, *ReplaceTCPRequestRuleAccepted, error) {
 	// TODO: Validate the params before sending

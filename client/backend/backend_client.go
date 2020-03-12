@@ -22,12 +22,11 @@ package backend
 
 import (
 	"github.com/go-openapi/runtime"
-
-	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/strfmt"
 )
 
 // New creates a new backend API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -39,10 +38,25 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-/*
-CreateBackend adds a backend
+// ClientService is the interface for Client methods
+type ClientService interface {
+	CreateBackend(params *CreateBackendParams, authInfo runtime.ClientAuthInfoWriter) (*CreateBackendCreated, *CreateBackendAccepted, error)
 
-Adds a new backend to the configuration file.
+	DeleteBackend(params *DeleteBackendParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteBackendAccepted, *DeleteBackendNoContent, error)
+
+	GetBackend(params *GetBackendParams, authInfo runtime.ClientAuthInfoWriter) (*GetBackendOK, error)
+
+	GetBackends(params *GetBackendsParams, authInfo runtime.ClientAuthInfoWriter) (*GetBackendsOK, error)
+
+	ReplaceBackend(params *ReplaceBackendParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceBackendOK, *ReplaceBackendAccepted, error)
+
+	SetTransport(transport runtime.ClientTransport)
+}
+
+/*
+  CreateBackend adds a backend
+
+  Adds a new backend to the configuration file.
 */
 func (a *Client) CreateBackend(params *CreateBackendParams, authInfo runtime.ClientAuthInfoWriter) (*CreateBackendCreated, *CreateBackendAccepted, error) {
 	// TODO: Validate the params before sending
@@ -78,9 +92,9 @@ func (a *Client) CreateBackend(params *CreateBackendParams, authInfo runtime.Cli
 }
 
 /*
-DeleteBackend deletes a backend
+  DeleteBackend deletes a backend
 
-Deletes a frontend from the configuration by it's name.
+  Deletes a frontend from the configuration by it's name.
 */
 func (a *Client) DeleteBackend(params *DeleteBackendParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteBackendAccepted, *DeleteBackendNoContent, error) {
 	// TODO: Validate the params before sending
@@ -116,9 +130,9 @@ func (a *Client) DeleteBackend(params *DeleteBackendParams, authInfo runtime.Cli
 }
 
 /*
-GetBackend returns a backend
+  GetBackend returns a backend
 
-Returns one backend configuration by it's name.
+  Returns one backend configuration by it's name.
 */
 func (a *Client) GetBackend(params *GetBackendParams, authInfo runtime.ClientAuthInfoWriter) (*GetBackendOK, error) {
 	// TODO: Validate the params before sending
@@ -152,9 +166,9 @@ func (a *Client) GetBackend(params *GetBackendParams, authInfo runtime.ClientAut
 }
 
 /*
-GetBackends returns an array of backends
+  GetBackends returns an array of backends
 
-Returns an array of all configured backends.
+  Returns an array of all configured backends.
 */
 func (a *Client) GetBackends(params *GetBackendsParams, authInfo runtime.ClientAuthInfoWriter) (*GetBackendsOK, error) {
 	// TODO: Validate the params before sending
@@ -188,9 +202,9 @@ func (a *Client) GetBackends(params *GetBackendsParams, authInfo runtime.ClientA
 }
 
 /*
-ReplaceBackend replaces a backend
+  ReplaceBackend replaces a backend
 
-Replaces a backend configuration by it's name.
+  Replaces a backend configuration by it's name.
 */
 func (a *Client) ReplaceBackend(params *ReplaceBackendParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceBackendOK, *ReplaceBackendAccepted, error) {
 	// TODO: Validate the params before sending

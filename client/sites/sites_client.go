@@ -22,12 +22,11 @@ package sites
 
 import (
 	"github.com/go-openapi/runtime"
-
-	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/strfmt"
 )
 
 // New creates a new sites API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -39,10 +38,25 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-/*
-CreateSite adds a site
+// ClientService is the interface for Client methods
+type ClientService interface {
+	CreateSite(params *CreateSiteParams, authInfo runtime.ClientAuthInfoWriter) (*CreateSiteCreated, *CreateSiteAccepted, error)
 
-Adds a new site to the configuration file.
+	DeleteSite(params *DeleteSiteParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteSiteAccepted, *DeleteSiteNoContent, error)
+
+	GetSite(params *GetSiteParams, authInfo runtime.ClientAuthInfoWriter) (*GetSiteOK, error)
+
+	GetSites(params *GetSitesParams, authInfo runtime.ClientAuthInfoWriter) (*GetSitesOK, error)
+
+	ReplaceSite(params *ReplaceSiteParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceSiteOK, *ReplaceSiteAccepted, error)
+
+	SetTransport(transport runtime.ClientTransport)
+}
+
+/*
+  CreateSite adds a site
+
+  Adds a new site to the configuration file.
 */
 func (a *Client) CreateSite(params *CreateSiteParams, authInfo runtime.ClientAuthInfoWriter) (*CreateSiteCreated, *CreateSiteAccepted, error) {
 	// TODO: Validate the params before sending
@@ -78,9 +92,9 @@ func (a *Client) CreateSite(params *CreateSiteParams, authInfo runtime.ClientAut
 }
 
 /*
-DeleteSite deletes a site
+  DeleteSite deletes a site
 
-Deletes a site from the configuration by it's name.
+  Deletes a site from the configuration by it's name.
 */
 func (a *Client) DeleteSite(params *DeleteSiteParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteSiteAccepted, *DeleteSiteNoContent, error) {
 	// TODO: Validate the params before sending
@@ -116,9 +130,9 @@ func (a *Client) DeleteSite(params *DeleteSiteParams, authInfo runtime.ClientAut
 }
 
 /*
-GetSite returns a site
+  GetSite returns a site
 
-Returns one site configuration by it's name.
+  Returns one site configuration by it's name.
 */
 func (a *Client) GetSite(params *GetSiteParams, authInfo runtime.ClientAuthInfoWriter) (*GetSiteOK, error) {
 	// TODO: Validate the params before sending
@@ -152,9 +166,9 @@ func (a *Client) GetSite(params *GetSiteParams, authInfo runtime.ClientAuthInfoW
 }
 
 /*
-GetSites returns an array of sites
+  GetSites returns an array of sites
 
-Returns an array of all configured sites.
+  Returns an array of all configured sites.
 */
 func (a *Client) GetSites(params *GetSitesParams, authInfo runtime.ClientAuthInfoWriter) (*GetSitesOK, error) {
 	// TODO: Validate the params before sending
@@ -188,9 +202,9 @@ func (a *Client) GetSites(params *GetSitesParams, authInfo runtime.ClientAuthInf
 }
 
 /*
-ReplaceSite replaces a site
+  ReplaceSite replaces a site
 
-Replaces a site configuration by it's name.
+  Replaces a site configuration by it's name.
 */
 func (a *Client) ReplaceSite(params *ReplaceSiteParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceSiteOK, *ReplaceSiteAccepted, error) {
 	// TODO: Validate the params before sending

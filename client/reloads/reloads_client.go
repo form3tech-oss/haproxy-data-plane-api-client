@@ -22,12 +22,11 @@ package reloads
 
 import (
 	"github.com/go-openapi/runtime"
-
-	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/strfmt"
 )
 
 // New creates a new reloads API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -39,10 +38,19 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-/*
-GetReload returns one h a proxy reload status
+// ClientService is the interface for Client methods
+type ClientService interface {
+	GetReload(params *GetReloadParams, authInfo runtime.ClientAuthInfoWriter) (*GetReloadOK, error)
 
-Returns one HAProxy reload status.
+	GetReloads(params *GetReloadsParams, authInfo runtime.ClientAuthInfoWriter) (*GetReloadsOK, error)
+
+	SetTransport(transport runtime.ClientTransport)
+}
+
+/*
+  GetReload returns one h a proxy reload status
+
+  Returns one HAProxy reload status.
 */
 func (a *Client) GetReload(params *GetReloadParams, authInfo runtime.ClientAuthInfoWriter) (*GetReloadOK, error) {
 	// TODO: Validate the params before sending
@@ -76,9 +84,9 @@ func (a *Client) GetReload(params *GetReloadParams, authInfo runtime.ClientAuthI
 }
 
 /*
-GetReloads returns list of h a proxy reloads
+  GetReloads returns list of h a proxy reloads
 
-Returns a list of HAProxy reloads.
+  Returns a list of HAProxy reloads.
 */
 func (a *Client) GetReloads(params *GetReloadsParams, authInfo runtime.ClientAuthInfoWriter) (*GetReloadsOK, error) {
 	// TODO: Validate the params before sending

@@ -22,12 +22,11 @@ package log_target
 
 import (
 	"github.com/go-openapi/runtime"
-
-	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/strfmt"
 )
 
 // New creates a new log target API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -39,10 +38,25 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-/*
-CreateLogTarget adds a new log target
+// ClientService is the interface for Client methods
+type ClientService interface {
+	CreateLogTarget(params *CreateLogTargetParams, authInfo runtime.ClientAuthInfoWriter) (*CreateLogTargetCreated, *CreateLogTargetAccepted, error)
 
-Adds a new Log Target of the specified type in the specified parent.
+	DeleteLogTarget(params *DeleteLogTargetParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteLogTargetAccepted, *DeleteLogTargetNoContent, error)
+
+	GetLogTarget(params *GetLogTargetParams, authInfo runtime.ClientAuthInfoWriter) (*GetLogTargetOK, error)
+
+	GetLogTargets(params *GetLogTargetsParams, authInfo runtime.ClientAuthInfoWriter) (*GetLogTargetsOK, error)
+
+	ReplaceLogTarget(params *ReplaceLogTargetParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceLogTargetOK, *ReplaceLogTargetAccepted, error)
+
+	SetTransport(transport runtime.ClientTransport)
+}
+
+/*
+  CreateLogTarget adds a new log target
+
+  Adds a new Log Target of the specified type in the specified parent.
 */
 func (a *Client) CreateLogTarget(params *CreateLogTargetParams, authInfo runtime.ClientAuthInfoWriter) (*CreateLogTargetCreated, *CreateLogTargetAccepted, error) {
 	// TODO: Validate the params before sending
@@ -78,9 +92,9 @@ func (a *Client) CreateLogTarget(params *CreateLogTargetParams, authInfo runtime
 }
 
 /*
-DeleteLogTarget deletes a log target
+  DeleteLogTarget deletes a log target
 
-Deletes a Log Target configuration by it's ID from the specified parent.
+  Deletes a Log Target configuration by it's ID from the specified parent.
 */
 func (a *Client) DeleteLogTarget(params *DeleteLogTargetParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteLogTargetAccepted, *DeleteLogTargetNoContent, error) {
 	// TODO: Validate the params before sending
@@ -116,9 +130,9 @@ func (a *Client) DeleteLogTarget(params *DeleteLogTargetParams, authInfo runtime
 }
 
 /*
-GetLogTarget returns one log target
+  GetLogTarget returns one log target
 
-Returns one Log Target configuration by it's ID in the specified parent.
+  Returns one Log Target configuration by it's ID in the specified parent.
 */
 func (a *Client) GetLogTarget(params *GetLogTargetParams, authInfo runtime.ClientAuthInfoWriter) (*GetLogTargetOK, error) {
 	// TODO: Validate the params before sending
@@ -152,9 +166,9 @@ func (a *Client) GetLogTarget(params *GetLogTargetParams, authInfo runtime.Clien
 }
 
 /*
-GetLogTargets returns an array of all log targets
+  GetLogTargets returns an array of all log targets
 
-Returns all Log Targets that are configured in specified parent.
+  Returns all Log Targets that are configured in specified parent.
 */
 func (a *Client) GetLogTargets(params *GetLogTargetsParams, authInfo runtime.ClientAuthInfoWriter) (*GetLogTargetsOK, error) {
 	// TODO: Validate the params before sending
@@ -188,9 +202,9 @@ func (a *Client) GetLogTargets(params *GetLogTargetsParams, authInfo runtime.Cli
 }
 
 /*
-ReplaceLogTarget replaces a log target
+  ReplaceLogTarget replaces a log target
 
-Replaces a Log Target configuration by it's ID in the specified parent.
+  Replaces a Log Target configuration by it's ID in the specified parent.
 */
 func (a *Client) ReplaceLogTarget(params *ReplaceLogTargetParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceLogTargetOK, *ReplaceLogTargetAccepted, error) {
 	// TODO: Validate the params before sending
