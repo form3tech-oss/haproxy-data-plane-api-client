@@ -30,7 +30,7 @@ import (
 
 	strfmt "github.com/go-openapi/strfmt"
 
-	"github.com/haproxytech/models"
+	models "github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // GetInfoReader is a Reader for the GetInfo structure.
@@ -41,12 +41,14 @@ type GetInfoReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetInfoReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetInfoOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	default:
 		result := NewGetInfoDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -76,10 +78,6 @@ func (o *GetInfoOK) Error() string {
 	return fmt.Sprintf("[GET /info][%d] getInfoOK  %+v", 200, o.Payload)
 }
 
-func (o *GetInfoOK) GetPayload() *models.Info {
-	return o.Payload
-}
-
 func (o *GetInfoOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.Info)
@@ -95,7 +93,8 @@ func (o *GetInfoOK) readResponse(response runtime.ClientResponse, consumer runti
 // NewGetInfoDefault creates a GetInfoDefault with default headers values
 func NewGetInfoDefault(code int) *GetInfoDefault {
 	return &GetInfoDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -120,10 +119,6 @@ func (o *GetInfoDefault) Code() int {
 
 func (o *GetInfoDefault) Error() string {
 	return fmt.Sprintf("[GET /info][%d] getInfo default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *GetInfoDefault) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *GetInfoDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

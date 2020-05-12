@@ -98,11 +98,11 @@ type ReplaceTCPRequestRuleParams struct {
 
 	*/
 	ForceReload *bool
-	/*ID
-	  TCP Request Rule ID
+	/*Index
+	  TCP Request Rule Index
 
 	*/
-	ID int64
+	Index int64
 	/*ParentName
 	  Parent name
 
@@ -184,15 +184,15 @@ func (o *ReplaceTCPRequestRuleParams) SetForceReload(forceReload *bool) {
 	o.ForceReload = forceReload
 }
 
-// WithID adds the id to the replace TCP request rule params
-func (o *ReplaceTCPRequestRuleParams) WithID(id int64) *ReplaceTCPRequestRuleParams {
-	o.SetID(id)
+// WithIndex adds the index to the replace TCP request rule params
+func (o *ReplaceTCPRequestRuleParams) WithIndex(index int64) *ReplaceTCPRequestRuleParams {
+	o.SetIndex(index)
 	return o
 }
 
-// SetID adds the id to the replace TCP request rule params
-func (o *ReplaceTCPRequestRuleParams) SetID(id int64) {
-	o.ID = id
+// SetIndex adds the index to the replace TCP request rule params
+func (o *ReplaceTCPRequestRuleParams) SetIndex(index int64) {
+	o.Index = index
 }
 
 // WithParentName adds the parentName to the replace TCP request rule params
@@ -269,8 +269,8 @@ func (o *ReplaceTCPRequestRuleParams) WriteToRequest(r runtime.ClientRequest, re
 
 	}
 
-	// path param id
-	if err := r.SetPathParam("id", swag.FormatInt64(o.ID)); err != nil {
+	// path param index
+	if err := r.SetPathParam("index", swag.FormatInt64(o.Index)); err != nil {
 		return err
 	}
 

@@ -42,12 +42,14 @@ type GetServersReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetServersReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetServersOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	default:
 		result := NewGetServersDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -81,10 +83,6 @@ func (o *GetServersOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/servers][%d] getServersOK  %+v", 200, o.Payload)
 }
 
-func (o *GetServersOK) GetPayload() *GetServersOKBody {
-	return o.Payload
-}
-
 func (o *GetServersOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
@@ -107,7 +105,8 @@ func (o *GetServersOK) readResponse(response runtime.ClientResponse, consumer ru
 // NewGetServersDefault creates a GetServersDefault with default headers values
 func NewGetServersDefault(code int) *GetServersDefault {
 	return &GetServersDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -132,10 +131,6 @@ func (o *GetServersDefault) Code() int {
 
 func (o *GetServersDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/servers][%d] getServers default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *GetServersDefault) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *GetServersDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

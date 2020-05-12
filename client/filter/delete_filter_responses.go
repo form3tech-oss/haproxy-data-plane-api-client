@@ -41,24 +41,28 @@ type DeleteFilterReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *DeleteFilterReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 202:
 		result := NewDeleteFilterAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 204:
 		result := NewDeleteFilterNoContent()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewDeleteFilterNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewDeleteFilterDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -87,7 +91,7 @@ type DeleteFilterAccepted struct {
 }
 
 func (o *DeleteFilterAccepted) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/filters/{id}][%d] deleteFilterAccepted ", 202)
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/filters/{index}][%d] deleteFilterAccepted ", 202)
 }
 
 func (o *DeleteFilterAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -111,7 +115,7 @@ type DeleteFilterNoContent struct {
 }
 
 func (o *DeleteFilterNoContent) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/filters/{id}][%d] deleteFilterNoContent ", 204)
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/filters/{index}][%d] deleteFilterNoContent ", 204)
 }
 
 func (o *DeleteFilterNoContent) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -121,7 +125,9 @@ func (o *DeleteFilterNoContent) readResponse(response runtime.ClientResponse, co
 
 // NewDeleteFilterNotFound creates a DeleteFilterNotFound with default headers values
 func NewDeleteFilterNotFound() *DeleteFilterNotFound {
-	return &DeleteFilterNotFound{}
+	return &DeleteFilterNotFound{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*DeleteFilterNotFound handles this case with default header values.
@@ -137,11 +143,7 @@ type DeleteFilterNotFound struct {
 }
 
 func (o *DeleteFilterNotFound) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/filters/{id}][%d] deleteFilterNotFound  %+v", 404, o.Payload)
-}
-
-func (o *DeleteFilterNotFound) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/filters/{index}][%d] deleteFilterNotFound  %+v", 404, o.Payload)
 }
 
 func (o *DeleteFilterNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -166,7 +168,8 @@ func (o *DeleteFilterNotFound) readResponse(response runtime.ClientResponse, con
 // NewDeleteFilterDefault creates a DeleteFilterDefault with default headers values
 func NewDeleteFilterDefault(code int) *DeleteFilterDefault {
 	return &DeleteFilterDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -190,11 +193,7 @@ func (o *DeleteFilterDefault) Code() int {
 }
 
 func (o *DeleteFilterDefault) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/filters/{id}][%d] deleteFilter default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *DeleteFilterDefault) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/filters/{index}][%d] deleteFilter default  %+v", o._statusCode, o.Payload)
 }
 
 func (o *DeleteFilterDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

@@ -41,30 +41,35 @@ type CreateLogTargetReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *CreateLogTargetReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 201:
 		result := NewCreateLogTargetCreated()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 202:
 		result := NewCreateLogTargetAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 400:
 		result := NewCreateLogTargetBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	case 409:
 		result := NewCreateLogTargetConflict()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewCreateLogTargetDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -92,10 +97,6 @@ type CreateLogTargetCreated struct {
 
 func (o *CreateLogTargetCreated) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/log_targets][%d] createLogTargetCreated  %+v", 201, o.Payload)
-}
-
-func (o *CreateLogTargetCreated) GetPayload() *models.LogTarget {
-	return o.Payload
 }
 
 func (o *CreateLogTargetCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -131,10 +132,6 @@ func (o *CreateLogTargetAccepted) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/log_targets][%d] createLogTargetAccepted  %+v", 202, o.Payload)
 }
 
-func (o *CreateLogTargetAccepted) GetPayload() *models.LogTarget {
-	return o.Payload
-}
-
 func (o *CreateLogTargetAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Reload-ID
@@ -152,7 +149,9 @@ func (o *CreateLogTargetAccepted) readResponse(response runtime.ClientResponse, 
 
 // NewCreateLogTargetBadRequest creates a CreateLogTargetBadRequest with default headers values
 func NewCreateLogTargetBadRequest() *CreateLogTargetBadRequest {
-	return &CreateLogTargetBadRequest{}
+	return &CreateLogTargetBadRequest{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*CreateLogTargetBadRequest handles this case with default header values.
@@ -169,10 +168,6 @@ type CreateLogTargetBadRequest struct {
 
 func (o *CreateLogTargetBadRequest) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/log_targets][%d] createLogTargetBadRequest  %+v", 400, o.Payload)
-}
-
-func (o *CreateLogTargetBadRequest) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *CreateLogTargetBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -196,7 +191,9 @@ func (o *CreateLogTargetBadRequest) readResponse(response runtime.ClientResponse
 
 // NewCreateLogTargetConflict creates a CreateLogTargetConflict with default headers values
 func NewCreateLogTargetConflict() *CreateLogTargetConflict {
-	return &CreateLogTargetConflict{}
+	return &CreateLogTargetConflict{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*CreateLogTargetConflict handles this case with default header values.
@@ -213,10 +210,6 @@ type CreateLogTargetConflict struct {
 
 func (o *CreateLogTargetConflict) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/log_targets][%d] createLogTargetConflict  %+v", 409, o.Payload)
-}
-
-func (o *CreateLogTargetConflict) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *CreateLogTargetConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -241,7 +234,8 @@ func (o *CreateLogTargetConflict) readResponse(response runtime.ClientResponse, 
 // NewCreateLogTargetDefault creates a CreateLogTargetDefault with default headers values
 func NewCreateLogTargetDefault(code int) *CreateLogTargetDefault {
 	return &CreateLogTargetDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -266,10 +260,6 @@ func (o *CreateLogTargetDefault) Code() int {
 
 func (o *CreateLogTargetDefault) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/log_targets][%d] createLogTarget default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *CreateLogTargetDefault) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *CreateLogTargetDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

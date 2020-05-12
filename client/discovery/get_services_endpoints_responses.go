@@ -30,7 +30,7 @@ import (
 
 	strfmt "github.com/go-openapi/strfmt"
 
-	"github.com/haproxytech/models"
+	models "github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // GetServicesEndpointsReader is a Reader for the GetServicesEndpoints structure.
@@ -41,12 +41,14 @@ type GetServicesEndpointsReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetServicesEndpointsReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetServicesEndpointsOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	default:
 		result := NewGetServicesEndpointsDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -76,10 +78,6 @@ func (o *GetServicesEndpointsOK) Error() string {
 	return fmt.Sprintf("[GET /services][%d] getServicesEndpointsOK  %+v", 200, o.Payload)
 }
 
-func (o *GetServicesEndpointsOK) GetPayload() models.Endpoints {
-	return o.Payload
-}
-
 func (o *GetServicesEndpointsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response payload
@@ -93,7 +91,8 @@ func (o *GetServicesEndpointsOK) readResponse(response runtime.ClientResponse, c
 // NewGetServicesEndpointsDefault creates a GetServicesEndpointsDefault with default headers values
 func NewGetServicesEndpointsDefault(code int) *GetServicesEndpointsDefault {
 	return &GetServicesEndpointsDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -118,10 +117,6 @@ func (o *GetServicesEndpointsDefault) Code() int {
 
 func (o *GetServicesEndpointsDefault) Error() string {
 	return fmt.Sprintf("[GET /services][%d] getServicesEndpoints default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *GetServicesEndpointsDefault) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *GetServicesEndpointsDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

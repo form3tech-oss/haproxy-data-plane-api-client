@@ -94,11 +94,11 @@ type DeleteHTTPRequestRuleParams struct {
 
 	*/
 	ForceReload *bool
-	/*ID
-	  HTTP Request Rule ID
+	/*Index
+	  HTTP Request Rule Index
 
 	*/
-	ID int64
+	Index int64
 	/*ParentName
 	  Parent name
 
@@ -169,15 +169,15 @@ func (o *DeleteHTTPRequestRuleParams) SetForceReload(forceReload *bool) {
 	o.ForceReload = forceReload
 }
 
-// WithID adds the id to the delete HTTP request rule params
-func (o *DeleteHTTPRequestRuleParams) WithID(id int64) *DeleteHTTPRequestRuleParams {
-	o.SetID(id)
+// WithIndex adds the index to the delete HTTP request rule params
+func (o *DeleteHTTPRequestRuleParams) WithIndex(index int64) *DeleteHTTPRequestRuleParams {
+	o.SetIndex(index)
 	return o
 }
 
-// SetID adds the id to the delete HTTP request rule params
-func (o *DeleteHTTPRequestRuleParams) SetID(id int64) {
-	o.ID = id
+// SetIndex adds the index to the delete HTTP request rule params
+func (o *DeleteHTTPRequestRuleParams) SetIndex(index int64) {
+	o.Index = index
 }
 
 // WithParentName adds the parentName to the delete HTTP request rule params
@@ -248,8 +248,8 @@ func (o *DeleteHTTPRequestRuleParams) WriteToRequest(r runtime.ClientRequest, re
 
 	}
 
-	// path param id
-	if err := r.SetPathParam("id", swag.FormatInt64(o.ID)); err != nil {
+	// path param index
+	if err := r.SetPathParam("index", swag.FormatInt64(o.Index)); err != nil {
 		return err
 	}
 

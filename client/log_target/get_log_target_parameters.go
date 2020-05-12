@@ -77,11 +77,11 @@ for the get log target operation typically these are written to a http.Request
 */
 type GetLogTargetParams struct {
 
-	/*ID
-	  Log Target ID
+	/*Index
+	  Log Target Index
 
 	*/
-	ID int64
+	Index int64
 	/*ParentName
 	  Parent name
 
@@ -136,15 +136,15 @@ func (o *GetLogTargetParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
-// WithID adds the id to the get log target params
-func (o *GetLogTargetParams) WithID(id int64) *GetLogTargetParams {
-	o.SetID(id)
+// WithIndex adds the index to the get log target params
+func (o *GetLogTargetParams) WithIndex(index int64) *GetLogTargetParams {
+	o.SetIndex(index)
 	return o
 }
 
-// SetID adds the id to the get log target params
-func (o *GetLogTargetParams) SetID(id int64) {
-	o.ID = id
+// SetIndex adds the index to the get log target params
+func (o *GetLogTargetParams) SetIndex(index int64) {
+	o.Index = index
 }
 
 // WithParentName adds the parentName to the get log target params
@@ -188,8 +188,8 @@ func (o *GetLogTargetParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.
 	}
 	var res []error
 
-	// path param id
-	if err := r.SetPathParam("id", swag.FormatInt64(o.ID)); err != nil {
+	// path param index
+	if err := r.SetPathParam("index", swag.FormatInt64(o.Index)); err != nil {
 		return err
 	}
 

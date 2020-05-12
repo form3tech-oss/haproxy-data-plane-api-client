@@ -41,18 +41,21 @@ type GetServerSwitchingRuleReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetServerSwitchingRuleReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetServerSwitchingRuleOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewGetServerSwitchingRuleNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewGetServerSwitchingRuleDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -83,11 +86,7 @@ type GetServerSwitchingRuleOK struct {
 }
 
 func (o *GetServerSwitchingRuleOK) Error() string {
-	return fmt.Sprintf("[GET /services/haproxy/configuration/server_switching_rules/{id}][%d] getServerSwitchingRuleOK  %+v", 200, o.Payload)
-}
-
-func (o *GetServerSwitchingRuleOK) GetPayload() *GetServerSwitchingRuleOKBody {
-	return o.Payload
+	return fmt.Sprintf("[GET /services/haproxy/configuration/server_switching_rules/{index}][%d] getServerSwitchingRuleOK  %+v", 200, o.Payload)
 }
 
 func (o *GetServerSwitchingRuleOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -111,7 +110,9 @@ func (o *GetServerSwitchingRuleOK) readResponse(response runtime.ClientResponse,
 
 // NewGetServerSwitchingRuleNotFound creates a GetServerSwitchingRuleNotFound with default headers values
 func NewGetServerSwitchingRuleNotFound() *GetServerSwitchingRuleNotFound {
-	return &GetServerSwitchingRuleNotFound{}
+	return &GetServerSwitchingRuleNotFound{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*GetServerSwitchingRuleNotFound handles this case with default header values.
@@ -127,11 +128,7 @@ type GetServerSwitchingRuleNotFound struct {
 }
 
 func (o *GetServerSwitchingRuleNotFound) Error() string {
-	return fmt.Sprintf("[GET /services/haproxy/configuration/server_switching_rules/{id}][%d] getServerSwitchingRuleNotFound  %+v", 404, o.Payload)
-}
-
-func (o *GetServerSwitchingRuleNotFound) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[GET /services/haproxy/configuration/server_switching_rules/{index}][%d] getServerSwitchingRuleNotFound  %+v", 404, o.Payload)
 }
 
 func (o *GetServerSwitchingRuleNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -156,7 +153,8 @@ func (o *GetServerSwitchingRuleNotFound) readResponse(response runtime.ClientRes
 // NewGetServerSwitchingRuleDefault creates a GetServerSwitchingRuleDefault with default headers values
 func NewGetServerSwitchingRuleDefault(code int) *GetServerSwitchingRuleDefault {
 	return &GetServerSwitchingRuleDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -180,11 +178,7 @@ func (o *GetServerSwitchingRuleDefault) Code() int {
 }
 
 func (o *GetServerSwitchingRuleDefault) Error() string {
-	return fmt.Sprintf("[GET /services/haproxy/configuration/server_switching_rules/{id}][%d] getServerSwitchingRule default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *GetServerSwitchingRuleDefault) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[GET /services/haproxy/configuration/server_switching_rules/{index}][%d] getServerSwitchingRule default  %+v", o._statusCode, o.Payload)
 }
 
 func (o *GetServerSwitchingRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

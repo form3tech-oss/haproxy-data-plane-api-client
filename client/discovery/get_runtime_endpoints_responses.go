@@ -30,7 +30,7 @@ import (
 
 	strfmt "github.com/go-openapi/strfmt"
 
-	"github.com/haproxytech/models"
+	models "github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // GetRuntimeEndpointsReader is a Reader for the GetRuntimeEndpoints structure.
@@ -41,12 +41,14 @@ type GetRuntimeEndpointsReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetRuntimeEndpointsReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetRuntimeEndpointsOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	default:
 		result := NewGetRuntimeEndpointsDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -76,10 +78,6 @@ func (o *GetRuntimeEndpointsOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/runtime][%d] getRuntimeEndpointsOK  %+v", 200, o.Payload)
 }
 
-func (o *GetRuntimeEndpointsOK) GetPayload() models.Endpoints {
-	return o.Payload
-}
-
 func (o *GetRuntimeEndpointsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response payload
@@ -93,7 +91,8 @@ func (o *GetRuntimeEndpointsOK) readResponse(response runtime.ClientResponse, co
 // NewGetRuntimeEndpointsDefault creates a GetRuntimeEndpointsDefault with default headers values
 func NewGetRuntimeEndpointsDefault(code int) *GetRuntimeEndpointsDefault {
 	return &GetRuntimeEndpointsDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -118,10 +117,6 @@ func (o *GetRuntimeEndpointsDefault) Code() int {
 
 func (o *GetRuntimeEndpointsDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/runtime][%d] getRuntimeEndpoints default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *GetRuntimeEndpointsDefault) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *GetRuntimeEndpointsDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

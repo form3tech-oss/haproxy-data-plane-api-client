@@ -41,18 +41,21 @@ type GetACLReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetACLReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetACLOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewGetACLNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewGetACLDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -83,11 +86,7 @@ type GetACLOK struct {
 }
 
 func (o *GetACLOK) Error() string {
-	return fmt.Sprintf("[GET /services/haproxy/configuration/acls/{id}][%d] getAclOK  %+v", 200, o.Payload)
-}
-
-func (o *GetACLOK) GetPayload() *GetACLOKBody {
-	return o.Payload
+	return fmt.Sprintf("[GET /services/haproxy/configuration/acls/{index}][%d] getAclOK  %+v", 200, o.Payload)
 }
 
 func (o *GetACLOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -111,7 +110,9 @@ func (o *GetACLOK) readResponse(response runtime.ClientResponse, consumer runtim
 
 // NewGetACLNotFound creates a GetACLNotFound with default headers values
 func NewGetACLNotFound() *GetACLNotFound {
-	return &GetACLNotFound{}
+	return &GetACLNotFound{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*GetACLNotFound handles this case with default header values.
@@ -127,11 +128,7 @@ type GetACLNotFound struct {
 }
 
 func (o *GetACLNotFound) Error() string {
-	return fmt.Sprintf("[GET /services/haproxy/configuration/acls/{id}][%d] getAclNotFound  %+v", 404, o.Payload)
-}
-
-func (o *GetACLNotFound) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[GET /services/haproxy/configuration/acls/{index}][%d] getAclNotFound  %+v", 404, o.Payload)
 }
 
 func (o *GetACLNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -156,7 +153,8 @@ func (o *GetACLNotFound) readResponse(response runtime.ClientResponse, consumer 
 // NewGetACLDefault creates a GetACLDefault with default headers values
 func NewGetACLDefault(code int) *GetACLDefault {
 	return &GetACLDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -180,11 +178,7 @@ func (o *GetACLDefault) Code() int {
 }
 
 func (o *GetACLDefault) Error() string {
-	return fmt.Sprintf("[GET /services/haproxy/configuration/acls/{id}][%d] getAcl default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *GetACLDefault) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[GET /services/haproxy/configuration/acls/{index}][%d] getAcl default  %+v", o._statusCode, o.Payload)
 }
 
 func (o *GetACLDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

@@ -41,24 +41,28 @@ type DeleteTCPResponseRuleReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *DeleteTCPResponseRuleReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 202:
 		result := NewDeleteTCPResponseRuleAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 204:
 		result := NewDeleteTCPResponseRuleNoContent()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewDeleteTCPResponseRuleNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewDeleteTCPResponseRuleDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -87,7 +91,7 @@ type DeleteTCPResponseRuleAccepted struct {
 }
 
 func (o *DeleteTCPResponseRuleAccepted) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/tcp_response_rules/{id}][%d] deleteTcpResponseRuleAccepted ", 202)
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/tcp_response_rules/{index}][%d] deleteTcpResponseRuleAccepted ", 202)
 }
 
 func (o *DeleteTCPResponseRuleAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -111,7 +115,7 @@ type DeleteTCPResponseRuleNoContent struct {
 }
 
 func (o *DeleteTCPResponseRuleNoContent) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/tcp_response_rules/{id}][%d] deleteTcpResponseRuleNoContent ", 204)
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/tcp_response_rules/{index}][%d] deleteTcpResponseRuleNoContent ", 204)
 }
 
 func (o *DeleteTCPResponseRuleNoContent) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -121,7 +125,9 @@ func (o *DeleteTCPResponseRuleNoContent) readResponse(response runtime.ClientRes
 
 // NewDeleteTCPResponseRuleNotFound creates a DeleteTCPResponseRuleNotFound with default headers values
 func NewDeleteTCPResponseRuleNotFound() *DeleteTCPResponseRuleNotFound {
-	return &DeleteTCPResponseRuleNotFound{}
+	return &DeleteTCPResponseRuleNotFound{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*DeleteTCPResponseRuleNotFound handles this case with default header values.
@@ -137,11 +143,7 @@ type DeleteTCPResponseRuleNotFound struct {
 }
 
 func (o *DeleteTCPResponseRuleNotFound) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/tcp_response_rules/{id}][%d] deleteTcpResponseRuleNotFound  %+v", 404, o.Payload)
-}
-
-func (o *DeleteTCPResponseRuleNotFound) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/tcp_response_rules/{index}][%d] deleteTcpResponseRuleNotFound  %+v", 404, o.Payload)
 }
 
 func (o *DeleteTCPResponseRuleNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -166,7 +168,8 @@ func (o *DeleteTCPResponseRuleNotFound) readResponse(response runtime.ClientResp
 // NewDeleteTCPResponseRuleDefault creates a DeleteTCPResponseRuleDefault with default headers values
 func NewDeleteTCPResponseRuleDefault(code int) *DeleteTCPResponseRuleDefault {
 	return &DeleteTCPResponseRuleDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -190,11 +193,7 @@ func (o *DeleteTCPResponseRuleDefault) Code() int {
 }
 
 func (o *DeleteTCPResponseRuleDefault) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/tcp_response_rules/{id}][%d] deleteTCPResponseRule default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *DeleteTCPResponseRuleDefault) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/tcp_response_rules/{index}][%d] deleteTCPResponseRule default  %+v", o._statusCode, o.Payload)
 }
 
 func (o *DeleteTCPResponseRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

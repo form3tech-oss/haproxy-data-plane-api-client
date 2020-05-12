@@ -41,18 +41,21 @@ type GetServerReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetServerReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetServerOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewGetServerNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewGetServerDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -86,10 +89,6 @@ func (o *GetServerOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/servers/{name}][%d] getServerOK  %+v", 200, o.Payload)
 }
 
-func (o *GetServerOK) GetPayload() *GetServerOKBody {
-	return o.Payload
-}
-
 func (o *GetServerOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
@@ -111,7 +110,9 @@ func (o *GetServerOK) readResponse(response runtime.ClientResponse, consumer run
 
 // NewGetServerNotFound creates a GetServerNotFound with default headers values
 func NewGetServerNotFound() *GetServerNotFound {
-	return &GetServerNotFound{}
+	return &GetServerNotFound{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*GetServerNotFound handles this case with default header values.
@@ -128,10 +129,6 @@ type GetServerNotFound struct {
 
 func (o *GetServerNotFound) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/servers/{name}][%d] getServerNotFound  %+v", 404, o.Payload)
-}
-
-func (o *GetServerNotFound) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *GetServerNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -156,7 +153,8 @@ func (o *GetServerNotFound) readResponse(response runtime.ClientResponse, consum
 // NewGetServerDefault creates a GetServerDefault with default headers values
 func NewGetServerDefault(code int) *GetServerDefault {
 	return &GetServerDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -181,10 +179,6 @@ func (o *GetServerDefault) Code() int {
 
 func (o *GetServerDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/servers/{name}][%d] getServer default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *GetServerDefault) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *GetServerDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

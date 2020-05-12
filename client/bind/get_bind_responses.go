@@ -41,18 +41,21 @@ type GetBindReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetBindReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetBindOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewGetBindNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewGetBindDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -86,10 +89,6 @@ func (o *GetBindOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/binds/{name}][%d] getBindOK  %+v", 200, o.Payload)
 }
 
-func (o *GetBindOK) GetPayload() *GetBindOKBody {
-	return o.Payload
-}
-
 func (o *GetBindOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
@@ -111,7 +110,9 @@ func (o *GetBindOK) readResponse(response runtime.ClientResponse, consumer runti
 
 // NewGetBindNotFound creates a GetBindNotFound with default headers values
 func NewGetBindNotFound() *GetBindNotFound {
-	return &GetBindNotFound{}
+	return &GetBindNotFound{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*GetBindNotFound handles this case with default header values.
@@ -128,10 +129,6 @@ type GetBindNotFound struct {
 
 func (o *GetBindNotFound) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/binds/{name}][%d] getBindNotFound  %+v", 404, o.Payload)
-}
-
-func (o *GetBindNotFound) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *GetBindNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -156,7 +153,8 @@ func (o *GetBindNotFound) readResponse(response runtime.ClientResponse, consumer
 // NewGetBindDefault creates a GetBindDefault with default headers values
 func NewGetBindDefault(code int) *GetBindDefault {
 	return &GetBindDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -181,10 +179,6 @@ func (o *GetBindDefault) Code() int {
 
 func (o *GetBindDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/binds/{name}][%d] getBind default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *GetBindDefault) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *GetBindDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

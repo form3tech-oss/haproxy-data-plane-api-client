@@ -77,11 +77,11 @@ for the get filter operation typically these are written to a http.Request
 */
 type GetFilterParams struct {
 
-	/*ID
-	  Filter ID
+	/*Index
+	  Filter Index
 
 	*/
-	ID int64
+	Index int64
 	/*ParentName
 	  Parent name
 
@@ -136,15 +136,15 @@ func (o *GetFilterParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
-// WithID adds the id to the get filter params
-func (o *GetFilterParams) WithID(id int64) *GetFilterParams {
-	o.SetID(id)
+// WithIndex adds the index to the get filter params
+func (o *GetFilterParams) WithIndex(index int64) *GetFilterParams {
+	o.SetIndex(index)
 	return o
 }
 
-// SetID adds the id to the get filter params
-func (o *GetFilterParams) SetID(id int64) {
-	o.ID = id
+// SetIndex adds the index to the get filter params
+func (o *GetFilterParams) SetIndex(index int64) {
+	o.Index = index
 }
 
 // WithParentName adds the parentName to the get filter params
@@ -188,8 +188,8 @@ func (o *GetFilterParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Reg
 	}
 	var res []error
 
-	// path param id
-	if err := r.SetPathParam("id", swag.FormatInt64(o.ID)); err != nil {
+	// path param index
+	if err := r.SetPathParam("index", swag.FormatInt64(o.Index)); err != nil {
 		return err
 	}
 

@@ -41,30 +41,35 @@ type CreateFilterReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *CreateFilterReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 201:
 		result := NewCreateFilterCreated()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 202:
 		result := NewCreateFilterAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 400:
 		result := NewCreateFilterBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	case 409:
 		result := NewCreateFilterConflict()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewCreateFilterDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -92,10 +97,6 @@ type CreateFilterCreated struct {
 
 func (o *CreateFilterCreated) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/filters][%d] createFilterCreated  %+v", 201, o.Payload)
-}
-
-func (o *CreateFilterCreated) GetPayload() *models.Filter {
-	return o.Payload
 }
 
 func (o *CreateFilterCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -131,10 +132,6 @@ func (o *CreateFilterAccepted) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/filters][%d] createFilterAccepted  %+v", 202, o.Payload)
 }
 
-func (o *CreateFilterAccepted) GetPayload() *models.Filter {
-	return o.Payload
-}
-
 func (o *CreateFilterAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Reload-ID
@@ -152,7 +149,9 @@ func (o *CreateFilterAccepted) readResponse(response runtime.ClientResponse, con
 
 // NewCreateFilterBadRequest creates a CreateFilterBadRequest with default headers values
 func NewCreateFilterBadRequest() *CreateFilterBadRequest {
-	return &CreateFilterBadRequest{}
+	return &CreateFilterBadRequest{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*CreateFilterBadRequest handles this case with default header values.
@@ -169,10 +168,6 @@ type CreateFilterBadRequest struct {
 
 func (o *CreateFilterBadRequest) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/filters][%d] createFilterBadRequest  %+v", 400, o.Payload)
-}
-
-func (o *CreateFilterBadRequest) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *CreateFilterBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -196,7 +191,9 @@ func (o *CreateFilterBadRequest) readResponse(response runtime.ClientResponse, c
 
 // NewCreateFilterConflict creates a CreateFilterConflict with default headers values
 func NewCreateFilterConflict() *CreateFilterConflict {
-	return &CreateFilterConflict{}
+	return &CreateFilterConflict{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*CreateFilterConflict handles this case with default header values.
@@ -213,10 +210,6 @@ type CreateFilterConflict struct {
 
 func (o *CreateFilterConflict) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/filters][%d] createFilterConflict  %+v", 409, o.Payload)
-}
-
-func (o *CreateFilterConflict) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *CreateFilterConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -241,7 +234,8 @@ func (o *CreateFilterConflict) readResponse(response runtime.ClientResponse, con
 // NewCreateFilterDefault creates a CreateFilterDefault with default headers values
 func NewCreateFilterDefault(code int) *CreateFilterDefault {
 	return &CreateFilterDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -266,10 +260,6 @@ func (o *CreateFilterDefault) Code() int {
 
 func (o *CreateFilterDefault) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/filters][%d] createFilter default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *CreateFilterDefault) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *CreateFilterDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

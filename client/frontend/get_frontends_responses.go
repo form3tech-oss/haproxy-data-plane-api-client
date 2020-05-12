@@ -42,12 +42,14 @@ type GetFrontendsReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetFrontendsReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetFrontendsOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	default:
 		result := NewGetFrontendsDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -81,10 +83,6 @@ func (o *GetFrontendsOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/frontends][%d] getFrontendsOK  %+v", 200, o.Payload)
 }
 
-func (o *GetFrontendsOK) GetPayload() *GetFrontendsOKBody {
-	return o.Payload
-}
-
 func (o *GetFrontendsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
@@ -107,7 +105,8 @@ func (o *GetFrontendsOK) readResponse(response runtime.ClientResponse, consumer 
 // NewGetFrontendsDefault creates a GetFrontendsDefault with default headers values
 func NewGetFrontendsDefault(code int) *GetFrontendsDefault {
 	return &GetFrontendsDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -132,10 +131,6 @@ func (o *GetFrontendsDefault) Code() int {
 
 func (o *GetFrontendsDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/frontends][%d] getFrontends default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *GetFrontendsDefault) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *GetFrontendsDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

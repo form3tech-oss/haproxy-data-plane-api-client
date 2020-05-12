@@ -41,24 +41,28 @@ type DeleteLogTargetReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *DeleteLogTargetReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 202:
 		result := NewDeleteLogTargetAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 204:
 		result := NewDeleteLogTargetNoContent()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewDeleteLogTargetNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewDeleteLogTargetDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -87,7 +91,7 @@ type DeleteLogTargetAccepted struct {
 }
 
 func (o *DeleteLogTargetAccepted) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/log_targets/{id}][%d] deleteLogTargetAccepted ", 202)
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/log_targets/{index}][%d] deleteLogTargetAccepted ", 202)
 }
 
 func (o *DeleteLogTargetAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -111,7 +115,7 @@ type DeleteLogTargetNoContent struct {
 }
 
 func (o *DeleteLogTargetNoContent) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/log_targets/{id}][%d] deleteLogTargetNoContent ", 204)
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/log_targets/{index}][%d] deleteLogTargetNoContent ", 204)
 }
 
 func (o *DeleteLogTargetNoContent) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -121,7 +125,9 @@ func (o *DeleteLogTargetNoContent) readResponse(response runtime.ClientResponse,
 
 // NewDeleteLogTargetNotFound creates a DeleteLogTargetNotFound with default headers values
 func NewDeleteLogTargetNotFound() *DeleteLogTargetNotFound {
-	return &DeleteLogTargetNotFound{}
+	return &DeleteLogTargetNotFound{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*DeleteLogTargetNotFound handles this case with default header values.
@@ -137,11 +143,7 @@ type DeleteLogTargetNotFound struct {
 }
 
 func (o *DeleteLogTargetNotFound) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/log_targets/{id}][%d] deleteLogTargetNotFound  %+v", 404, o.Payload)
-}
-
-func (o *DeleteLogTargetNotFound) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/log_targets/{index}][%d] deleteLogTargetNotFound  %+v", 404, o.Payload)
 }
 
 func (o *DeleteLogTargetNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -166,7 +168,8 @@ func (o *DeleteLogTargetNotFound) readResponse(response runtime.ClientResponse, 
 // NewDeleteLogTargetDefault creates a DeleteLogTargetDefault with default headers values
 func NewDeleteLogTargetDefault(code int) *DeleteLogTargetDefault {
 	return &DeleteLogTargetDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -190,11 +193,7 @@ func (o *DeleteLogTargetDefault) Code() int {
 }
 
 func (o *DeleteLogTargetDefault) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/log_targets/{id}][%d] deleteLogTarget default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *DeleteLogTargetDefault) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/log_targets/{index}][%d] deleteLogTarget default  %+v", o._statusCode, o.Payload)
 }
 
 func (o *DeleteLogTargetDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

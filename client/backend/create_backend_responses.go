@@ -41,30 +41,35 @@ type CreateBackendReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *CreateBackendReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 201:
 		result := NewCreateBackendCreated()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 202:
 		result := NewCreateBackendAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 400:
 		result := NewCreateBackendBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	case 409:
 		result := NewCreateBackendConflict()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewCreateBackendDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -92,10 +97,6 @@ type CreateBackendCreated struct {
 
 func (o *CreateBackendCreated) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/backends][%d] createBackendCreated  %+v", 201, o.Payload)
-}
-
-func (o *CreateBackendCreated) GetPayload() *models.Backend {
-	return o.Payload
 }
 
 func (o *CreateBackendCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -131,10 +132,6 @@ func (o *CreateBackendAccepted) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/backends][%d] createBackendAccepted  %+v", 202, o.Payload)
 }
 
-func (o *CreateBackendAccepted) GetPayload() *models.Backend {
-	return o.Payload
-}
-
 func (o *CreateBackendAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Reload-ID
@@ -152,7 +149,9 @@ func (o *CreateBackendAccepted) readResponse(response runtime.ClientResponse, co
 
 // NewCreateBackendBadRequest creates a CreateBackendBadRequest with default headers values
 func NewCreateBackendBadRequest() *CreateBackendBadRequest {
-	return &CreateBackendBadRequest{}
+	return &CreateBackendBadRequest{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*CreateBackendBadRequest handles this case with default header values.
@@ -169,10 +168,6 @@ type CreateBackendBadRequest struct {
 
 func (o *CreateBackendBadRequest) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/backends][%d] createBackendBadRequest  %+v", 400, o.Payload)
-}
-
-func (o *CreateBackendBadRequest) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *CreateBackendBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -196,7 +191,9 @@ func (o *CreateBackendBadRequest) readResponse(response runtime.ClientResponse, 
 
 // NewCreateBackendConflict creates a CreateBackendConflict with default headers values
 func NewCreateBackendConflict() *CreateBackendConflict {
-	return &CreateBackendConflict{}
+	return &CreateBackendConflict{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*CreateBackendConflict handles this case with default header values.
@@ -213,10 +210,6 @@ type CreateBackendConflict struct {
 
 func (o *CreateBackendConflict) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/backends][%d] createBackendConflict  %+v", 409, o.Payload)
-}
-
-func (o *CreateBackendConflict) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *CreateBackendConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -241,7 +234,8 @@ func (o *CreateBackendConflict) readResponse(response runtime.ClientResponse, co
 // NewCreateBackendDefault creates a CreateBackendDefault with default headers values
 func NewCreateBackendDefault(code int) *CreateBackendDefault {
 	return &CreateBackendDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -266,10 +260,6 @@ func (o *CreateBackendDefault) Code() int {
 
 func (o *CreateBackendDefault) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/backends][%d] createBackend default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *CreateBackendDefault) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *CreateBackendDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

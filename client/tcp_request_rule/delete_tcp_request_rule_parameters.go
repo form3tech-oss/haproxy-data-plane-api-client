@@ -94,11 +94,11 @@ type DeleteTCPRequestRuleParams struct {
 
 	*/
 	ForceReload *bool
-	/*ID
-	  TCP Request Rule ID
+	/*Index
+	  TCP Request Rule Index
 
 	*/
-	ID int64
+	Index int64
 	/*ParentName
 	  Parent name
 
@@ -169,15 +169,15 @@ func (o *DeleteTCPRequestRuleParams) SetForceReload(forceReload *bool) {
 	o.ForceReload = forceReload
 }
 
-// WithID adds the id to the delete TCP request rule params
-func (o *DeleteTCPRequestRuleParams) WithID(id int64) *DeleteTCPRequestRuleParams {
-	o.SetID(id)
+// WithIndex adds the index to the delete TCP request rule params
+func (o *DeleteTCPRequestRuleParams) WithIndex(index int64) *DeleteTCPRequestRuleParams {
+	o.SetIndex(index)
 	return o
 }
 
-// SetID adds the id to the delete TCP request rule params
-func (o *DeleteTCPRequestRuleParams) SetID(id int64) {
-	o.ID = id
+// SetIndex adds the index to the delete TCP request rule params
+func (o *DeleteTCPRequestRuleParams) SetIndex(index int64) {
+	o.Index = index
 }
 
 // WithParentName adds the parentName to the delete TCP request rule params
@@ -248,8 +248,8 @@ func (o *DeleteTCPRequestRuleParams) WriteToRequest(r runtime.ClientRequest, reg
 
 	}
 
-	// path param id
-	if err := r.SetPathParam("id", swag.FormatInt64(o.ID)); err != nil {
+	// path param index
+	if err := r.SetPathParam("index", swag.FormatInt64(o.Index)); err != nil {
 		return err
 	}
 

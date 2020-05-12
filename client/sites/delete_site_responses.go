@@ -30,7 +30,7 @@ import (
 
 	strfmt "github.com/go-openapi/strfmt"
 
-	"github.com/haproxytech/models"
+	models "github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // DeleteSiteReader is a Reader for the DeleteSite structure.
@@ -41,24 +41,28 @@ type DeleteSiteReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *DeleteSiteReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 202:
 		result := NewDeleteSiteAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 204:
 		result := NewDeleteSiteNoContent()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewDeleteSiteNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewDeleteSiteDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -121,7 +125,9 @@ func (o *DeleteSiteNoContent) readResponse(response runtime.ClientResponse, cons
 
 // NewDeleteSiteNotFound creates a DeleteSiteNotFound with default headers values
 func NewDeleteSiteNotFound() *DeleteSiteNotFound {
-	return &DeleteSiteNotFound{}
+	return &DeleteSiteNotFound{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*DeleteSiteNotFound handles this case with default header values.
@@ -138,10 +144,6 @@ type DeleteSiteNotFound struct {
 
 func (o *DeleteSiteNotFound) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/sites/{name}][%d] deleteSiteNotFound  %+v", 404, o.Payload)
-}
-
-func (o *DeleteSiteNotFound) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *DeleteSiteNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -166,7 +168,8 @@ func (o *DeleteSiteNotFound) readResponse(response runtime.ClientResponse, consu
 // NewDeleteSiteDefault creates a DeleteSiteDefault with default headers values
 func NewDeleteSiteDefault(code int) *DeleteSiteDefault {
 	return &DeleteSiteDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -191,10 +194,6 @@ func (o *DeleteSiteDefault) Code() int {
 
 func (o *DeleteSiteDefault) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/sites/{name}][%d] deleteSite default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *DeleteSiteDefault) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *DeleteSiteDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

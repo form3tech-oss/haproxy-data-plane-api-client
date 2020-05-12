@@ -41,24 +41,28 @@ type DeleteACLReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *DeleteACLReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 202:
 		result := NewDeleteACLAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 204:
 		result := NewDeleteACLNoContent()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewDeleteACLNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewDeleteACLDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -87,7 +91,7 @@ type DeleteACLAccepted struct {
 }
 
 func (o *DeleteACLAccepted) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/acls/{id}][%d] deleteAclAccepted ", 202)
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/acls/{index}][%d] deleteAclAccepted ", 202)
 }
 
 func (o *DeleteACLAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -111,7 +115,7 @@ type DeleteACLNoContent struct {
 }
 
 func (o *DeleteACLNoContent) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/acls/{id}][%d] deleteAclNoContent ", 204)
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/acls/{index}][%d] deleteAclNoContent ", 204)
 }
 
 func (o *DeleteACLNoContent) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -121,7 +125,9 @@ func (o *DeleteACLNoContent) readResponse(response runtime.ClientResponse, consu
 
 // NewDeleteACLNotFound creates a DeleteACLNotFound with default headers values
 func NewDeleteACLNotFound() *DeleteACLNotFound {
-	return &DeleteACLNotFound{}
+	return &DeleteACLNotFound{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*DeleteACLNotFound handles this case with default header values.
@@ -137,11 +143,7 @@ type DeleteACLNotFound struct {
 }
 
 func (o *DeleteACLNotFound) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/acls/{id}][%d] deleteAclNotFound  %+v", 404, o.Payload)
-}
-
-func (o *DeleteACLNotFound) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/acls/{index}][%d] deleteAclNotFound  %+v", 404, o.Payload)
 }
 
 func (o *DeleteACLNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -166,7 +168,8 @@ func (o *DeleteACLNotFound) readResponse(response runtime.ClientResponse, consum
 // NewDeleteACLDefault creates a DeleteACLDefault with default headers values
 func NewDeleteACLDefault(code int) *DeleteACLDefault {
 	return &DeleteACLDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -190,11 +193,7 @@ func (o *DeleteACLDefault) Code() int {
 }
 
 func (o *DeleteACLDefault) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/acls/{id}][%d] deleteAcl default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *DeleteACLDefault) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/acls/{index}][%d] deleteAcl default  %+v", o._statusCode, o.Payload)
 }
 
 func (o *DeleteACLDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

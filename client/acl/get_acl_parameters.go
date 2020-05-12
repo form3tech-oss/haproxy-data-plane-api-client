@@ -77,11 +77,11 @@ for the get Acl operation typically these are written to a http.Request
 */
 type GetACLParams struct {
 
-	/*ID
-	  ACL line ID
+	/*Index
+	  ACL line Index
 
 	*/
-	ID int64
+	Index int64
 	/*ParentName
 	  Parent name
 
@@ -136,15 +136,15 @@ func (o *GetACLParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
-// WithID adds the id to the get Acl params
-func (o *GetACLParams) WithID(id int64) *GetACLParams {
-	o.SetID(id)
+// WithIndex adds the index to the get Acl params
+func (o *GetACLParams) WithIndex(index int64) *GetACLParams {
+	o.SetIndex(index)
 	return o
 }
 
-// SetID adds the id to the get Acl params
-func (o *GetACLParams) SetID(id int64) {
-	o.ID = id
+// SetIndex adds the index to the get Acl params
+func (o *GetACLParams) SetIndex(index int64) {
+	o.Index = index
 }
 
 // WithParentName adds the parentName to the get Acl params
@@ -188,8 +188,8 @@ func (o *GetACLParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Regist
 	}
 	var res []error
 
-	// path param id
-	if err := r.SetPathParam("id", swag.FormatInt64(o.ID)); err != nil {
+	// path param index
+	if err := r.SetPathParam("index", swag.FormatInt64(o.Index)); err != nil {
 		return err
 	}
 

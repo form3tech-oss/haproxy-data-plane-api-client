@@ -41,24 +41,28 @@ type ReplaceRuntimeServerReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *ReplaceRuntimeServerReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewReplaceRuntimeServerOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 400:
 		result := NewReplaceRuntimeServerBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	case 404:
 		result := NewReplaceRuntimeServerNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewReplaceRuntimeServerDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -88,10 +92,6 @@ func (o *ReplaceRuntimeServerOK) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/runtime/servers/{name}][%d] replaceRuntimeServerOK  %+v", 200, o.Payload)
 }
 
-func (o *ReplaceRuntimeServerOK) GetPayload() *models.RuntimeServer {
-	return o.Payload
-}
-
 func (o *ReplaceRuntimeServerOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.RuntimeServer)
@@ -106,7 +106,9 @@ func (o *ReplaceRuntimeServerOK) readResponse(response runtime.ClientResponse, c
 
 // NewReplaceRuntimeServerBadRequest creates a ReplaceRuntimeServerBadRequest with default headers values
 func NewReplaceRuntimeServerBadRequest() *ReplaceRuntimeServerBadRequest {
-	return &ReplaceRuntimeServerBadRequest{}
+	return &ReplaceRuntimeServerBadRequest{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*ReplaceRuntimeServerBadRequest handles this case with default header values.
@@ -123,10 +125,6 @@ type ReplaceRuntimeServerBadRequest struct {
 
 func (o *ReplaceRuntimeServerBadRequest) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/runtime/servers/{name}][%d] replaceRuntimeServerBadRequest  %+v", 400, o.Payload)
-}
-
-func (o *ReplaceRuntimeServerBadRequest) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *ReplaceRuntimeServerBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -150,7 +148,9 @@ func (o *ReplaceRuntimeServerBadRequest) readResponse(response runtime.ClientRes
 
 // NewReplaceRuntimeServerNotFound creates a ReplaceRuntimeServerNotFound with default headers values
 func NewReplaceRuntimeServerNotFound() *ReplaceRuntimeServerNotFound {
-	return &ReplaceRuntimeServerNotFound{}
+	return &ReplaceRuntimeServerNotFound{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*ReplaceRuntimeServerNotFound handles this case with default header values.
@@ -167,10 +167,6 @@ type ReplaceRuntimeServerNotFound struct {
 
 func (o *ReplaceRuntimeServerNotFound) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/runtime/servers/{name}][%d] replaceRuntimeServerNotFound  %+v", 404, o.Payload)
-}
-
-func (o *ReplaceRuntimeServerNotFound) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *ReplaceRuntimeServerNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -195,7 +191,8 @@ func (o *ReplaceRuntimeServerNotFound) readResponse(response runtime.ClientRespo
 // NewReplaceRuntimeServerDefault creates a ReplaceRuntimeServerDefault with default headers values
 func NewReplaceRuntimeServerDefault(code int) *ReplaceRuntimeServerDefault {
 	return &ReplaceRuntimeServerDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -220,10 +217,6 @@ func (o *ReplaceRuntimeServerDefault) Code() int {
 
 func (o *ReplaceRuntimeServerDefault) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/runtime/servers/{name}][%d] replaceRuntimeServer default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *ReplaceRuntimeServerDefault) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *ReplaceRuntimeServerDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

@@ -31,7 +31,7 @@ import (
 
 	strfmt "github.com/go-openapi/strfmt"
 
-	"github.com/haproxytech/models"
+	models "github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // GetSitesReader is a Reader for the GetSites structure.
@@ -42,12 +42,14 @@ type GetSitesReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetSitesReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetSitesOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	default:
 		result := NewGetSitesDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -81,10 +83,6 @@ func (o *GetSitesOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/sites][%d] getSitesOK  %+v", 200, o.Payload)
 }
 
-func (o *GetSitesOK) GetPayload() *GetSitesOKBody {
-	return o.Payload
-}
-
 func (o *GetSitesOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
@@ -107,7 +105,8 @@ func (o *GetSitesOK) readResponse(response runtime.ClientResponse, consumer runt
 // NewGetSitesDefault creates a GetSitesDefault with default headers values
 func NewGetSitesDefault(code int) *GetSitesDefault {
 	return &GetSitesDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -132,10 +131,6 @@ func (o *GetSitesDefault) Code() int {
 
 func (o *GetSitesDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/sites][%d] getSites default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *GetSitesDefault) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *GetSitesDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

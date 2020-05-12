@@ -41,30 +41,35 @@ type ReplaceBindReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *ReplaceBindReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewReplaceBindOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 202:
 		result := NewReplaceBindAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 400:
 		result := NewReplaceBindBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	case 404:
 		result := NewReplaceBindNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewReplaceBindDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -92,10 +97,6 @@ type ReplaceBindOK struct {
 
 func (o *ReplaceBindOK) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/binds/{name}][%d] replaceBindOK  %+v", 200, o.Payload)
-}
-
-func (o *ReplaceBindOK) GetPayload() *models.Bind {
-	return o.Payload
 }
 
 func (o *ReplaceBindOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -131,10 +132,6 @@ func (o *ReplaceBindAccepted) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/binds/{name}][%d] replaceBindAccepted  %+v", 202, o.Payload)
 }
 
-func (o *ReplaceBindAccepted) GetPayload() *models.Bind {
-	return o.Payload
-}
-
 func (o *ReplaceBindAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Reload-ID
@@ -152,7 +149,9 @@ func (o *ReplaceBindAccepted) readResponse(response runtime.ClientResponse, cons
 
 // NewReplaceBindBadRequest creates a ReplaceBindBadRequest with default headers values
 func NewReplaceBindBadRequest() *ReplaceBindBadRequest {
-	return &ReplaceBindBadRequest{}
+	return &ReplaceBindBadRequest{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*ReplaceBindBadRequest handles this case with default header values.
@@ -169,10 +168,6 @@ type ReplaceBindBadRequest struct {
 
 func (o *ReplaceBindBadRequest) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/binds/{name}][%d] replaceBindBadRequest  %+v", 400, o.Payload)
-}
-
-func (o *ReplaceBindBadRequest) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *ReplaceBindBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -196,7 +191,9 @@ func (o *ReplaceBindBadRequest) readResponse(response runtime.ClientResponse, co
 
 // NewReplaceBindNotFound creates a ReplaceBindNotFound with default headers values
 func NewReplaceBindNotFound() *ReplaceBindNotFound {
-	return &ReplaceBindNotFound{}
+	return &ReplaceBindNotFound{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*ReplaceBindNotFound handles this case with default header values.
@@ -213,10 +210,6 @@ type ReplaceBindNotFound struct {
 
 func (o *ReplaceBindNotFound) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/binds/{name}][%d] replaceBindNotFound  %+v", 404, o.Payload)
-}
-
-func (o *ReplaceBindNotFound) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *ReplaceBindNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -241,7 +234,8 @@ func (o *ReplaceBindNotFound) readResponse(response runtime.ClientResponse, cons
 // NewReplaceBindDefault creates a ReplaceBindDefault with default headers values
 func NewReplaceBindDefault(code int) *ReplaceBindDefault {
 	return &ReplaceBindDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -266,10 +260,6 @@ func (o *ReplaceBindDefault) Code() int {
 
 func (o *ReplaceBindDefault) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/binds/{name}][%d] replaceBind default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *ReplaceBindDefault) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *ReplaceBindDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

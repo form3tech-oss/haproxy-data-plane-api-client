@@ -41,30 +41,35 @@ type ReplaceHTTPRequestRuleReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *ReplaceHTTPRequestRuleReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewReplaceHTTPRequestRuleOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 202:
 		result := NewReplaceHTTPRequestRuleAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 400:
 		result := NewReplaceHTTPRequestRuleBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	case 404:
 		result := NewReplaceHTTPRequestRuleNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewReplaceHTTPRequestRuleDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -91,11 +96,7 @@ type ReplaceHTTPRequestRuleOK struct {
 }
 
 func (o *ReplaceHTTPRequestRuleOK) Error() string {
-	return fmt.Sprintf("[PUT /services/haproxy/configuration/http_request_rules/{id}][%d] replaceHttpRequestRuleOK  %+v", 200, o.Payload)
-}
-
-func (o *ReplaceHTTPRequestRuleOK) GetPayload() *models.HTTPRequestRule {
-	return o.Payload
+	return fmt.Sprintf("[PUT /services/haproxy/configuration/http_request_rules/{index}][%d] replaceHttpRequestRuleOK  %+v", 200, o.Payload)
 }
 
 func (o *ReplaceHTTPRequestRuleOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -128,11 +129,7 @@ type ReplaceHTTPRequestRuleAccepted struct {
 }
 
 func (o *ReplaceHTTPRequestRuleAccepted) Error() string {
-	return fmt.Sprintf("[PUT /services/haproxy/configuration/http_request_rules/{id}][%d] replaceHttpRequestRuleAccepted  %+v", 202, o.Payload)
-}
-
-func (o *ReplaceHTTPRequestRuleAccepted) GetPayload() *models.HTTPRequestRule {
-	return o.Payload
+	return fmt.Sprintf("[PUT /services/haproxy/configuration/http_request_rules/{index}][%d] replaceHttpRequestRuleAccepted  %+v", 202, o.Payload)
 }
 
 func (o *ReplaceHTTPRequestRuleAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -152,7 +149,9 @@ func (o *ReplaceHTTPRequestRuleAccepted) readResponse(response runtime.ClientRes
 
 // NewReplaceHTTPRequestRuleBadRequest creates a ReplaceHTTPRequestRuleBadRequest with default headers values
 func NewReplaceHTTPRequestRuleBadRequest() *ReplaceHTTPRequestRuleBadRequest {
-	return &ReplaceHTTPRequestRuleBadRequest{}
+	return &ReplaceHTTPRequestRuleBadRequest{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*ReplaceHTTPRequestRuleBadRequest handles this case with default header values.
@@ -168,11 +167,7 @@ type ReplaceHTTPRequestRuleBadRequest struct {
 }
 
 func (o *ReplaceHTTPRequestRuleBadRequest) Error() string {
-	return fmt.Sprintf("[PUT /services/haproxy/configuration/http_request_rules/{id}][%d] replaceHttpRequestRuleBadRequest  %+v", 400, o.Payload)
-}
-
-func (o *ReplaceHTTPRequestRuleBadRequest) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[PUT /services/haproxy/configuration/http_request_rules/{index}][%d] replaceHttpRequestRuleBadRequest  %+v", 400, o.Payload)
 }
 
 func (o *ReplaceHTTPRequestRuleBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -196,7 +191,9 @@ func (o *ReplaceHTTPRequestRuleBadRequest) readResponse(response runtime.ClientR
 
 // NewReplaceHTTPRequestRuleNotFound creates a ReplaceHTTPRequestRuleNotFound with default headers values
 func NewReplaceHTTPRequestRuleNotFound() *ReplaceHTTPRequestRuleNotFound {
-	return &ReplaceHTTPRequestRuleNotFound{}
+	return &ReplaceHTTPRequestRuleNotFound{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*ReplaceHTTPRequestRuleNotFound handles this case with default header values.
@@ -212,11 +209,7 @@ type ReplaceHTTPRequestRuleNotFound struct {
 }
 
 func (o *ReplaceHTTPRequestRuleNotFound) Error() string {
-	return fmt.Sprintf("[PUT /services/haproxy/configuration/http_request_rules/{id}][%d] replaceHttpRequestRuleNotFound  %+v", 404, o.Payload)
-}
-
-func (o *ReplaceHTTPRequestRuleNotFound) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[PUT /services/haproxy/configuration/http_request_rules/{index}][%d] replaceHttpRequestRuleNotFound  %+v", 404, o.Payload)
 }
 
 func (o *ReplaceHTTPRequestRuleNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -241,7 +234,8 @@ func (o *ReplaceHTTPRequestRuleNotFound) readResponse(response runtime.ClientRes
 // NewReplaceHTTPRequestRuleDefault creates a ReplaceHTTPRequestRuleDefault with default headers values
 func NewReplaceHTTPRequestRuleDefault(code int) *ReplaceHTTPRequestRuleDefault {
 	return &ReplaceHTTPRequestRuleDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -265,11 +259,7 @@ func (o *ReplaceHTTPRequestRuleDefault) Code() int {
 }
 
 func (o *ReplaceHTTPRequestRuleDefault) Error() string {
-	return fmt.Sprintf("[PUT /services/haproxy/configuration/http_request_rules/{id}][%d] replaceHTTPRequestRule default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *ReplaceHTTPRequestRuleDefault) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[PUT /services/haproxy/configuration/http_request_rules/{index}][%d] replaceHTTPRequestRule default  %+v", o._statusCode, o.Payload)
 }
 
 func (o *ReplaceHTTPRequestRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

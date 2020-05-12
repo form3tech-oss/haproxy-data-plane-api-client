@@ -41,24 +41,28 @@ type DeleteHTTPRequestRuleReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *DeleteHTTPRequestRuleReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 202:
 		result := NewDeleteHTTPRequestRuleAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 204:
 		result := NewDeleteHTTPRequestRuleNoContent()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewDeleteHTTPRequestRuleNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewDeleteHTTPRequestRuleDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -87,7 +91,7 @@ type DeleteHTTPRequestRuleAccepted struct {
 }
 
 func (o *DeleteHTTPRequestRuleAccepted) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/http_request_rules/{id}][%d] deleteHttpRequestRuleAccepted ", 202)
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/http_request_rules/{index}][%d] deleteHttpRequestRuleAccepted ", 202)
 }
 
 func (o *DeleteHTTPRequestRuleAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -111,7 +115,7 @@ type DeleteHTTPRequestRuleNoContent struct {
 }
 
 func (o *DeleteHTTPRequestRuleNoContent) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/http_request_rules/{id}][%d] deleteHttpRequestRuleNoContent ", 204)
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/http_request_rules/{index}][%d] deleteHttpRequestRuleNoContent ", 204)
 }
 
 func (o *DeleteHTTPRequestRuleNoContent) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -121,7 +125,9 @@ func (o *DeleteHTTPRequestRuleNoContent) readResponse(response runtime.ClientRes
 
 // NewDeleteHTTPRequestRuleNotFound creates a DeleteHTTPRequestRuleNotFound with default headers values
 func NewDeleteHTTPRequestRuleNotFound() *DeleteHTTPRequestRuleNotFound {
-	return &DeleteHTTPRequestRuleNotFound{}
+	return &DeleteHTTPRequestRuleNotFound{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*DeleteHTTPRequestRuleNotFound handles this case with default header values.
@@ -137,11 +143,7 @@ type DeleteHTTPRequestRuleNotFound struct {
 }
 
 func (o *DeleteHTTPRequestRuleNotFound) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/http_request_rules/{id}][%d] deleteHttpRequestRuleNotFound  %+v", 404, o.Payload)
-}
-
-func (o *DeleteHTTPRequestRuleNotFound) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/http_request_rules/{index}][%d] deleteHttpRequestRuleNotFound  %+v", 404, o.Payload)
 }
 
 func (o *DeleteHTTPRequestRuleNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -166,7 +168,8 @@ func (o *DeleteHTTPRequestRuleNotFound) readResponse(response runtime.ClientResp
 // NewDeleteHTTPRequestRuleDefault creates a DeleteHTTPRequestRuleDefault with default headers values
 func NewDeleteHTTPRequestRuleDefault(code int) *DeleteHTTPRequestRuleDefault {
 	return &DeleteHTTPRequestRuleDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -190,11 +193,7 @@ func (o *DeleteHTTPRequestRuleDefault) Code() int {
 }
 
 func (o *DeleteHTTPRequestRuleDefault) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/http_request_rules/{id}][%d] deleteHTTPRequestRule default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *DeleteHTTPRequestRuleDefault) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/http_request_rules/{index}][%d] deleteHTTPRequestRule default  %+v", o._statusCode, o.Payload)
 }
 
 func (o *DeleteHTTPRequestRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

@@ -41,24 +41,28 @@ type DeleteStickRuleReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *DeleteStickRuleReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 202:
 		result := NewDeleteStickRuleAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 204:
 		result := NewDeleteStickRuleNoContent()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewDeleteStickRuleNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewDeleteStickRuleDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -87,7 +91,7 @@ type DeleteStickRuleAccepted struct {
 }
 
 func (o *DeleteStickRuleAccepted) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/stick_rules/{id}][%d] deleteStickRuleAccepted ", 202)
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/stick_rules/{index}][%d] deleteStickRuleAccepted ", 202)
 }
 
 func (o *DeleteStickRuleAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -111,7 +115,7 @@ type DeleteStickRuleNoContent struct {
 }
 
 func (o *DeleteStickRuleNoContent) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/stick_rules/{id}][%d] deleteStickRuleNoContent ", 204)
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/stick_rules/{index}][%d] deleteStickRuleNoContent ", 204)
 }
 
 func (o *DeleteStickRuleNoContent) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -121,7 +125,9 @@ func (o *DeleteStickRuleNoContent) readResponse(response runtime.ClientResponse,
 
 // NewDeleteStickRuleNotFound creates a DeleteStickRuleNotFound with default headers values
 func NewDeleteStickRuleNotFound() *DeleteStickRuleNotFound {
-	return &DeleteStickRuleNotFound{}
+	return &DeleteStickRuleNotFound{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*DeleteStickRuleNotFound handles this case with default header values.
@@ -137,11 +143,7 @@ type DeleteStickRuleNotFound struct {
 }
 
 func (o *DeleteStickRuleNotFound) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/stick_rules/{id}][%d] deleteStickRuleNotFound  %+v", 404, o.Payload)
-}
-
-func (o *DeleteStickRuleNotFound) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/stick_rules/{index}][%d] deleteStickRuleNotFound  %+v", 404, o.Payload)
 }
 
 func (o *DeleteStickRuleNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -166,7 +168,8 @@ func (o *DeleteStickRuleNotFound) readResponse(response runtime.ClientResponse, 
 // NewDeleteStickRuleDefault creates a DeleteStickRuleDefault with default headers values
 func NewDeleteStickRuleDefault(code int) *DeleteStickRuleDefault {
 	return &DeleteStickRuleDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -190,11 +193,7 @@ func (o *DeleteStickRuleDefault) Code() int {
 }
 
 func (o *DeleteStickRuleDefault) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/stick_rules/{id}][%d] deleteStickRule default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *DeleteStickRuleDefault) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/stick_rules/{index}][%d] deleteStickRule default  %+v", o._statusCode, o.Payload)
 }
 
 func (o *DeleteStickRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

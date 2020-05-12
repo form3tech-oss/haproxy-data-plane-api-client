@@ -41,30 +41,35 @@ type CreateBindReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *CreateBindReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 201:
 		result := NewCreateBindCreated()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 202:
 		result := NewCreateBindAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 400:
 		result := NewCreateBindBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	case 409:
 		result := NewCreateBindConflict()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewCreateBindDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -92,10 +97,6 @@ type CreateBindCreated struct {
 
 func (o *CreateBindCreated) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/binds][%d] createBindCreated  %+v", 201, o.Payload)
-}
-
-func (o *CreateBindCreated) GetPayload() *models.Bind {
-	return o.Payload
 }
 
 func (o *CreateBindCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -131,10 +132,6 @@ func (o *CreateBindAccepted) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/binds][%d] createBindAccepted  %+v", 202, o.Payload)
 }
 
-func (o *CreateBindAccepted) GetPayload() *models.Bind {
-	return o.Payload
-}
-
 func (o *CreateBindAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Reload-ID
@@ -152,7 +149,9 @@ func (o *CreateBindAccepted) readResponse(response runtime.ClientResponse, consu
 
 // NewCreateBindBadRequest creates a CreateBindBadRequest with default headers values
 func NewCreateBindBadRequest() *CreateBindBadRequest {
-	return &CreateBindBadRequest{}
+	return &CreateBindBadRequest{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*CreateBindBadRequest handles this case with default header values.
@@ -169,10 +168,6 @@ type CreateBindBadRequest struct {
 
 func (o *CreateBindBadRequest) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/binds][%d] createBindBadRequest  %+v", 400, o.Payload)
-}
-
-func (o *CreateBindBadRequest) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *CreateBindBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -196,7 +191,9 @@ func (o *CreateBindBadRequest) readResponse(response runtime.ClientResponse, con
 
 // NewCreateBindConflict creates a CreateBindConflict with default headers values
 func NewCreateBindConflict() *CreateBindConflict {
-	return &CreateBindConflict{}
+	return &CreateBindConflict{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*CreateBindConflict handles this case with default header values.
@@ -213,10 +210,6 @@ type CreateBindConflict struct {
 
 func (o *CreateBindConflict) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/binds][%d] createBindConflict  %+v", 409, o.Payload)
-}
-
-func (o *CreateBindConflict) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *CreateBindConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -241,7 +234,8 @@ func (o *CreateBindConflict) readResponse(response runtime.ClientResponse, consu
 // NewCreateBindDefault creates a CreateBindDefault with default headers values
 func NewCreateBindDefault(code int) *CreateBindDefault {
 	return &CreateBindDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -266,10 +260,6 @@ func (o *CreateBindDefault) Code() int {
 
 func (o *CreateBindDefault) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/binds][%d] createBind default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *CreateBindDefault) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *CreateBindDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
