@@ -103,11 +103,11 @@ type ReplaceBackendSwitchingRuleParams struct {
 
 	*/
 	Frontend string
-	/*ID
-	  Switching Rule ID
+	/*Index
+	  Switching Rule Index
 
 	*/
-	ID int64
+	Index int64
 	/*TransactionID
 	  ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 
@@ -190,15 +190,15 @@ func (o *ReplaceBackendSwitchingRuleParams) SetFrontend(frontend string) {
 	o.Frontend = frontend
 }
 
-// WithID adds the id to the replace backend switching rule params
-func (o *ReplaceBackendSwitchingRuleParams) WithID(id int64) *ReplaceBackendSwitchingRuleParams {
-	o.SetID(id)
+// WithIndex adds the index to the replace backend switching rule params
+func (o *ReplaceBackendSwitchingRuleParams) WithIndex(index int64) *ReplaceBackendSwitchingRuleParams {
+	o.SetIndex(index)
 	return o
 }
 
-// SetID adds the id to the replace backend switching rule params
-func (o *ReplaceBackendSwitchingRuleParams) SetID(id int64) {
-	o.ID = id
+// SetIndex adds the index to the replace backend switching rule params
+func (o *ReplaceBackendSwitchingRuleParams) SetIndex(index int64) {
+	o.Index = index
 }
 
 // WithTransactionID adds the transactionID to the replace backend switching rule params
@@ -262,8 +262,8 @@ func (o *ReplaceBackendSwitchingRuleParams) WriteToRequest(r runtime.ClientReque
 		}
 	}
 
-	// path param id
-	if err := r.SetPathParam("id", swag.FormatInt64(o.ID)); err != nil {
+	// path param index
+	if err := r.SetPathParam("index", swag.FormatInt64(o.Index)); err != nil {
 		return err
 	}
 

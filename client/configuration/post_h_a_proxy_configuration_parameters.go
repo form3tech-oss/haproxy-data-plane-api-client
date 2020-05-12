@@ -38,9 +38,13 @@ import (
 func NewPostHAProxyConfigurationParams() *PostHAProxyConfigurationParams {
 	var (
 		forceReloadDefault = bool(false)
+		skipReloadDefault  = bool(false)
+		skipVersionDefault = bool(false)
 	)
 	return &PostHAProxyConfigurationParams{
 		ForceReload: &forceReloadDefault,
+		SkipReload:  &skipReloadDefault,
+		SkipVersion: &skipVersionDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -51,9 +55,13 @@ func NewPostHAProxyConfigurationParams() *PostHAProxyConfigurationParams {
 func NewPostHAProxyConfigurationParamsWithTimeout(timeout time.Duration) *PostHAProxyConfigurationParams {
 	var (
 		forceReloadDefault = bool(false)
+		skipReloadDefault  = bool(false)
+		skipVersionDefault = bool(false)
 	)
 	return &PostHAProxyConfigurationParams{
 		ForceReload: &forceReloadDefault,
+		SkipReload:  &skipReloadDefault,
+		SkipVersion: &skipVersionDefault,
 
 		timeout: timeout,
 	}
@@ -64,9 +72,13 @@ func NewPostHAProxyConfigurationParamsWithTimeout(timeout time.Duration) *PostHA
 func NewPostHAProxyConfigurationParamsWithContext(ctx context.Context) *PostHAProxyConfigurationParams {
 	var (
 		forceReloadDefault = bool(false)
+		skipReloadDefault  = bool(false)
+		skipVersionDefault = bool(false)
 	)
 	return &PostHAProxyConfigurationParams{
 		ForceReload: &forceReloadDefault,
+		SkipReload:  &skipReloadDefault,
+		SkipVersion: &skipVersionDefault,
 
 		Context: ctx,
 	}
@@ -77,9 +89,13 @@ func NewPostHAProxyConfigurationParamsWithContext(ctx context.Context) *PostHAPr
 func NewPostHAProxyConfigurationParamsWithHTTPClient(client *http.Client) *PostHAProxyConfigurationParams {
 	var (
 		forceReloadDefault = bool(false)
+		skipReloadDefault  = bool(false)
+		skipVersionDefault = bool(false)
 	)
 	return &PostHAProxyConfigurationParams{
 		ForceReload: &forceReloadDefault,
+		SkipReload:  &skipReloadDefault,
+		SkipVersion: &skipVersionDefault,
 		HTTPClient:  client,
 	}
 }
@@ -89,6 +105,11 @@ for the post h a proxy configuration operation typically these are written to a 
 */
 type PostHAProxyConfigurationParams struct {
 
+	/*XRuntimeActions
+	  List of Runtime API commands with parameters separated by ';'
+
+	*/
+	XRuntimeActions *string
 	/*Data*/
 	Data string
 	/*ForceReload
@@ -96,6 +117,16 @@ type PostHAProxyConfigurationParams struct {
 
 	*/
 	ForceReload *bool
+	/*SkipReload
+	  If set, no reload will be initiated and runtime actions from X-Runtime-Actions will be applied
+
+	*/
+	SkipReload *bool
+	/*SkipVersion
+	  If set, no version check will be done and the pushed config will be enforced
+
+	*/
+	SkipVersion *bool
 	/*Version
 	  Version used for checking configuration version. Cannot be used when transaction is specified, transaction has it's own version.
 
@@ -140,6 +171,17 @@ func (o *PostHAProxyConfigurationParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
+// WithXRuntimeActions adds the xRuntimeActions to the post h a proxy configuration params
+func (o *PostHAProxyConfigurationParams) WithXRuntimeActions(xRuntimeActions *string) *PostHAProxyConfigurationParams {
+	o.SetXRuntimeActions(xRuntimeActions)
+	return o
+}
+
+// SetXRuntimeActions adds the xRuntimeActions to the post h a proxy configuration params
+func (o *PostHAProxyConfigurationParams) SetXRuntimeActions(xRuntimeActions *string) {
+	o.XRuntimeActions = xRuntimeActions
+}
+
 // WithData adds the data to the post h a proxy configuration params
 func (o *PostHAProxyConfigurationParams) WithData(data string) *PostHAProxyConfigurationParams {
 	o.SetData(data)
@@ -162,6 +204,28 @@ func (o *PostHAProxyConfigurationParams) SetForceReload(forceReload *bool) {
 	o.ForceReload = forceReload
 }
 
+// WithSkipReload adds the skipReload to the post h a proxy configuration params
+func (o *PostHAProxyConfigurationParams) WithSkipReload(skipReload *bool) *PostHAProxyConfigurationParams {
+	o.SetSkipReload(skipReload)
+	return o
+}
+
+// SetSkipReload adds the skipReload to the post h a proxy configuration params
+func (o *PostHAProxyConfigurationParams) SetSkipReload(skipReload *bool) {
+	o.SkipReload = skipReload
+}
+
+// WithSkipVersion adds the skipVersion to the post h a proxy configuration params
+func (o *PostHAProxyConfigurationParams) WithSkipVersion(skipVersion *bool) *PostHAProxyConfigurationParams {
+	o.SetSkipVersion(skipVersion)
+	return o
+}
+
+// SetSkipVersion adds the skipVersion to the post h a proxy configuration params
+func (o *PostHAProxyConfigurationParams) SetSkipVersion(skipVersion *bool) {
+	o.SkipVersion = skipVersion
+}
+
 // WithVersion adds the version to the post h a proxy configuration params
 func (o *PostHAProxyConfigurationParams) WithVersion(version *int64) *PostHAProxyConfigurationParams {
 	o.SetVersion(version)
@@ -181,6 +245,15 @@ func (o *PostHAProxyConfigurationParams) WriteToRequest(r runtime.ClientRequest,
 	}
 	var res []error
 
+	if o.XRuntimeActions != nil {
+
+		// header param X-Runtime-Actions
+		if err := r.SetHeaderParam("X-Runtime-Actions", *o.XRuntimeActions); err != nil {
+			return err
+		}
+
+	}
+
 	if err := r.SetBodyParam(o.Data); err != nil {
 		return err
 	}
@@ -195,6 +268,38 @@ func (o *PostHAProxyConfigurationParams) WriteToRequest(r runtime.ClientRequest,
 		qForceReload := swag.FormatBool(qrForceReload)
 		if qForceReload != "" {
 			if err := r.SetQueryParam("force_reload", qForceReload); err != nil {
+				return err
+			}
+		}
+
+	}
+
+	if o.SkipReload != nil {
+
+		// query param skip_reload
+		var qrSkipReload bool
+		if o.SkipReload != nil {
+			qrSkipReload = *o.SkipReload
+		}
+		qSkipReload := swag.FormatBool(qrSkipReload)
+		if qSkipReload != "" {
+			if err := r.SetQueryParam("skip_reload", qSkipReload); err != nil {
+				return err
+			}
+		}
+
+	}
+
+	if o.SkipVersion != nil {
+
+		// query param skip_version
+		var qrSkipVersion bool
+		if o.SkipVersion != nil {
+			qrSkipVersion = *o.SkipVersion
+		}
+		qSkipVersion := swag.FormatBool(qrSkipVersion)
+		if qSkipVersion != "" {
+			if err := r.SetQueryParam("skip_version", qSkipVersion); err != nil {
 				return err
 			}
 		}

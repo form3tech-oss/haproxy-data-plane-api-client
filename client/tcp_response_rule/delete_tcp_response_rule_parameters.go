@@ -99,11 +99,11 @@ type DeleteTCPResponseRuleParams struct {
 
 	*/
 	ForceReload *bool
-	/*ID
-	  TCP Response Rule ID
+	/*Index
+	  TCP Response Rule Index
 
 	*/
-	ID int64
+	Index int64
 	/*TransactionID
 	  ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 
@@ -175,15 +175,15 @@ func (o *DeleteTCPResponseRuleParams) SetForceReload(forceReload *bool) {
 	o.ForceReload = forceReload
 }
 
-// WithID adds the id to the delete TCP response rule params
-func (o *DeleteTCPResponseRuleParams) WithID(id int64) *DeleteTCPResponseRuleParams {
-	o.SetID(id)
+// WithIndex adds the index to the delete TCP response rule params
+func (o *DeleteTCPResponseRuleParams) WithIndex(index int64) *DeleteTCPResponseRuleParams {
+	o.SetIndex(index)
 	return o
 }
 
-// SetID adds the id to the delete TCP response rule params
-func (o *DeleteTCPResponseRuleParams) SetID(id int64) {
-	o.ID = id
+// SetIndex adds the index to the delete TCP response rule params
+func (o *DeleteTCPResponseRuleParams) SetIndex(index int64) {
+	o.Index = index
 }
 
 // WithTransactionID adds the transactionID to the delete TCP response rule params
@@ -241,8 +241,8 @@ func (o *DeleteTCPResponseRuleParams) WriteToRequest(r runtime.ClientRequest, re
 
 	}
 
-	// path param id
-	if err := r.SetPathParam("id", swag.FormatInt64(o.ID)); err != nil {
+	// path param index
+	if err := r.SetPathParam("index", swag.FormatInt64(o.Index)); err != nil {
 		return err
 	}
 

@@ -41,30 +41,35 @@ type ReplaceServerSwitchingRuleReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *ReplaceServerSwitchingRuleReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewReplaceServerSwitchingRuleOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 202:
 		result := NewReplaceServerSwitchingRuleAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 400:
 		result := NewReplaceServerSwitchingRuleBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	case 404:
 		result := NewReplaceServerSwitchingRuleNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewReplaceServerSwitchingRuleDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -91,11 +96,7 @@ type ReplaceServerSwitchingRuleOK struct {
 }
 
 func (o *ReplaceServerSwitchingRuleOK) Error() string {
-	return fmt.Sprintf("[PUT /services/haproxy/configuration/server_switching_rules/{id}][%d] replaceServerSwitchingRuleOK  %+v", 200, o.Payload)
-}
-
-func (o *ReplaceServerSwitchingRuleOK) GetPayload() *models.ServerSwitchingRule {
-	return o.Payload
+	return fmt.Sprintf("[PUT /services/haproxy/configuration/server_switching_rules/{index}][%d] replaceServerSwitchingRuleOK  %+v", 200, o.Payload)
 }
 
 func (o *ReplaceServerSwitchingRuleOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -128,11 +129,7 @@ type ReplaceServerSwitchingRuleAccepted struct {
 }
 
 func (o *ReplaceServerSwitchingRuleAccepted) Error() string {
-	return fmt.Sprintf("[PUT /services/haproxy/configuration/server_switching_rules/{id}][%d] replaceServerSwitchingRuleAccepted  %+v", 202, o.Payload)
-}
-
-func (o *ReplaceServerSwitchingRuleAccepted) GetPayload() *models.ServerSwitchingRule {
-	return o.Payload
+	return fmt.Sprintf("[PUT /services/haproxy/configuration/server_switching_rules/{index}][%d] replaceServerSwitchingRuleAccepted  %+v", 202, o.Payload)
 }
 
 func (o *ReplaceServerSwitchingRuleAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -152,7 +149,9 @@ func (o *ReplaceServerSwitchingRuleAccepted) readResponse(response runtime.Clien
 
 // NewReplaceServerSwitchingRuleBadRequest creates a ReplaceServerSwitchingRuleBadRequest with default headers values
 func NewReplaceServerSwitchingRuleBadRequest() *ReplaceServerSwitchingRuleBadRequest {
-	return &ReplaceServerSwitchingRuleBadRequest{}
+	return &ReplaceServerSwitchingRuleBadRequest{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*ReplaceServerSwitchingRuleBadRequest handles this case with default header values.
@@ -168,11 +167,7 @@ type ReplaceServerSwitchingRuleBadRequest struct {
 }
 
 func (o *ReplaceServerSwitchingRuleBadRequest) Error() string {
-	return fmt.Sprintf("[PUT /services/haproxy/configuration/server_switching_rules/{id}][%d] replaceServerSwitchingRuleBadRequest  %+v", 400, o.Payload)
-}
-
-func (o *ReplaceServerSwitchingRuleBadRequest) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[PUT /services/haproxy/configuration/server_switching_rules/{index}][%d] replaceServerSwitchingRuleBadRequest  %+v", 400, o.Payload)
 }
 
 func (o *ReplaceServerSwitchingRuleBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -196,7 +191,9 @@ func (o *ReplaceServerSwitchingRuleBadRequest) readResponse(response runtime.Cli
 
 // NewReplaceServerSwitchingRuleNotFound creates a ReplaceServerSwitchingRuleNotFound with default headers values
 func NewReplaceServerSwitchingRuleNotFound() *ReplaceServerSwitchingRuleNotFound {
-	return &ReplaceServerSwitchingRuleNotFound{}
+	return &ReplaceServerSwitchingRuleNotFound{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*ReplaceServerSwitchingRuleNotFound handles this case with default header values.
@@ -212,11 +209,7 @@ type ReplaceServerSwitchingRuleNotFound struct {
 }
 
 func (o *ReplaceServerSwitchingRuleNotFound) Error() string {
-	return fmt.Sprintf("[PUT /services/haproxy/configuration/server_switching_rules/{id}][%d] replaceServerSwitchingRuleNotFound  %+v", 404, o.Payload)
-}
-
-func (o *ReplaceServerSwitchingRuleNotFound) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[PUT /services/haproxy/configuration/server_switching_rules/{index}][%d] replaceServerSwitchingRuleNotFound  %+v", 404, o.Payload)
 }
 
 func (o *ReplaceServerSwitchingRuleNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -241,7 +234,8 @@ func (o *ReplaceServerSwitchingRuleNotFound) readResponse(response runtime.Clien
 // NewReplaceServerSwitchingRuleDefault creates a ReplaceServerSwitchingRuleDefault with default headers values
 func NewReplaceServerSwitchingRuleDefault(code int) *ReplaceServerSwitchingRuleDefault {
 	return &ReplaceServerSwitchingRuleDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -265,11 +259,7 @@ func (o *ReplaceServerSwitchingRuleDefault) Code() int {
 }
 
 func (o *ReplaceServerSwitchingRuleDefault) Error() string {
-	return fmt.Sprintf("[PUT /services/haproxy/configuration/server_switching_rules/{id}][%d] replaceServerSwitchingRule default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *ReplaceServerSwitchingRuleDefault) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[PUT /services/haproxy/configuration/server_switching_rules/{index}][%d] replaceServerSwitchingRule default  %+v", o._statusCode, o.Payload)
 }
 
 func (o *ReplaceServerSwitchingRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

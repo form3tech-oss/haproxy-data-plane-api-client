@@ -42,12 +42,14 @@ type GetFiltersReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetFiltersReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetFiltersOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	default:
 		result := NewGetFiltersDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -81,10 +83,6 @@ func (o *GetFiltersOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/filters][%d] getFiltersOK  %+v", 200, o.Payload)
 }
 
-func (o *GetFiltersOK) GetPayload() *GetFiltersOKBody {
-	return o.Payload
-}
-
 func (o *GetFiltersOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
@@ -107,7 +105,8 @@ func (o *GetFiltersOK) readResponse(response runtime.ClientResponse, consumer ru
 // NewGetFiltersDefault creates a GetFiltersDefault with default headers values
 func NewGetFiltersDefault(code int) *GetFiltersDefault {
 	return &GetFiltersDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -132,10 +131,6 @@ func (o *GetFiltersDefault) Code() int {
 
 func (o *GetFiltersDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/filters][%d] getFilters default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *GetFiltersDefault) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *GetFiltersDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

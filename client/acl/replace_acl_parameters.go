@@ -98,11 +98,11 @@ type ReplaceACLParams struct {
 
 	*/
 	ForceReload *bool
-	/*ID
-	  ACL line ID
+	/*Index
+	  ACL line Index
 
 	*/
-	ID int64
+	Index int64
 	/*ParentName
 	  Parent name
 
@@ -184,15 +184,15 @@ func (o *ReplaceACLParams) SetForceReload(forceReload *bool) {
 	o.ForceReload = forceReload
 }
 
-// WithID adds the id to the replace Acl params
-func (o *ReplaceACLParams) WithID(id int64) *ReplaceACLParams {
-	o.SetID(id)
+// WithIndex adds the index to the replace Acl params
+func (o *ReplaceACLParams) WithIndex(index int64) *ReplaceACLParams {
+	o.SetIndex(index)
 	return o
 }
 
-// SetID adds the id to the replace Acl params
-func (o *ReplaceACLParams) SetID(id int64) {
-	o.ID = id
+// SetIndex adds the index to the replace Acl params
+func (o *ReplaceACLParams) SetIndex(index int64) {
+	o.Index = index
 }
 
 // WithParentName adds the parentName to the replace Acl params
@@ -269,8 +269,8 @@ func (o *ReplaceACLParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Re
 
 	}
 
-	// path param id
-	if err := r.SetPathParam("id", swag.FormatInt64(o.ID)); err != nil {
+	// path param index
+	if err := r.SetPathParam("index", swag.FormatInt64(o.Index)); err != nil {
 		return err
 	}
 

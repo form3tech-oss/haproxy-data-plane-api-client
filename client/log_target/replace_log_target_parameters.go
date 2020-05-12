@@ -98,11 +98,11 @@ type ReplaceLogTargetParams struct {
 
 	*/
 	ForceReload *bool
-	/*ID
-	  Log Target ID
+	/*Index
+	  Log Target Index
 
 	*/
-	ID int64
+	Index int64
 	/*ParentName
 	  Parent name
 
@@ -184,15 +184,15 @@ func (o *ReplaceLogTargetParams) SetForceReload(forceReload *bool) {
 	o.ForceReload = forceReload
 }
 
-// WithID adds the id to the replace log target params
-func (o *ReplaceLogTargetParams) WithID(id int64) *ReplaceLogTargetParams {
-	o.SetID(id)
+// WithIndex adds the index to the replace log target params
+func (o *ReplaceLogTargetParams) WithIndex(index int64) *ReplaceLogTargetParams {
+	o.SetIndex(index)
 	return o
 }
 
-// SetID adds the id to the replace log target params
-func (o *ReplaceLogTargetParams) SetID(id int64) {
-	o.ID = id
+// SetIndex adds the index to the replace log target params
+func (o *ReplaceLogTargetParams) SetIndex(index int64) {
+	o.Index = index
 }
 
 // WithParentName adds the parentName to the replace log target params
@@ -269,8 +269,8 @@ func (o *ReplaceLogTargetParams) WriteToRequest(r runtime.ClientRequest, reg str
 
 	}
 
-	// path param id
-	if err := r.SetPathParam("id", swag.FormatInt64(o.ID)); err != nil {
+	// path param index
+	if err := r.SetPathParam("index", swag.FormatInt64(o.Index)); err != nil {
 		return err
 	}
 

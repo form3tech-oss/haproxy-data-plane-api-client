@@ -99,11 +99,11 @@ type DeleteStickRuleParams struct {
 
 	*/
 	ForceReload *bool
-	/*ID
-	  Stick Rule ID
+	/*Index
+	  Stick Rule Index
 
 	*/
-	ID int64
+	Index int64
 	/*TransactionID
 	  ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 
@@ -175,15 +175,15 @@ func (o *DeleteStickRuleParams) SetForceReload(forceReload *bool) {
 	o.ForceReload = forceReload
 }
 
-// WithID adds the id to the delete stick rule params
-func (o *DeleteStickRuleParams) WithID(id int64) *DeleteStickRuleParams {
-	o.SetID(id)
+// WithIndex adds the index to the delete stick rule params
+func (o *DeleteStickRuleParams) WithIndex(index int64) *DeleteStickRuleParams {
+	o.SetIndex(index)
 	return o
 }
 
-// SetID adds the id to the delete stick rule params
-func (o *DeleteStickRuleParams) SetID(id int64) {
-	o.ID = id
+// SetIndex adds the index to the delete stick rule params
+func (o *DeleteStickRuleParams) SetIndex(index int64) {
+	o.Index = index
 }
 
 // WithTransactionID adds the transactionID to the delete stick rule params
@@ -241,8 +241,8 @@ func (o *DeleteStickRuleParams) WriteToRequest(r runtime.ClientRequest, reg strf
 
 	}
 
-	// path param id
-	if err := r.SetPathParam("id", swag.FormatInt64(o.ID)); err != nil {
+	// path param index
+	if err := r.SetPathParam("index", swag.FormatInt64(o.Index)); err != nil {
 		return err
 	}
 

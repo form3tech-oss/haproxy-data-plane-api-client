@@ -41,24 +41,28 @@ type DeleteHTTPResponseRuleReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *DeleteHTTPResponseRuleReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 202:
 		result := NewDeleteHTTPResponseRuleAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 204:
 		result := NewDeleteHTTPResponseRuleNoContent()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewDeleteHTTPResponseRuleNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewDeleteHTTPResponseRuleDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -87,7 +91,7 @@ type DeleteHTTPResponseRuleAccepted struct {
 }
 
 func (o *DeleteHTTPResponseRuleAccepted) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/http_response_rules/{id}][%d] deleteHttpResponseRuleAccepted ", 202)
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/http_response_rules/{index}][%d] deleteHttpResponseRuleAccepted ", 202)
 }
 
 func (o *DeleteHTTPResponseRuleAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -111,7 +115,7 @@ type DeleteHTTPResponseRuleNoContent struct {
 }
 
 func (o *DeleteHTTPResponseRuleNoContent) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/http_response_rules/{id}][%d] deleteHttpResponseRuleNoContent ", 204)
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/http_response_rules/{index}][%d] deleteHttpResponseRuleNoContent ", 204)
 }
 
 func (o *DeleteHTTPResponseRuleNoContent) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -121,7 +125,9 @@ func (o *DeleteHTTPResponseRuleNoContent) readResponse(response runtime.ClientRe
 
 // NewDeleteHTTPResponseRuleNotFound creates a DeleteHTTPResponseRuleNotFound with default headers values
 func NewDeleteHTTPResponseRuleNotFound() *DeleteHTTPResponseRuleNotFound {
-	return &DeleteHTTPResponseRuleNotFound{}
+	return &DeleteHTTPResponseRuleNotFound{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*DeleteHTTPResponseRuleNotFound handles this case with default header values.
@@ -137,11 +143,7 @@ type DeleteHTTPResponseRuleNotFound struct {
 }
 
 func (o *DeleteHTTPResponseRuleNotFound) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/http_response_rules/{id}][%d] deleteHttpResponseRuleNotFound  %+v", 404, o.Payload)
-}
-
-func (o *DeleteHTTPResponseRuleNotFound) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/http_response_rules/{index}][%d] deleteHttpResponseRuleNotFound  %+v", 404, o.Payload)
 }
 
 func (o *DeleteHTTPResponseRuleNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -166,7 +168,8 @@ func (o *DeleteHTTPResponseRuleNotFound) readResponse(response runtime.ClientRes
 // NewDeleteHTTPResponseRuleDefault creates a DeleteHTTPResponseRuleDefault with default headers values
 func NewDeleteHTTPResponseRuleDefault(code int) *DeleteHTTPResponseRuleDefault {
 	return &DeleteHTTPResponseRuleDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -190,11 +193,7 @@ func (o *DeleteHTTPResponseRuleDefault) Code() int {
 }
 
 func (o *DeleteHTTPResponseRuleDefault) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/http_response_rules/{id}][%d] deleteHTTPResponseRule default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *DeleteHTTPResponseRuleDefault) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/http_response_rules/{index}][%d] deleteHTTPResponseRule default  %+v", o._statusCode, o.Payload)
 }
 
 func (o *DeleteHTTPResponseRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

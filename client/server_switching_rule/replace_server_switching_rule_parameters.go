@@ -103,11 +103,11 @@ type ReplaceServerSwitchingRuleParams struct {
 
 	*/
 	ForceReload *bool
-	/*ID
-	  Switching Rule ID
+	/*Index
+	  Switching Rule Index
 
 	*/
-	ID int64
+	Index int64
 	/*TransactionID
 	  ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 
@@ -190,15 +190,15 @@ func (o *ReplaceServerSwitchingRuleParams) SetForceReload(forceReload *bool) {
 	o.ForceReload = forceReload
 }
 
-// WithID adds the id to the replace server switching rule params
-func (o *ReplaceServerSwitchingRuleParams) WithID(id int64) *ReplaceServerSwitchingRuleParams {
-	o.SetID(id)
+// WithIndex adds the index to the replace server switching rule params
+func (o *ReplaceServerSwitchingRuleParams) WithIndex(index int64) *ReplaceServerSwitchingRuleParams {
+	o.SetIndex(index)
 	return o
 }
 
-// SetID adds the id to the replace server switching rule params
-func (o *ReplaceServerSwitchingRuleParams) SetID(id int64) {
-	o.ID = id
+// SetIndex adds the index to the replace server switching rule params
+func (o *ReplaceServerSwitchingRuleParams) SetIndex(index int64) {
+	o.Index = index
 }
 
 // WithTransactionID adds the transactionID to the replace server switching rule params
@@ -262,8 +262,8 @@ func (o *ReplaceServerSwitchingRuleParams) WriteToRequest(r runtime.ClientReques
 
 	}
 
-	// path param id
-	if err := r.SetPathParam("id", swag.FormatInt64(o.ID)); err != nil {
+	// path param index
+	if err := r.SetPathParam("index", swag.FormatInt64(o.Index)); err != nil {
 		return err
 	}
 

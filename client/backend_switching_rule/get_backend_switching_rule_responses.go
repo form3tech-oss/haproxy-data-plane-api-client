@@ -41,18 +41,21 @@ type GetBackendSwitchingRuleReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetBackendSwitchingRuleReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetBackendSwitchingRuleOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewGetBackendSwitchingRuleNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewGetBackendSwitchingRuleDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -83,11 +86,7 @@ type GetBackendSwitchingRuleOK struct {
 }
 
 func (o *GetBackendSwitchingRuleOK) Error() string {
-	return fmt.Sprintf("[GET /services/haproxy/configuration/backend_switching_rules/{id}][%d] getBackendSwitchingRuleOK  %+v", 200, o.Payload)
-}
-
-func (o *GetBackendSwitchingRuleOK) GetPayload() *GetBackendSwitchingRuleOKBody {
-	return o.Payload
+	return fmt.Sprintf("[GET /services/haproxy/configuration/backend_switching_rules/{index}][%d] getBackendSwitchingRuleOK  %+v", 200, o.Payload)
 }
 
 func (o *GetBackendSwitchingRuleOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -111,7 +110,9 @@ func (o *GetBackendSwitchingRuleOK) readResponse(response runtime.ClientResponse
 
 // NewGetBackendSwitchingRuleNotFound creates a GetBackendSwitchingRuleNotFound with default headers values
 func NewGetBackendSwitchingRuleNotFound() *GetBackendSwitchingRuleNotFound {
-	return &GetBackendSwitchingRuleNotFound{}
+	return &GetBackendSwitchingRuleNotFound{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*GetBackendSwitchingRuleNotFound handles this case with default header values.
@@ -127,11 +128,7 @@ type GetBackendSwitchingRuleNotFound struct {
 }
 
 func (o *GetBackendSwitchingRuleNotFound) Error() string {
-	return fmt.Sprintf("[GET /services/haproxy/configuration/backend_switching_rules/{id}][%d] getBackendSwitchingRuleNotFound  %+v", 404, o.Payload)
-}
-
-func (o *GetBackendSwitchingRuleNotFound) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[GET /services/haproxy/configuration/backend_switching_rules/{index}][%d] getBackendSwitchingRuleNotFound  %+v", 404, o.Payload)
 }
 
 func (o *GetBackendSwitchingRuleNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -156,7 +153,8 @@ func (o *GetBackendSwitchingRuleNotFound) readResponse(response runtime.ClientRe
 // NewGetBackendSwitchingRuleDefault creates a GetBackendSwitchingRuleDefault with default headers values
 func NewGetBackendSwitchingRuleDefault(code int) *GetBackendSwitchingRuleDefault {
 	return &GetBackendSwitchingRuleDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -180,11 +178,7 @@ func (o *GetBackendSwitchingRuleDefault) Code() int {
 }
 
 func (o *GetBackendSwitchingRuleDefault) Error() string {
-	return fmt.Sprintf("[GET /services/haproxy/configuration/backend_switching_rules/{id}][%d] getBackendSwitchingRule default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *GetBackendSwitchingRuleDefault) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[GET /services/haproxy/configuration/backend_switching_rules/{index}][%d] getBackendSwitchingRule default  %+v", o._statusCode, o.Payload)
 }
 
 func (o *GetBackendSwitchingRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

@@ -41,30 +41,35 @@ type ReplaceLogTargetReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *ReplaceLogTargetReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewReplaceLogTargetOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 202:
 		result := NewReplaceLogTargetAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 400:
 		result := NewReplaceLogTargetBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	case 404:
 		result := NewReplaceLogTargetNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewReplaceLogTargetDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -91,11 +96,7 @@ type ReplaceLogTargetOK struct {
 }
 
 func (o *ReplaceLogTargetOK) Error() string {
-	return fmt.Sprintf("[PUT /services/haproxy/configuration/log_targets/{id}][%d] replaceLogTargetOK  %+v", 200, o.Payload)
-}
-
-func (o *ReplaceLogTargetOK) GetPayload() *models.LogTarget {
-	return o.Payload
+	return fmt.Sprintf("[PUT /services/haproxy/configuration/log_targets/{index}][%d] replaceLogTargetOK  %+v", 200, o.Payload)
 }
 
 func (o *ReplaceLogTargetOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -128,11 +129,7 @@ type ReplaceLogTargetAccepted struct {
 }
 
 func (o *ReplaceLogTargetAccepted) Error() string {
-	return fmt.Sprintf("[PUT /services/haproxy/configuration/log_targets/{id}][%d] replaceLogTargetAccepted  %+v", 202, o.Payload)
-}
-
-func (o *ReplaceLogTargetAccepted) GetPayload() *models.LogTarget {
-	return o.Payload
+	return fmt.Sprintf("[PUT /services/haproxy/configuration/log_targets/{index}][%d] replaceLogTargetAccepted  %+v", 202, o.Payload)
 }
 
 func (o *ReplaceLogTargetAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -152,7 +149,9 @@ func (o *ReplaceLogTargetAccepted) readResponse(response runtime.ClientResponse,
 
 // NewReplaceLogTargetBadRequest creates a ReplaceLogTargetBadRequest with default headers values
 func NewReplaceLogTargetBadRequest() *ReplaceLogTargetBadRequest {
-	return &ReplaceLogTargetBadRequest{}
+	return &ReplaceLogTargetBadRequest{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*ReplaceLogTargetBadRequest handles this case with default header values.
@@ -168,11 +167,7 @@ type ReplaceLogTargetBadRequest struct {
 }
 
 func (o *ReplaceLogTargetBadRequest) Error() string {
-	return fmt.Sprintf("[PUT /services/haproxy/configuration/log_targets/{id}][%d] replaceLogTargetBadRequest  %+v", 400, o.Payload)
-}
-
-func (o *ReplaceLogTargetBadRequest) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[PUT /services/haproxy/configuration/log_targets/{index}][%d] replaceLogTargetBadRequest  %+v", 400, o.Payload)
 }
 
 func (o *ReplaceLogTargetBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -196,7 +191,9 @@ func (o *ReplaceLogTargetBadRequest) readResponse(response runtime.ClientRespons
 
 // NewReplaceLogTargetNotFound creates a ReplaceLogTargetNotFound with default headers values
 func NewReplaceLogTargetNotFound() *ReplaceLogTargetNotFound {
-	return &ReplaceLogTargetNotFound{}
+	return &ReplaceLogTargetNotFound{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*ReplaceLogTargetNotFound handles this case with default header values.
@@ -212,11 +209,7 @@ type ReplaceLogTargetNotFound struct {
 }
 
 func (o *ReplaceLogTargetNotFound) Error() string {
-	return fmt.Sprintf("[PUT /services/haproxy/configuration/log_targets/{id}][%d] replaceLogTargetNotFound  %+v", 404, o.Payload)
-}
-
-func (o *ReplaceLogTargetNotFound) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[PUT /services/haproxy/configuration/log_targets/{index}][%d] replaceLogTargetNotFound  %+v", 404, o.Payload)
 }
 
 func (o *ReplaceLogTargetNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -241,7 +234,8 @@ func (o *ReplaceLogTargetNotFound) readResponse(response runtime.ClientResponse,
 // NewReplaceLogTargetDefault creates a ReplaceLogTargetDefault with default headers values
 func NewReplaceLogTargetDefault(code int) *ReplaceLogTargetDefault {
 	return &ReplaceLogTargetDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -265,11 +259,7 @@ func (o *ReplaceLogTargetDefault) Code() int {
 }
 
 func (o *ReplaceLogTargetDefault) Error() string {
-	return fmt.Sprintf("[PUT /services/haproxy/configuration/log_targets/{id}][%d] replaceLogTarget default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *ReplaceLogTargetDefault) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[PUT /services/haproxy/configuration/log_targets/{index}][%d] replaceLogTarget default  %+v", o._statusCode, o.Payload)
 }
 
 func (o *ReplaceLogTargetDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

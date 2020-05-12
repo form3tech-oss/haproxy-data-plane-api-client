@@ -41,18 +41,21 @@ type GetTCPResponseRuleReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetTCPResponseRuleReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetTCPResponseRuleOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewGetTCPResponseRuleNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewGetTCPResponseRuleDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -83,11 +86,7 @@ type GetTCPResponseRuleOK struct {
 }
 
 func (o *GetTCPResponseRuleOK) Error() string {
-	return fmt.Sprintf("[GET /services/haproxy/configuration/tcp_response_rules/{id}][%d] getTcpResponseRuleOK  %+v", 200, o.Payload)
-}
-
-func (o *GetTCPResponseRuleOK) GetPayload() *GetTCPResponseRuleOKBody {
-	return o.Payload
+	return fmt.Sprintf("[GET /services/haproxy/configuration/tcp_response_rules/{index}][%d] getTcpResponseRuleOK  %+v", 200, o.Payload)
 }
 
 func (o *GetTCPResponseRuleOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -111,7 +110,9 @@ func (o *GetTCPResponseRuleOK) readResponse(response runtime.ClientResponse, con
 
 // NewGetTCPResponseRuleNotFound creates a GetTCPResponseRuleNotFound with default headers values
 func NewGetTCPResponseRuleNotFound() *GetTCPResponseRuleNotFound {
-	return &GetTCPResponseRuleNotFound{}
+	return &GetTCPResponseRuleNotFound{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*GetTCPResponseRuleNotFound handles this case with default header values.
@@ -127,11 +128,7 @@ type GetTCPResponseRuleNotFound struct {
 }
 
 func (o *GetTCPResponseRuleNotFound) Error() string {
-	return fmt.Sprintf("[GET /services/haproxy/configuration/tcp_response_rules/{id}][%d] getTcpResponseRuleNotFound  %+v", 404, o.Payload)
-}
-
-func (o *GetTCPResponseRuleNotFound) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[GET /services/haproxy/configuration/tcp_response_rules/{index}][%d] getTcpResponseRuleNotFound  %+v", 404, o.Payload)
 }
 
 func (o *GetTCPResponseRuleNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -156,7 +153,8 @@ func (o *GetTCPResponseRuleNotFound) readResponse(response runtime.ClientRespons
 // NewGetTCPResponseRuleDefault creates a GetTCPResponseRuleDefault with default headers values
 func NewGetTCPResponseRuleDefault(code int) *GetTCPResponseRuleDefault {
 	return &GetTCPResponseRuleDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -180,11 +178,7 @@ func (o *GetTCPResponseRuleDefault) Code() int {
 }
 
 func (o *GetTCPResponseRuleDefault) Error() string {
-	return fmt.Sprintf("[GET /services/haproxy/configuration/tcp_response_rules/{id}][%d] getTCPResponseRule default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *GetTCPResponseRuleDefault) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[GET /services/haproxy/configuration/tcp_response_rules/{index}][%d] getTCPResponseRule default  %+v", o._statusCode, o.Payload)
 }
 
 func (o *GetTCPResponseRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

@@ -22,11 +22,12 @@ package acl
 
 import (
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
+
+	strfmt "github.com/go-openapi/strfmt"
 )
 
 // New creates a new acl API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -38,25 +39,10 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-// ClientService is the interface for Client methods
-type ClientService interface {
-	CreateACL(params *CreateACLParams, authInfo runtime.ClientAuthInfoWriter) (*CreateACLCreated, *CreateACLAccepted, error)
-
-	DeleteACL(params *DeleteACLParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteACLAccepted, *DeleteACLNoContent, error)
-
-	GetACL(params *GetACLParams, authInfo runtime.ClientAuthInfoWriter) (*GetACLOK, error)
-
-	GetAcls(params *GetAclsParams, authInfo runtime.ClientAuthInfoWriter) (*GetAclsOK, error)
-
-	ReplaceACL(params *ReplaceACLParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceACLOK, *ReplaceACLAccepted, error)
-
-	SetTransport(transport runtime.ClientTransport)
-}
-
 /*
-  CreateACL adds a new ACL line
+CreateACL adds a new ACL line
 
-  Adds a new ACL line of the specified type in the specified parent.
+Adds a new ACL line of the specified type in the specified parent.
 */
 func (a *Client) CreateACL(params *CreateACLParams, authInfo runtime.ClientAuthInfoWriter) (*CreateACLCreated, *CreateACLAccepted, error) {
 	// TODO: Validate the params before sending
@@ -86,15 +72,14 @@ func (a *Client) CreateACL(params *CreateACLParams, authInfo runtime.ClientAuthI
 	case *CreateACLAccepted:
 		return nil, value, nil
 	}
-	// unexpected success response
-	unexpectedSuccess := result.(*CreateACLDefault)
-	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return nil, nil, nil
+
 }
 
 /*
-  DeleteACL deletes a ACL line
+DeleteACL deletes a ACL line
 
-  Deletes a ACL line configuration by it's ID from the specified parent.
+Deletes a ACL line configuration by it's index from the specified parent.
 */
 func (a *Client) DeleteACL(params *DeleteACLParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteACLAccepted, *DeleteACLNoContent, error) {
 	// TODO: Validate the params before sending
@@ -105,7 +90,7 @@ func (a *Client) DeleteACL(params *DeleteACLParams, authInfo runtime.ClientAuthI
 	result, err := a.transport.Submit(&runtime.ClientOperation{
 		ID:                 "deleteAcl",
 		Method:             "DELETE",
-		PathPattern:        "/services/haproxy/configuration/acls/{id}",
+		PathPattern:        "/services/haproxy/configuration/acls/{index}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http"},
@@ -124,15 +109,14 @@ func (a *Client) DeleteACL(params *DeleteACLParams, authInfo runtime.ClientAuthI
 	case *DeleteACLNoContent:
 		return nil, value, nil
 	}
-	// unexpected success response
-	unexpectedSuccess := result.(*DeleteACLDefault)
-	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return nil, nil, nil
+
 }
 
 /*
-  GetACL returns one ACL line
+GetACL returns one ACL line
 
-  Returns one ACL line configuration by it's ID in the specified parent.
+Returns one ACL line configuration by it's index in the specified parent.
 */
 func (a *Client) GetACL(params *GetACLParams, authInfo runtime.ClientAuthInfoWriter) (*GetACLOK, error) {
 	// TODO: Validate the params before sending
@@ -143,7 +127,7 @@ func (a *Client) GetACL(params *GetACLParams, authInfo runtime.ClientAuthInfoWri
 	result, err := a.transport.Submit(&runtime.ClientOperation{
 		ID:                 "getAcl",
 		Method:             "GET",
-		PathPattern:        "/services/haproxy/configuration/acls/{id}",
+		PathPattern:        "/services/haproxy/configuration/acls/{index}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http"},
@@ -156,19 +140,14 @@ func (a *Client) GetACL(params *GetACLParams, authInfo runtime.ClientAuthInfoWri
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetACLOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetACLDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetACLOK), nil
+
 }
 
 /*
-  GetAcls returns an array of all ACL lines
+GetAcls returns an array of all ACL lines
 
-  Returns all ACL lines that are configured in specified parent.
+Returns all ACL lines that are configured in specified parent.
 */
 func (a *Client) GetAcls(params *GetAclsParams, authInfo runtime.ClientAuthInfoWriter) (*GetAclsOK, error) {
 	// TODO: Validate the params before sending
@@ -192,19 +171,14 @@ func (a *Client) GetAcls(params *GetAclsParams, authInfo runtime.ClientAuthInfoW
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetAclsOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetAclsDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetAclsOK), nil
+
 }
 
 /*
-  ReplaceACL replaces a ACL line
+ReplaceACL replaces a ACL line
 
-  Replaces a ACL line configuration by it's ID in the specified parent.
+Replaces a ACL line configuration by it's index in the specified parent.
 */
 func (a *Client) ReplaceACL(params *ReplaceACLParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceACLOK, *ReplaceACLAccepted, error) {
 	// TODO: Validate the params before sending
@@ -215,7 +189,7 @@ func (a *Client) ReplaceACL(params *ReplaceACLParams, authInfo runtime.ClientAut
 	result, err := a.transport.Submit(&runtime.ClientOperation{
 		ID:                 "replaceAcl",
 		Method:             "PUT",
-		PathPattern:        "/services/haproxy/configuration/acls/{id}",
+		PathPattern:        "/services/haproxy/configuration/acls/{index}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http"},
@@ -234,9 +208,8 @@ func (a *Client) ReplaceACL(params *ReplaceACLParams, authInfo runtime.ClientAut
 	case *ReplaceACLAccepted:
 		return nil, value, nil
 	}
-	// unexpected success response
-	unexpectedSuccess := result.(*ReplaceACLDefault)
-	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return nil, nil, nil
+
 }
 
 // SetTransport changes the transport on the client

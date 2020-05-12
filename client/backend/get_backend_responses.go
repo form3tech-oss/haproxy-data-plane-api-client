@@ -41,18 +41,21 @@ type GetBackendReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetBackendReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetBackendOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewGetBackendNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewGetBackendDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -86,10 +89,6 @@ func (o *GetBackendOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/backends/{name}][%d] getBackendOK  %+v", 200, o.Payload)
 }
 
-func (o *GetBackendOK) GetPayload() *GetBackendOKBody {
-	return o.Payload
-}
-
 func (o *GetBackendOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
@@ -111,7 +110,9 @@ func (o *GetBackendOK) readResponse(response runtime.ClientResponse, consumer ru
 
 // NewGetBackendNotFound creates a GetBackendNotFound with default headers values
 func NewGetBackendNotFound() *GetBackendNotFound {
-	return &GetBackendNotFound{}
+	return &GetBackendNotFound{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*GetBackendNotFound handles this case with default header values.
@@ -128,10 +129,6 @@ type GetBackendNotFound struct {
 
 func (o *GetBackendNotFound) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/backends/{name}][%d] getBackendNotFound  %+v", 404, o.Payload)
-}
-
-func (o *GetBackendNotFound) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *GetBackendNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -156,7 +153,8 @@ func (o *GetBackendNotFound) readResponse(response runtime.ClientResponse, consu
 // NewGetBackendDefault creates a GetBackendDefault with default headers values
 func NewGetBackendDefault(code int) *GetBackendDefault {
 	return &GetBackendDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -181,10 +179,6 @@ func (o *GetBackendDefault) Code() int {
 
 func (o *GetBackendDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/backends/{name}][%d] getBackend default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *GetBackendDefault) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *GetBackendDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

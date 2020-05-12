@@ -94,11 +94,11 @@ type DeleteLogTargetParams struct {
 
 	*/
 	ForceReload *bool
-	/*ID
-	  Log Target ID
+	/*Index
+	  Log Target Index
 
 	*/
-	ID int64
+	Index int64
 	/*ParentName
 	  Parent name
 
@@ -169,15 +169,15 @@ func (o *DeleteLogTargetParams) SetForceReload(forceReload *bool) {
 	o.ForceReload = forceReload
 }
 
-// WithID adds the id to the delete log target params
-func (o *DeleteLogTargetParams) WithID(id int64) *DeleteLogTargetParams {
-	o.SetID(id)
+// WithIndex adds the index to the delete log target params
+func (o *DeleteLogTargetParams) WithIndex(index int64) *DeleteLogTargetParams {
+	o.SetIndex(index)
 	return o
 }
 
-// SetID adds the id to the delete log target params
-func (o *DeleteLogTargetParams) SetID(id int64) {
-	o.ID = id
+// SetIndex adds the index to the delete log target params
+func (o *DeleteLogTargetParams) SetIndex(index int64) {
+	o.Index = index
 }
 
 // WithParentName adds the parentName to the delete log target params
@@ -248,8 +248,8 @@ func (o *DeleteLogTargetParams) WriteToRequest(r runtime.ClientRequest, reg strf
 
 	}
 
-	// path param id
-	if err := r.SetPathParam("id", swag.FormatInt64(o.ID)); err != nil {
+	// path param index
+	if err := r.SetPathParam("index", swag.FormatInt64(o.Index)); err != nil {
 		return err
 	}
 

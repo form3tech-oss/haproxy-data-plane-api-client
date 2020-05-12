@@ -98,11 +98,11 @@ type ReplaceHTTPRequestRuleParams struct {
 
 	*/
 	ForceReload *bool
-	/*ID
-	  HTTP Request Rule ID
+	/*Index
+	  HTTP Request Rule Index
 
 	*/
-	ID int64
+	Index int64
 	/*ParentName
 	  Parent name
 
@@ -184,15 +184,15 @@ func (o *ReplaceHTTPRequestRuleParams) SetForceReload(forceReload *bool) {
 	o.ForceReload = forceReload
 }
 
-// WithID adds the id to the replace HTTP request rule params
-func (o *ReplaceHTTPRequestRuleParams) WithID(id int64) *ReplaceHTTPRequestRuleParams {
-	o.SetID(id)
+// WithIndex adds the index to the replace HTTP request rule params
+func (o *ReplaceHTTPRequestRuleParams) WithIndex(index int64) *ReplaceHTTPRequestRuleParams {
+	o.SetIndex(index)
 	return o
 }
 
-// SetID adds the id to the replace HTTP request rule params
-func (o *ReplaceHTTPRequestRuleParams) SetID(id int64) {
-	o.ID = id
+// SetIndex adds the index to the replace HTTP request rule params
+func (o *ReplaceHTTPRequestRuleParams) SetIndex(index int64) {
+	o.Index = index
 }
 
 // WithParentName adds the parentName to the replace HTTP request rule params
@@ -269,8 +269,8 @@ func (o *ReplaceHTTPRequestRuleParams) WriteToRequest(r runtime.ClientRequest, r
 
 	}
 
-	// path param id
-	if err := r.SetPathParam("id", swag.FormatInt64(o.ID)); err != nil {
+	// path param index
+	if err := r.SetPathParam("index", swag.FormatInt64(o.Index)); err != nil {
 		return err
 	}
 

@@ -42,12 +42,14 @@ type GetServerSwitchingRulesReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetServerSwitchingRulesReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetServerSwitchingRulesOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	default:
 		result := NewGetServerSwitchingRulesDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -81,10 +83,6 @@ func (o *GetServerSwitchingRulesOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/server_switching_rules][%d] getServerSwitchingRulesOK  %+v", 200, o.Payload)
 }
 
-func (o *GetServerSwitchingRulesOK) GetPayload() *GetServerSwitchingRulesOKBody {
-	return o.Payload
-}
-
 func (o *GetServerSwitchingRulesOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
@@ -107,7 +105,8 @@ func (o *GetServerSwitchingRulesOK) readResponse(response runtime.ClientResponse
 // NewGetServerSwitchingRulesDefault creates a GetServerSwitchingRulesDefault with default headers values
 func NewGetServerSwitchingRulesDefault(code int) *GetServerSwitchingRulesDefault {
 	return &GetServerSwitchingRulesDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -132,10 +131,6 @@ func (o *GetServerSwitchingRulesDefault) Code() int {
 
 func (o *GetServerSwitchingRulesDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/server_switching_rules][%d] getServerSwitchingRules default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *GetServerSwitchingRulesDefault) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *GetServerSwitchingRulesDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

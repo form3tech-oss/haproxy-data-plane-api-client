@@ -41,18 +41,21 @@ type GetHTTPRequestRuleReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetHTTPRequestRuleReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetHTTPRequestRuleOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewGetHTTPRequestRuleNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewGetHTTPRequestRuleDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -83,11 +86,7 @@ type GetHTTPRequestRuleOK struct {
 }
 
 func (o *GetHTTPRequestRuleOK) Error() string {
-	return fmt.Sprintf("[GET /services/haproxy/configuration/http_request_rules/{id}][%d] getHttpRequestRuleOK  %+v", 200, o.Payload)
-}
-
-func (o *GetHTTPRequestRuleOK) GetPayload() *GetHTTPRequestRuleOKBody {
-	return o.Payload
+	return fmt.Sprintf("[GET /services/haproxy/configuration/http_request_rules/{index}][%d] getHttpRequestRuleOK  %+v", 200, o.Payload)
 }
 
 func (o *GetHTTPRequestRuleOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -111,7 +110,9 @@ func (o *GetHTTPRequestRuleOK) readResponse(response runtime.ClientResponse, con
 
 // NewGetHTTPRequestRuleNotFound creates a GetHTTPRequestRuleNotFound with default headers values
 func NewGetHTTPRequestRuleNotFound() *GetHTTPRequestRuleNotFound {
-	return &GetHTTPRequestRuleNotFound{}
+	return &GetHTTPRequestRuleNotFound{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*GetHTTPRequestRuleNotFound handles this case with default header values.
@@ -127,11 +128,7 @@ type GetHTTPRequestRuleNotFound struct {
 }
 
 func (o *GetHTTPRequestRuleNotFound) Error() string {
-	return fmt.Sprintf("[GET /services/haproxy/configuration/http_request_rules/{id}][%d] getHttpRequestRuleNotFound  %+v", 404, o.Payload)
-}
-
-func (o *GetHTTPRequestRuleNotFound) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[GET /services/haproxy/configuration/http_request_rules/{index}][%d] getHttpRequestRuleNotFound  %+v", 404, o.Payload)
 }
 
 func (o *GetHTTPRequestRuleNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -156,7 +153,8 @@ func (o *GetHTTPRequestRuleNotFound) readResponse(response runtime.ClientRespons
 // NewGetHTTPRequestRuleDefault creates a GetHTTPRequestRuleDefault with default headers values
 func NewGetHTTPRequestRuleDefault(code int) *GetHTTPRequestRuleDefault {
 	return &GetHTTPRequestRuleDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -180,11 +178,7 @@ func (o *GetHTTPRequestRuleDefault) Code() int {
 }
 
 func (o *GetHTTPRequestRuleDefault) Error() string {
-	return fmt.Sprintf("[GET /services/haproxy/configuration/http_request_rules/{id}][%d] getHTTPRequestRule default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *GetHTTPRequestRuleDefault) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[GET /services/haproxy/configuration/http_request_rules/{index}][%d] getHTTPRequestRule default  %+v", o._statusCode, o.Payload)
 }
 
 func (o *GetHTTPRequestRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

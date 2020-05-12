@@ -41,24 +41,28 @@ type DeleteTCPRequestRuleReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *DeleteTCPRequestRuleReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 202:
 		result := NewDeleteTCPRequestRuleAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 204:
 		result := NewDeleteTCPRequestRuleNoContent()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewDeleteTCPRequestRuleNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewDeleteTCPRequestRuleDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -87,7 +91,7 @@ type DeleteTCPRequestRuleAccepted struct {
 }
 
 func (o *DeleteTCPRequestRuleAccepted) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/tcp_request_rules/{id}][%d] deleteTcpRequestRuleAccepted ", 202)
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/tcp_request_rules/{index}][%d] deleteTcpRequestRuleAccepted ", 202)
 }
 
 func (o *DeleteTCPRequestRuleAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -111,7 +115,7 @@ type DeleteTCPRequestRuleNoContent struct {
 }
 
 func (o *DeleteTCPRequestRuleNoContent) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/tcp_request_rules/{id}][%d] deleteTcpRequestRuleNoContent ", 204)
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/tcp_request_rules/{index}][%d] deleteTcpRequestRuleNoContent ", 204)
 }
 
 func (o *DeleteTCPRequestRuleNoContent) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -121,7 +125,9 @@ func (o *DeleteTCPRequestRuleNoContent) readResponse(response runtime.ClientResp
 
 // NewDeleteTCPRequestRuleNotFound creates a DeleteTCPRequestRuleNotFound with default headers values
 func NewDeleteTCPRequestRuleNotFound() *DeleteTCPRequestRuleNotFound {
-	return &DeleteTCPRequestRuleNotFound{}
+	return &DeleteTCPRequestRuleNotFound{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*DeleteTCPRequestRuleNotFound handles this case with default header values.
@@ -137,11 +143,7 @@ type DeleteTCPRequestRuleNotFound struct {
 }
 
 func (o *DeleteTCPRequestRuleNotFound) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/tcp_request_rules/{id}][%d] deleteTcpRequestRuleNotFound  %+v", 404, o.Payload)
-}
-
-func (o *DeleteTCPRequestRuleNotFound) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/tcp_request_rules/{index}][%d] deleteTcpRequestRuleNotFound  %+v", 404, o.Payload)
 }
 
 func (o *DeleteTCPRequestRuleNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -166,7 +168,8 @@ func (o *DeleteTCPRequestRuleNotFound) readResponse(response runtime.ClientRespo
 // NewDeleteTCPRequestRuleDefault creates a DeleteTCPRequestRuleDefault with default headers values
 func NewDeleteTCPRequestRuleDefault(code int) *DeleteTCPRequestRuleDefault {
 	return &DeleteTCPRequestRuleDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -190,11 +193,7 @@ func (o *DeleteTCPRequestRuleDefault) Code() int {
 }
 
 func (o *DeleteTCPRequestRuleDefault) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/tcp_request_rules/{id}][%d] deleteTCPRequestRule default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *DeleteTCPRequestRuleDefault) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/tcp_request_rules/{index}][%d] deleteTCPRequestRule default  %+v", o._statusCode, o.Payload)
 }
 
 func (o *DeleteTCPRequestRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

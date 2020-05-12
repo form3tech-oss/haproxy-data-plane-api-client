@@ -42,12 +42,14 @@ type GetBackendSwitchingRulesReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetBackendSwitchingRulesReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetBackendSwitchingRulesOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	default:
 		result := NewGetBackendSwitchingRulesDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -81,10 +83,6 @@ func (o *GetBackendSwitchingRulesOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/backend_switching_rules][%d] getBackendSwitchingRulesOK  %+v", 200, o.Payload)
 }
 
-func (o *GetBackendSwitchingRulesOK) GetPayload() *GetBackendSwitchingRulesOKBody {
-	return o.Payload
-}
-
 func (o *GetBackendSwitchingRulesOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
@@ -107,7 +105,8 @@ func (o *GetBackendSwitchingRulesOK) readResponse(response runtime.ClientRespons
 // NewGetBackendSwitchingRulesDefault creates a GetBackendSwitchingRulesDefault with default headers values
 func NewGetBackendSwitchingRulesDefault(code int) *GetBackendSwitchingRulesDefault {
 	return &GetBackendSwitchingRulesDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -132,10 +131,6 @@ func (o *GetBackendSwitchingRulesDefault) Code() int {
 
 func (o *GetBackendSwitchingRulesDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/backend_switching_rules][%d] getBackendSwitchingRules default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *GetBackendSwitchingRulesDefault) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *GetBackendSwitchingRulesDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

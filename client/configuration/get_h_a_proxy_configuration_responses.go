@@ -42,12 +42,14 @@ type GetHAProxyConfigurationReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetHAProxyConfigurationReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetHAProxyConfigurationOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	default:
 		result := NewGetHAProxyConfigurationDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -81,10 +83,6 @@ func (o *GetHAProxyConfigurationOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/raw][%d] getHAProxyConfigurationOK  %+v", 200, o.Payload)
 }
 
-func (o *GetHAProxyConfigurationOK) GetPayload() *GetHAProxyConfigurationOKBody {
-	return o.Payload
-}
-
 func (o *GetHAProxyConfigurationOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
@@ -107,7 +105,8 @@ func (o *GetHAProxyConfigurationOK) readResponse(response runtime.ClientResponse
 // NewGetHAProxyConfigurationDefault creates a GetHAProxyConfigurationDefault with default headers values
 func NewGetHAProxyConfigurationDefault(code int) *GetHAProxyConfigurationDefault {
 	return &GetHAProxyConfigurationDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -132,10 +131,6 @@ func (o *GetHAProxyConfigurationDefault) Code() int {
 
 func (o *GetHAProxyConfigurationDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/raw][%d] getHAProxyConfiguration default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *GetHAProxyConfigurationDefault) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *GetHAProxyConfigurationDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

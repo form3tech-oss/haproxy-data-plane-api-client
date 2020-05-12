@@ -30,7 +30,7 @@ import (
 
 	strfmt "github.com/go-openapi/strfmt"
 
-	"github.com/haproxytech/models"
+	models "github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // GetAPIEndpointsReader is a Reader for the GetAPIEndpoints structure.
@@ -41,12 +41,14 @@ type GetAPIEndpointsReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetAPIEndpointsReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetAPIEndpointsOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	default:
 		result := NewGetAPIEndpointsDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -76,10 +78,6 @@ func (o *GetAPIEndpointsOK) Error() string {
 	return fmt.Sprintf("[GET /][%d] getApiEndpointsOK  %+v", 200, o.Payload)
 }
 
-func (o *GetAPIEndpointsOK) GetPayload() models.Endpoints {
-	return o.Payload
-}
-
 func (o *GetAPIEndpointsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response payload
@@ -93,7 +91,8 @@ func (o *GetAPIEndpointsOK) readResponse(response runtime.ClientResponse, consum
 // NewGetAPIEndpointsDefault creates a GetAPIEndpointsDefault with default headers values
 func NewGetAPIEndpointsDefault(code int) *GetAPIEndpointsDefault {
 	return &GetAPIEndpointsDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -118,10 +117,6 @@ func (o *GetAPIEndpointsDefault) Code() int {
 
 func (o *GetAPIEndpointsDefault) Error() string {
 	return fmt.Sprintf("[GET /][%d] getAPIEndpoints default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *GetAPIEndpointsDefault) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *GetAPIEndpointsDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

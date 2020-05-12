@@ -42,12 +42,14 @@ type GetAclsReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetAclsReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetAclsOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	default:
 		result := NewGetAclsDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -81,10 +83,6 @@ func (o *GetAclsOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/acls][%d] getAclsOK  %+v", 200, o.Payload)
 }
 
-func (o *GetAclsOK) GetPayload() *GetAclsOKBody {
-	return o.Payload
-}
-
 func (o *GetAclsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
@@ -107,7 +105,8 @@ func (o *GetAclsOK) readResponse(response runtime.ClientResponse, consumer runti
 // NewGetAclsDefault creates a GetAclsDefault with default headers values
 func NewGetAclsDefault(code int) *GetAclsDefault {
 	return &GetAclsDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -132,10 +131,6 @@ func (o *GetAclsDefault) Code() int {
 
 func (o *GetAclsDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/acls][%d] getAcls default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *GetAclsDefault) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *GetAclsDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

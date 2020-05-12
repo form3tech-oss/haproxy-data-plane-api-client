@@ -41,18 +41,21 @@ type GetFilterReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetFilterReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetFilterOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewGetFilterNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewGetFilterDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -83,11 +86,7 @@ type GetFilterOK struct {
 }
 
 func (o *GetFilterOK) Error() string {
-	return fmt.Sprintf("[GET /services/haproxy/configuration/filters/{id}][%d] getFilterOK  %+v", 200, o.Payload)
-}
-
-func (o *GetFilterOK) GetPayload() *GetFilterOKBody {
-	return o.Payload
+	return fmt.Sprintf("[GET /services/haproxy/configuration/filters/{index}][%d] getFilterOK  %+v", 200, o.Payload)
 }
 
 func (o *GetFilterOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -111,7 +110,9 @@ func (o *GetFilterOK) readResponse(response runtime.ClientResponse, consumer run
 
 // NewGetFilterNotFound creates a GetFilterNotFound with default headers values
 func NewGetFilterNotFound() *GetFilterNotFound {
-	return &GetFilterNotFound{}
+	return &GetFilterNotFound{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*GetFilterNotFound handles this case with default header values.
@@ -127,11 +128,7 @@ type GetFilterNotFound struct {
 }
 
 func (o *GetFilterNotFound) Error() string {
-	return fmt.Sprintf("[GET /services/haproxy/configuration/filters/{id}][%d] getFilterNotFound  %+v", 404, o.Payload)
-}
-
-func (o *GetFilterNotFound) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[GET /services/haproxy/configuration/filters/{index}][%d] getFilterNotFound  %+v", 404, o.Payload)
 }
 
 func (o *GetFilterNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -156,7 +153,8 @@ func (o *GetFilterNotFound) readResponse(response runtime.ClientResponse, consum
 // NewGetFilterDefault creates a GetFilterDefault with default headers values
 func NewGetFilterDefault(code int) *GetFilterDefault {
 	return &GetFilterDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -180,11 +178,7 @@ func (o *GetFilterDefault) Code() int {
 }
 
 func (o *GetFilterDefault) Error() string {
-	return fmt.Sprintf("[GET /services/haproxy/configuration/filters/{id}][%d] getFilter default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *GetFilterDefault) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[GET /services/haproxy/configuration/filters/{index}][%d] getFilter default  %+v", o._statusCode, o.Payload)
 }
 
 func (o *GetFilterDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

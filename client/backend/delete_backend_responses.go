@@ -41,24 +41,28 @@ type DeleteBackendReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *DeleteBackendReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 202:
 		result := NewDeleteBackendAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 204:
 		result := NewDeleteBackendNoContent()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewDeleteBackendNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewDeleteBackendDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -121,7 +125,9 @@ func (o *DeleteBackendNoContent) readResponse(response runtime.ClientResponse, c
 
 // NewDeleteBackendNotFound creates a DeleteBackendNotFound with default headers values
 func NewDeleteBackendNotFound() *DeleteBackendNotFound {
-	return &DeleteBackendNotFound{}
+	return &DeleteBackendNotFound{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*DeleteBackendNotFound handles this case with default header values.
@@ -138,10 +144,6 @@ type DeleteBackendNotFound struct {
 
 func (o *DeleteBackendNotFound) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/configuration/backends/{name}][%d] deleteBackendNotFound  %+v", 404, o.Payload)
-}
-
-func (o *DeleteBackendNotFound) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *DeleteBackendNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -166,7 +168,8 @@ func (o *DeleteBackendNotFound) readResponse(response runtime.ClientResponse, co
 // NewDeleteBackendDefault creates a DeleteBackendDefault with default headers values
 func NewDeleteBackendDefault(code int) *DeleteBackendDefault {
 	return &DeleteBackendDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -191,10 +194,6 @@ func (o *DeleteBackendDefault) Code() int {
 
 func (o *DeleteBackendDefault) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/configuration/backends/{name}][%d] deleteBackend default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *DeleteBackendDefault) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *DeleteBackendDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

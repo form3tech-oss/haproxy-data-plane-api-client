@@ -22,11 +22,12 @@ package sites
 
 import (
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
+
+	strfmt "github.com/go-openapi/strfmt"
 )
 
 // New creates a new sites API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -38,25 +39,10 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-// ClientService is the interface for Client methods
-type ClientService interface {
-	CreateSite(params *CreateSiteParams, authInfo runtime.ClientAuthInfoWriter) (*CreateSiteCreated, *CreateSiteAccepted, error)
-
-	DeleteSite(params *DeleteSiteParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteSiteAccepted, *DeleteSiteNoContent, error)
-
-	GetSite(params *GetSiteParams, authInfo runtime.ClientAuthInfoWriter) (*GetSiteOK, error)
-
-	GetSites(params *GetSitesParams, authInfo runtime.ClientAuthInfoWriter) (*GetSitesOK, error)
-
-	ReplaceSite(params *ReplaceSiteParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceSiteOK, *ReplaceSiteAccepted, error)
-
-	SetTransport(transport runtime.ClientTransport)
-}
-
 /*
-  CreateSite adds a site
+CreateSite adds a site
 
-  Adds a new site to the configuration file.
+Adds a new site to the configuration file.
 */
 func (a *Client) CreateSite(params *CreateSiteParams, authInfo runtime.ClientAuthInfoWriter) (*CreateSiteCreated, *CreateSiteAccepted, error) {
 	// TODO: Validate the params before sending
@@ -86,15 +72,14 @@ func (a *Client) CreateSite(params *CreateSiteParams, authInfo runtime.ClientAut
 	case *CreateSiteAccepted:
 		return nil, value, nil
 	}
-	// unexpected success response
-	unexpectedSuccess := result.(*CreateSiteDefault)
-	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return nil, nil, nil
+
 }
 
 /*
-  DeleteSite deletes a site
+DeleteSite deletes a site
 
-  Deletes a site from the configuration by it's name.
+Deletes a site from the configuration by it's name.
 */
 func (a *Client) DeleteSite(params *DeleteSiteParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteSiteAccepted, *DeleteSiteNoContent, error) {
 	// TODO: Validate the params before sending
@@ -124,15 +109,14 @@ func (a *Client) DeleteSite(params *DeleteSiteParams, authInfo runtime.ClientAut
 	case *DeleteSiteNoContent:
 		return nil, value, nil
 	}
-	// unexpected success response
-	unexpectedSuccess := result.(*DeleteSiteDefault)
-	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return nil, nil, nil
+
 }
 
 /*
-  GetSite returns a site
+GetSite returns a site
 
-  Returns one site configuration by it's name.
+Returns one site configuration by it's name.
 */
 func (a *Client) GetSite(params *GetSiteParams, authInfo runtime.ClientAuthInfoWriter) (*GetSiteOK, error) {
 	// TODO: Validate the params before sending
@@ -156,19 +140,14 @@ func (a *Client) GetSite(params *GetSiteParams, authInfo runtime.ClientAuthInfoW
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetSiteOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetSiteDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetSiteOK), nil
+
 }
 
 /*
-  GetSites returns an array of sites
+GetSites returns an array of sites
 
-  Returns an array of all configured sites.
+Returns an array of all configured sites.
 */
 func (a *Client) GetSites(params *GetSitesParams, authInfo runtime.ClientAuthInfoWriter) (*GetSitesOK, error) {
 	// TODO: Validate the params before sending
@@ -192,19 +171,14 @@ func (a *Client) GetSites(params *GetSitesParams, authInfo runtime.ClientAuthInf
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetSitesOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetSitesDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetSitesOK), nil
+
 }
 
 /*
-  ReplaceSite replaces a site
+ReplaceSite replaces a site
 
-  Replaces a site configuration by it's name.
+Replaces a site configuration by it's name.
 */
 func (a *Client) ReplaceSite(params *ReplaceSiteParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceSiteOK, *ReplaceSiteAccepted, error) {
 	// TODO: Validate the params before sending
@@ -234,9 +208,8 @@ func (a *Client) ReplaceSite(params *ReplaceSiteParams, authInfo runtime.ClientA
 	case *ReplaceSiteAccepted:
 		return nil, value, nil
 	}
-	// unexpected success response
-	unexpectedSuccess := result.(*ReplaceSiteDefault)
-	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return nil, nil, nil
+
 }
 
 // SetTransport changes the transport on the client

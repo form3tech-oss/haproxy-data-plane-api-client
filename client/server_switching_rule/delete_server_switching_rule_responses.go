@@ -41,24 +41,28 @@ type DeleteServerSwitchingRuleReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *DeleteServerSwitchingRuleReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 202:
 		result := NewDeleteServerSwitchingRuleAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 204:
 		result := NewDeleteServerSwitchingRuleNoContent()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewDeleteServerSwitchingRuleNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewDeleteServerSwitchingRuleDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -87,7 +91,7 @@ type DeleteServerSwitchingRuleAccepted struct {
 }
 
 func (o *DeleteServerSwitchingRuleAccepted) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/server_switching_rules/{id}][%d] deleteServerSwitchingRuleAccepted ", 202)
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/server_switching_rules/{index}][%d] deleteServerSwitchingRuleAccepted ", 202)
 }
 
 func (o *DeleteServerSwitchingRuleAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -111,7 +115,7 @@ type DeleteServerSwitchingRuleNoContent struct {
 }
 
 func (o *DeleteServerSwitchingRuleNoContent) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/server_switching_rules/{id}][%d] deleteServerSwitchingRuleNoContent ", 204)
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/server_switching_rules/{index}][%d] deleteServerSwitchingRuleNoContent ", 204)
 }
 
 func (o *DeleteServerSwitchingRuleNoContent) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -121,7 +125,9 @@ func (o *DeleteServerSwitchingRuleNoContent) readResponse(response runtime.Clien
 
 // NewDeleteServerSwitchingRuleNotFound creates a DeleteServerSwitchingRuleNotFound with default headers values
 func NewDeleteServerSwitchingRuleNotFound() *DeleteServerSwitchingRuleNotFound {
-	return &DeleteServerSwitchingRuleNotFound{}
+	return &DeleteServerSwitchingRuleNotFound{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*DeleteServerSwitchingRuleNotFound handles this case with default header values.
@@ -137,11 +143,7 @@ type DeleteServerSwitchingRuleNotFound struct {
 }
 
 func (o *DeleteServerSwitchingRuleNotFound) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/server_switching_rules/{id}][%d] deleteServerSwitchingRuleNotFound  %+v", 404, o.Payload)
-}
-
-func (o *DeleteServerSwitchingRuleNotFound) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/server_switching_rules/{index}][%d] deleteServerSwitchingRuleNotFound  %+v", 404, o.Payload)
 }
 
 func (o *DeleteServerSwitchingRuleNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -166,7 +168,8 @@ func (o *DeleteServerSwitchingRuleNotFound) readResponse(response runtime.Client
 // NewDeleteServerSwitchingRuleDefault creates a DeleteServerSwitchingRuleDefault with default headers values
 func NewDeleteServerSwitchingRuleDefault(code int) *DeleteServerSwitchingRuleDefault {
 	return &DeleteServerSwitchingRuleDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -190,11 +193,7 @@ func (o *DeleteServerSwitchingRuleDefault) Code() int {
 }
 
 func (o *DeleteServerSwitchingRuleDefault) Error() string {
-	return fmt.Sprintf("[DELETE /services/haproxy/configuration/server_switching_rules/{id}][%d] deleteServerSwitchingRule default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *DeleteServerSwitchingRuleDefault) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[DELETE /services/haproxy/configuration/server_switching_rules/{index}][%d] deleteServerSwitchingRule default  %+v", o._statusCode, o.Payload)
 }
 
 func (o *DeleteServerSwitchingRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

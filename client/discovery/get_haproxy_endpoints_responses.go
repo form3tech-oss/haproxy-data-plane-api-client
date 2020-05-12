@@ -30,7 +30,7 @@ import (
 
 	strfmt "github.com/go-openapi/strfmt"
 
-	"github.com/haproxytech/models"
+	models "github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // GetHaproxyEndpointsReader is a Reader for the GetHaproxyEndpoints structure.
@@ -41,12 +41,14 @@ type GetHaproxyEndpointsReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetHaproxyEndpointsReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetHaproxyEndpointsOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	default:
 		result := NewGetHaproxyEndpointsDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -76,10 +78,6 @@ func (o *GetHaproxyEndpointsOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy][%d] getHaproxyEndpointsOK  %+v", 200, o.Payload)
 }
 
-func (o *GetHaproxyEndpointsOK) GetPayload() models.Endpoints {
-	return o.Payload
-}
-
 func (o *GetHaproxyEndpointsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response payload
@@ -93,7 +91,8 @@ func (o *GetHaproxyEndpointsOK) readResponse(response runtime.ClientResponse, co
 // NewGetHaproxyEndpointsDefault creates a GetHaproxyEndpointsDefault with default headers values
 func NewGetHaproxyEndpointsDefault(code int) *GetHaproxyEndpointsDefault {
 	return &GetHaproxyEndpointsDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -118,10 +117,6 @@ func (o *GetHaproxyEndpointsDefault) Code() int {
 
 func (o *GetHaproxyEndpointsDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy][%d] getHaproxyEndpoints default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *GetHaproxyEndpointsDefault) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *GetHaproxyEndpointsDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

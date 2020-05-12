@@ -41,30 +41,35 @@ type ReplaceBackendReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *ReplaceBackendReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewReplaceBackendOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 202:
 		result := NewReplaceBackendAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 400:
 		result := NewReplaceBackendBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	case 404:
 		result := NewReplaceBackendNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewReplaceBackendDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -92,10 +97,6 @@ type ReplaceBackendOK struct {
 
 func (o *ReplaceBackendOK) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/backends/{name}][%d] replaceBackendOK  %+v", 200, o.Payload)
-}
-
-func (o *ReplaceBackendOK) GetPayload() *models.Backend {
-	return o.Payload
 }
 
 func (o *ReplaceBackendOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -131,10 +132,6 @@ func (o *ReplaceBackendAccepted) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/backends/{name}][%d] replaceBackendAccepted  %+v", 202, o.Payload)
 }
 
-func (o *ReplaceBackendAccepted) GetPayload() *models.Backend {
-	return o.Payload
-}
-
 func (o *ReplaceBackendAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Reload-ID
@@ -152,7 +149,9 @@ func (o *ReplaceBackendAccepted) readResponse(response runtime.ClientResponse, c
 
 // NewReplaceBackendBadRequest creates a ReplaceBackendBadRequest with default headers values
 func NewReplaceBackendBadRequest() *ReplaceBackendBadRequest {
-	return &ReplaceBackendBadRequest{}
+	return &ReplaceBackendBadRequest{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*ReplaceBackendBadRequest handles this case with default header values.
@@ -169,10 +168,6 @@ type ReplaceBackendBadRequest struct {
 
 func (o *ReplaceBackendBadRequest) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/backends/{name}][%d] replaceBackendBadRequest  %+v", 400, o.Payload)
-}
-
-func (o *ReplaceBackendBadRequest) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *ReplaceBackendBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -196,7 +191,9 @@ func (o *ReplaceBackendBadRequest) readResponse(response runtime.ClientResponse,
 
 // NewReplaceBackendNotFound creates a ReplaceBackendNotFound with default headers values
 func NewReplaceBackendNotFound() *ReplaceBackendNotFound {
-	return &ReplaceBackendNotFound{}
+	return &ReplaceBackendNotFound{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*ReplaceBackendNotFound handles this case with default header values.
@@ -213,10 +210,6 @@ type ReplaceBackendNotFound struct {
 
 func (o *ReplaceBackendNotFound) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/backends/{name}][%d] replaceBackendNotFound  %+v", 404, o.Payload)
-}
-
-func (o *ReplaceBackendNotFound) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *ReplaceBackendNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -241,7 +234,8 @@ func (o *ReplaceBackendNotFound) readResponse(response runtime.ClientResponse, c
 // NewReplaceBackendDefault creates a ReplaceBackendDefault with default headers values
 func NewReplaceBackendDefault(code int) *ReplaceBackendDefault {
 	return &ReplaceBackendDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -266,10 +260,6 @@ func (o *ReplaceBackendDefault) Code() int {
 
 func (o *ReplaceBackendDefault) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/backends/{name}][%d] replaceBackend default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *ReplaceBackendDefault) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *ReplaceBackendDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

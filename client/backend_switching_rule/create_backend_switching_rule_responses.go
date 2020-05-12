@@ -41,30 +41,35 @@ type CreateBackendSwitchingRuleReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *CreateBackendSwitchingRuleReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 201:
 		result := NewCreateBackendSwitchingRuleCreated()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 202:
 		result := NewCreateBackendSwitchingRuleAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 400:
 		result := NewCreateBackendSwitchingRuleBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	case 409:
 		result := NewCreateBackendSwitchingRuleConflict()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewCreateBackendSwitchingRuleDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -92,10 +97,6 @@ type CreateBackendSwitchingRuleCreated struct {
 
 func (o *CreateBackendSwitchingRuleCreated) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/backend_switching_rules][%d] createBackendSwitchingRuleCreated  %+v", 201, o.Payload)
-}
-
-func (o *CreateBackendSwitchingRuleCreated) GetPayload() *models.BackendSwitchingRule {
-	return o.Payload
 }
 
 func (o *CreateBackendSwitchingRuleCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -131,10 +132,6 @@ func (o *CreateBackendSwitchingRuleAccepted) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/backend_switching_rules][%d] createBackendSwitchingRuleAccepted  %+v", 202, o.Payload)
 }
 
-func (o *CreateBackendSwitchingRuleAccepted) GetPayload() *models.BackendSwitchingRule {
-	return o.Payload
-}
-
 func (o *CreateBackendSwitchingRuleAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Reload-ID
@@ -152,7 +149,9 @@ func (o *CreateBackendSwitchingRuleAccepted) readResponse(response runtime.Clien
 
 // NewCreateBackendSwitchingRuleBadRequest creates a CreateBackendSwitchingRuleBadRequest with default headers values
 func NewCreateBackendSwitchingRuleBadRequest() *CreateBackendSwitchingRuleBadRequest {
-	return &CreateBackendSwitchingRuleBadRequest{}
+	return &CreateBackendSwitchingRuleBadRequest{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*CreateBackendSwitchingRuleBadRequest handles this case with default header values.
@@ -169,10 +168,6 @@ type CreateBackendSwitchingRuleBadRequest struct {
 
 func (o *CreateBackendSwitchingRuleBadRequest) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/backend_switching_rules][%d] createBackendSwitchingRuleBadRequest  %+v", 400, o.Payload)
-}
-
-func (o *CreateBackendSwitchingRuleBadRequest) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *CreateBackendSwitchingRuleBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -196,7 +191,9 @@ func (o *CreateBackendSwitchingRuleBadRequest) readResponse(response runtime.Cli
 
 // NewCreateBackendSwitchingRuleConflict creates a CreateBackendSwitchingRuleConflict with default headers values
 func NewCreateBackendSwitchingRuleConflict() *CreateBackendSwitchingRuleConflict {
-	return &CreateBackendSwitchingRuleConflict{}
+	return &CreateBackendSwitchingRuleConflict{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*CreateBackendSwitchingRuleConflict handles this case with default header values.
@@ -213,10 +210,6 @@ type CreateBackendSwitchingRuleConflict struct {
 
 func (o *CreateBackendSwitchingRuleConflict) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/backend_switching_rules][%d] createBackendSwitchingRuleConflict  %+v", 409, o.Payload)
-}
-
-func (o *CreateBackendSwitchingRuleConflict) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *CreateBackendSwitchingRuleConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -241,7 +234,8 @@ func (o *CreateBackendSwitchingRuleConflict) readResponse(response runtime.Clien
 // NewCreateBackendSwitchingRuleDefault creates a CreateBackendSwitchingRuleDefault with default headers values
 func NewCreateBackendSwitchingRuleDefault(code int) *CreateBackendSwitchingRuleDefault {
 	return &CreateBackendSwitchingRuleDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -266,10 +260,6 @@ func (o *CreateBackendSwitchingRuleDefault) Code() int {
 
 func (o *CreateBackendSwitchingRuleDefault) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/backend_switching_rules][%d] createBackendSwitchingRule default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *CreateBackendSwitchingRuleDefault) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *CreateBackendSwitchingRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

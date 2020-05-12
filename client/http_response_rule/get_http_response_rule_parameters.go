@@ -77,11 +77,11 @@ for the get HTTP response rule operation typically these are written to a http.R
 */
 type GetHTTPResponseRuleParams struct {
 
-	/*ID
-	  HTTP Response Rule ID
+	/*Index
+	  HTTP Response Rule Index
 
 	*/
-	ID int64
+	Index int64
 	/*ParentName
 	  Parent name
 
@@ -136,15 +136,15 @@ func (o *GetHTTPResponseRuleParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
-// WithID adds the id to the get HTTP response rule params
-func (o *GetHTTPResponseRuleParams) WithID(id int64) *GetHTTPResponseRuleParams {
-	o.SetID(id)
+// WithIndex adds the index to the get HTTP response rule params
+func (o *GetHTTPResponseRuleParams) WithIndex(index int64) *GetHTTPResponseRuleParams {
+	o.SetIndex(index)
 	return o
 }
 
-// SetID adds the id to the get HTTP response rule params
-func (o *GetHTTPResponseRuleParams) SetID(id int64) {
-	o.ID = id
+// SetIndex adds the index to the get HTTP response rule params
+func (o *GetHTTPResponseRuleParams) SetIndex(index int64) {
+	o.Index = index
 }
 
 // WithParentName adds the parentName to the get HTTP response rule params
@@ -188,8 +188,8 @@ func (o *GetHTTPResponseRuleParams) WriteToRequest(r runtime.ClientRequest, reg 
 	}
 	var res []error
 
-	// path param id
-	if err := r.SetPathParam("id", swag.FormatInt64(o.ID)); err != nil {
+	// path param index
+	if err := r.SetPathParam("index", swag.FormatInt64(o.Index)); err != nil {
 		return err
 	}
 

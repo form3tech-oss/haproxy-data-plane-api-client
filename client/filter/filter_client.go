@@ -22,11 +22,12 @@ package filter
 
 import (
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
+
+	strfmt "github.com/go-openapi/strfmt"
 )
 
 // New creates a new filter API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -38,25 +39,10 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-// ClientService is the interface for Client methods
-type ClientService interface {
-	CreateFilter(params *CreateFilterParams, authInfo runtime.ClientAuthInfoWriter) (*CreateFilterCreated, *CreateFilterAccepted, error)
-
-	DeleteFilter(params *DeleteFilterParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteFilterAccepted, *DeleteFilterNoContent, error)
-
-	GetFilter(params *GetFilterParams, authInfo runtime.ClientAuthInfoWriter) (*GetFilterOK, error)
-
-	GetFilters(params *GetFiltersParams, authInfo runtime.ClientAuthInfoWriter) (*GetFiltersOK, error)
-
-	ReplaceFilter(params *ReplaceFilterParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceFilterOK, *ReplaceFilterAccepted, error)
-
-	SetTransport(transport runtime.ClientTransport)
-}
-
 /*
-  CreateFilter adds a new filter
+CreateFilter adds a new filter
 
-  Adds a new Filter of the specified type in the specified parent.
+Adds a new Filter of the specified type in the specified parent.
 */
 func (a *Client) CreateFilter(params *CreateFilterParams, authInfo runtime.ClientAuthInfoWriter) (*CreateFilterCreated, *CreateFilterAccepted, error) {
 	// TODO: Validate the params before sending
@@ -86,15 +72,14 @@ func (a *Client) CreateFilter(params *CreateFilterParams, authInfo runtime.Clien
 	case *CreateFilterAccepted:
 		return nil, value, nil
 	}
-	// unexpected success response
-	unexpectedSuccess := result.(*CreateFilterDefault)
-	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return nil, nil, nil
+
 }
 
 /*
-  DeleteFilter deletes a filter
+DeleteFilter deletes a filter
 
-  Deletes a Filter configuration by it's ID from the specified parent.
+Deletes a Filter configuration by it's index from the specified parent.
 */
 func (a *Client) DeleteFilter(params *DeleteFilterParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteFilterAccepted, *DeleteFilterNoContent, error) {
 	// TODO: Validate the params before sending
@@ -105,7 +90,7 @@ func (a *Client) DeleteFilter(params *DeleteFilterParams, authInfo runtime.Clien
 	result, err := a.transport.Submit(&runtime.ClientOperation{
 		ID:                 "deleteFilter",
 		Method:             "DELETE",
-		PathPattern:        "/services/haproxy/configuration/filters/{id}",
+		PathPattern:        "/services/haproxy/configuration/filters/{index}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http"},
@@ -124,15 +109,14 @@ func (a *Client) DeleteFilter(params *DeleteFilterParams, authInfo runtime.Clien
 	case *DeleteFilterNoContent:
 		return nil, value, nil
 	}
-	// unexpected success response
-	unexpectedSuccess := result.(*DeleteFilterDefault)
-	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return nil, nil, nil
+
 }
 
 /*
-  GetFilter returns one filter
+GetFilter returns one filter
 
-  Returns one Filter configuration by it's ID in the specified parent.
+Returns one Filter configuration by it's index in the specified parent.
 */
 func (a *Client) GetFilter(params *GetFilterParams, authInfo runtime.ClientAuthInfoWriter) (*GetFilterOK, error) {
 	// TODO: Validate the params before sending
@@ -143,7 +127,7 @@ func (a *Client) GetFilter(params *GetFilterParams, authInfo runtime.ClientAuthI
 	result, err := a.transport.Submit(&runtime.ClientOperation{
 		ID:                 "getFilter",
 		Method:             "GET",
-		PathPattern:        "/services/haproxy/configuration/filters/{id}",
+		PathPattern:        "/services/haproxy/configuration/filters/{index}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http"},
@@ -156,19 +140,14 @@ func (a *Client) GetFilter(params *GetFilterParams, authInfo runtime.ClientAuthI
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetFilterOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetFilterDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetFilterOK), nil
+
 }
 
 /*
-  GetFilters returns an array of all filters
+GetFilters returns an array of all filters
 
-  Returns all Filters that are configured in specified parent.
+Returns all Filters that are configured in specified parent.
 */
 func (a *Client) GetFilters(params *GetFiltersParams, authInfo runtime.ClientAuthInfoWriter) (*GetFiltersOK, error) {
 	// TODO: Validate the params before sending
@@ -192,19 +171,14 @@ func (a *Client) GetFilters(params *GetFiltersParams, authInfo runtime.ClientAut
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetFiltersOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetFiltersDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetFiltersOK), nil
+
 }
 
 /*
-  ReplaceFilter replaces a filter
+ReplaceFilter replaces a filter
 
-  Replaces a Filter configuration by it's ID in the specified parent.
+Replaces a Filter configuration by it's index in the specified parent.
 */
 func (a *Client) ReplaceFilter(params *ReplaceFilterParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceFilterOK, *ReplaceFilterAccepted, error) {
 	// TODO: Validate the params before sending
@@ -215,7 +189,7 @@ func (a *Client) ReplaceFilter(params *ReplaceFilterParams, authInfo runtime.Cli
 	result, err := a.transport.Submit(&runtime.ClientOperation{
 		ID:                 "replaceFilter",
 		Method:             "PUT",
-		PathPattern:        "/services/haproxy/configuration/filters/{id}",
+		PathPattern:        "/services/haproxy/configuration/filters/{index}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http"},
@@ -234,9 +208,8 @@ func (a *Client) ReplaceFilter(params *ReplaceFilterParams, authInfo runtime.Cli
 	case *ReplaceFilterAccepted:
 		return nil, value, nil
 	}
-	// unexpected success response
-	unexpectedSuccess := result.(*ReplaceFilterDefault)
-	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return nil, nil, nil
+
 }
 
 // SetTransport changes the transport on the client

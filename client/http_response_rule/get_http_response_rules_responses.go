@@ -42,12 +42,14 @@ type GetHTTPResponseRulesReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetHTTPResponseRulesReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetHTTPResponseRulesOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	default:
 		result := NewGetHTTPResponseRulesDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -81,10 +83,6 @@ func (o *GetHTTPResponseRulesOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/http_response_rules][%d] getHttpResponseRulesOK  %+v", 200, o.Payload)
 }
 
-func (o *GetHTTPResponseRulesOK) GetPayload() *GetHTTPResponseRulesOKBody {
-	return o.Payload
-}
-
 func (o *GetHTTPResponseRulesOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
@@ -107,7 +105,8 @@ func (o *GetHTTPResponseRulesOK) readResponse(response runtime.ClientResponse, c
 // NewGetHTTPResponseRulesDefault creates a GetHTTPResponseRulesDefault with default headers values
 func NewGetHTTPResponseRulesDefault(code int) *GetHTTPResponseRulesDefault {
 	return &GetHTTPResponseRulesDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -132,10 +131,6 @@ func (o *GetHTTPResponseRulesDefault) Code() int {
 
 func (o *GetHTTPResponseRulesDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/http_response_rules][%d] getHTTPResponseRules default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *GetHTTPResponseRulesDefault) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *GetHTTPResponseRulesDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

@@ -30,7 +30,7 @@ import (
 
 	strfmt "github.com/go-openapi/strfmt"
 
-	"github.com/haproxytech/models"
+	models "github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // GetReloadReader is a Reader for the GetReload structure.
@@ -41,18 +41,21 @@ type GetReloadReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetReloadReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetReloadOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewGetReloadNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewGetReloadDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -82,10 +85,6 @@ func (o *GetReloadOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/reloads/{id}][%d] getReloadOK  %+v", 200, o.Payload)
 }
 
-func (o *GetReloadOK) GetPayload() *models.Reload {
-	return o.Payload
-}
-
 func (o *GetReloadOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.Reload)
@@ -100,7 +99,9 @@ func (o *GetReloadOK) readResponse(response runtime.ClientResponse, consumer run
 
 // NewGetReloadNotFound creates a GetReloadNotFound with default headers values
 func NewGetReloadNotFound() *GetReloadNotFound {
-	return &GetReloadNotFound{}
+	return &GetReloadNotFound{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*GetReloadNotFound handles this case with default header values.
@@ -117,10 +118,6 @@ type GetReloadNotFound struct {
 
 func (o *GetReloadNotFound) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/reloads/{id}][%d] getReloadNotFound  %+v", 404, o.Payload)
-}
-
-func (o *GetReloadNotFound) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *GetReloadNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -145,7 +142,8 @@ func (o *GetReloadNotFound) readResponse(response runtime.ClientResponse, consum
 // NewGetReloadDefault creates a GetReloadDefault with default headers values
 func NewGetReloadDefault(code int) *GetReloadDefault {
 	return &GetReloadDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -170,10 +168,6 @@ func (o *GetReloadDefault) Code() int {
 
 func (o *GetReloadDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/reloads/{id}][%d] getReload default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *GetReloadDefault) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *GetReloadDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

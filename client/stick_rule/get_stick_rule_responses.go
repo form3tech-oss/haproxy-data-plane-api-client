@@ -41,18 +41,21 @@ type GetStickRuleReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetStickRuleReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetStickRuleOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewGetStickRuleNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewGetStickRuleDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -83,11 +86,7 @@ type GetStickRuleOK struct {
 }
 
 func (o *GetStickRuleOK) Error() string {
-	return fmt.Sprintf("[GET /services/haproxy/configuration/stick_rules/{id}][%d] getStickRuleOK  %+v", 200, o.Payload)
-}
-
-func (o *GetStickRuleOK) GetPayload() *GetStickRuleOKBody {
-	return o.Payload
+	return fmt.Sprintf("[GET /services/haproxy/configuration/stick_rules/{index}][%d] getStickRuleOK  %+v", 200, o.Payload)
 }
 
 func (o *GetStickRuleOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -111,7 +110,9 @@ func (o *GetStickRuleOK) readResponse(response runtime.ClientResponse, consumer 
 
 // NewGetStickRuleNotFound creates a GetStickRuleNotFound with default headers values
 func NewGetStickRuleNotFound() *GetStickRuleNotFound {
-	return &GetStickRuleNotFound{}
+	return &GetStickRuleNotFound{
+		ConfigurationVersion: 0,
+	}
 }
 
 /*GetStickRuleNotFound handles this case with default header values.
@@ -127,11 +128,7 @@ type GetStickRuleNotFound struct {
 }
 
 func (o *GetStickRuleNotFound) Error() string {
-	return fmt.Sprintf("[GET /services/haproxy/configuration/stick_rules/{id}][%d] getStickRuleNotFound  %+v", 404, o.Payload)
-}
-
-func (o *GetStickRuleNotFound) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[GET /services/haproxy/configuration/stick_rules/{index}][%d] getStickRuleNotFound  %+v", 404, o.Payload)
 }
 
 func (o *GetStickRuleNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -156,7 +153,8 @@ func (o *GetStickRuleNotFound) readResponse(response runtime.ClientResponse, con
 // NewGetStickRuleDefault creates a GetStickRuleDefault with default headers values
 func NewGetStickRuleDefault(code int) *GetStickRuleDefault {
 	return &GetStickRuleDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -180,11 +178,7 @@ func (o *GetStickRuleDefault) Code() int {
 }
 
 func (o *GetStickRuleDefault) Error() string {
-	return fmt.Sprintf("[GET /services/haproxy/configuration/stick_rules/{id}][%d] getStickRule default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *GetStickRuleDefault) GetPayload() *models.Error {
-	return o.Payload
+	return fmt.Sprintf("[GET /services/haproxy/configuration/stick_rules/{index}][%d] getStickRule default  %+v", o._statusCode, o.Payload)
 }
 
 func (o *GetStickRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

@@ -30,7 +30,7 @@ import (
 
 	strfmt "github.com/go-openapi/strfmt"
 
-	"github.com/haproxytech/models"
+	models "github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // StartTransactionReader is a Reader for the StartTransaction structure.
@@ -41,12 +41,14 @@ type StartTransactionReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *StartTransactionReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 201:
 		result := NewStartTransactionCreated()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	default:
 		result := NewStartTransactionDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -76,10 +78,6 @@ func (o *StartTransactionCreated) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/transactions][%d] startTransactionCreated  %+v", 201, o.Payload)
 }
 
-func (o *StartTransactionCreated) GetPayload() *models.Transaction {
-	return o.Payload
-}
-
 func (o *StartTransactionCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.Transaction)
@@ -95,7 +93,8 @@ func (o *StartTransactionCreated) readResponse(response runtime.ClientResponse, 
 // NewStartTransactionDefault creates a StartTransactionDefault with default headers values
 func NewStartTransactionDefault(code int) *StartTransactionDefault {
 	return &StartTransactionDefault{
-		_statusCode: code,
+		_statusCode:          code,
+		ConfigurationVersion: 0,
 	}
 }
 
@@ -120,10 +119,6 @@ func (o *StartTransactionDefault) Code() int {
 
 func (o *StartTransactionDefault) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/transactions][%d] startTransaction default  %+v", o._statusCode, o.Payload)
-}
-
-func (o *StartTransactionDefault) GetPayload() *models.Error {
-	return o.Payload
 }
 
 func (o *StartTransactionDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
