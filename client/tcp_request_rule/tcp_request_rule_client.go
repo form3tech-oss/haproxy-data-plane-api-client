@@ -22,12 +22,11 @@ package tcp_request_rule
 
 import (
 	"github.com/go-openapi/runtime"
-
-	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/strfmt"
 )
 
 // New creates a new tcp request rule API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -39,10 +38,25 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-/*
-CreateTCPRequestRule adds a new TCP request rule
+// ClientService is the interface for Client methods
+type ClientService interface {
+	CreateTCPRequestRule(params *CreateTCPRequestRuleParams, authInfo runtime.ClientAuthInfoWriter) (*CreateTCPRequestRuleCreated, *CreateTCPRequestRuleAccepted, error)
 
-Adds a new TCP Request Rule of the specified type in the specified parent.
+	DeleteTCPRequestRule(params *DeleteTCPRequestRuleParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteTCPRequestRuleAccepted, *DeleteTCPRequestRuleNoContent, error)
+
+	GetTCPRequestRule(params *GetTCPRequestRuleParams, authInfo runtime.ClientAuthInfoWriter) (*GetTCPRequestRuleOK, error)
+
+	GetTCPRequestRules(params *GetTCPRequestRulesParams, authInfo runtime.ClientAuthInfoWriter) (*GetTCPRequestRulesOK, error)
+
+	ReplaceTCPRequestRule(params *ReplaceTCPRequestRuleParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceTCPRequestRuleOK, *ReplaceTCPRequestRuleAccepted, error)
+
+	SetTransport(transport runtime.ClientTransport)
+}
+
+/*
+  CreateTCPRequestRule adds a new TCP request rule
+
+  Adds a new TCP Request Rule of the specified type in the specified parent.
 */
 func (a *Client) CreateTCPRequestRule(params *CreateTCPRequestRuleParams, authInfo runtime.ClientAuthInfoWriter) (*CreateTCPRequestRuleCreated, *CreateTCPRequestRuleAccepted, error) {
 	// TODO: Validate the params before sending
@@ -72,14 +86,15 @@ func (a *Client) CreateTCPRequestRule(params *CreateTCPRequestRuleParams, authIn
 	case *CreateTCPRequestRuleAccepted:
 		return nil, value, nil
 	}
-	return nil, nil, nil
-
+	// unexpected success response
+	unexpectedSuccess := result.(*CreateTCPRequestRuleDefault)
+	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-DeleteTCPRequestRule deletes a TCP request rule
+  DeleteTCPRequestRule deletes a TCP request rule
 
-Deletes a TCP Request Rule configuration by it's index from the specified parent.
+  Deletes a TCP Request Rule configuration by it's index from the specified parent.
 */
 func (a *Client) DeleteTCPRequestRule(params *DeleteTCPRequestRuleParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteTCPRequestRuleAccepted, *DeleteTCPRequestRuleNoContent, error) {
 	// TODO: Validate the params before sending
@@ -109,14 +124,15 @@ func (a *Client) DeleteTCPRequestRule(params *DeleteTCPRequestRuleParams, authIn
 	case *DeleteTCPRequestRuleNoContent:
 		return nil, value, nil
 	}
-	return nil, nil, nil
-
+	// unexpected success response
+	unexpectedSuccess := result.(*DeleteTCPRequestRuleDefault)
+	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-GetTCPRequestRule returns one TCP request rule
+  GetTCPRequestRule returns one TCP request rule
 
-Returns one TCP Request Rule configuration by it's index in the specified parent.
+  Returns one TCP Request Rule configuration by it's index in the specified parent.
 */
 func (a *Client) GetTCPRequestRule(params *GetTCPRequestRuleParams, authInfo runtime.ClientAuthInfoWriter) (*GetTCPRequestRuleOK, error) {
 	// TODO: Validate the params before sending
@@ -140,14 +156,19 @@ func (a *Client) GetTCPRequestRule(params *GetTCPRequestRuleParams, authInfo run
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetTCPRequestRuleOK), nil
-
+	success, ok := result.(*GetTCPRequestRuleOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetTCPRequestRuleDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-GetTCPRequestRules returns an array of all TCP request rules
+  GetTCPRequestRules returns an array of all TCP request rules
 
-Returns all TCP Request Rules that are configured in specified parent and parent type.
+  Returns all TCP Request Rules that are configured in specified parent and parent type.
 */
 func (a *Client) GetTCPRequestRules(params *GetTCPRequestRulesParams, authInfo runtime.ClientAuthInfoWriter) (*GetTCPRequestRulesOK, error) {
 	// TODO: Validate the params before sending
@@ -171,14 +192,19 @@ func (a *Client) GetTCPRequestRules(params *GetTCPRequestRulesParams, authInfo r
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetTCPRequestRulesOK), nil
-
+	success, ok := result.(*GetTCPRequestRulesOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetTCPRequestRulesDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-ReplaceTCPRequestRule replaces a TCP request rule
+  ReplaceTCPRequestRule replaces a TCP request rule
 
-Replaces a TCP Request Rule configuration by it's index in the specified parent.
+  Replaces a TCP Request Rule configuration by it's index in the specified parent.
 */
 func (a *Client) ReplaceTCPRequestRule(params *ReplaceTCPRequestRuleParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceTCPRequestRuleOK, *ReplaceTCPRequestRuleAccepted, error) {
 	// TODO: Validate the params before sending
@@ -208,8 +234,9 @@ func (a *Client) ReplaceTCPRequestRule(params *ReplaceTCPRequestRuleParams, auth
 	case *ReplaceTCPRequestRuleAccepted:
 		return nil, value, nil
 	}
-	return nil, nil, nil
-
+	// unexpected success response
+	unexpectedSuccess := result.(*ReplaceTCPRequestRuleDefault)
+	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 // SetTransport changes the transport on the client

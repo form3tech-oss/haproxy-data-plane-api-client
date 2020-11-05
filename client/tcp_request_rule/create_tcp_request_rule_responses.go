@@ -26,9 +26,8 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-
-	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/haproxytech/models"
 )
@@ -41,35 +40,30 @@ type CreateTCPRequestRuleReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *CreateTCPRequestRuleReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 201:
 		result := NewCreateTCPRequestRuleCreated()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 202:
 		result := NewCreateTCPRequestRuleAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 400:
 		result := NewCreateTCPRequestRuleBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	case 409:
 		result := NewCreateTCPRequestRuleConflict()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewCreateTCPRequestRuleDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -97,6 +91,10 @@ type CreateTCPRequestRuleCreated struct {
 
 func (o *CreateTCPRequestRuleCreated) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/tcp_request_rules][%d] createTcpRequestRuleCreated  %+v", 201, o.Payload)
+}
+
+func (o *CreateTCPRequestRuleCreated) GetPayload() *models.TCPRequestRule {
+	return o.Payload
 }
 
 func (o *CreateTCPRequestRuleCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -130,6 +128,10 @@ type CreateTCPRequestRuleAccepted struct {
 
 func (o *CreateTCPRequestRuleAccepted) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/tcp_request_rules][%d] createTcpRequestRuleAccepted  %+v", 202, o.Payload)
+}
+
+func (o *CreateTCPRequestRuleAccepted) GetPayload() *models.TCPRequestRule {
+	return o.Payload
 }
 
 func (o *CreateTCPRequestRuleAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -168,6 +170,10 @@ type CreateTCPRequestRuleBadRequest struct {
 
 func (o *CreateTCPRequestRuleBadRequest) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/tcp_request_rules][%d] createTcpRequestRuleBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *CreateTCPRequestRuleBadRequest) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *CreateTCPRequestRuleBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -210,6 +216,10 @@ type CreateTCPRequestRuleConflict struct {
 
 func (o *CreateTCPRequestRuleConflict) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/tcp_request_rules][%d] createTcpRequestRuleConflict  %+v", 409, o.Payload)
+}
+
+func (o *CreateTCPRequestRuleConflict) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *CreateTCPRequestRuleConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -260,6 +270,10 @@ func (o *CreateTCPRequestRuleDefault) Code() int {
 
 func (o *CreateTCPRequestRuleDefault) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/tcp_request_rules][%d] createTCPRequestRule default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *CreateTCPRequestRuleDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *CreateTCPRequestRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

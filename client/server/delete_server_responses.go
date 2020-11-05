@@ -26,9 +26,8 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-
-	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/haproxytech/models"
 )
@@ -41,28 +40,24 @@ type DeleteServerReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *DeleteServerReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 202:
 		result := NewDeleteServerAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 204:
 		result := NewDeleteServerNoContent()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 404:
 		result := NewDeleteServerNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewDeleteServerDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -146,6 +141,10 @@ func (o *DeleteServerNotFound) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/configuration/servers/{name}][%d] deleteServerNotFound  %+v", 404, o.Payload)
 }
 
+func (o *DeleteServerNotFound) GetPayload() *models.Error {
+	return o.Payload
+}
+
 func (o *DeleteServerNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
@@ -194,6 +193,10 @@ func (o *DeleteServerDefault) Code() int {
 
 func (o *DeleteServerDefault) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/configuration/servers/{name}][%d] deleteServer default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *DeleteServerDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *DeleteServerDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

@@ -4,13 +4,15 @@ import (
 	"flag"
 	"testing"
 
-	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/operations"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/frontend"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/server"
 	"github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
 	"github.com/stretchr/testify/assert"
 )
 
 const (
+	fooBackendName    = "foo"
 	statsFrontendName = "stats"
 )
 
@@ -32,8 +34,11 @@ func TestGetFrontend(t *testing.T) {
 	c := client.New(addr, path, []string{})
 	c.Debug = true
 	h := New(c, strfmt.Default)
-	p := operations.NewGetFrontendParams().WithName(statsFrontendName)
-	f, err := h.Operations.GetFrontend(p, client.BasicAuth(user, pass))
+	f, err := h.Frontend.GetFrontend(frontend.NewGetFrontendParams().WithName(statsFrontendName), client.BasicAuth(user, pass))
 	assert.NoError(t, err)
 	assert.Equal(t, statsFrontendName, f.Payload.Data.Name)
+	s, err := h.Server.GetServers(server.NewGetServersParams().WithBackend(fooBackendName), client.BasicAuth(user, pass))
+	assert.NoError(t, err)
+	assert.Equal(t, 1, len(s.Payload.Data))
+	assert.Equal(t, "ECDHE-RSA-AES256-GCM-SHA384", s.Payload.Data[0].Ciphers)
 }

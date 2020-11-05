@@ -26,11 +26,10 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	strfmt "github.com/go-openapi/strfmt"
-
-	models "github.com/form3tech-oss/haproxy-data-plane-api-client/models"
+	"github.com/haproxytech/models"
 )
 
 // GetAllRuntimeMapFilesReader is a Reader for the GetAllRuntimeMapFiles structure.
@@ -41,21 +40,18 @@ type GetAllRuntimeMapFilesReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetAllRuntimeMapFilesReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewGetAllRuntimeMapFilesOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 404:
 		result := NewGetAllRuntimeMapFilesNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewGetAllRuntimeMapFilesDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -83,6 +79,10 @@ type GetAllRuntimeMapFilesOK struct {
 
 func (o *GetAllRuntimeMapFilesOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/runtime/maps][%d] getAllRuntimeMapFilesOK  %+v", 200, o.Payload)
+}
+
+func (o *GetAllRuntimeMapFilesOK) GetPayload() models.Maps {
+	return o.Payload
 }
 
 func (o *GetAllRuntimeMapFilesOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -116,6 +116,10 @@ type GetAllRuntimeMapFilesNotFound struct {
 
 func (o *GetAllRuntimeMapFilesNotFound) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/runtime/maps][%d] getAllRuntimeMapFilesNotFound  %+v", 404, o.Payload)
+}
+
+func (o *GetAllRuntimeMapFilesNotFound) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *GetAllRuntimeMapFilesNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -166,6 +170,10 @@ func (o *GetAllRuntimeMapFilesDefault) Code() int {
 
 func (o *GetAllRuntimeMapFilesDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/runtime/maps][%d] getAllRuntimeMapFiles default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *GetAllRuntimeMapFilesDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *GetAllRuntimeMapFilesDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

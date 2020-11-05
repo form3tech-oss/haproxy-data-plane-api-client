@@ -26,11 +26,10 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	strfmt "github.com/go-openapi/strfmt"
-
-	models "github.com/form3tech-oss/haproxy-data-plane-api-client/models"
+	"github.com/haproxytech/models"
 )
 
 // GetRuntimeMapEntryReader is a Reader for the GetRuntimeMapEntry structure.
@@ -41,21 +40,18 @@ type GetRuntimeMapEntryReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetRuntimeMapEntryReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewGetRuntimeMapEntryOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 404:
 		result := NewGetRuntimeMapEntryNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewGetRuntimeMapEntryDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -83,6 +79,10 @@ type GetRuntimeMapEntryOK struct {
 
 func (o *GetRuntimeMapEntryOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/runtime/maps_entries/{id}][%d] getRuntimeMapEntryOK  %+v", 200, o.Payload)
+}
+
+func (o *GetRuntimeMapEntryOK) GetPayload() *models.MapEntry {
+	return o.Payload
 }
 
 func (o *GetRuntimeMapEntryOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -118,6 +118,10 @@ type GetRuntimeMapEntryNotFound struct {
 
 func (o *GetRuntimeMapEntryNotFound) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/runtime/maps_entries/{id}][%d] getRuntimeMapEntryNotFound  %+v", 404, o.Payload)
+}
+
+func (o *GetRuntimeMapEntryNotFound) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *GetRuntimeMapEntryNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -168,6 +172,10 @@ func (o *GetRuntimeMapEntryDefault) Code() int {
 
 func (o *GetRuntimeMapEntryDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/runtime/maps_entries/{id}][%d] getRuntimeMapEntry default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *GetRuntimeMapEntryDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *GetRuntimeMapEntryDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

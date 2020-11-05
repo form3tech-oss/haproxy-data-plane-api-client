@@ -22,12 +22,11 @@ package http_request_rule
 
 import (
 	"github.com/go-openapi/runtime"
-
-	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/strfmt"
 )
 
 // New creates a new http request rule API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -39,10 +38,25 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-/*
-CreateHTTPRequestRule adds a new HTTP request rule
+// ClientService is the interface for Client methods
+type ClientService interface {
+	CreateHTTPRequestRule(params *CreateHTTPRequestRuleParams, authInfo runtime.ClientAuthInfoWriter) (*CreateHTTPRequestRuleCreated, *CreateHTTPRequestRuleAccepted, error)
 
-Adds a new HTTP Request Rule of the specified type in the specified parent.
+	DeleteHTTPRequestRule(params *DeleteHTTPRequestRuleParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteHTTPRequestRuleAccepted, *DeleteHTTPRequestRuleNoContent, error)
+
+	GetHTTPRequestRule(params *GetHTTPRequestRuleParams, authInfo runtime.ClientAuthInfoWriter) (*GetHTTPRequestRuleOK, error)
+
+	GetHTTPRequestRules(params *GetHTTPRequestRulesParams, authInfo runtime.ClientAuthInfoWriter) (*GetHTTPRequestRulesOK, error)
+
+	ReplaceHTTPRequestRule(params *ReplaceHTTPRequestRuleParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceHTTPRequestRuleOK, *ReplaceHTTPRequestRuleAccepted, error)
+
+	SetTransport(transport runtime.ClientTransport)
+}
+
+/*
+  CreateHTTPRequestRule adds a new HTTP request rule
+
+  Adds a new HTTP Request Rule of the specified type in the specified parent.
 */
 func (a *Client) CreateHTTPRequestRule(params *CreateHTTPRequestRuleParams, authInfo runtime.ClientAuthInfoWriter) (*CreateHTTPRequestRuleCreated, *CreateHTTPRequestRuleAccepted, error) {
 	// TODO: Validate the params before sending
@@ -72,14 +86,15 @@ func (a *Client) CreateHTTPRequestRule(params *CreateHTTPRequestRuleParams, auth
 	case *CreateHTTPRequestRuleAccepted:
 		return nil, value, nil
 	}
-	return nil, nil, nil
-
+	// unexpected success response
+	unexpectedSuccess := result.(*CreateHTTPRequestRuleDefault)
+	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-DeleteHTTPRequestRule deletes a HTTP request rule
+  DeleteHTTPRequestRule deletes a HTTP request rule
 
-Deletes a HTTP Request Rule configuration by it's index from the specified parent.
+  Deletes a HTTP Request Rule configuration by it's index from the specified parent.
 */
 func (a *Client) DeleteHTTPRequestRule(params *DeleteHTTPRequestRuleParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteHTTPRequestRuleAccepted, *DeleteHTTPRequestRuleNoContent, error) {
 	// TODO: Validate the params before sending
@@ -109,14 +124,15 @@ func (a *Client) DeleteHTTPRequestRule(params *DeleteHTTPRequestRuleParams, auth
 	case *DeleteHTTPRequestRuleNoContent:
 		return nil, value, nil
 	}
-	return nil, nil, nil
-
+	// unexpected success response
+	unexpectedSuccess := result.(*DeleteHTTPRequestRuleDefault)
+	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-GetHTTPRequestRule returns one HTTP request rule
+  GetHTTPRequestRule returns one HTTP request rule
 
-Returns one HTTP Request Rule configuration by it's index in the specified parent.
+  Returns one HTTP Request Rule configuration by it's index in the specified parent.
 */
 func (a *Client) GetHTTPRequestRule(params *GetHTTPRequestRuleParams, authInfo runtime.ClientAuthInfoWriter) (*GetHTTPRequestRuleOK, error) {
 	// TODO: Validate the params before sending
@@ -140,14 +156,19 @@ func (a *Client) GetHTTPRequestRule(params *GetHTTPRequestRuleParams, authInfo r
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetHTTPRequestRuleOK), nil
-
+	success, ok := result.(*GetHTTPRequestRuleOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetHTTPRequestRuleDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-GetHTTPRequestRules returns an array of all HTTP request rules
+  GetHTTPRequestRules returns an array of all HTTP request rules
 
-Returns all HTTP Request Rules that are configured in specified parent.
+  Returns all HTTP Request Rules that are configured in specified parent.
 */
 func (a *Client) GetHTTPRequestRules(params *GetHTTPRequestRulesParams, authInfo runtime.ClientAuthInfoWriter) (*GetHTTPRequestRulesOK, error) {
 	// TODO: Validate the params before sending
@@ -171,14 +192,19 @@ func (a *Client) GetHTTPRequestRules(params *GetHTTPRequestRulesParams, authInfo
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetHTTPRequestRulesOK), nil
-
+	success, ok := result.(*GetHTTPRequestRulesOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetHTTPRequestRulesDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-ReplaceHTTPRequestRule replaces a HTTP request rule
+  ReplaceHTTPRequestRule replaces a HTTP request rule
 
-Replaces a HTTP Request Rule configuration by it's index in the specified parent.
+  Replaces a HTTP Request Rule configuration by it's index in the specified parent.
 */
 func (a *Client) ReplaceHTTPRequestRule(params *ReplaceHTTPRequestRuleParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceHTTPRequestRuleOK, *ReplaceHTTPRequestRuleAccepted, error) {
 	// TODO: Validate the params before sending
@@ -208,8 +234,9 @@ func (a *Client) ReplaceHTTPRequestRule(params *ReplaceHTTPRequestRuleParams, au
 	case *ReplaceHTTPRequestRuleAccepted:
 		return nil, value, nil
 	}
-	return nil, nil, nil
-
+	// unexpected success response
+	unexpectedSuccess := result.(*ReplaceHTTPRequestRuleDefault)
+	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 // SetTransport changes the transport on the client

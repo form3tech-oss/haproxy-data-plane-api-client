@@ -23,9 +23,8 @@ package models
 import (
 	"encoding/json"
 
-	strfmt "github.com/go-openapi/strfmt"
-
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
@@ -33,11 +32,12 @@ import (
 // TCPResponseRule TCP Response Rule
 //
 // HAProxy TCP Response Rule configuration (corresponds to tcp-response)
+//
 // swagger:model tcp_response_rule
 type TCPResponseRule struct {
 
 	// action
-	// Enum: [accept reject]
+	// Enum: [accept reject lua]
 	Action string `json:"action,omitempty"`
 
 	// cond
@@ -50,6 +50,13 @@ type TCPResponseRule struct {
 	// index
 	// Required: true
 	Index *int64 `json:"index"`
+
+	// lua action
+	// Pattern: ^[^\s]+$
+	LuaAction string `json:"lua_action,omitempty"`
+
+	// lua params
+	LuaParams string `json:"lua_params,omitempty"`
 
 	// timeout
 	Timeout *int64 `json:"timeout,omitempty"`
@@ -76,6 +83,10 @@ func (m *TCPResponseRule) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := m.validateLuaAction(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.validateType(formats); err != nil {
 		res = append(res, err)
 	}
@@ -90,7 +101,7 @@ var tcpResponseRuleTypeActionPropEnum []interface{}
 
 func init() {
 	var res []string
-	if err := json.Unmarshal([]byte(`["accept","reject"]`), &res); err != nil {
+	if err := json.Unmarshal([]byte(`["accept","reject","lua"]`), &res); err != nil {
 		panic(err)
 	}
 	for _, v := range res {
@@ -105,11 +116,14 @@ const (
 
 	// TCPResponseRuleActionReject captures enum value "reject"
 	TCPResponseRuleActionReject string = "reject"
+
+	// TCPResponseRuleActionLua captures enum value "lua"
+	TCPResponseRuleActionLua string = "lua"
 )
 
 // prop value enum
 func (m *TCPResponseRule) validateActionEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, tcpResponseRuleTypeActionPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, tcpResponseRuleTypeActionPropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -152,7 +166,7 @@ const (
 
 // prop value enum
 func (m *TCPResponseRule) validateCondEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, tcpResponseRuleTypeCondPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, tcpResponseRuleTypeCondPropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -175,6 +189,19 @@ func (m *TCPResponseRule) validateCond(formats strfmt.Registry) error {
 func (m *TCPResponseRule) validateIndex(formats strfmt.Registry) error {
 
 	if err := validate.Required("index", "body", m.Index); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *TCPResponseRule) validateLuaAction(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.LuaAction) { // not required
+		return nil
+	}
+
+	if err := validate.Pattern("lua_action", "body", string(m.LuaAction), `^[^\s]+$`); err != nil {
 		return err
 	}
 
@@ -204,7 +231,7 @@ const (
 
 // prop value enum
 func (m *TCPResponseRule) validateTypeEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, tcpResponseRuleTypeTypePropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, tcpResponseRuleTypeTypePropEnum, true); err != nil {
 		return err
 	}
 	return nil

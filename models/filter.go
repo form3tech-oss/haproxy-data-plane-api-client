@@ -23,9 +23,8 @@ package models
 import (
 	"encoding/json"
 
-	strfmt "github.com/go-openapi/strfmt"
-
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
@@ -33,6 +32,7 @@ import (
 // Filter Filter
 //
 // HAProxy filters
+//
 // swagger:model filter
 type Filter struct {
 
@@ -195,7 +195,7 @@ const (
 
 // prop value enum
 func (m *Filter) validateTypeEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, filterTypeTypePropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, filterTypeTypePropEnum, true); err != nil {
 		return err
 	}
 	return nil

@@ -23,14 +23,14 @@ package models
 import (
 	"encoding/json"
 
-	strfmt "github.com/go-openapi/strfmt"
-
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
 
 // Redispatch redispatch
+//
 // swagger:model redispatch
 type Redispatch struct {
 
@@ -80,7 +80,7 @@ const (
 
 // prop value enum
 func (m *Redispatch) validateEnabledEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, redispatchTypeEnabledPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, redispatchTypeEnabledPropEnum, true); err != nil {
 		return err
 	}
 	return nil

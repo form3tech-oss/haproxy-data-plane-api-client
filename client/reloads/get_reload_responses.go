@@ -26,11 +26,10 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	strfmt "github.com/go-openapi/strfmt"
-
-	models "github.com/form3tech-oss/haproxy-data-plane-api-client/models"
+	"github.com/haproxytech/models"
 )
 
 // GetReloadReader is a Reader for the GetReload structure.
@@ -41,21 +40,18 @@ type GetReloadReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetReloadReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewGetReloadOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 404:
 		result := NewGetReloadNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewGetReloadDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -83,6 +79,10 @@ type GetReloadOK struct {
 
 func (o *GetReloadOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/reloads/{id}][%d] getReloadOK  %+v", 200, o.Payload)
+}
+
+func (o *GetReloadOK) GetPayload() *models.Reload {
+	return o.Payload
 }
 
 func (o *GetReloadOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -118,6 +118,10 @@ type GetReloadNotFound struct {
 
 func (o *GetReloadNotFound) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/reloads/{id}][%d] getReloadNotFound  %+v", 404, o.Payload)
+}
+
+func (o *GetReloadNotFound) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *GetReloadNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -168,6 +172,10 @@ func (o *GetReloadDefault) Code() int {
 
 func (o *GetReloadDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/reloads/{id}][%d] getReload default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *GetReloadDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *GetReloadDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

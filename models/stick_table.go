@@ -24,9 +24,8 @@ import (
 	"encoding/json"
 	"strconv"
 
-	strfmt "github.com/go-openapi/strfmt"
-
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
@@ -34,6 +33,7 @@ import (
 // StickTable Stick Table
 //
 // Stick Table Information
+//
 // swagger:model stick_table
 type StickTable struct {
 
@@ -132,7 +132,7 @@ const (
 
 // prop value enum
 func (m *StickTable) validateTypeEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, stickTableTypeTypePropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, stickTableTypeTypePropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -171,6 +171,7 @@ func (m *StickTable) UnmarshalBinary(b []byte) error {
 }
 
 // StickTableField stick table field
+//
 // swagger:model StickTableField
 type StickTableField struct {
 
@@ -275,7 +276,7 @@ const (
 
 // prop value enum
 func (m *StickTableField) validateFieldEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, stickTableFieldTypeFieldPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, stickTableFieldTypeFieldPropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -318,7 +319,7 @@ const (
 
 // prop value enum
 func (m *StickTableField) validateTypeEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, stickTableFieldTypeTypePropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, stickTableFieldTypeTypePropEnum, true); err != nil {
 		return err
 	}
 	return nil

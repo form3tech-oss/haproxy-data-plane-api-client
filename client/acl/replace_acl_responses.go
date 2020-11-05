@@ -26,9 +26,8 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-
-	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/haproxytech/models"
 )
@@ -41,35 +40,30 @@ type ReplaceACLReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *ReplaceACLReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewReplaceACLOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 202:
 		result := NewReplaceACLAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 400:
 		result := NewReplaceACLBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	case 404:
 		result := NewReplaceACLNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewReplaceACLDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -97,6 +91,10 @@ type ReplaceACLOK struct {
 
 func (o *ReplaceACLOK) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/acls/{index}][%d] replaceAclOK  %+v", 200, o.Payload)
+}
+
+func (o *ReplaceACLOK) GetPayload() *models.ACL {
+	return o.Payload
 }
 
 func (o *ReplaceACLOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -130,6 +128,10 @@ type ReplaceACLAccepted struct {
 
 func (o *ReplaceACLAccepted) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/acls/{index}][%d] replaceAclAccepted  %+v", 202, o.Payload)
+}
+
+func (o *ReplaceACLAccepted) GetPayload() *models.ACL {
+	return o.Payload
 }
 
 func (o *ReplaceACLAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -168,6 +170,10 @@ type ReplaceACLBadRequest struct {
 
 func (o *ReplaceACLBadRequest) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/acls/{index}][%d] replaceAclBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *ReplaceACLBadRequest) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *ReplaceACLBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -210,6 +216,10 @@ type ReplaceACLNotFound struct {
 
 func (o *ReplaceACLNotFound) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/acls/{index}][%d] replaceAclNotFound  %+v", 404, o.Payload)
+}
+
+func (o *ReplaceACLNotFound) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *ReplaceACLNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -260,6 +270,10 @@ func (o *ReplaceACLDefault) Code() int {
 
 func (o *ReplaceACLDefault) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/acls/{index}][%d] replaceAcl default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *ReplaceACLDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *ReplaceACLDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

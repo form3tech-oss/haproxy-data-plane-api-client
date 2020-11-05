@@ -23,9 +23,8 @@ package models
 import (
 	"encoding/json"
 
-	strfmt "github.com/go-openapi/strfmt"
-
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
@@ -33,6 +32,7 @@ import (
 // RuntimeServer Runtime Server
 //
 // Runtime transient server properties
+//
 // swagger:model runtime_server
 type RuntimeServer struct {
 
@@ -60,7 +60,7 @@ type RuntimeServer struct {
 	// port
 	// Read Only: true
 	// Maximum: 65535
-	// Minimum: 0
+	// Minimum: 1
 	Port *int64 `json:"port,omitempty"`
 }
 
@@ -129,7 +129,7 @@ const (
 
 // prop value enum
 func (m *RuntimeServer) validateAdminStateEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, runtimeServerTypeAdminStatePropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, runtimeServerTypeAdminStatePropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -175,7 +175,7 @@ const (
 
 // prop value enum
 func (m *RuntimeServer) validateOperationalStateEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, runtimeServerTypeOperationalStatePropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, runtimeServerTypeOperationalStatePropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -201,7 +201,7 @@ func (m *RuntimeServer) validatePort(formats strfmt.Registry) error {
 		return nil
 	}
 
-	if err := validate.MinimumInt("port", "body", int64(*m.Port), 0, false); err != nil {
+	if err := validate.MinimumInt("port", "body", int64(*m.Port), 1, false); err != nil {
 		return err
 	}
 

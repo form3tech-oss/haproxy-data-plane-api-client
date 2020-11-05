@@ -23,9 +23,8 @@ package models
 import (
 	"encoding/json"
 
-	strfmt "github.com/go-openapi/strfmt"
-
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
@@ -33,6 +32,7 @@ import (
 // HTTPResponseRule HTTP Response Rule
 //
 // HAProxy HTTP response rule configuration (corresponds to http-response directives)
+//
 // swagger:model http_response_rule
 type HTTPResponseRule struct {
 
@@ -78,9 +78,37 @@ type HTTPResponseRule struct {
 	// Enum: [emerg alert crit err warning notice info debug silent]
 	LogLevel string `json:"log_level,omitempty"`
 
+	// lua action
+	// Pattern: ^[^\s]+$
+	LuaAction string `json:"lua_action,omitempty"`
+
+	// lua params
+	LuaParams string `json:"lua_params,omitempty"`
+
+	// map file
+	// Pattern: ^[^\s]+$
+	MapFile string `json:"map_file,omitempty"`
+
+	// map keyfmt
+	// Pattern: ^[^\s]+$
+	MapKeyfmt string `json:"map_keyfmt,omitempty"`
+
+	// map valuefmt
+	// Pattern: ^[^\s]+$
+	MapValuefmt string `json:"map_valuefmt,omitempty"`
+
+	// mark value
+	// Pattern: ^(0x[0-9A-Fa-f]+|[0-9]+)$
+	MarkValue string `json:"mark_value,omitempty"`
+
+	// nice value
+	// Maximum: 1024
+	// Minimum: -1024
+	NiceValue int64 `json:"nice_value,omitempty"`
+
 	// redir code
 	// Enum: [301 302 303]
-	RedirCode int64 `json:"redir_code,omitempty"`
+	RedirCode *int64 `json:"redir_code,omitempty"`
 
 	// redir option
 	RedirOption string `json:"redir_option,omitempty"`
@@ -92,6 +120,15 @@ type HTTPResponseRule struct {
 	// redir value
 	// Pattern: ^[^\s]+$
 	RedirValue string `json:"redir_value,omitempty"`
+
+	// sc expr
+	ScExpr string `json:"sc_expr,omitempty"`
+
+	// sc id
+	ScID int64 `json:"sc_id,omitempty"`
+
+	// sc int
+	ScInt *int64 `json:"sc_int,omitempty"`
 
 	// spoe engine
 	// Pattern: ^[^\s]+$
@@ -109,9 +146,41 @@ type HTTPResponseRule struct {
 	// status reason
 	StatusReason string `json:"status_reason,omitempty"`
 
+	// strict mode
+	// Enum: [on off]
+	StrictMode string `json:"strict_mode,omitempty"`
+
+	// tos value
+	// Pattern: ^(0x[0-9A-Fa-f]+|[0-9]+)$
+	TosValue string `json:"tos_value,omitempty"`
+
+	// track sc0 key
+	// Pattern: ^[^\s]+$
+	TrackSc0Key string `json:"track-sc0-key,omitempty"`
+
+	// track sc0 table
+	// Pattern: ^[^\s]+$
+	TrackSc0Table string `json:"track-sc0-table,omitempty"`
+
+	// track sc1 key
+	// Pattern: ^[^\s]+$
+	TrackSc1Key string `json:"track-sc1-key,omitempty"`
+
+	// track sc1 table
+	// Pattern: ^[^\s]+$
+	TrackSc1Table string `json:"track-sc1-table,omitempty"`
+
+	// track sc2 key
+	// Pattern: ^[^\s]+$
+	TrackSc2Key string `json:"track-sc2-key,omitempty"`
+
+	// track sc2 table
+	// Pattern: ^[^\s]+$
+	TrackSc2Table string `json:"track-sc2-table,omitempty"`
+
 	// type
 	// Required: true
-	// Enum: [allow deny redirect add-header set-header del-header set-log-level set-var set-status send-spoe-group replace-header replace-value add-acl del-acl capture]
+	// Enum: [allow deny redirect add-header set-header del-header set-log-level set-var set-status send-spoe-group replace-header replace-value add-acl del-acl capture set-map del-map sc-inc-gpc0 sc-inc-gpc1 sc-set-gpt0 set-mark set-nice set-tos silent-drop unset-var track-sc0 track-sc1 track-sc2 strict-mode lua]
 	Type string `json:"type"`
 
 	// var expr
@@ -166,6 +235,30 @@ func (m *HTTPResponseRule) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := m.validateLuaAction(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateMapFile(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateMapKeyfmt(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateMapValuefmt(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateMarkValue(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateNiceValue(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.validateRedirCode(formats); err != nil {
 		res = append(res, err)
 	}
@@ -187,6 +280,38 @@ func (m *HTTPResponseRule) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateStatus(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateStrictMode(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateTosValue(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateTrackSc0Key(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateTrackSc0Table(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateTrackSc1Key(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateTrackSc1Table(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateTrackSc2Key(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateTrackSc2Table(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -270,7 +395,7 @@ const (
 
 // prop value enum
 func (m *HTTPResponseRule) validateCondEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, httpResponseRuleTypeCondPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, httpResponseRuleTypeCondPropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -382,7 +507,7 @@ const (
 
 // prop value enum
 func (m *HTTPResponseRule) validateLogLevelEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, httpResponseRuleTypeLogLevelPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, httpResponseRuleTypeLogLevelPropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -396,6 +521,88 @@ func (m *HTTPResponseRule) validateLogLevel(formats strfmt.Registry) error {
 
 	// value enum
 	if err := m.validateLogLevelEnum("log_level", "body", m.LogLevel); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *HTTPResponseRule) validateLuaAction(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.LuaAction) { // not required
+		return nil
+	}
+
+	if err := validate.Pattern("lua_action", "body", string(m.LuaAction), `^[^\s]+$`); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *HTTPResponseRule) validateMapFile(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.MapFile) { // not required
+		return nil
+	}
+
+	if err := validate.Pattern("map_file", "body", string(m.MapFile), `^[^\s]+$`); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *HTTPResponseRule) validateMapKeyfmt(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.MapKeyfmt) { // not required
+		return nil
+	}
+
+	if err := validate.Pattern("map_keyfmt", "body", string(m.MapKeyfmt), `^[^\s]+$`); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *HTTPResponseRule) validateMapValuefmt(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.MapValuefmt) { // not required
+		return nil
+	}
+
+	if err := validate.Pattern("map_valuefmt", "body", string(m.MapValuefmt), `^[^\s]+$`); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *HTTPResponseRule) validateMarkValue(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.MarkValue) { // not required
+		return nil
+	}
+
+	if err := validate.Pattern("mark_value", "body", string(m.MarkValue), `^(0x[0-9A-Fa-f]+|[0-9]+)$`); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *HTTPResponseRule) validateNiceValue(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.NiceValue) { // not required
+		return nil
+	}
+
+	if err := validate.MinimumInt("nice_value", "body", int64(m.NiceValue), -1024, false); err != nil {
+		return err
+	}
+
+	if err := validate.MaximumInt("nice_value", "body", int64(m.NiceValue), 1024, false); err != nil {
 		return err
 	}
 
@@ -416,7 +623,7 @@ func init() {
 
 // prop value enum
 func (m *HTTPResponseRule) validateRedirCodeEnum(path, location string, value int64) error {
-	if err := validate.Enum(path, location, value, httpResponseRuleTypeRedirCodePropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, httpResponseRuleTypeRedirCodePropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -429,7 +636,7 @@ func (m *HTTPResponseRule) validateRedirCode(formats strfmt.Registry) error {
 	}
 
 	// value enum
-	if err := m.validateRedirCodeEnum("redir_code", "body", m.RedirCode); err != nil {
+	if err := m.validateRedirCodeEnum("redir_code", "body", *m.RedirCode); err != nil {
 		return err
 	}
 
@@ -462,7 +669,7 @@ const (
 
 // prop value enum
 func (m *HTTPResponseRule) validateRedirTypeEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, httpResponseRuleTypeRedirTypePropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, httpResponseRuleTypeRedirTypePropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -538,11 +745,145 @@ func (m *HTTPResponseRule) validateStatus(formats strfmt.Registry) error {
 	return nil
 }
 
+var httpResponseRuleTypeStrictModePropEnum []interface{}
+
+func init() {
+	var res []string
+	if err := json.Unmarshal([]byte(`["on","off"]`), &res); err != nil {
+		panic(err)
+	}
+	for _, v := range res {
+		httpResponseRuleTypeStrictModePropEnum = append(httpResponseRuleTypeStrictModePropEnum, v)
+	}
+}
+
+const (
+
+	// HTTPResponseRuleStrictModeOn captures enum value "on"
+	HTTPResponseRuleStrictModeOn string = "on"
+
+	// HTTPResponseRuleStrictModeOff captures enum value "off"
+	HTTPResponseRuleStrictModeOff string = "off"
+)
+
+// prop value enum
+func (m *HTTPResponseRule) validateStrictModeEnum(path, location string, value string) error {
+	if err := validate.EnumCase(path, location, value, httpResponseRuleTypeStrictModePropEnum, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *HTTPResponseRule) validateStrictMode(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.StrictMode) { // not required
+		return nil
+	}
+
+	// value enum
+	if err := m.validateStrictModeEnum("strict_mode", "body", m.StrictMode); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *HTTPResponseRule) validateTosValue(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.TosValue) { // not required
+		return nil
+	}
+
+	if err := validate.Pattern("tos_value", "body", string(m.TosValue), `^(0x[0-9A-Fa-f]+|[0-9]+)$`); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *HTTPResponseRule) validateTrackSc0Key(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.TrackSc0Key) { // not required
+		return nil
+	}
+
+	if err := validate.Pattern("track-sc0-key", "body", string(m.TrackSc0Key), `^[^\s]+$`); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *HTTPResponseRule) validateTrackSc0Table(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.TrackSc0Table) { // not required
+		return nil
+	}
+
+	if err := validate.Pattern("track-sc0-table", "body", string(m.TrackSc0Table), `^[^\s]+$`); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *HTTPResponseRule) validateTrackSc1Key(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.TrackSc1Key) { // not required
+		return nil
+	}
+
+	if err := validate.Pattern("track-sc1-key", "body", string(m.TrackSc1Key), `^[^\s]+$`); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *HTTPResponseRule) validateTrackSc1Table(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.TrackSc1Table) { // not required
+		return nil
+	}
+
+	if err := validate.Pattern("track-sc1-table", "body", string(m.TrackSc1Table), `^[^\s]+$`); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *HTTPResponseRule) validateTrackSc2Key(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.TrackSc2Key) { // not required
+		return nil
+	}
+
+	if err := validate.Pattern("track-sc2-key", "body", string(m.TrackSc2Key), `^[^\s]+$`); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *HTTPResponseRule) validateTrackSc2Table(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.TrackSc2Table) { // not required
+		return nil
+	}
+
+	if err := validate.Pattern("track-sc2-table", "body", string(m.TrackSc2Table), `^[^\s]+$`); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 var httpResponseRuleTypeTypePropEnum []interface{}
 
 func init() {
 	var res []string
-	if err := json.Unmarshal([]byte(`["allow","deny","redirect","add-header","set-header","del-header","set-log-level","set-var","set-status","send-spoe-group","replace-header","replace-value","add-acl","del-acl","capture"]`), &res); err != nil {
+	if err := json.Unmarshal([]byte(`["allow","deny","redirect","add-header","set-header","del-header","set-log-level","set-var","set-status","send-spoe-group","replace-header","replace-value","add-acl","del-acl","capture","set-map","del-map","sc-inc-gpc0","sc-inc-gpc1","sc-set-gpt0","set-mark","set-nice","set-tos","silent-drop","unset-var","track-sc0","track-sc1","track-sc2","strict-mode","lua"]`), &res); err != nil {
 		panic(err)
 	}
 	for _, v := range res {
@@ -596,11 +937,56 @@ const (
 
 	// HTTPResponseRuleTypeCapture captures enum value "capture"
 	HTTPResponseRuleTypeCapture string = "capture"
+
+	// HTTPResponseRuleTypeSetMap captures enum value "set-map"
+	HTTPResponseRuleTypeSetMap string = "set-map"
+
+	// HTTPResponseRuleTypeDelMap captures enum value "del-map"
+	HTTPResponseRuleTypeDelMap string = "del-map"
+
+	// HTTPResponseRuleTypeScIncGpc0 captures enum value "sc-inc-gpc0"
+	HTTPResponseRuleTypeScIncGpc0 string = "sc-inc-gpc0"
+
+	// HTTPResponseRuleTypeScIncGpc1 captures enum value "sc-inc-gpc1"
+	HTTPResponseRuleTypeScIncGpc1 string = "sc-inc-gpc1"
+
+	// HTTPResponseRuleTypeScSetGpt0 captures enum value "sc-set-gpt0"
+	HTTPResponseRuleTypeScSetGpt0 string = "sc-set-gpt0"
+
+	// HTTPResponseRuleTypeSetMark captures enum value "set-mark"
+	HTTPResponseRuleTypeSetMark string = "set-mark"
+
+	// HTTPResponseRuleTypeSetNice captures enum value "set-nice"
+	HTTPResponseRuleTypeSetNice string = "set-nice"
+
+	// HTTPResponseRuleTypeSetTos captures enum value "set-tos"
+	HTTPResponseRuleTypeSetTos string = "set-tos"
+
+	// HTTPResponseRuleTypeSilentDrop captures enum value "silent-drop"
+	HTTPResponseRuleTypeSilentDrop string = "silent-drop"
+
+	// HTTPResponseRuleTypeUnsetVar captures enum value "unset-var"
+	HTTPResponseRuleTypeUnsetVar string = "unset-var"
+
+	// HTTPResponseRuleTypeTrackSc0 captures enum value "track-sc0"
+	HTTPResponseRuleTypeTrackSc0 string = "track-sc0"
+
+	// HTTPResponseRuleTypeTrackSc1 captures enum value "track-sc1"
+	HTTPResponseRuleTypeTrackSc1 string = "track-sc1"
+
+	// HTTPResponseRuleTypeTrackSc2 captures enum value "track-sc2"
+	HTTPResponseRuleTypeTrackSc2 string = "track-sc2"
+
+	// HTTPResponseRuleTypeStrictMode captures enum value "strict-mode"
+	HTTPResponseRuleTypeStrictMode string = "strict-mode"
+
+	// HTTPResponseRuleTypeLua captures enum value "lua"
+	HTTPResponseRuleTypeLua string = "lua"
 )
 
 // prop value enum
 func (m *HTTPResponseRule) validateTypeEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, httpResponseRuleTypeTypePropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, httpResponseRuleTypeTypePropEnum, true); err != nil {
 		return err
 	}
 	return nil

@@ -24,9 +24,8 @@ import (
 	"encoding/json"
 	"strconv"
 
-	strfmt "github.com/go-openapi/strfmt"
-
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
@@ -34,14 +33,15 @@ import (
 // Global Global
 //
 // HAProxy global configuration
+//
 // swagger:model global
 type Global struct {
 
 	// CPU maps
 	CPUMaps []*CPUMap `json:"cpu_maps"`
 
-	// runtime apis
-	RuntimeApis []*RuntimeAPI `json:"runtime_apis"`
+	// runtime a p is
+	RuntimeAPIs []*RuntimeAPI `json:"runtime_apis"`
 
 	// chroot
 	// Pattern: ^[^\s]+$
@@ -57,6 +57,12 @@ type Global struct {
 	// group
 	// Pattern: ^[^\s]+$
 	Group string `json:"group,omitempty"`
+
+	// log send hostname
+	LogSendHostname *GlobalLogSendHostname `json:"log_send_hostname,omitempty"`
+
+	// lua loads
+	LuaLoads []*LuaLoad `json:"lua_loads"`
 
 	// master worker
 	MasterWorker bool `json:"master-worker,omitempty"`
@@ -76,11 +82,17 @@ type Global struct {
 	// ssl default bind ciphers
 	SslDefaultBindCiphers string `json:"ssl_default_bind_ciphers,omitempty"`
 
+	// ssl default bind ciphersuites
+	SslDefaultBindCiphersuites string `json:"ssl_default_bind_ciphersuites,omitempty"`
+
 	// ssl default bind options
 	SslDefaultBindOptions string `json:"ssl_default_bind_options,omitempty"`
 
 	// ssl default server ciphers
 	SslDefaultServerCiphers string `json:"ssl_default_server_ciphers,omitempty"`
+
+	// ssl default server ciphersuites
+	SslDefaultServerCiphersuites string `json:"ssl_default_server_ciphersuites,omitempty"`
 
 	// ssl default server options
 	SslDefaultServerOptions string `json:"ssl_default_server_options,omitempty"`
@@ -104,7 +116,7 @@ func (m *Global) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateRuntimeApis(formats); err != nil {
+	if err := m.validateRuntimeAPIs(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -117,6 +129,14 @@ func (m *Global) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateGroup(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateLogSendHostname(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateLuaLoads(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -155,19 +175,19 @@ func (m *Global) validateCPUMaps(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *Global) validateRuntimeApis(formats strfmt.Registry) error {
+func (m *Global) validateRuntimeAPIs(formats strfmt.Registry) error {
 
-	if swag.IsZero(m.RuntimeApis) { // not required
+	if swag.IsZero(m.RuntimeAPIs) { // not required
 		return nil
 	}
 
-	for i := 0; i < len(m.RuntimeApis); i++ {
-		if swag.IsZero(m.RuntimeApis[i]) { // not required
+	for i := 0; i < len(m.RuntimeAPIs); i++ {
+		if swag.IsZero(m.RuntimeAPIs[i]) { // not required
 			continue
 		}
 
-		if m.RuntimeApis[i] != nil {
-			if err := m.RuntimeApis[i].Validate(formats); err != nil {
+		if m.RuntimeAPIs[i] != nil {
+			if err := m.RuntimeAPIs[i].Validate(formats); err != nil {
 				if ve, ok := err.(*errors.Validation); ok {
 					return ve.ValidateName("runtime_apis" + "." + strconv.Itoa(i))
 				}
@@ -216,7 +236,7 @@ const (
 
 // prop value enum
 func (m *Global) validateDaemonEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, globalTypeDaemonPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, globalTypeDaemonPropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -244,6 +264,49 @@ func (m *Global) validateGroup(formats strfmt.Registry) error {
 
 	if err := validate.Pattern("group", "body", string(m.Group), `^[^\s]+$`); err != nil {
 		return err
+	}
+
+	return nil
+}
+
+func (m *Global) validateLogSendHostname(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.LogSendHostname) { // not required
+		return nil
+	}
+
+	if m.LogSendHostname != nil {
+		if err := m.LogSendHostname.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("log_send_hostname")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *Global) validateLuaLoads(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.LuaLoads) { // not required
+		return nil
+	}
+
+	for i := 0; i < len(m.LuaLoads); i++ {
+		if swag.IsZero(m.LuaLoads[i]) { // not required
+			continue
+		}
+
+		if m.LuaLoads[i] != nil {
+			if err := m.LuaLoads[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("lua_loads" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
 	}
 
 	return nil
@@ -281,6 +344,7 @@ func (m *Global) UnmarshalBinary(b []byte) error {
 }
 
 // CPUMap CPU map
+//
 // swagger:model CPUMap
 type CPUMap struct {
 
@@ -347,7 +411,171 @@ func (m *CPUMap) UnmarshalBinary(b []byte) error {
 	return nil
 }
 
+// GlobalLogSendHostname global log send hostname
+//
+// swagger:model GlobalLogSendHostname
+type GlobalLogSendHostname struct {
+
+	// enabled
+	// Required: true
+	// Enum: [enabled disabled]
+	Enabled *string `json:"enabled"`
+
+	// param
+	// Pattern: ^[^\s]+$
+	Param string `json:"param,omitempty"`
+}
+
+// Validate validates this global log send hostname
+func (m *GlobalLogSendHostname) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.validateEnabled(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateParam(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+var globalLogSendHostnameTypeEnabledPropEnum []interface{}
+
+func init() {
+	var res []string
+	if err := json.Unmarshal([]byte(`["enabled","disabled"]`), &res); err != nil {
+		panic(err)
+	}
+	for _, v := range res {
+		globalLogSendHostnameTypeEnabledPropEnum = append(globalLogSendHostnameTypeEnabledPropEnum, v)
+	}
+}
+
+const (
+
+	// GlobalLogSendHostnameEnabledEnabled captures enum value "enabled"
+	GlobalLogSendHostnameEnabledEnabled string = "enabled"
+
+	// GlobalLogSendHostnameEnabledDisabled captures enum value "disabled"
+	GlobalLogSendHostnameEnabledDisabled string = "disabled"
+)
+
+// prop value enum
+func (m *GlobalLogSendHostname) validateEnabledEnum(path, location string, value string) error {
+	if err := validate.EnumCase(path, location, value, globalLogSendHostnameTypeEnabledPropEnum, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *GlobalLogSendHostname) validateEnabled(formats strfmt.Registry) error {
+
+	if err := validate.Required("log_send_hostname"+"."+"enabled", "body", m.Enabled); err != nil {
+		return err
+	}
+
+	// value enum
+	if err := m.validateEnabledEnum("log_send_hostname"+"."+"enabled", "body", *m.Enabled); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *GlobalLogSendHostname) validateParam(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.Param) { // not required
+		return nil
+	}
+
+	if err := validate.Pattern("log_send_hostname"+"."+"param", "body", string(m.Param), `^[^\s]+$`); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (m *GlobalLogSendHostname) MarshalBinary() ([]byte, error) {
+	if m == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(m)
+}
+
+// UnmarshalBinary interface implementation
+func (m *GlobalLogSendHostname) UnmarshalBinary(b []byte) error {
+	var res GlobalLogSendHostname
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*m = res
+	return nil
+}
+
+// LuaLoad lua load
+//
+// swagger:model LuaLoad
+type LuaLoad struct {
+
+	// file
+	// Required: true
+	// Pattern: ^[^\s]+$
+	File *string `json:"file"`
+}
+
+// Validate validates this lua load
+func (m *LuaLoad) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.validateFile(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *LuaLoad) validateFile(formats strfmt.Registry) error {
+
+	if err := validate.Required("file", "body", m.File); err != nil {
+		return err
+	}
+
+	if err := validate.Pattern("file", "body", string(*m.File), `^[^\s]+$`); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (m *LuaLoad) MarshalBinary() ([]byte, error) {
+	if m == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(m)
+}
+
+// UnmarshalBinary interface implementation
+func (m *LuaLoad) UnmarshalBinary(b []byte) error {
+	var res LuaLoad
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*m = res
+	return nil
+}
+
 // RuntimeAPI runtime API
+//
 // swagger:model RuntimeAPI
 type RuntimeAPI struct {
 
@@ -437,7 +665,7 @@ const (
 
 // prop value enum
 func (m *RuntimeAPI) validateLevelEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, runtimeApiTypeLevelPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, runtimeApiTypeLevelPropEnum, true); err != nil {
 		return err
 	}
 	return nil

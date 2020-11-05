@@ -26,9 +26,8 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-
-	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/haproxytech/models"
 )
@@ -41,21 +40,18 @@ type GetLogTargetReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetLogTargetReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewGetLogTargetOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 404:
 		result := NewGetLogTargetNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewGetLogTargetDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -87,6 +83,10 @@ type GetLogTargetOK struct {
 
 func (o *GetLogTargetOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/log_targets/{index}][%d] getLogTargetOK  %+v", 200, o.Payload)
+}
+
+func (o *GetLogTargetOK) GetPayload() *GetLogTargetOKBody {
+	return o.Payload
 }
 
 func (o *GetLogTargetOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -129,6 +129,10 @@ type GetLogTargetNotFound struct {
 
 func (o *GetLogTargetNotFound) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/log_targets/{index}][%d] getLogTargetNotFound  %+v", 404, o.Payload)
+}
+
+func (o *GetLogTargetNotFound) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *GetLogTargetNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -179,6 +183,10 @@ func (o *GetLogTargetDefault) Code() int {
 
 func (o *GetLogTargetDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/log_targets/{index}][%d] getLogTarget default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *GetLogTargetDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *GetLogTargetDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

@@ -26,11 +26,10 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	strfmt "github.com/go-openapi/strfmt"
-
-	models "github.com/form3tech-oss/haproxy-data-plane-api-client/models"
+	"github.com/haproxytech/models"
 )
 
 // GetTransactionReader is a Reader for the GetTransaction structure.
@@ -41,21 +40,18 @@ type GetTransactionReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetTransactionReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewGetTransactionOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 404:
 		result := NewGetTransactionNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewGetTransactionDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -83,6 +79,10 @@ type GetTransactionOK struct {
 
 func (o *GetTransactionOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/transactions/{id}][%d] getTransactionOK  %+v", 200, o.Payload)
+}
+
+func (o *GetTransactionOK) GetPayload() *models.Transaction {
+	return o.Payload
 }
 
 func (o *GetTransactionOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -118,6 +118,10 @@ type GetTransactionNotFound struct {
 
 func (o *GetTransactionNotFound) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/transactions/{id}][%d] getTransactionNotFound  %+v", 404, o.Payload)
+}
+
+func (o *GetTransactionNotFound) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *GetTransactionNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -168,6 +172,10 @@ func (o *GetTransactionDefault) Code() int {
 
 func (o *GetTransactionDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/transactions/{id}][%d] getTransaction default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *GetTransactionDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *GetTransactionDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

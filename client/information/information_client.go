@@ -22,12 +22,11 @@ package information
 
 import (
 	"github.com/go-openapi/runtime"
-
-	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/strfmt"
 )
 
 // New creates a new information API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -39,10 +38,19 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-/*
-GetHaproxyProcessInfo returns h a proxy process information
+// ClientService is the interface for Client methods
+type ClientService interface {
+	GetHaproxyProcessInfo(params *GetHaproxyProcessInfoParams, authInfo runtime.ClientAuthInfoWriter) (*GetHaproxyProcessInfoOK, error)
 
-Return HAProxy process information
+	GetInfo(params *GetInfoParams, authInfo runtime.ClientAuthInfoWriter) (*GetInfoOK, error)
+
+	SetTransport(transport runtime.ClientTransport)
+}
+
+/*
+  GetHaproxyProcessInfo returns h a proxy process information
+
+  Return HAProxy process information
 */
 func (a *Client) GetHaproxyProcessInfo(params *GetHaproxyProcessInfoParams, authInfo runtime.ClientAuthInfoWriter) (*GetHaproxyProcessInfoOK, error) {
 	// TODO: Validate the params before sending
@@ -66,14 +74,19 @@ func (a *Client) GetHaproxyProcessInfo(params *GetHaproxyProcessInfoParams, auth
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetHaproxyProcessInfoOK), nil
-
+	success, ok := result.(*GetHaproxyProcessInfoOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetHaproxyProcessInfoDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-GetInfo returns API hardware and o s information
+  GetInfo returns API hardware and o s information
 
-Return API, hardware and OS information
+  Return API, hardware and OS information
 */
 func (a *Client) GetInfo(params *GetInfoParams, authInfo runtime.ClientAuthInfoWriter) (*GetInfoOK, error) {
 	// TODO: Validate the params before sending
@@ -97,8 +110,13 @@ func (a *Client) GetInfo(params *GetInfoParams, authInfo runtime.ClientAuthInfoW
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetInfoOK), nil
-
+	success, ok := result.(*GetInfoOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetInfoDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 // SetTransport changes the transport on the client

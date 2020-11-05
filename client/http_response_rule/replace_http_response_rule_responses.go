@@ -26,9 +26,8 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-
-	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/haproxytech/models"
 )
@@ -41,35 +40,30 @@ type ReplaceHTTPResponseRuleReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *ReplaceHTTPResponseRuleReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewReplaceHTTPResponseRuleOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 202:
 		result := NewReplaceHTTPResponseRuleAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 400:
 		result := NewReplaceHTTPResponseRuleBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	case 404:
 		result := NewReplaceHTTPResponseRuleNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewReplaceHTTPResponseRuleDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -97,6 +91,10 @@ type ReplaceHTTPResponseRuleOK struct {
 
 func (o *ReplaceHTTPResponseRuleOK) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/http_response_rules/{index}][%d] replaceHttpResponseRuleOK  %+v", 200, o.Payload)
+}
+
+func (o *ReplaceHTTPResponseRuleOK) GetPayload() *models.HTTPResponseRule {
+	return o.Payload
 }
 
 func (o *ReplaceHTTPResponseRuleOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -130,6 +128,10 @@ type ReplaceHTTPResponseRuleAccepted struct {
 
 func (o *ReplaceHTTPResponseRuleAccepted) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/http_response_rules/{index}][%d] replaceHttpResponseRuleAccepted  %+v", 202, o.Payload)
+}
+
+func (o *ReplaceHTTPResponseRuleAccepted) GetPayload() *models.HTTPResponseRule {
+	return o.Payload
 }
 
 func (o *ReplaceHTTPResponseRuleAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -168,6 +170,10 @@ type ReplaceHTTPResponseRuleBadRequest struct {
 
 func (o *ReplaceHTTPResponseRuleBadRequest) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/http_response_rules/{index}][%d] replaceHttpResponseRuleBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *ReplaceHTTPResponseRuleBadRequest) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *ReplaceHTTPResponseRuleBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -210,6 +216,10 @@ type ReplaceHTTPResponseRuleNotFound struct {
 
 func (o *ReplaceHTTPResponseRuleNotFound) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/http_response_rules/{index}][%d] replaceHttpResponseRuleNotFound  %+v", 404, o.Payload)
+}
+
+func (o *ReplaceHTTPResponseRuleNotFound) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *ReplaceHTTPResponseRuleNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -260,6 +270,10 @@ func (o *ReplaceHTTPResponseRuleDefault) Code() int {
 
 func (o *ReplaceHTTPResponseRuleDefault) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/http_response_rules/{index}][%d] replaceHTTPResponseRule default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *ReplaceHTTPResponseRuleDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *ReplaceHTTPResponseRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

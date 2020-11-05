@@ -26,11 +26,10 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	strfmt "github.com/go-openapi/strfmt"
-
-	models "github.com/form3tech-oss/haproxy-data-plane-api-client/models"
+	"github.com/haproxytech/models"
 )
 
 // DeleteRuntimeMapEntryReader is a Reader for the DeleteRuntimeMapEntry structure.
@@ -41,21 +40,18 @@ type DeleteRuntimeMapEntryReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *DeleteRuntimeMapEntryReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 204:
 		result := NewDeleteRuntimeMapEntryNoContent()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 404:
 		result := NewDeleteRuntimeMapEntryNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewDeleteRuntimeMapEntryDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -112,6 +108,10 @@ func (o *DeleteRuntimeMapEntryNotFound) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/runtime/maps_entries/{id}][%d] deleteRuntimeMapEntryNotFound  %+v", 404, o.Payload)
 }
 
+func (o *DeleteRuntimeMapEntryNotFound) GetPayload() *models.Error {
+	return o.Payload
+}
+
 func (o *DeleteRuntimeMapEntryNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
@@ -160,6 +160,10 @@ func (o *DeleteRuntimeMapEntryDefault) Code() int {
 
 func (o *DeleteRuntimeMapEntryDefault) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/runtime/maps_entries/{id}][%d] deleteRuntimeMapEntry default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *DeleteRuntimeMapEntryDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *DeleteRuntimeMapEntryDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

@@ -26,11 +26,10 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	strfmt "github.com/go-openapi/strfmt"
-
-	models "github.com/form3tech-oss/haproxy-data-plane-api-client/models"
+	"github.com/haproxytech/models"
 )
 
 // GetStatsEndpointsReader is a Reader for the GetStatsEndpoints structure.
@@ -41,14 +40,12 @@ type GetStatsEndpointsReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetStatsEndpointsReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewGetStatsEndpointsOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	default:
 		result := NewGetStatsEndpointsDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -76,6 +73,10 @@ type GetStatsEndpointsOK struct {
 
 func (o *GetStatsEndpointsOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/stats][%d] getStatsEndpointsOK  %+v", 200, o.Payload)
+}
+
+func (o *GetStatsEndpointsOK) GetPayload() models.Endpoints {
+	return o.Payload
 }
 
 func (o *GetStatsEndpointsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -117,6 +118,10 @@ func (o *GetStatsEndpointsDefault) Code() int {
 
 func (o *GetStatsEndpointsDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/stats][%d] getStatsEndpoints default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *GetStatsEndpointsDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *GetStatsEndpointsDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

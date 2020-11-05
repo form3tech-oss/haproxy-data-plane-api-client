@@ -26,11 +26,10 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	strfmt "github.com/go-openapi/strfmt"
-
-	models "github.com/form3tech-oss/haproxy-data-plane-api-client/models"
+	"github.com/haproxytech/models"
 )
 
 // GetConfigurationEndpointsReader is a Reader for the GetConfigurationEndpoints structure.
@@ -41,14 +40,12 @@ type GetConfigurationEndpointsReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetConfigurationEndpointsReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewGetConfigurationEndpointsOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	default:
 		result := NewGetConfigurationEndpointsDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -76,6 +73,10 @@ type GetConfigurationEndpointsOK struct {
 
 func (o *GetConfigurationEndpointsOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration][%d] getConfigurationEndpointsOK  %+v", 200, o.Payload)
+}
+
+func (o *GetConfigurationEndpointsOK) GetPayload() models.Endpoints {
+	return o.Payload
 }
 
 func (o *GetConfigurationEndpointsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -117,6 +118,10 @@ func (o *GetConfigurationEndpointsDefault) Code() int {
 
 func (o *GetConfigurationEndpointsDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration][%d] getConfigurationEndpoints default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *GetConfigurationEndpointsDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *GetConfigurationEndpointsDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

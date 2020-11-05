@@ -26,10 +26,9 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
-
-	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/haproxytech/models"
 )
@@ -42,14 +41,12 @@ type GetServerSwitchingRulesReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetServerSwitchingRulesReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewGetServerSwitchingRulesOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	default:
 		result := NewGetServerSwitchingRulesDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -81,6 +78,10 @@ type GetServerSwitchingRulesOK struct {
 
 func (o *GetServerSwitchingRulesOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/server_switching_rules][%d] getServerSwitchingRulesOK  %+v", 200, o.Payload)
+}
+
+func (o *GetServerSwitchingRulesOK) GetPayload() *GetServerSwitchingRulesOKBody {
+	return o.Payload
 }
 
 func (o *GetServerSwitchingRulesOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -131,6 +132,10 @@ func (o *GetServerSwitchingRulesDefault) Code() int {
 
 func (o *GetServerSwitchingRulesDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/server_switching_rules][%d] getServerSwitchingRules default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *GetServerSwitchingRulesDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *GetServerSwitchingRulesDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

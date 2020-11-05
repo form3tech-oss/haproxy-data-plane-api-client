@@ -26,9 +26,8 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-
-	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/haproxytech/models"
 )
@@ -41,21 +40,18 @@ type GetFrontendReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetFrontendReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewGetFrontendOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 404:
 		result := NewGetFrontendNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewGetFrontendDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -87,6 +83,10 @@ type GetFrontendOK struct {
 
 func (o *GetFrontendOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/frontends/{name}][%d] getFrontendOK  %+v", 200, o.Payload)
+}
+
+func (o *GetFrontendOK) GetPayload() *GetFrontendOKBody {
+	return o.Payload
 }
 
 func (o *GetFrontendOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -129,6 +129,10 @@ type GetFrontendNotFound struct {
 
 func (o *GetFrontendNotFound) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/frontends/{name}][%d] getFrontendNotFound  %+v", 404, o.Payload)
+}
+
+func (o *GetFrontendNotFound) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *GetFrontendNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -179,6 +183,10 @@ func (o *GetFrontendDefault) Code() int {
 
 func (o *GetFrontendDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/frontends/{name}][%d] getFrontend default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *GetFrontendDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *GetFrontendDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

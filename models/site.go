@@ -24,9 +24,8 @@ import (
 	"encoding/json"
 	"strconv"
 
-	strfmt "github.com/go-openapi/strfmt"
-
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
@@ -37,6 +36,7 @@ import (
 // Farms are connected to service using use-backend and default_backend directives. Sites let you
 // configure simple HAProxy configurations, for more advanced options use /haproxy/configuration
 // endpoints.
+//
 //
 // swagger:model site
 type Site struct {
@@ -150,6 +150,7 @@ func (m *Site) UnmarshalBinary(b []byte) error {
 }
 
 // SiteFarm site farm
+//
 // swagger:model SiteFarm
 type SiteFarm struct {
 
@@ -263,7 +264,7 @@ const (
 
 // prop value enum
 func (m *SiteFarm) validateCondEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, siteFarmTypeCondPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, siteFarmTypeCondPropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -324,7 +325,7 @@ const (
 
 // prop value enum
 func (m *SiteFarm) validateModeEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, siteFarmTypeModePropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, siteFarmTypeModePropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -405,7 +406,7 @@ const (
 
 // prop value enum
 func (m *SiteFarm) validateUseAsEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, siteFarmTypeUseAsPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, siteFarmTypeUseAsPropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -444,6 +445,7 @@ func (m *SiteFarm) UnmarshalBinary(b []byte) error {
 }
 
 // SiteService site service
+//
 // swagger:model SiteService
 type SiteService struct {
 
@@ -516,7 +518,7 @@ const (
 
 // prop value enum
 func (m *SiteService) validateHTTPConnectionModeEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, siteServiceTypeHTTPConnectionModePropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, siteServiceTypeHTTPConnectionModePropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -584,7 +586,7 @@ const (
 
 // prop value enum
 func (m *SiteService) validateModeEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, siteServiceTypeModePropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, siteServiceTypeModePropEnum, true); err != nil {
 		return err
 	}
 	return nil

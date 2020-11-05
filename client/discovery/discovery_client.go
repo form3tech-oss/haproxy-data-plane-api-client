@@ -22,12 +22,11 @@ package discovery
 
 import (
 	"github.com/go-openapi/runtime"
-
-	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/strfmt"
 )
 
 // New creates a new discovery API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -39,10 +38,29 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-/*
-GetAPIEndpoints returns list of root endpoints
+// ClientService is the interface for Client methods
+type ClientService interface {
+	GetAPIEndpoints(params *GetAPIEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetAPIEndpointsOK, error)
 
-Returns a list of root endpoints.
+	GetCluster(params *GetClusterParams, authInfo runtime.ClientAuthInfoWriter) (*GetClusterOK, error)
+
+	GetConfigurationEndpoints(params *GetConfigurationEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetConfigurationEndpointsOK, error)
+
+	GetHaproxyEndpoints(params *GetHaproxyEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetHaproxyEndpointsOK, error)
+
+	GetRuntimeEndpoints(params *GetRuntimeEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetRuntimeEndpointsOK, error)
+
+	GetServicesEndpoints(params *GetServicesEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetServicesEndpointsOK, error)
+
+	GetStatsEndpoints(params *GetStatsEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetStatsEndpointsOK, error)
+
+	SetTransport(transport runtime.ClientTransport)
+}
+
+/*
+  GetAPIEndpoints returns list of root endpoints
+
+  Returns a list of root endpoints.
 */
 func (a *Client) GetAPIEndpoints(params *GetAPIEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetAPIEndpointsOK, error) {
 	// TODO: Validate the params before sending
@@ -66,14 +84,19 @@ func (a *Client) GetAPIEndpoints(params *GetAPIEndpointsParams, authInfo runtime
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetAPIEndpointsOK), nil
-
+	success, ok := result.(*GetAPIEndpointsOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetAPIEndpointsDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-GetCluster returns cluster data
+  GetCluster returns cluster data
 
-Returns cluster data
+  Returns cluster data
 */
 func (a *Client) GetCluster(params *GetClusterParams, authInfo runtime.ClientAuthInfoWriter) (*GetClusterOK, error) {
 	// TODO: Validate the params before sending
@@ -97,14 +120,19 @@ func (a *Client) GetCluster(params *GetClusterParams, authInfo runtime.ClientAut
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetClusterOK), nil
-
+	success, ok := result.(*GetClusterOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetClusterDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-GetConfigurationEndpoints returns list of h a proxy advanced configuration endpoints
+  GetConfigurationEndpoints returns list of h a proxy advanced configuration endpoints
 
-Returns a list of endpoints to be used for advanced configuration of HAProxy objects.
+  Returns a list of endpoints to be used for advanced configuration of HAProxy objects.
 */
 func (a *Client) GetConfigurationEndpoints(params *GetConfigurationEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetConfigurationEndpointsOK, error) {
 	// TODO: Validate the params before sending
@@ -128,14 +156,19 @@ func (a *Client) GetConfigurationEndpoints(params *GetConfigurationEndpointsPara
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetConfigurationEndpointsOK), nil
-
+	success, ok := result.(*GetConfigurationEndpointsOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetConfigurationEndpointsDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-GetHaproxyEndpoints returns list of h a proxy related endpoints
+  GetHaproxyEndpoints returns list of h a proxy related endpoints
 
-Returns a list of HAProxy related endpoints.
+  Returns a list of HAProxy related endpoints.
 */
 func (a *Client) GetHaproxyEndpoints(params *GetHaproxyEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetHaproxyEndpointsOK, error) {
 	// TODO: Validate the params before sending
@@ -159,14 +192,19 @@ func (a *Client) GetHaproxyEndpoints(params *GetHaproxyEndpointsParams, authInfo
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetHaproxyEndpointsOK), nil
-
+	success, ok := result.(*GetHaproxyEndpointsOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetHaproxyEndpointsDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-GetRuntimeEndpoints returns list of h a proxy advanced runtime endpoints
+  GetRuntimeEndpoints returns list of h a proxy advanced runtime endpoints
 
-Returns a list of endpoints to be used for advanced runtime settings of HAProxy objects.
+  Returns a list of endpoints to be used for advanced runtime settings of HAProxy objects.
 */
 func (a *Client) GetRuntimeEndpoints(params *GetRuntimeEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetRuntimeEndpointsOK, error) {
 	// TODO: Validate the params before sending
@@ -190,14 +228,19 @@ func (a *Client) GetRuntimeEndpoints(params *GetRuntimeEndpointsParams, authInfo
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetRuntimeEndpointsOK), nil
-
+	success, ok := result.(*GetRuntimeEndpointsOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetRuntimeEndpointsDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-GetServicesEndpoints returns list of service endpoints
+  GetServicesEndpoints returns list of service endpoints
 
-Returns a list of API managed services endpoints.
+  Returns a list of API managed services endpoints.
 */
 func (a *Client) GetServicesEndpoints(params *GetServicesEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetServicesEndpointsOK, error) {
 	// TODO: Validate the params before sending
@@ -221,14 +264,19 @@ func (a *Client) GetServicesEndpoints(params *GetServicesEndpointsParams, authIn
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetServicesEndpointsOK), nil
-
+	success, ok := result.(*GetServicesEndpointsOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetServicesEndpointsDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-GetStatsEndpoints returns list of h a proxy stats endpoints
+  GetStatsEndpoints returns list of h a proxy stats endpoints
 
-Returns a list of HAProxy stats endpoints.
+  Returns a list of HAProxy stats endpoints.
 */
 func (a *Client) GetStatsEndpoints(params *GetStatsEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetStatsEndpointsOK, error) {
 	// TODO: Validate the params before sending
@@ -252,8 +300,13 @@ func (a *Client) GetStatsEndpoints(params *GetStatsEndpointsParams, authInfo run
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetStatsEndpointsOK), nil
-
+	success, ok := result.(*GetStatsEndpointsOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetStatsEndpointsDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 // SetTransport changes the transport on the client

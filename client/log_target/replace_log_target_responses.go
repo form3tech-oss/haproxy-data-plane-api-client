@@ -26,9 +26,8 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-
-	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/haproxytech/models"
 )
@@ -41,35 +40,30 @@ type ReplaceLogTargetReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *ReplaceLogTargetReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewReplaceLogTargetOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 202:
 		result := NewReplaceLogTargetAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 400:
 		result := NewReplaceLogTargetBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	case 404:
 		result := NewReplaceLogTargetNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewReplaceLogTargetDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -97,6 +91,10 @@ type ReplaceLogTargetOK struct {
 
 func (o *ReplaceLogTargetOK) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/log_targets/{index}][%d] replaceLogTargetOK  %+v", 200, o.Payload)
+}
+
+func (o *ReplaceLogTargetOK) GetPayload() *models.LogTarget {
+	return o.Payload
 }
 
 func (o *ReplaceLogTargetOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -130,6 +128,10 @@ type ReplaceLogTargetAccepted struct {
 
 func (o *ReplaceLogTargetAccepted) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/log_targets/{index}][%d] replaceLogTargetAccepted  %+v", 202, o.Payload)
+}
+
+func (o *ReplaceLogTargetAccepted) GetPayload() *models.LogTarget {
+	return o.Payload
 }
 
 func (o *ReplaceLogTargetAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -168,6 +170,10 @@ type ReplaceLogTargetBadRequest struct {
 
 func (o *ReplaceLogTargetBadRequest) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/log_targets/{index}][%d] replaceLogTargetBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *ReplaceLogTargetBadRequest) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *ReplaceLogTargetBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -210,6 +216,10 @@ type ReplaceLogTargetNotFound struct {
 
 func (o *ReplaceLogTargetNotFound) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/log_targets/{index}][%d] replaceLogTargetNotFound  %+v", 404, o.Payload)
+}
+
+func (o *ReplaceLogTargetNotFound) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *ReplaceLogTargetNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -260,6 +270,10 @@ func (o *ReplaceLogTargetDefault) Code() int {
 
 func (o *ReplaceLogTargetDefault) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/log_targets/{index}][%d] replaceLogTarget default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *ReplaceLogTargetDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *ReplaceLogTargetDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

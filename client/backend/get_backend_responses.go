@@ -26,9 +26,8 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-
-	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/haproxytech/models"
 )
@@ -41,21 +40,18 @@ type GetBackendReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetBackendReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewGetBackendOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 404:
 		result := NewGetBackendNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewGetBackendDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -87,6 +83,10 @@ type GetBackendOK struct {
 
 func (o *GetBackendOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/backends/{name}][%d] getBackendOK  %+v", 200, o.Payload)
+}
+
+func (o *GetBackendOK) GetPayload() *GetBackendOKBody {
+	return o.Payload
 }
 
 func (o *GetBackendOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -129,6 +129,10 @@ type GetBackendNotFound struct {
 
 func (o *GetBackendNotFound) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/backends/{name}][%d] getBackendNotFound  %+v", 404, o.Payload)
+}
+
+func (o *GetBackendNotFound) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *GetBackendNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -179,6 +183,10 @@ func (o *GetBackendDefault) Code() int {
 
 func (o *GetBackendDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/backends/{name}][%d] getBackend default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *GetBackendDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *GetBackendDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

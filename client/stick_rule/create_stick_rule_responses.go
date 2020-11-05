@@ -26,9 +26,8 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-
-	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/haproxytech/models"
 )
@@ -41,35 +40,30 @@ type CreateStickRuleReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *CreateStickRuleReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 201:
 		result := NewCreateStickRuleCreated()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 202:
 		result := NewCreateStickRuleAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 400:
 		result := NewCreateStickRuleBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	case 409:
 		result := NewCreateStickRuleConflict()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewCreateStickRuleDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -97,6 +91,10 @@ type CreateStickRuleCreated struct {
 
 func (o *CreateStickRuleCreated) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/stick_rules][%d] createStickRuleCreated  %+v", 201, o.Payload)
+}
+
+func (o *CreateStickRuleCreated) GetPayload() *models.StickRule {
+	return o.Payload
 }
 
 func (o *CreateStickRuleCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -130,6 +128,10 @@ type CreateStickRuleAccepted struct {
 
 func (o *CreateStickRuleAccepted) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/stick_rules][%d] createStickRuleAccepted  %+v", 202, o.Payload)
+}
+
+func (o *CreateStickRuleAccepted) GetPayload() *models.StickRule {
+	return o.Payload
 }
 
 func (o *CreateStickRuleAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -168,6 +170,10 @@ type CreateStickRuleBadRequest struct {
 
 func (o *CreateStickRuleBadRequest) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/stick_rules][%d] createStickRuleBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *CreateStickRuleBadRequest) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *CreateStickRuleBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -210,6 +216,10 @@ type CreateStickRuleConflict struct {
 
 func (o *CreateStickRuleConflict) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/stick_rules][%d] createStickRuleConflict  %+v", 409, o.Payload)
+}
+
+func (o *CreateStickRuleConflict) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *CreateStickRuleConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -260,6 +270,10 @@ func (o *CreateStickRuleDefault) Code() int {
 
 func (o *CreateStickRuleDefault) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/stick_rules][%d] createStickRule default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *CreateStickRuleDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *CreateStickRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

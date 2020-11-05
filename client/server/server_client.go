@@ -22,12 +22,11 @@ package server
 
 import (
 	"github.com/go-openapi/runtime"
-
-	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/strfmt"
 )
 
 // New creates a new server API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -39,10 +38,31 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-/*
-CreateServer adds a new server
+// ClientService is the interface for Client methods
+type ClientService interface {
+	CreateServer(params *CreateServerParams, authInfo runtime.ClientAuthInfoWriter) (*CreateServerCreated, *CreateServerAccepted, error)
 
-Adds a new server in the specified backend in the configuration file.
+	DeleteServer(params *DeleteServerParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteServerAccepted, *DeleteServerNoContent, error)
+
+	GetRuntimeServer(params *GetRuntimeServerParams, authInfo runtime.ClientAuthInfoWriter) (*GetRuntimeServerOK, error)
+
+	GetRuntimeServers(params *GetRuntimeServersParams, authInfo runtime.ClientAuthInfoWriter) (*GetRuntimeServersOK, error)
+
+	GetServer(params *GetServerParams, authInfo runtime.ClientAuthInfoWriter) (*GetServerOK, error)
+
+	GetServers(params *GetServersParams, authInfo runtime.ClientAuthInfoWriter) (*GetServersOK, error)
+
+	ReplaceRuntimeServer(params *ReplaceRuntimeServerParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceRuntimeServerOK, error)
+
+	ReplaceServer(params *ReplaceServerParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceServerOK, *ReplaceServerAccepted, error)
+
+	SetTransport(transport runtime.ClientTransport)
+}
+
+/*
+  CreateServer adds a new server
+
+  Adds a new server in the specified backend in the configuration file.
 */
 func (a *Client) CreateServer(params *CreateServerParams, authInfo runtime.ClientAuthInfoWriter) (*CreateServerCreated, *CreateServerAccepted, error) {
 	// TODO: Validate the params before sending
@@ -72,14 +92,15 @@ func (a *Client) CreateServer(params *CreateServerParams, authInfo runtime.Clien
 	case *CreateServerAccepted:
 		return nil, value, nil
 	}
-	return nil, nil, nil
-
+	// unexpected success response
+	unexpectedSuccess := result.(*CreateServerDefault)
+	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-DeleteServer deletes a server
+  DeleteServer deletes a server
 
-Deletes a server configuration by it's name in the specified backend.
+  Deletes a server configuration by it's name in the specified backend.
 */
 func (a *Client) DeleteServer(params *DeleteServerParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteServerAccepted, *DeleteServerNoContent, error) {
 	// TODO: Validate the params before sending
@@ -109,14 +130,15 @@ func (a *Client) DeleteServer(params *DeleteServerParams, authInfo runtime.Clien
 	case *DeleteServerNoContent:
 		return nil, value, nil
 	}
-	return nil, nil, nil
-
+	// unexpected success response
+	unexpectedSuccess := result.(*DeleteServerDefault)
+	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-GetRuntimeServer returns one server runtime settings
+  GetRuntimeServer returns one server runtime settings
 
-Returns one server runtime settings by it's name in the specified backend.
+  Returns one server runtime settings by it's name in the specified backend.
 */
 func (a *Client) GetRuntimeServer(params *GetRuntimeServerParams, authInfo runtime.ClientAuthInfoWriter) (*GetRuntimeServerOK, error) {
 	// TODO: Validate the params before sending
@@ -140,14 +162,19 @@ func (a *Client) GetRuntimeServer(params *GetRuntimeServerParams, authInfo runti
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetRuntimeServerOK), nil
-
+	success, ok := result.(*GetRuntimeServerOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetRuntimeServerDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-GetRuntimeServers returns an array of runtime servers setings
+  GetRuntimeServers returns an array of runtime servers setings
 
-Returns an array of all servers' runtime settings.
+  Returns an array of all servers' runtime settings.
 */
 func (a *Client) GetRuntimeServers(params *GetRuntimeServersParams, authInfo runtime.ClientAuthInfoWriter) (*GetRuntimeServersOK, error) {
 	// TODO: Validate the params before sending
@@ -171,14 +198,19 @@ func (a *Client) GetRuntimeServers(params *GetRuntimeServersParams, authInfo run
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetRuntimeServersOK), nil
-
+	success, ok := result.(*GetRuntimeServersOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetRuntimeServersDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-GetServer returns one server
+  GetServer returns one server
 
-Returns one server configuration by it's name in the specified backend.
+  Returns one server configuration by it's name in the specified backend.
 */
 func (a *Client) GetServer(params *GetServerParams, authInfo runtime.ClientAuthInfoWriter) (*GetServerOK, error) {
 	// TODO: Validate the params before sending
@@ -202,14 +234,19 @@ func (a *Client) GetServer(params *GetServerParams, authInfo runtime.ClientAuthI
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetServerOK), nil
-
+	success, ok := result.(*GetServerOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetServerDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-GetServers returns an array of servers
+  GetServers returns an array of servers
 
-Returns an array of all servers that are configured in specified backend.
+  Returns an array of all servers that are configured in specified backend.
 */
 func (a *Client) GetServers(params *GetServersParams, authInfo runtime.ClientAuthInfoWriter) (*GetServersOK, error) {
 	// TODO: Validate the params before sending
@@ -233,14 +270,19 @@ func (a *Client) GetServers(params *GetServersParams, authInfo runtime.ClientAut
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetServersOK), nil
-
+	success, ok := result.(*GetServersOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetServersDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-ReplaceRuntimeServer replaces server transient settings
+  ReplaceRuntimeServer replaces server transient settings
 
-Replaces a server transient settings by it's name in the specified backend.
+  Replaces a server transient settings by it's name in the specified backend.
 */
 func (a *Client) ReplaceRuntimeServer(params *ReplaceRuntimeServerParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceRuntimeServerOK, error) {
 	// TODO: Validate the params before sending
@@ -264,14 +306,19 @@ func (a *Client) ReplaceRuntimeServer(params *ReplaceRuntimeServerParams, authIn
 	if err != nil {
 		return nil, err
 	}
-	return result.(*ReplaceRuntimeServerOK), nil
-
+	success, ok := result.(*ReplaceRuntimeServerOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*ReplaceRuntimeServerDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-ReplaceServer replaces a server
+  ReplaceServer replaces a server
 
-Replaces a server configuration by it's name in the specified backend.
+  Replaces a server configuration by it's name in the specified backend.
 */
 func (a *Client) ReplaceServer(params *ReplaceServerParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceServerOK, *ReplaceServerAccepted, error) {
 	// TODO: Validate the params before sending
@@ -301,8 +348,9 @@ func (a *Client) ReplaceServer(params *ReplaceServerParams, authInfo runtime.Cli
 	case *ReplaceServerAccepted:
 		return nil, value, nil
 	}
-	return nil, nil, nil
-
+	// unexpected success response
+	unexpectedSuccess := result.(*ReplaceServerDefault)
+	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 // SetTransport changes the transport on the client

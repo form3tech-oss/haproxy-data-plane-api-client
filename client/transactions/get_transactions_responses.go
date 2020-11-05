@@ -26,11 +26,10 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	strfmt "github.com/go-openapi/strfmt"
-
-	models "github.com/form3tech-oss/haproxy-data-plane-api-client/models"
+	"github.com/haproxytech/models"
 )
 
 // GetTransactionsReader is a Reader for the GetTransactions structure.
@@ -41,14 +40,12 @@ type GetTransactionsReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetTransactionsReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewGetTransactionsOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	default:
 		result := NewGetTransactionsDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -76,6 +73,10 @@ type GetTransactionsOK struct {
 
 func (o *GetTransactionsOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/transactions][%d] getTransactionsOK  %+v", 200, o.Payload)
+}
+
+func (o *GetTransactionsOK) GetPayload() models.Transactions {
+	return o.Payload
 }
 
 func (o *GetTransactionsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -117,6 +118,10 @@ func (o *GetTransactionsDefault) Code() int {
 
 func (o *GetTransactionsDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/transactions][%d] getTransactions default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *GetTransactionsDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *GetTransactionsDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

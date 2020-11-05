@@ -26,11 +26,10 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	strfmt "github.com/go-openapi/strfmt"
-
-	models "github.com/form3tech-oss/haproxy-data-plane-api-client/models"
+	"github.com/haproxytech/models"
 )
 
 // AddMapEntryReader is a Reader for the AddMapEntry structure.
@@ -41,28 +40,24 @@ type AddMapEntryReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *AddMapEntryReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 201:
 		result := NewAddMapEntryCreated()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 400:
 		result := NewAddMapEntryBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	case 409:
 		result := NewAddMapEntryConflict()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewAddMapEntryDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -90,6 +85,10 @@ type AddMapEntryCreated struct {
 
 func (o *AddMapEntryCreated) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/runtime/maps_entries][%d] addMapEntryCreated  %+v", 201, o.Payload)
+}
+
+func (o *AddMapEntryCreated) GetPayload() *models.MapEntry {
+	return o.Payload
 }
 
 func (o *AddMapEntryCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -125,6 +124,10 @@ type AddMapEntryBadRequest struct {
 
 func (o *AddMapEntryBadRequest) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/runtime/maps_entries][%d] addMapEntryBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *AddMapEntryBadRequest) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *AddMapEntryBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -167,6 +170,10 @@ type AddMapEntryConflict struct {
 
 func (o *AddMapEntryConflict) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/runtime/maps_entries][%d] addMapEntryConflict  %+v", 409, o.Payload)
+}
+
+func (o *AddMapEntryConflict) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *AddMapEntryConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -217,6 +224,10 @@ func (o *AddMapEntryDefault) Code() int {
 
 func (o *AddMapEntryDefault) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/runtime/maps_entries][%d] addMapEntry default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *AddMapEntryDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *AddMapEntryDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

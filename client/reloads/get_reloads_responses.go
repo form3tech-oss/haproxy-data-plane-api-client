@@ -26,11 +26,10 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	strfmt "github.com/go-openapi/strfmt"
-
-	models "github.com/form3tech-oss/haproxy-data-plane-api-client/models"
+	"github.com/haproxytech/models"
 )
 
 // GetReloadsReader is a Reader for the GetReloads structure.
@@ -41,14 +40,12 @@ type GetReloadsReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetReloadsReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewGetReloadsOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	default:
 		result := NewGetReloadsDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -76,6 +73,10 @@ type GetReloadsOK struct {
 
 func (o *GetReloadsOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/reloads][%d] getReloadsOK  %+v", 200, o.Payload)
+}
+
+func (o *GetReloadsOK) GetPayload() models.Reloads {
+	return o.Payload
 }
 
 func (o *GetReloadsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -117,6 +118,10 @@ func (o *GetReloadsDefault) Code() int {
 
 func (o *GetReloadsDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/reloads][%d] getReloads default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *GetReloadsDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *GetReloadsDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

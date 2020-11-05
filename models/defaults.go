@@ -24,9 +24,8 @@ import (
 	"encoding/json"
 	"strconv"
 
-	strfmt "github.com/go-openapi/strfmt"
-
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
@@ -34,6 +33,7 @@ import (
 // Defaults Defaults
 //
 // HAProxy defaults configuration
+//
 // swagger:model defaults
 type Defaults struct {
 
@@ -108,6 +108,10 @@ type Defaults struct {
 	// forwardfor
 	Forwardfor *Forwardfor `json:"forwardfor,omitempty"`
 
+	// http buffer request
+	// Enum: [enabled disabled]
+	HTTPBufferRequest string `json:"http-buffer-request,omitempty"`
+
 	// http check
 	HTTPCheck *HTTPCheck `json:"http-check,omitempty"`
 
@@ -163,6 +167,9 @@ type Defaults struct {
 	// mode
 	// Enum: [tcp http]
 	Mode string `json:"mode,omitempty"`
+
+	// monitor uri
+	MonitorURI MonitorURI `json:"monitor_uri,omitempty"`
 
 	// queue timeout
 	QueueTimeout *int64 `json:"queue_timeout,omitempty"`
@@ -257,6 +264,10 @@ func (m *Defaults) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := m.validateHTTPBufferRequest(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.validateHTTPCheck(formats); err != nil {
 		res = append(res, err)
 	}
@@ -294,6 +305,10 @@ func (m *Defaults) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateMode(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateMonitorURI(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -359,7 +374,7 @@ const (
 
 // prop value enum
 func (m *Defaults) validateAbortoncloseEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, defaultsTypeAbortonclosePropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, defaultsTypeAbortonclosePropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -417,7 +432,7 @@ const (
 
 // prop value enum
 func (m *Defaults) validateAdvCheckEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, defaultsTypeAdvCheckPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, defaultsTypeAdvCheckPropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -460,7 +475,7 @@ const (
 
 // prop value enum
 func (m *Defaults) validateAllbackupsEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, defaultsTypeAllbackupsPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, defaultsTypeAllbackupsPropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -534,7 +549,7 @@ const (
 
 // prop value enum
 func (m *Defaults) validateClitcpkaEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, defaultsTypeClitcpkaPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, defaultsTypeClitcpkaPropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -574,7 +589,7 @@ const (
 
 // prop value enum
 func (m *Defaults) validateContstatsEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, defaultsTypeContstatsPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, defaultsTypeContstatsPropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -666,7 +681,7 @@ const (
 
 // prop value enum
 func (m *Defaults) validateDontlognullEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, defaultsTypeDontlognullPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, defaultsTypeDontlognullPropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -709,7 +724,7 @@ const (
 
 // prop value enum
 func (m *Defaults) validateExternalCheckEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, defaultsTypeExternalCheckPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, defaultsTypeExternalCheckPropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -773,6 +788,49 @@ func (m *Defaults) validateForwardfor(formats strfmt.Registry) error {
 	return nil
 }
 
+var defaultsTypeHTTPBufferRequestPropEnum []interface{}
+
+func init() {
+	var res []string
+	if err := json.Unmarshal([]byte(`["enabled","disabled"]`), &res); err != nil {
+		panic(err)
+	}
+	for _, v := range res {
+		defaultsTypeHTTPBufferRequestPropEnum = append(defaultsTypeHTTPBufferRequestPropEnum, v)
+	}
+}
+
+const (
+
+	// DefaultsHTTPBufferRequestEnabled captures enum value "enabled"
+	DefaultsHTTPBufferRequestEnabled string = "enabled"
+
+	// DefaultsHTTPBufferRequestDisabled captures enum value "disabled"
+	DefaultsHTTPBufferRequestDisabled string = "disabled"
+)
+
+// prop value enum
+func (m *Defaults) validateHTTPBufferRequestEnum(path, location string, value string) error {
+	if err := validate.EnumCase(path, location, value, defaultsTypeHTTPBufferRequestPropEnum, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *Defaults) validateHTTPBufferRequest(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.HTTPBufferRequest) { // not required
+		return nil
+	}
+
+	// value enum
+	if err := m.validateHTTPBufferRequestEnum("http-buffer-request", "body", m.HTTPBufferRequest); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (m *Defaults) validateHTTPCheck(formats strfmt.Registry) error {
 
 	if swag.IsZero(m.HTTPCheck) { // not required
@@ -814,7 +872,7 @@ const (
 
 // prop value enum
 func (m *Defaults) validateHTTPUseHtxEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, defaultsTypeHTTPUseHtxPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, defaultsTypeHTTPUseHtxPropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -860,7 +918,7 @@ const (
 
 // prop value enum
 func (m *Defaults) validateHTTPConnectionModeEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, defaultsTypeHTTPConnectionModePropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, defaultsTypeHTTPConnectionModePropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -903,7 +961,7 @@ const (
 
 // prop value enum
 func (m *Defaults) validateHTTPPretendKeepaliveEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, defaultsTypeHTTPPretendKeepalivePropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, defaultsTypeHTTPPretendKeepalivePropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -952,7 +1010,7 @@ const (
 
 // prop value enum
 func (m *Defaults) validateHTTPReuseEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, defaultsTypeHTTPReusePropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, defaultsTypeHTTPReusePropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -1013,7 +1071,7 @@ const (
 
 // prop value enum
 func (m *Defaults) validateLogSeparateErrorsEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, defaultsTypeLogSeparateErrorsPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, defaultsTypeLogSeparateErrorsPropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -1069,7 +1127,7 @@ const (
 
 // prop value enum
 func (m *Defaults) validateLogasapEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, defaultsTypeLogasapPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, defaultsTypeLogasapPropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -1112,7 +1170,7 @@ const (
 
 // prop value enum
 func (m *Defaults) validateModeEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, defaultsTypeModePropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, defaultsTypeModePropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -1126,6 +1184,22 @@ func (m *Defaults) validateMode(formats strfmt.Registry) error {
 
 	// value enum
 	if err := m.validateModeEnum("mode", "body", m.Mode); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *Defaults) validateMonitorURI(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.MonitorURI) { // not required
+		return nil
+	}
+
+	if err := m.MonitorURI.Validate(formats); err != nil {
+		if ve, ok := err.(*errors.Validation); ok {
+			return ve.ValidateName("monitor_uri")
+		}
 		return err
 	}
 

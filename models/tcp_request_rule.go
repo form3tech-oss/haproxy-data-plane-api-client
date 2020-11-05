@@ -23,9 +23,8 @@ package models
 import (
 	"encoding/json"
 
-	strfmt "github.com/go-openapi/strfmt"
-
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
@@ -33,11 +32,12 @@ import (
 // TCPRequestRule TCP Request Rule
 //
 // HAProxy TCP Request Rule configuration (corresponds to tcp-request)
+//
 // swagger:model tcp_request_rule
 type TCPRequestRule struct {
 
 	// action
-	// Enum: [accept capture do-resolve expect-netscaler-cip expect-proxy reject sc-inc-gpc0 sc-inc-gpc1 sc-set-gpt0 send-spoe-group set-dst-port set-dst set-priority set-src set-var silent-drop track-sc0 track-sc1 track-sc2 unset-var use-service]
+	// Enum: [accept capture do-resolve expect-netscaler-cip expect-proxy reject sc-inc-gpc0 sc-inc-gpc1 sc-set-gpt0 send-spoe-group set-dst-port set-dst set-priority set-src set-var silent-drop track-sc0 track-sc1 track-sc2 unset-var use-service lua]
 	Action string `json:"action,omitempty"`
 
 	// capture len
@@ -63,6 +63,13 @@ type TCPRequestRule struct {
 	// index
 	// Required: true
 	Index *int64 `json:"index"`
+
+	// lua action
+	// Pattern: ^[^\s]+$
+	LuaAction string `json:"lua_action,omitempty"`
+
+	// lua params
+	LuaParams string `json:"lua_params,omitempty"`
 
 	// priority type
 	// Enum: [class offset]
@@ -133,6 +140,10 @@ func (m *TCPRequestRule) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := m.validateLuaAction(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.validatePriorityType(formats); err != nil {
 		res = append(res, err)
 	}
@@ -163,7 +174,7 @@ var tcpRequestRuleTypeActionPropEnum []interface{}
 
 func init() {
 	var res []string
-	if err := json.Unmarshal([]byte(`["accept","capture","do-resolve","expect-netscaler-cip","expect-proxy","reject","sc-inc-gpc0","sc-inc-gpc1","sc-set-gpt0","send-spoe-group","set-dst-port","set-dst","set-priority","set-src","set-var","silent-drop","track-sc0","track-sc1","track-sc2","unset-var","use-service"]`), &res); err != nil {
+	if err := json.Unmarshal([]byte(`["accept","capture","do-resolve","expect-netscaler-cip","expect-proxy","reject","sc-inc-gpc0","sc-inc-gpc1","sc-set-gpt0","send-spoe-group","set-dst-port","set-dst","set-priority","set-src","set-var","silent-drop","track-sc0","track-sc1","track-sc2","unset-var","use-service","lua"]`), &res); err != nil {
 		panic(err)
 	}
 	for _, v := range res {
@@ -235,11 +246,14 @@ const (
 
 	// TCPRequestRuleActionUseService captures enum value "use-service"
 	TCPRequestRuleActionUseService string = "use-service"
+
+	// TCPRequestRuleActionLua captures enum value "lua"
+	TCPRequestRuleActionLua string = "lua"
 )
 
 // prop value enum
 func (m *TCPRequestRule) validateActionEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, tcpRequestRuleTypeActionPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, tcpRequestRuleTypeActionPropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -295,7 +309,7 @@ const (
 
 // prop value enum
 func (m *TCPRequestRule) validateCondEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, tcpRequestRuleTypeCondPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, tcpRequestRuleTypeCondPropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -318,6 +332,19 @@ func (m *TCPRequestRule) validateCond(formats strfmt.Registry) error {
 func (m *TCPRequestRule) validateIndex(formats strfmt.Registry) error {
 
 	if err := validate.Required("index", "body", m.Index); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *TCPRequestRule) validateLuaAction(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.LuaAction) { // not required
+		return nil
+	}
+
+	if err := validate.Pattern("lua_action", "body", string(m.LuaAction), `^[^\s]+$`); err != nil {
 		return err
 	}
 
@@ -347,7 +374,7 @@ const (
 
 // prop value enum
 func (m *TCPRequestRule) validatePriorityTypeEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, tcpRequestRuleTypePriorityTypePropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, tcpRequestRuleTypePriorityTypePropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -390,7 +417,7 @@ const (
 
 // prop value enum
 func (m *TCPRequestRule) validateResolveProtocolEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, tcpRequestRuleTypeResolveProtocolPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, tcpRequestRuleTypeResolveProtocolPropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -439,7 +466,7 @@ const (
 
 // prop value enum
 func (m *TCPRequestRule) validateTypeEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, tcpRequestRuleTypeTypePropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, tcpRequestRuleTypeTypePropEnum, true); err != nil {
 		return err
 	}
 	return nil

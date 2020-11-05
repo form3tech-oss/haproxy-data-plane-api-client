@@ -26,9 +26,8 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-
-	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/haproxytech/models"
 )
@@ -41,14 +40,12 @@ type GetDefaultsReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetDefaultsReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewGetDefaultsOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	default:
 		result := NewGetDefaultsDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -80,6 +77,10 @@ type GetDefaultsOK struct {
 
 func (o *GetDefaultsOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/defaults][%d] getDefaultsOK  %+v", 200, o.Payload)
+}
+
+func (o *GetDefaultsOK) GetPayload() *GetDefaultsOKBody {
+	return o.Payload
 }
 
 func (o *GetDefaultsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -130,6 +131,10 @@ func (o *GetDefaultsDefault) Code() int {
 
 func (o *GetDefaultsDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/defaults][%d] getDefaults default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *GetDefaultsDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *GetDefaultsDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

@@ -26,11 +26,10 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	strfmt "github.com/go-openapi/strfmt"
-
-	models "github.com/form3tech-oss/haproxy-data-plane-api-client/models"
+	"github.com/haproxytech/models"
 )
 
 // PostClusterReader is a Reader for the PostCluster structure.
@@ -41,21 +40,18 @@ type PostClusterReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *PostClusterReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewPostClusterOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 400:
 		result := NewPostClusterBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewPostClusterDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -83,6 +79,10 @@ type PostClusterOK struct {
 
 func (o *PostClusterOK) Error() string {
 	return fmt.Sprintf("[POST /cluster][%d] postClusterOK  %+v", 200, o.Payload)
+}
+
+func (o *PostClusterOK) GetPayload() *models.ClusterSettings {
+	return o.Payload
 }
 
 func (o *PostClusterOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -118,6 +118,10 @@ type PostClusterBadRequest struct {
 
 func (o *PostClusterBadRequest) Error() string {
 	return fmt.Sprintf("[POST /cluster][%d] postClusterBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *PostClusterBadRequest) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *PostClusterBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -168,6 +172,10 @@ func (o *PostClusterDefault) Code() int {
 
 func (o *PostClusterDefault) Error() string {
 	return fmt.Sprintf("[POST /cluster][%d] postCluster default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *PostClusterDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *PostClusterDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

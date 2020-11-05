@@ -26,10 +26,9 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
-
-	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/haproxytech/models"
 )
@@ -42,14 +41,12 @@ type GetStickRulesReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetStickRulesReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewGetStickRulesOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	default:
 		result := NewGetStickRulesDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -81,6 +78,10 @@ type GetStickRulesOK struct {
 
 func (o *GetStickRulesOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/stick_rules][%d] getStickRulesOK  %+v", 200, o.Payload)
+}
+
+func (o *GetStickRulesOK) GetPayload() *GetStickRulesOKBody {
+	return o.Payload
 }
 
 func (o *GetStickRulesOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -131,6 +132,10 @@ func (o *GetStickRulesDefault) Code() int {
 
 func (o *GetStickRulesDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/stick_rules][%d] getStickRules default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *GetStickRulesDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *GetStickRulesDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

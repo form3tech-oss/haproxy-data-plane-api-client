@@ -23,9 +23,8 @@ package models
 import (
 	"encoding/json"
 
-	strfmt "github.com/go-openapi/strfmt"
-
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
@@ -33,6 +32,7 @@ import (
 // NativeStat Stats
 //
 // Current stats for one object.
+//
 // swagger:model native_stat
 type NativeStat struct {
 
@@ -112,7 +112,7 @@ const (
 
 // prop value enum
 func (m *NativeStat) validateTypeEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, nativeStatTypeTypePropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, nativeStatTypeTypePropEnum, true); err != nil {
 		return err
 	}
 	return nil
