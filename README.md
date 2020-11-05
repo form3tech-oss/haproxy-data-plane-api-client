@@ -13,7 +13,7 @@ Golang client for the HAProxy Data Plane API.
 $ git clone https://github.com/haproxytech/models.git \
     $GOPATH/src/github.com/haproxytech/models
 $ cd $GOPATH/src/github.com/haproxytech/models
-$ git checkout 404064d
+$ git checkout acf2bae
 ```
 
 ```shell
@@ -21,7 +21,7 @@ $ git checkout 404064d
 $ git clone ttps://github.com/haproxytech/dataplaneapi-specification.git \
     $GOPATH/src/github.com/haproxytech/dataplaceapi-specification
 $ cd $GOPATH/src/github.com/haproxytech/dataplaceapi-specification
-$ git checkout 6f4c2f6
+$ git checkout 93629aa
 ```
 
 ```shell
@@ -36,31 +36,5 @@ $ swagger generate client -f haproxy_spec.yaml \
     -A "Data Plane" \
     -t $GOPATH/src/github.com/form3tech-oss/haproxy-data-plane-api-client \
     --existing-models github.com/haproxytech/models \
-    --skip-models \
-    --tags=Discovery \
-    --tags=Information \
-    --tags=Specification \
-    --tags=Transactions \
-    --tags=Sites \
-    --tags=Stats \
-    --tags=Global \
-    --tags=Frontend \
-    --tags=Backend \
-    --tags=Bind \
-    --tags=Server \
-    --tags=Configuration \
-    --tags=HTTPRequestRule \
-    --tags=HTTPResponseRule \
-    --tags=BackendSwitchingRule \
-    --tags=ServerSwitchingRule \
-    --tags=TCPResponseRule \
-    --tags=TCPRequestRule \
-    --tags=Filter \
-    --tags=StickRule \
-    --tags=LogTarget \
-    --tags=Reloads \
-    --tags=ACL \
-    --tags=Defaults \
-    --tags=StickTable \
     -r ../copyright.txt
 ```

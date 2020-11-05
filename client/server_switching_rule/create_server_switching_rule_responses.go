@@ -26,9 +26,8 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-
-	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/haproxytech/models"
 )
@@ -41,35 +40,30 @@ type CreateServerSwitchingRuleReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *CreateServerSwitchingRuleReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 201:
 		result := NewCreateServerSwitchingRuleCreated()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 202:
 		result := NewCreateServerSwitchingRuleAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 400:
 		result := NewCreateServerSwitchingRuleBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	case 409:
 		result := NewCreateServerSwitchingRuleConflict()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewCreateServerSwitchingRuleDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -97,6 +91,10 @@ type CreateServerSwitchingRuleCreated struct {
 
 func (o *CreateServerSwitchingRuleCreated) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/server_switching_rules][%d] createServerSwitchingRuleCreated  %+v", 201, o.Payload)
+}
+
+func (o *CreateServerSwitchingRuleCreated) GetPayload() *models.ServerSwitchingRule {
+	return o.Payload
 }
 
 func (o *CreateServerSwitchingRuleCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -130,6 +128,10 @@ type CreateServerSwitchingRuleAccepted struct {
 
 func (o *CreateServerSwitchingRuleAccepted) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/server_switching_rules][%d] createServerSwitchingRuleAccepted  %+v", 202, o.Payload)
+}
+
+func (o *CreateServerSwitchingRuleAccepted) GetPayload() *models.ServerSwitchingRule {
+	return o.Payload
 }
 
 func (o *CreateServerSwitchingRuleAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -168,6 +170,10 @@ type CreateServerSwitchingRuleBadRequest struct {
 
 func (o *CreateServerSwitchingRuleBadRequest) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/server_switching_rules][%d] createServerSwitchingRuleBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *CreateServerSwitchingRuleBadRequest) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *CreateServerSwitchingRuleBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -210,6 +216,10 @@ type CreateServerSwitchingRuleConflict struct {
 
 func (o *CreateServerSwitchingRuleConflict) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/server_switching_rules][%d] createServerSwitchingRuleConflict  %+v", 409, o.Payload)
+}
+
+func (o *CreateServerSwitchingRuleConflict) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *CreateServerSwitchingRuleConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -260,6 +270,10 @@ func (o *CreateServerSwitchingRuleDefault) Code() int {
 
 func (o *CreateServerSwitchingRuleDefault) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/server_switching_rules][%d] createServerSwitchingRule default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *CreateServerSwitchingRuleDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *CreateServerSwitchingRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

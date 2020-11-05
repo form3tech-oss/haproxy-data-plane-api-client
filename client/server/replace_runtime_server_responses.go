@@ -26,9 +26,8 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-
-	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/haproxytech/models"
 )
@@ -41,28 +40,24 @@ type ReplaceRuntimeServerReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *ReplaceRuntimeServerReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewReplaceRuntimeServerOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 400:
 		result := NewReplaceRuntimeServerBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	case 404:
 		result := NewReplaceRuntimeServerNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewReplaceRuntimeServerDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -90,6 +85,10 @@ type ReplaceRuntimeServerOK struct {
 
 func (o *ReplaceRuntimeServerOK) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/runtime/servers/{name}][%d] replaceRuntimeServerOK  %+v", 200, o.Payload)
+}
+
+func (o *ReplaceRuntimeServerOK) GetPayload() *models.RuntimeServer {
+	return o.Payload
 }
 
 func (o *ReplaceRuntimeServerOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -125,6 +124,10 @@ type ReplaceRuntimeServerBadRequest struct {
 
 func (o *ReplaceRuntimeServerBadRequest) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/runtime/servers/{name}][%d] replaceRuntimeServerBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *ReplaceRuntimeServerBadRequest) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *ReplaceRuntimeServerBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -167,6 +170,10 @@ type ReplaceRuntimeServerNotFound struct {
 
 func (o *ReplaceRuntimeServerNotFound) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/runtime/servers/{name}][%d] replaceRuntimeServerNotFound  %+v", 404, o.Payload)
+}
+
+func (o *ReplaceRuntimeServerNotFound) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *ReplaceRuntimeServerNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -217,6 +224,10 @@ func (o *ReplaceRuntimeServerDefault) Code() int {
 
 func (o *ReplaceRuntimeServerDefault) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/runtime/servers/{name}][%d] replaceRuntimeServer default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *ReplaceRuntimeServerDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *ReplaceRuntimeServerDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

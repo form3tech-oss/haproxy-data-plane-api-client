@@ -28,11 +28,10 @@ import (
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	strfmt "github.com/go-openapi/strfmt"
-
-	models "github.com/form3tech-oss/haproxy-data-plane-api-client/models"
+	"github.com/haproxytech/models"
 )
 
 // NewPostClusterParams creates a new PostClusterParams object
@@ -79,6 +78,11 @@ for the post cluster operation typically these are written to a http.Request
 */
 type PostClusterParams struct {
 
+	/*Configuration
+	  In case of moving to single mode do we keep or clean configuration
+
+	*/
+	Configuration *string
 	/*Data*/
 	Data *models.ClusterSettings
 	/*Version
@@ -125,6 +129,17 @@ func (o *PostClusterParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
+// WithConfiguration adds the configuration to the post cluster params
+func (o *PostClusterParams) WithConfiguration(configuration *string) *PostClusterParams {
+	o.SetConfiguration(configuration)
+	return o
+}
+
+// SetConfiguration adds the configuration to the post cluster params
+func (o *PostClusterParams) SetConfiguration(configuration *string) {
+	o.Configuration = configuration
+}
+
 // WithData adds the data to the post cluster params
 func (o *PostClusterParams) WithData(data *models.ClusterSettings) *PostClusterParams {
 	o.SetData(data)
@@ -154,6 +169,22 @@ func (o *PostClusterParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.R
 		return err
 	}
 	var res []error
+
+	if o.Configuration != nil {
+
+		// query param configuration
+		var qrConfiguration string
+		if o.Configuration != nil {
+			qrConfiguration = *o.Configuration
+		}
+		qConfiguration := qrConfiguration
+		if qConfiguration != "" {
+			if err := r.SetQueryParam("configuration", qConfiguration); err != nil {
+				return err
+			}
+		}
+
+	}
 
 	if o.Data != nil {
 		if err := r.SetBodyParam(o.Data); err != nil {

@@ -23,14 +23,14 @@ package models
 import (
 	"encoding/json"
 
-	strfmt "github.com/go-openapi/strfmt"
-
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
 
 // HTTPCheck http check
+//
 // swagger:model http-check
 type HTTPCheck struct {
 
@@ -103,7 +103,7 @@ const (
 
 // prop value enum
 func (m *HTTPCheck) validateMatchEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, httpCheckTypeMatchPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, httpCheckTypeMatchPropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -166,7 +166,7 @@ const (
 
 // prop value enum
 func (m *HTTPCheck) validateTypeEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, httpCheckTypeTypePropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, httpCheckTypeTypePropEnum, true); err != nil {
 		return err
 	}
 	return nil

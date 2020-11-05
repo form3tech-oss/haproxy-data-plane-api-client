@@ -28,11 +28,10 @@ import (
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	strfmt "github.com/go-openapi/strfmt"
-
-	models "github.com/form3tech-oss/haproxy-data-plane-api-client/models"
+	"github.com/haproxytech/models"
 )
 
 // NewReplaceSiteParams creates a new ReplaceSiteParams object

@@ -23,9 +23,8 @@ package models
 import (
 	"encoding/json"
 
-	strfmt "github.com/go-openapi/strfmt"
-
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
@@ -33,6 +32,7 @@ import (
 // ClusterSettings Cluster Settings
 //
 // Settings related to a cluster.
+//
 // swagger:model cluster_settings
 type ClusterSettings struct {
 
@@ -115,7 +115,7 @@ const (
 
 // prop value enum
 func (m *ClusterSettings) validateModeEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, clusterSettingsTypeModePropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, clusterSettingsTypeModePropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -161,7 +161,7 @@ const (
 
 // prop value enum
 func (m *ClusterSettings) validateStatusEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, clusterSettingsTypeStatusPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, clusterSettingsTypeStatusPropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -200,6 +200,7 @@ func (m *ClusterSettings) UnmarshalBinary(b []byte) error {
 }
 
 // ClusterSettingsCluster Cluster controller information
+//
 // swagger:model ClusterSettingsCluster
 type ClusterSettingsCluster struct {
 

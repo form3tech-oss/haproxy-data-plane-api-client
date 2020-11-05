@@ -26,9 +26,8 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-
-	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/haproxytech/models"
 )
@@ -41,35 +40,30 @@ type ReplaceStickRuleReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *ReplaceStickRuleReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewReplaceStickRuleOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 202:
 		result := NewReplaceStickRuleAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 400:
 		result := NewReplaceStickRuleBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	case 404:
 		result := NewReplaceStickRuleNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewReplaceStickRuleDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -97,6 +91,10 @@ type ReplaceStickRuleOK struct {
 
 func (o *ReplaceStickRuleOK) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/stick_rules/{index}][%d] replaceStickRuleOK  %+v", 200, o.Payload)
+}
+
+func (o *ReplaceStickRuleOK) GetPayload() *models.StickRule {
+	return o.Payload
 }
 
 func (o *ReplaceStickRuleOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -130,6 +128,10 @@ type ReplaceStickRuleAccepted struct {
 
 func (o *ReplaceStickRuleAccepted) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/stick_rules/{index}][%d] replaceStickRuleAccepted  %+v", 202, o.Payload)
+}
+
+func (o *ReplaceStickRuleAccepted) GetPayload() *models.StickRule {
+	return o.Payload
 }
 
 func (o *ReplaceStickRuleAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -168,6 +170,10 @@ type ReplaceStickRuleBadRequest struct {
 
 func (o *ReplaceStickRuleBadRequest) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/stick_rules/{index}][%d] replaceStickRuleBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *ReplaceStickRuleBadRequest) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *ReplaceStickRuleBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -210,6 +216,10 @@ type ReplaceStickRuleNotFound struct {
 
 func (o *ReplaceStickRuleNotFound) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/stick_rules/{index}][%d] replaceStickRuleNotFound  %+v", 404, o.Payload)
+}
+
+func (o *ReplaceStickRuleNotFound) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *ReplaceStickRuleNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -260,6 +270,10 @@ func (o *ReplaceStickRuleDefault) Code() int {
 
 func (o *ReplaceStickRuleDefault) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/stick_rules/{index}][%d] replaceStickRule default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *ReplaceStickRuleDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *ReplaceStickRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

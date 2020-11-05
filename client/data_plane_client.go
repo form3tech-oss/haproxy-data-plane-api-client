@@ -23,19 +23,40 @@ package client
 import (
 	"github.com/go-openapi/runtime"
 	httptransport "github.com/go-openapi/runtime/client"
+	"github.com/go-openapi/strfmt"
 
-	strfmt "github.com/go-openapi/strfmt"
-
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/acl"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/backend"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/backend_switching_rule"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/bind"
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/cluster"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/configuration"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/defaults"
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/discovery"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/filter"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/frontend"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/global"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/http_request_rule"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/http_response_rule"
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/information"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/log_target"
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/maps"
-	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/operations"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/nameserver"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/peer"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/peer_entry"
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/reloads"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/resolver"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/server"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/server_switching_rule"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/service_discovery"
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/sites"
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/specification"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/specification_openapiv3"
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/stats"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/stick_rule"
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/stick_table"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/tcp_request_rule"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/tcp_response_rule"
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/transactions"
 )
 
@@ -81,29 +102,39 @@ func New(transport runtime.ClientTransport, formats strfmt.Registry) *DataPlane 
 
 	cli := new(DataPlane)
 	cli.Transport = transport
-
+	cli.ACL = acl.New(transport, formats)
+	cli.Backend = backend.New(transport, formats)
+	cli.BackendSwitchingRule = backend_switching_rule.New(transport, formats)
+	cli.Bind = bind.New(transport, formats)
 	cli.Cluster = cluster.New(transport, formats)
-
+	cli.Configuration = configuration.New(transport, formats)
+	cli.Defaults = defaults.New(transport, formats)
 	cli.Discovery = discovery.New(transport, formats)
-
+	cli.Filter = filter.New(transport, formats)
+	cli.Frontend = frontend.New(transport, formats)
+	cli.Global = global.New(transport, formats)
+	cli.HTTPRequestRule = http_request_rule.New(transport, formats)
+	cli.HTTPResponseRule = http_response_rule.New(transport, formats)
 	cli.Information = information.New(transport, formats)
-
+	cli.LogTarget = log_target.New(transport, formats)
 	cli.Maps = maps.New(transport, formats)
-
-	cli.Operations = operations.New(transport, formats)
-
+	cli.Nameserver = nameserver.New(transport, formats)
+	cli.Peer = peer.New(transport, formats)
+	cli.PeerEntry = peer_entry.New(transport, formats)
 	cli.Reloads = reloads.New(transport, formats)
-
+	cli.Resolver = resolver.New(transport, formats)
+	cli.Server = server.New(transport, formats)
+	cli.ServerSwitchingRule = server_switching_rule.New(transport, formats)
+	cli.ServiceDiscovery = service_discovery.New(transport, formats)
 	cli.Sites = sites.New(transport, formats)
-
 	cli.Specification = specification.New(transport, formats)
-
+	cli.SpecificationOpenapiv3 = specification_openapiv3.New(transport, formats)
 	cli.Stats = stats.New(transport, formats)
-
+	cli.StickRule = stick_rule.New(transport, formats)
 	cli.StickTable = stick_table.New(transport, formats)
-
+	cli.TCPRequestRule = tcp_request_rule.New(transport, formats)
+	cli.TCPResponseRule = tcp_response_rule.New(transport, formats)
 	cli.Transactions = transactions.New(transport, formats)
-
 	return cli
 }
 
@@ -148,27 +179,71 @@ func (cfg *TransportConfig) WithSchemes(schemes []string) *TransportConfig {
 
 // DataPlane is a client for data plane
 type DataPlane struct {
-	Cluster *cluster.Client
+	ACL acl.ClientService
 
-	Discovery *discovery.Client
+	Backend backend.ClientService
 
-	Information *information.Client
+	BackendSwitchingRule backend_switching_rule.ClientService
 
-	Maps *maps.Client
+	Bind bind.ClientService
 
-	Operations *operations.Client
+	Cluster cluster.ClientService
 
-	Reloads *reloads.Client
+	Configuration configuration.ClientService
 
-	Sites *sites.Client
+	Defaults defaults.ClientService
 
-	Specification *specification.Client
+	Discovery discovery.ClientService
 
-	Stats *stats.Client
+	Filter filter.ClientService
 
-	StickTable *stick_table.Client
+	Frontend frontend.ClientService
 
-	Transactions *transactions.Client
+	Global global.ClientService
+
+	HTTPRequestRule http_request_rule.ClientService
+
+	HTTPResponseRule http_response_rule.ClientService
+
+	Information information.ClientService
+
+	LogTarget log_target.ClientService
+
+	Maps maps.ClientService
+
+	Nameserver nameserver.ClientService
+
+	Peer peer.ClientService
+
+	PeerEntry peer_entry.ClientService
+
+	Reloads reloads.ClientService
+
+	Resolver resolver.ClientService
+
+	Server server.ClientService
+
+	ServerSwitchingRule server_switching_rule.ClientService
+
+	ServiceDiscovery service_discovery.ClientService
+
+	Sites sites.ClientService
+
+	Specification specification.ClientService
+
+	SpecificationOpenapiv3 specification_openapiv3.ClientService
+
+	Stats stats.ClientService
+
+	StickRule stick_rule.ClientService
+
+	StickTable stick_table.ClientService
+
+	TCPRequestRule tcp_request_rule.ClientService
+
+	TCPResponseRule tcp_response_rule.ClientService
+
+	Transactions transactions.ClientService
 
 	Transport runtime.ClientTransport
 }
@@ -176,27 +251,37 @@ type DataPlane struct {
 // SetTransport changes the transport on the client and all its subresources
 func (c *DataPlane) SetTransport(transport runtime.ClientTransport) {
 	c.Transport = transport
-
+	c.ACL.SetTransport(transport)
+	c.Backend.SetTransport(transport)
+	c.BackendSwitchingRule.SetTransport(transport)
+	c.Bind.SetTransport(transport)
 	c.Cluster.SetTransport(transport)
-
+	c.Configuration.SetTransport(transport)
+	c.Defaults.SetTransport(transport)
 	c.Discovery.SetTransport(transport)
-
+	c.Filter.SetTransport(transport)
+	c.Frontend.SetTransport(transport)
+	c.Global.SetTransport(transport)
+	c.HTTPRequestRule.SetTransport(transport)
+	c.HTTPResponseRule.SetTransport(transport)
 	c.Information.SetTransport(transport)
-
+	c.LogTarget.SetTransport(transport)
 	c.Maps.SetTransport(transport)
-
-	c.Operations.SetTransport(transport)
-
+	c.Nameserver.SetTransport(transport)
+	c.Peer.SetTransport(transport)
+	c.PeerEntry.SetTransport(transport)
 	c.Reloads.SetTransport(transport)
-
+	c.Resolver.SetTransport(transport)
+	c.Server.SetTransport(transport)
+	c.ServerSwitchingRule.SetTransport(transport)
+	c.ServiceDiscovery.SetTransport(transport)
 	c.Sites.SetTransport(transport)
-
 	c.Specification.SetTransport(transport)
-
+	c.SpecificationOpenapiv3.SetTransport(transport)
 	c.Stats.SetTransport(transport)
-
+	c.StickRule.SetTransport(transport)
 	c.StickTable.SetTransport(transport)
-
+	c.TCPRequestRule.SetTransport(transport)
+	c.TCPResponseRule.SetTransport(transport)
 	c.Transactions.SetTransport(transport)
-
 }

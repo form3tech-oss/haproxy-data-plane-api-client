@@ -26,9 +26,8 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-
-	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/haproxytech/models"
 )
@@ -41,21 +40,18 @@ type GetHTTPRequestRuleReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetHTTPRequestRuleReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewGetHTTPRequestRuleOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 404:
 		result := NewGetHTTPRequestRuleNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewGetHTTPRequestRuleDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -87,6 +83,10 @@ type GetHTTPRequestRuleOK struct {
 
 func (o *GetHTTPRequestRuleOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/http_request_rules/{index}][%d] getHttpRequestRuleOK  %+v", 200, o.Payload)
+}
+
+func (o *GetHTTPRequestRuleOK) GetPayload() *GetHTTPRequestRuleOKBody {
+	return o.Payload
 }
 
 func (o *GetHTTPRequestRuleOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -129,6 +129,10 @@ type GetHTTPRequestRuleNotFound struct {
 
 func (o *GetHTTPRequestRuleNotFound) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/http_request_rules/{index}][%d] getHttpRequestRuleNotFound  %+v", 404, o.Payload)
+}
+
+func (o *GetHTTPRequestRuleNotFound) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *GetHTTPRequestRuleNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -179,6 +183,10 @@ func (o *GetHTTPRequestRuleDefault) Code() int {
 
 func (o *GetHTTPRequestRuleDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/http_request_rules/{index}][%d] getHTTPRequestRule default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *GetHTTPRequestRuleDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *GetHTTPRequestRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

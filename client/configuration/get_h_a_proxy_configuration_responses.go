@@ -26,10 +26,9 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
-
-	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/haproxytech/models"
 )
@@ -42,14 +41,12 @@ type GetHAProxyConfigurationReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetHAProxyConfigurationReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewGetHAProxyConfigurationOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	default:
 		result := NewGetHAProxyConfigurationDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -81,6 +78,10 @@ type GetHAProxyConfigurationOK struct {
 
 func (o *GetHAProxyConfigurationOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/raw][%d] getHAProxyConfigurationOK  %+v", 200, o.Payload)
+}
+
+func (o *GetHAProxyConfigurationOK) GetPayload() *GetHAProxyConfigurationOKBody {
+	return o.Payload
 }
 
 func (o *GetHAProxyConfigurationOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -131,6 +132,10 @@ func (o *GetHAProxyConfigurationDefault) Code() int {
 
 func (o *GetHAProxyConfigurationDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/raw][%d] getHAProxyConfiguration default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *GetHAProxyConfigurationDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *GetHAProxyConfigurationDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

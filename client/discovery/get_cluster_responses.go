@@ -26,11 +26,10 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	strfmt "github.com/go-openapi/strfmt"
-
-	models "github.com/form3tech-oss/haproxy-data-plane-api-client/models"
+	"github.com/haproxytech/models"
 )
 
 // GetClusterReader is a Reader for the GetCluster structure.
@@ -41,14 +40,12 @@ type GetClusterReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetClusterReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewGetClusterOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	default:
 		result := NewGetClusterDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -76,6 +73,10 @@ type GetClusterOK struct {
 
 func (o *GetClusterOK) Error() string {
 	return fmt.Sprintf("[GET /cluster][%d] getClusterOK  %+v", 200, o.Payload)
+}
+
+func (o *GetClusterOK) GetPayload() *models.ClusterSettings {
+	return o.Payload
 }
 
 func (o *GetClusterOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -119,6 +120,10 @@ func (o *GetClusterDefault) Code() int {
 
 func (o *GetClusterDefault) Error() string {
 	return fmt.Sprintf("[GET /cluster][%d] getCluster default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *GetClusterDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *GetClusterDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

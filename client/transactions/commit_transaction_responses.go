@@ -26,11 +26,10 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	strfmt "github.com/go-openapi/strfmt"
-
-	models "github.com/form3tech-oss/haproxy-data-plane-api-client/models"
+	"github.com/haproxytech/models"
 )
 
 // CommitTransactionReader is a Reader for the CommitTransaction structure.
@@ -41,35 +40,30 @@ type CommitTransactionReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *CommitTransactionReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewCommitTransactionOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 202:
 		result := NewCommitTransactionAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 400:
 		result := NewCommitTransactionBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	case 404:
 		result := NewCommitTransactionNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewCommitTransactionDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -97,6 +91,10 @@ type CommitTransactionOK struct {
 
 func (o *CommitTransactionOK) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/transactions/{id}][%d] commitTransactionOK  %+v", 200, o.Payload)
+}
+
+func (o *CommitTransactionOK) GetPayload() *models.Transaction {
+	return o.Payload
 }
 
 func (o *CommitTransactionOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -130,6 +128,10 @@ type CommitTransactionAccepted struct {
 
 func (o *CommitTransactionAccepted) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/transactions/{id}][%d] commitTransactionAccepted  %+v", 202, o.Payload)
+}
+
+func (o *CommitTransactionAccepted) GetPayload() *models.Transaction {
+	return o.Payload
 }
 
 func (o *CommitTransactionAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -168,6 +170,10 @@ type CommitTransactionBadRequest struct {
 
 func (o *CommitTransactionBadRequest) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/transactions/{id}][%d] commitTransactionBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *CommitTransactionBadRequest) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *CommitTransactionBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -210,6 +216,10 @@ type CommitTransactionNotFound struct {
 
 func (o *CommitTransactionNotFound) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/transactions/{id}][%d] commitTransactionNotFound  %+v", 404, o.Payload)
+}
+
+func (o *CommitTransactionNotFound) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *CommitTransactionNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -260,6 +270,10 @@ func (o *CommitTransactionDefault) Code() int {
 
 func (o *CommitTransactionDefault) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/transactions/{id}][%d] commitTransaction default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *CommitTransactionDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *CommitTransactionDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

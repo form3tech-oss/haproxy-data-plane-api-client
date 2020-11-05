@@ -26,11 +26,10 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	strfmt "github.com/go-openapi/strfmt"
-
-	models "github.com/form3tech-oss/haproxy-data-plane-api-client/models"
+	"github.com/haproxytech/models"
 )
 
 // GetStatsReader is a Reader for the GetStats structure.
@@ -41,21 +40,18 @@ type GetStatsReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetStatsReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewGetStatsOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 500:
 		result := NewGetStatsInternalServerError()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewGetStatsDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -85,6 +81,10 @@ func (o *GetStatsOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/stats/native][%d] getStatsOK  %+v", 200, o.Payload)
 }
 
+func (o *GetStatsOK) GetPayload() models.NativeStats {
+	return o.Payload
+}
+
 func (o *GetStatsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response payload
@@ -110,6 +110,10 @@ type GetStatsInternalServerError struct {
 
 func (o *GetStatsInternalServerError) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/stats/native][%d] getStatsInternalServerError  %+v", 500, o.Payload)
+}
+
+func (o *GetStatsInternalServerError) GetPayload() models.NativeStats {
+	return o.Payload
 }
 
 func (o *GetStatsInternalServerError) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -151,6 +155,10 @@ func (o *GetStatsDefault) Code() int {
 
 func (o *GetStatsDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/stats/native][%d] getStats default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *GetStatsDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *GetStatsDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

@@ -26,9 +26,8 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-
-	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/haproxytech/models"
 )
@@ -41,35 +40,30 @@ type ReplaceFilterReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *ReplaceFilterReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewReplaceFilterOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 202:
 		result := NewReplaceFilterAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 400:
 		result := NewReplaceFilterBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	case 404:
 		result := NewReplaceFilterNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewReplaceFilterDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -97,6 +91,10 @@ type ReplaceFilterOK struct {
 
 func (o *ReplaceFilterOK) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/filters/{index}][%d] replaceFilterOK  %+v", 200, o.Payload)
+}
+
+func (o *ReplaceFilterOK) GetPayload() *models.Filter {
+	return o.Payload
 }
 
 func (o *ReplaceFilterOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -130,6 +128,10 @@ type ReplaceFilterAccepted struct {
 
 func (o *ReplaceFilterAccepted) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/filters/{index}][%d] replaceFilterAccepted  %+v", 202, o.Payload)
+}
+
+func (o *ReplaceFilterAccepted) GetPayload() *models.Filter {
+	return o.Payload
 }
 
 func (o *ReplaceFilterAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -168,6 +170,10 @@ type ReplaceFilterBadRequest struct {
 
 func (o *ReplaceFilterBadRequest) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/filters/{index}][%d] replaceFilterBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *ReplaceFilterBadRequest) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *ReplaceFilterBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -210,6 +216,10 @@ type ReplaceFilterNotFound struct {
 
 func (o *ReplaceFilterNotFound) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/filters/{index}][%d] replaceFilterNotFound  %+v", 404, o.Payload)
+}
+
+func (o *ReplaceFilterNotFound) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *ReplaceFilterNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -260,6 +270,10 @@ func (o *ReplaceFilterDefault) Code() int {
 
 func (o *ReplaceFilterDefault) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/filters/{index}][%d] replaceFilter default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *ReplaceFilterDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *ReplaceFilterDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

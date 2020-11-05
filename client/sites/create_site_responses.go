@@ -26,11 +26,10 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	strfmt "github.com/go-openapi/strfmt"
-
-	models "github.com/form3tech-oss/haproxy-data-plane-api-client/models"
+	"github.com/haproxytech/models"
 )
 
 // CreateSiteReader is a Reader for the CreateSite structure.
@@ -41,35 +40,30 @@ type CreateSiteReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *CreateSiteReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 201:
 		result := NewCreateSiteCreated()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 202:
 		result := NewCreateSiteAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 400:
 		result := NewCreateSiteBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	case 409:
 		result := NewCreateSiteConflict()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewCreateSiteDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -97,6 +91,10 @@ type CreateSiteCreated struct {
 
 func (o *CreateSiteCreated) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/sites][%d] createSiteCreated  %+v", 201, o.Payload)
+}
+
+func (o *CreateSiteCreated) GetPayload() *models.Site {
+	return o.Payload
 }
 
 func (o *CreateSiteCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -130,6 +128,10 @@ type CreateSiteAccepted struct {
 
 func (o *CreateSiteAccepted) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/sites][%d] createSiteAccepted  %+v", 202, o.Payload)
+}
+
+func (o *CreateSiteAccepted) GetPayload() *models.Site {
+	return o.Payload
 }
 
 func (o *CreateSiteAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -168,6 +170,10 @@ type CreateSiteBadRequest struct {
 
 func (o *CreateSiteBadRequest) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/sites][%d] createSiteBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *CreateSiteBadRequest) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *CreateSiteBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -210,6 +216,10 @@ type CreateSiteConflict struct {
 
 func (o *CreateSiteConflict) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/sites][%d] createSiteConflict  %+v", 409, o.Payload)
+}
+
+func (o *CreateSiteConflict) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *CreateSiteConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -260,6 +270,10 @@ func (o *CreateSiteDefault) Code() int {
 
 func (o *CreateSiteDefault) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/sites][%d] createSite default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *CreateSiteDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *CreateSiteDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

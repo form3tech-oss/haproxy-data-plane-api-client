@@ -26,9 +26,8 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-
-	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/haproxytech/models"
 )
@@ -41,28 +40,24 @@ type PostHAProxyConfigurationReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *PostHAProxyConfigurationReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 201:
 		result := NewPostHAProxyConfigurationCreated()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 202:
 		result := NewPostHAProxyConfigurationAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 400:
 		result := NewPostHAProxyConfigurationBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewPostHAProxyConfigurationDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -90,6 +85,10 @@ type PostHAProxyConfigurationCreated struct {
 
 func (o *PostHAProxyConfigurationCreated) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/raw][%d] postHAProxyConfigurationCreated  %+v", 201, o.Payload)
+}
+
+func (o *PostHAProxyConfigurationCreated) GetPayload() string {
+	return o.Payload
 }
 
 func (o *PostHAProxyConfigurationCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -121,6 +120,10 @@ type PostHAProxyConfigurationAccepted struct {
 
 func (o *PostHAProxyConfigurationAccepted) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/raw][%d] postHAProxyConfigurationAccepted  %+v", 202, o.Payload)
+}
+
+func (o *PostHAProxyConfigurationAccepted) GetPayload() string {
+	return o.Payload
 }
 
 func (o *PostHAProxyConfigurationAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -157,6 +160,10 @@ type PostHAProxyConfigurationBadRequest struct {
 
 func (o *PostHAProxyConfigurationBadRequest) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/raw][%d] postHAProxyConfigurationBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *PostHAProxyConfigurationBadRequest) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *PostHAProxyConfigurationBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -207,6 +214,10 @@ func (o *PostHAProxyConfigurationDefault) Code() int {
 
 func (o *PostHAProxyConfigurationDefault) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/raw][%d] postHAProxyConfiguration default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *PostHAProxyConfigurationDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *PostHAProxyConfigurationDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

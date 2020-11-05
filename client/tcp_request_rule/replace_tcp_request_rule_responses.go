@@ -26,9 +26,8 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-
-	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/haproxytech/models"
 )
@@ -41,35 +40,30 @@ type ReplaceTCPRequestRuleReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *ReplaceTCPRequestRuleReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewReplaceTCPRequestRuleOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 202:
 		result := NewReplaceTCPRequestRuleAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 400:
 		result := NewReplaceTCPRequestRuleBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	case 404:
 		result := NewReplaceTCPRequestRuleNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewReplaceTCPRequestRuleDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -97,6 +91,10 @@ type ReplaceTCPRequestRuleOK struct {
 
 func (o *ReplaceTCPRequestRuleOK) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/tcp_request_rules/{index}][%d] replaceTcpRequestRuleOK  %+v", 200, o.Payload)
+}
+
+func (o *ReplaceTCPRequestRuleOK) GetPayload() *models.TCPRequestRule {
+	return o.Payload
 }
 
 func (o *ReplaceTCPRequestRuleOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -130,6 +128,10 @@ type ReplaceTCPRequestRuleAccepted struct {
 
 func (o *ReplaceTCPRequestRuleAccepted) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/tcp_request_rules/{index}][%d] replaceTcpRequestRuleAccepted  %+v", 202, o.Payload)
+}
+
+func (o *ReplaceTCPRequestRuleAccepted) GetPayload() *models.TCPRequestRule {
+	return o.Payload
 }
 
 func (o *ReplaceTCPRequestRuleAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -168,6 +170,10 @@ type ReplaceTCPRequestRuleBadRequest struct {
 
 func (o *ReplaceTCPRequestRuleBadRequest) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/tcp_request_rules/{index}][%d] replaceTcpRequestRuleBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *ReplaceTCPRequestRuleBadRequest) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *ReplaceTCPRequestRuleBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -210,6 +216,10 @@ type ReplaceTCPRequestRuleNotFound struct {
 
 func (o *ReplaceTCPRequestRuleNotFound) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/tcp_request_rules/{index}][%d] replaceTcpRequestRuleNotFound  %+v", 404, o.Payload)
+}
+
+func (o *ReplaceTCPRequestRuleNotFound) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *ReplaceTCPRequestRuleNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -260,6 +270,10 @@ func (o *ReplaceTCPRequestRuleDefault) Code() int {
 
 func (o *ReplaceTCPRequestRuleDefault) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/tcp_request_rules/{index}][%d] replaceTCPRequestRule default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *ReplaceTCPRequestRuleDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *ReplaceTCPRequestRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

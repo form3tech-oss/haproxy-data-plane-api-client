@@ -26,9 +26,8 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-
-	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/haproxytech/models"
 )
@@ -41,28 +40,24 @@ type ReplaceGlobalReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *ReplaceGlobalReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewReplaceGlobalOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 202:
 		result := NewReplaceGlobalAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 400:
 		result := NewReplaceGlobalBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewReplaceGlobalDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -90,6 +85,10 @@ type ReplaceGlobalOK struct {
 
 func (o *ReplaceGlobalOK) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/global][%d] replaceGlobalOK  %+v", 200, o.Payload)
+}
+
+func (o *ReplaceGlobalOK) GetPayload() *models.Global {
+	return o.Payload
 }
 
 func (o *ReplaceGlobalOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -123,6 +122,10 @@ type ReplaceGlobalAccepted struct {
 
 func (o *ReplaceGlobalAccepted) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/global][%d] replaceGlobalAccepted  %+v", 202, o.Payload)
+}
+
+func (o *ReplaceGlobalAccepted) GetPayload() *models.Global {
+	return o.Payload
 }
 
 func (o *ReplaceGlobalAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -161,6 +164,10 @@ type ReplaceGlobalBadRequest struct {
 
 func (o *ReplaceGlobalBadRequest) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/global][%d] replaceGlobalBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *ReplaceGlobalBadRequest) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *ReplaceGlobalBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -211,6 +218,10 @@ func (o *ReplaceGlobalDefault) Code() int {
 
 func (o *ReplaceGlobalDefault) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/global][%d] replaceGlobal default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *ReplaceGlobalDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *ReplaceGlobalDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

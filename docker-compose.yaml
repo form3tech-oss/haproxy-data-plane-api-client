@@ -6,6 +6,7 @@ services:
       - "5555:5555"
       - "8404:8404"
     volumes:
-      - ./hack/docker-compose/dataplaneapi-v2.0.1:/etc/haproxy/dataplaneapi-v2.0.1:ro
+      - ./hack/docker-compose/dataplaneapi:/etc/haproxy/dataplaneapi:ro
       - ./hack/docker-compose/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+      - ./hack/docker-compose/localhost.pem:/etc/haproxy/localhost.pem:ro
 version: "3.7"

@@ -22,12 +22,11 @@ package tcp_response_rule
 
 import (
 	"github.com/go-openapi/runtime"
-
-	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/strfmt"
 )
 
 // New creates a new tcp response rule API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -39,10 +38,25 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-/*
-CreateTCPResponseRule adds a new TCP response rule
+// ClientService is the interface for Client methods
+type ClientService interface {
+	CreateTCPResponseRule(params *CreateTCPResponseRuleParams, authInfo runtime.ClientAuthInfoWriter) (*CreateTCPResponseRuleCreated, *CreateTCPResponseRuleAccepted, error)
 
-Adds a new TCP Response Rule of the specified type in the specified backend.
+	DeleteTCPResponseRule(params *DeleteTCPResponseRuleParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteTCPResponseRuleAccepted, *DeleteTCPResponseRuleNoContent, error)
+
+	GetTCPResponseRule(params *GetTCPResponseRuleParams, authInfo runtime.ClientAuthInfoWriter) (*GetTCPResponseRuleOK, error)
+
+	GetTCPResponseRules(params *GetTCPResponseRulesParams, authInfo runtime.ClientAuthInfoWriter) (*GetTCPResponseRulesOK, error)
+
+	ReplaceTCPResponseRule(params *ReplaceTCPResponseRuleParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceTCPResponseRuleOK, *ReplaceTCPResponseRuleAccepted, error)
+
+	SetTransport(transport runtime.ClientTransport)
+}
+
+/*
+  CreateTCPResponseRule adds a new TCP response rule
+
+  Adds a new TCP Response Rule of the specified type in the specified backend.
 */
 func (a *Client) CreateTCPResponseRule(params *CreateTCPResponseRuleParams, authInfo runtime.ClientAuthInfoWriter) (*CreateTCPResponseRuleCreated, *CreateTCPResponseRuleAccepted, error) {
 	// TODO: Validate the params before sending
@@ -72,14 +86,15 @@ func (a *Client) CreateTCPResponseRule(params *CreateTCPResponseRuleParams, auth
 	case *CreateTCPResponseRuleAccepted:
 		return nil, value, nil
 	}
-	return nil, nil, nil
-
+	// unexpected success response
+	unexpectedSuccess := result.(*CreateTCPResponseRuleDefault)
+	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-DeleteTCPResponseRule deletes a TCP response rule
+  DeleteTCPResponseRule deletes a TCP response rule
 
-Deletes a TCP Response Rule configuration by it's index from the specified backend.
+  Deletes a TCP Response Rule configuration by it's index from the specified backend.
 */
 func (a *Client) DeleteTCPResponseRule(params *DeleteTCPResponseRuleParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteTCPResponseRuleAccepted, *DeleteTCPResponseRuleNoContent, error) {
 	// TODO: Validate the params before sending
@@ -109,14 +124,15 @@ func (a *Client) DeleteTCPResponseRule(params *DeleteTCPResponseRuleParams, auth
 	case *DeleteTCPResponseRuleNoContent:
 		return nil, value, nil
 	}
-	return nil, nil, nil
-
+	// unexpected success response
+	unexpectedSuccess := result.(*DeleteTCPResponseRuleDefault)
+	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-GetTCPResponseRule returns one TCP response rule
+  GetTCPResponseRule returns one TCP response rule
 
-Returns one TCP Response Rule configuration by it's index in the specified backend.
+  Returns one TCP Response Rule configuration by it's index in the specified backend.
 */
 func (a *Client) GetTCPResponseRule(params *GetTCPResponseRuleParams, authInfo runtime.ClientAuthInfoWriter) (*GetTCPResponseRuleOK, error) {
 	// TODO: Validate the params before sending
@@ -140,14 +156,19 @@ func (a *Client) GetTCPResponseRule(params *GetTCPResponseRuleParams, authInfo r
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetTCPResponseRuleOK), nil
-
+	success, ok := result.(*GetTCPResponseRuleOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetTCPResponseRuleDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-GetTCPResponseRules returns an array of all TCP response rules
+  GetTCPResponseRules returns an array of all TCP response rules
 
-Returns all TCP Response Rules that are configured in specified backend.
+  Returns all TCP Response Rules that are configured in specified backend.
 */
 func (a *Client) GetTCPResponseRules(params *GetTCPResponseRulesParams, authInfo runtime.ClientAuthInfoWriter) (*GetTCPResponseRulesOK, error) {
 	// TODO: Validate the params before sending
@@ -171,14 +192,19 @@ func (a *Client) GetTCPResponseRules(params *GetTCPResponseRulesParams, authInfo
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetTCPResponseRulesOK), nil
-
+	success, ok := result.(*GetTCPResponseRulesOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetTCPResponseRulesDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-ReplaceTCPResponseRule replaces a TCP response rule
+  ReplaceTCPResponseRule replaces a TCP response rule
 
-Replaces a TCP Response Rule configuration by it's Index in the specified backend.
+  Replaces a TCP Response Rule configuration by it's Index in the specified backend.
 */
 func (a *Client) ReplaceTCPResponseRule(params *ReplaceTCPResponseRuleParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceTCPResponseRuleOK, *ReplaceTCPResponseRuleAccepted, error) {
 	// TODO: Validate the params before sending
@@ -208,8 +234,9 @@ func (a *Client) ReplaceTCPResponseRule(params *ReplaceTCPResponseRuleParams, au
 	case *ReplaceTCPResponseRuleAccepted:
 		return nil, value, nil
 	}
-	return nil, nil, nil
-
+	// unexpected success response
+	unexpectedSuccess := result.(*ReplaceTCPResponseRuleDefault)
+	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 // SetTransport changes the transport on the client

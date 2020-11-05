@@ -26,11 +26,10 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	strfmt "github.com/go-openapi/strfmt"
-
-	models "github.com/form3tech-oss/haproxy-data-plane-api-client/models"
+	"github.com/haproxytech/models"
 )
 
 // DeleteTransactionReader is a Reader for the DeleteTransaction structure.
@@ -41,21 +40,18 @@ type DeleteTransactionReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *DeleteTransactionReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 204:
 		result := NewDeleteTransactionNoContent()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 404:
 		result := NewDeleteTransactionNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewDeleteTransactionDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -112,6 +108,10 @@ func (o *DeleteTransactionNotFound) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/transactions/{id}][%d] deleteTransactionNotFound  %+v", 404, o.Payload)
 }
 
+func (o *DeleteTransactionNotFound) GetPayload() *models.Error {
+	return o.Payload
+}
+
 func (o *DeleteTransactionNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
@@ -160,6 +160,10 @@ func (o *DeleteTransactionDefault) Code() int {
 
 func (o *DeleteTransactionDefault) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/transactions/{id}][%d] deleteTransaction default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *DeleteTransactionDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *DeleteTransactionDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

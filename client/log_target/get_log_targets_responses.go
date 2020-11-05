@@ -26,10 +26,9 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
-
-	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/haproxytech/models"
 )
@@ -42,14 +41,12 @@ type GetLogTargetsReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetLogTargetsReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewGetLogTargetsOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	default:
 		result := NewGetLogTargetsDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -81,6 +78,10 @@ type GetLogTargetsOK struct {
 
 func (o *GetLogTargetsOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/log_targets][%d] getLogTargetsOK  %+v", 200, o.Payload)
+}
+
+func (o *GetLogTargetsOK) GetPayload() *GetLogTargetsOKBody {
+	return o.Payload
 }
 
 func (o *GetLogTargetsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -131,6 +132,10 @@ func (o *GetLogTargetsDefault) Code() int {
 
 func (o *GetLogTargetsDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/log_targets][%d] getLogTargets default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *GetLogTargetsDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *GetLogTargetsDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

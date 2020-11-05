@@ -22,12 +22,11 @@ package bind
 
 import (
 	"github.com/go-openapi/runtime"
-
-	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/strfmt"
 )
 
 // New creates a new bind API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -39,10 +38,25 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-/*
-CreateBind adds a new bind
+// ClientService is the interface for Client methods
+type ClientService interface {
+	CreateBind(params *CreateBindParams, authInfo runtime.ClientAuthInfoWriter) (*CreateBindCreated, *CreateBindAccepted, error)
 
-Adds a new bind in the specified frontend in the configuration file.
+	DeleteBind(params *DeleteBindParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteBindAccepted, *DeleteBindNoContent, error)
+
+	GetBind(params *GetBindParams, authInfo runtime.ClientAuthInfoWriter) (*GetBindOK, error)
+
+	GetBinds(params *GetBindsParams, authInfo runtime.ClientAuthInfoWriter) (*GetBindsOK, error)
+
+	ReplaceBind(params *ReplaceBindParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceBindOK, *ReplaceBindAccepted, error)
+
+	SetTransport(transport runtime.ClientTransport)
+}
+
+/*
+  CreateBind adds a new bind
+
+  Adds a new bind in the specified frontend in the configuration file.
 */
 func (a *Client) CreateBind(params *CreateBindParams, authInfo runtime.ClientAuthInfoWriter) (*CreateBindCreated, *CreateBindAccepted, error) {
 	// TODO: Validate the params before sending
@@ -72,14 +86,15 @@ func (a *Client) CreateBind(params *CreateBindParams, authInfo runtime.ClientAut
 	case *CreateBindAccepted:
 		return nil, value, nil
 	}
-	return nil, nil, nil
-
+	// unexpected success response
+	unexpectedSuccess := result.(*CreateBindDefault)
+	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-DeleteBind deletes a bind
+  DeleteBind deletes a bind
 
-Deletes a bind configuration by it's name in the specified frontend.
+  Deletes a bind configuration by it's name in the specified frontend.
 */
 func (a *Client) DeleteBind(params *DeleteBindParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteBindAccepted, *DeleteBindNoContent, error) {
 	// TODO: Validate the params before sending
@@ -109,14 +124,15 @@ func (a *Client) DeleteBind(params *DeleteBindParams, authInfo runtime.ClientAut
 	case *DeleteBindNoContent:
 		return nil, value, nil
 	}
-	return nil, nil, nil
-
+	// unexpected success response
+	unexpectedSuccess := result.(*DeleteBindDefault)
+	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-GetBind returns one bind
+  GetBind returns one bind
 
-Returns one bind configuration by it's name in the specified frontend.
+  Returns one bind configuration by it's name in the specified frontend.
 */
 func (a *Client) GetBind(params *GetBindParams, authInfo runtime.ClientAuthInfoWriter) (*GetBindOK, error) {
 	// TODO: Validate the params before sending
@@ -140,14 +156,19 @@ func (a *Client) GetBind(params *GetBindParams, authInfo runtime.ClientAuthInfoW
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetBindOK), nil
-
+	success, ok := result.(*GetBindOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetBindDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-GetBinds returns an array of binds
+  GetBinds returns an array of binds
 
-Returns an array of all binds that are configured in specified frontend.
+  Returns an array of all binds that are configured in specified frontend.
 */
 func (a *Client) GetBinds(params *GetBindsParams, authInfo runtime.ClientAuthInfoWriter) (*GetBindsOK, error) {
 	// TODO: Validate the params before sending
@@ -171,14 +192,19 @@ func (a *Client) GetBinds(params *GetBindsParams, authInfo runtime.ClientAuthInf
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetBindsOK), nil
-
+	success, ok := result.(*GetBindsOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetBindsDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-ReplaceBind replaces a bind
+  ReplaceBind replaces a bind
 
-Replaces a bind configuration by it's name in the specified frontend.
+  Replaces a bind configuration by it's name in the specified frontend.
 */
 func (a *Client) ReplaceBind(params *ReplaceBindParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceBindOK, *ReplaceBindAccepted, error) {
 	// TODO: Validate the params before sending
@@ -208,8 +234,9 @@ func (a *Client) ReplaceBind(params *ReplaceBindParams, authInfo runtime.ClientA
 	case *ReplaceBindAccepted:
 		return nil, value, nil
 	}
-	return nil, nil, nil
-
+	// unexpected success response
+	unexpectedSuccess := result.(*ReplaceBindDefault)
+	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 // SetTransport changes the transport on the client

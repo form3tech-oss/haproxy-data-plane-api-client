@@ -23,9 +23,8 @@ package models
 import (
 	"encoding/json"
 
-	strfmt "github.com/go-openapi/strfmt"
-
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
@@ -33,6 +32,7 @@ import (
 // Transaction Configuration transaction
 //
 // HAProxy configuration transaction
+//
 // swagger:model transaction
 type Transaction struct {
 
@@ -105,7 +105,7 @@ const (
 
 // prop value enum
 func (m *Transaction) validateStatusEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, transactionTypeStatusPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, transactionTypeStatusPropEnum, true); err != nil {
 		return err
 	}
 	return nil

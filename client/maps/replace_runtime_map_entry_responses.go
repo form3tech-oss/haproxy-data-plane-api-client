@@ -26,12 +26,11 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 
-	strfmt "github.com/go-openapi/strfmt"
-
-	models "github.com/form3tech-oss/haproxy-data-plane-api-client/models"
+	"github.com/haproxytech/models"
 )
 
 // ReplaceRuntimeMapEntryReader is a Reader for the ReplaceRuntimeMapEntry structure.
@@ -42,28 +41,24 @@ type ReplaceRuntimeMapEntryReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *ReplaceRuntimeMapEntryReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewReplaceRuntimeMapEntryOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 400:
 		result := NewReplaceRuntimeMapEntryBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	case 404:
 		result := NewReplaceRuntimeMapEntryNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewReplaceRuntimeMapEntryDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -91,6 +86,10 @@ type ReplaceRuntimeMapEntryOK struct {
 
 func (o *ReplaceRuntimeMapEntryOK) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/runtime/maps_entries/{id}][%d] replaceRuntimeMapEntryOK  %+v", 200, o.Payload)
+}
+
+func (o *ReplaceRuntimeMapEntryOK) GetPayload() *models.MapEntry {
+	return o.Payload
 }
 
 func (o *ReplaceRuntimeMapEntryOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -126,6 +125,10 @@ type ReplaceRuntimeMapEntryBadRequest struct {
 
 func (o *ReplaceRuntimeMapEntryBadRequest) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/runtime/maps_entries/{id}][%d] replaceRuntimeMapEntryBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *ReplaceRuntimeMapEntryBadRequest) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *ReplaceRuntimeMapEntryBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -168,6 +171,10 @@ type ReplaceRuntimeMapEntryNotFound struct {
 
 func (o *ReplaceRuntimeMapEntryNotFound) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/runtime/maps_entries/{id}][%d] replaceRuntimeMapEntryNotFound  %+v", 404, o.Payload)
+}
+
+func (o *ReplaceRuntimeMapEntryNotFound) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *ReplaceRuntimeMapEntryNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -218,6 +225,10 @@ func (o *ReplaceRuntimeMapEntryDefault) Code() int {
 
 func (o *ReplaceRuntimeMapEntryDefault) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/runtime/maps_entries/{id}][%d] replaceRuntimeMapEntry default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *ReplaceRuntimeMapEntryDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *ReplaceRuntimeMapEntryDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

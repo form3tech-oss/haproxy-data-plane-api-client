@@ -26,9 +26,8 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-
-	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/haproxytech/models"
 )
@@ -41,35 +40,30 @@ type ReplaceBackendSwitchingRuleReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *ReplaceBackendSwitchingRuleReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewReplaceBackendSwitchingRuleOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 202:
 		result := NewReplaceBackendSwitchingRuleAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 400:
 		result := NewReplaceBackendSwitchingRuleBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	case 404:
 		result := NewReplaceBackendSwitchingRuleNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewReplaceBackendSwitchingRuleDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -97,6 +91,10 @@ type ReplaceBackendSwitchingRuleOK struct {
 
 func (o *ReplaceBackendSwitchingRuleOK) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/backend_switching_rules/{index}][%d] replaceBackendSwitchingRuleOK  %+v", 200, o.Payload)
+}
+
+func (o *ReplaceBackendSwitchingRuleOK) GetPayload() *models.BackendSwitchingRule {
+	return o.Payload
 }
 
 func (o *ReplaceBackendSwitchingRuleOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -130,6 +128,10 @@ type ReplaceBackendSwitchingRuleAccepted struct {
 
 func (o *ReplaceBackendSwitchingRuleAccepted) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/backend_switching_rules/{index}][%d] replaceBackendSwitchingRuleAccepted  %+v", 202, o.Payload)
+}
+
+func (o *ReplaceBackendSwitchingRuleAccepted) GetPayload() *models.BackendSwitchingRule {
+	return o.Payload
 }
 
 func (o *ReplaceBackendSwitchingRuleAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -168,6 +170,10 @@ type ReplaceBackendSwitchingRuleBadRequest struct {
 
 func (o *ReplaceBackendSwitchingRuleBadRequest) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/backend_switching_rules/{index}][%d] replaceBackendSwitchingRuleBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *ReplaceBackendSwitchingRuleBadRequest) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *ReplaceBackendSwitchingRuleBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -210,6 +216,10 @@ type ReplaceBackendSwitchingRuleNotFound struct {
 
 func (o *ReplaceBackendSwitchingRuleNotFound) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/backend_switching_rules/{index}][%d] replaceBackendSwitchingRuleNotFound  %+v", 404, o.Payload)
+}
+
+func (o *ReplaceBackendSwitchingRuleNotFound) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *ReplaceBackendSwitchingRuleNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -260,6 +270,10 @@ func (o *ReplaceBackendSwitchingRuleDefault) Code() int {
 
 func (o *ReplaceBackendSwitchingRuleDefault) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/backend_switching_rules/{index}][%d] replaceBackendSwitchingRule default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *ReplaceBackendSwitchingRuleDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *ReplaceBackendSwitchingRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

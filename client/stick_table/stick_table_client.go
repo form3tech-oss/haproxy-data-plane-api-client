@@ -22,12 +22,11 @@ package stick_table
 
 import (
 	"github.com/go-openapi/runtime"
-
-	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/strfmt"
 )
 
 // New creates a new stick table API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -39,10 +38,21 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-/*
-GetStickTable returns stick table
+// ClientService is the interface for Client methods
+type ClientService interface {
+	GetStickTable(params *GetStickTableParams, authInfo runtime.ClientAuthInfoWriter) (*GetStickTableOK, error)
 
-Returns one stick table from runtime.
+	GetStickTableEntries(params *GetStickTableEntriesParams, authInfo runtime.ClientAuthInfoWriter) (*GetStickTableEntriesOK, error)
+
+	GetStickTables(params *GetStickTablesParams, authInfo runtime.ClientAuthInfoWriter) (*GetStickTablesOK, error)
+
+	SetTransport(transport runtime.ClientTransport)
+}
+
+/*
+  GetStickTable returns stick table
+
+  Returns one stick table from runtime.
 */
 func (a *Client) GetStickTable(params *GetStickTableParams, authInfo runtime.ClientAuthInfoWriter) (*GetStickTableOK, error) {
 	// TODO: Validate the params before sending
@@ -66,14 +76,19 @@ func (a *Client) GetStickTable(params *GetStickTableParams, authInfo runtime.Cli
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetStickTableOK), nil
-
+	success, ok := result.(*GetStickTableOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetStickTableDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-GetStickTableEntries returns stick table entries
+  GetStickTableEntries returns stick table entries
 
-Returns an array of all entries in a given stick tables.
+  Returns an array of all entries in a given stick tables.
 */
 func (a *Client) GetStickTableEntries(params *GetStickTableEntriesParams, authInfo runtime.ClientAuthInfoWriter) (*GetStickTableEntriesOK, error) {
 	// TODO: Validate the params before sending
@@ -97,14 +112,19 @@ func (a *Client) GetStickTableEntries(params *GetStickTableEntriesParams, authIn
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetStickTableEntriesOK), nil
-
+	success, ok := result.(*GetStickTableEntriesOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetStickTableEntriesDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-GetStickTables returns stick tables
+  GetStickTables returns stick tables
 
-Returns an array of all stick tables.
+  Returns an array of all stick tables.
 */
 func (a *Client) GetStickTables(params *GetStickTablesParams, authInfo runtime.ClientAuthInfoWriter) (*GetStickTablesOK, error) {
 	// TODO: Validate the params before sending
@@ -128,8 +148,13 @@ func (a *Client) GetStickTables(params *GetStickTablesParams, authInfo runtime.C
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetStickTablesOK), nil
-
+	success, ok := result.(*GetStickTablesOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetStickTablesDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 // SetTransport changes the transport on the client

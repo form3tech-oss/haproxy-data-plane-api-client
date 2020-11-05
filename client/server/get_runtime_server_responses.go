@@ -26,9 +26,8 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-
-	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/haproxytech/models"
 )
@@ -41,21 +40,18 @@ type GetRuntimeServerReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetRuntimeServerReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewGetRuntimeServerOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 404:
 		result := NewGetRuntimeServerNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewGetRuntimeServerDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -83,6 +79,10 @@ type GetRuntimeServerOK struct {
 
 func (o *GetRuntimeServerOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/runtime/servers/{name}][%d] getRuntimeServerOK  %+v", 200, o.Payload)
+}
+
+func (o *GetRuntimeServerOK) GetPayload() *models.RuntimeServer {
+	return o.Payload
 }
 
 func (o *GetRuntimeServerOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -118,6 +118,10 @@ type GetRuntimeServerNotFound struct {
 
 func (o *GetRuntimeServerNotFound) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/runtime/servers/{name}][%d] getRuntimeServerNotFound  %+v", 404, o.Payload)
+}
+
+func (o *GetRuntimeServerNotFound) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *GetRuntimeServerNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -168,6 +172,10 @@ func (o *GetRuntimeServerDefault) Code() int {
 
 func (o *GetRuntimeServerDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/runtime/servers/{name}][%d] getRuntimeServer default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *GetRuntimeServerDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *GetRuntimeServerDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

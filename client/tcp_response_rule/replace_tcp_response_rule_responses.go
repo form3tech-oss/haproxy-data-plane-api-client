@@ -26,9 +26,8 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-
-	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/haproxytech/models"
 )
@@ -41,35 +40,30 @@ type ReplaceTCPResponseRuleReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *ReplaceTCPResponseRuleReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewReplaceTCPResponseRuleOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 202:
 		result := NewReplaceTCPResponseRuleAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 400:
 		result := NewReplaceTCPResponseRuleBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	case 404:
 		result := NewReplaceTCPResponseRuleNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewReplaceTCPResponseRuleDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -97,6 +91,10 @@ type ReplaceTCPResponseRuleOK struct {
 
 func (o *ReplaceTCPResponseRuleOK) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/tcp_response_rules/{index}][%d] replaceTcpResponseRuleOK  %+v", 200, o.Payload)
+}
+
+func (o *ReplaceTCPResponseRuleOK) GetPayload() *models.TCPResponseRule {
+	return o.Payload
 }
 
 func (o *ReplaceTCPResponseRuleOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -130,6 +128,10 @@ type ReplaceTCPResponseRuleAccepted struct {
 
 func (o *ReplaceTCPResponseRuleAccepted) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/tcp_response_rules/{index}][%d] replaceTcpResponseRuleAccepted  %+v", 202, o.Payload)
+}
+
+func (o *ReplaceTCPResponseRuleAccepted) GetPayload() *models.TCPResponseRule {
+	return o.Payload
 }
 
 func (o *ReplaceTCPResponseRuleAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -168,6 +170,10 @@ type ReplaceTCPResponseRuleBadRequest struct {
 
 func (o *ReplaceTCPResponseRuleBadRequest) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/tcp_response_rules/{index}][%d] replaceTcpResponseRuleBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *ReplaceTCPResponseRuleBadRequest) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *ReplaceTCPResponseRuleBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -210,6 +216,10 @@ type ReplaceTCPResponseRuleNotFound struct {
 
 func (o *ReplaceTCPResponseRuleNotFound) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/tcp_response_rules/{index}][%d] replaceTcpResponseRuleNotFound  %+v", 404, o.Payload)
+}
+
+func (o *ReplaceTCPResponseRuleNotFound) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *ReplaceTCPResponseRuleNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -260,6 +270,10 @@ func (o *ReplaceTCPResponseRuleDefault) Code() int {
 
 func (o *ReplaceTCPResponseRuleDefault) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/tcp_response_rules/{index}][%d] replaceTCPResponseRule default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *ReplaceTCPResponseRuleDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *ReplaceTCPResponseRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

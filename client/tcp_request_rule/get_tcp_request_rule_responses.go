@@ -26,9 +26,8 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-
-	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/haproxytech/models"
 )
@@ -41,21 +40,18 @@ type GetTCPRequestRuleReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetTCPRequestRuleReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewGetTCPRequestRuleOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 404:
 		result := NewGetTCPRequestRuleNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewGetTCPRequestRuleDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -87,6 +83,10 @@ type GetTCPRequestRuleOK struct {
 
 func (o *GetTCPRequestRuleOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/tcp_request_rules/{index}][%d] getTcpRequestRuleOK  %+v", 200, o.Payload)
+}
+
+func (o *GetTCPRequestRuleOK) GetPayload() *GetTCPRequestRuleOKBody {
+	return o.Payload
 }
 
 func (o *GetTCPRequestRuleOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -129,6 +129,10 @@ type GetTCPRequestRuleNotFound struct {
 
 func (o *GetTCPRequestRuleNotFound) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/tcp_request_rules/{index}][%d] getTcpRequestRuleNotFound  %+v", 404, o.Payload)
+}
+
+func (o *GetTCPRequestRuleNotFound) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *GetTCPRequestRuleNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -179,6 +183,10 @@ func (o *GetTCPRequestRuleDefault) Code() int {
 
 func (o *GetTCPRequestRuleDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/tcp_request_rules/{index}][%d] getTCPRequestRule default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *GetTCPRequestRuleDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *GetTCPRequestRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

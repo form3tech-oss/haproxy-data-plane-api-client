@@ -22,12 +22,11 @@ package maps
 
 import (
 	"github.com/go-openapi/runtime"
-
-	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/strfmt"
 )
 
 // New creates a new maps API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -39,10 +38,33 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-/*
-AddMapEntry adds an entry into the map file
+// ClientService is the interface for Client methods
+type ClientService interface {
+	AddMapEntry(params *AddMapEntryParams, authInfo runtime.ClientAuthInfoWriter) (*AddMapEntryCreated, error)
 
-Adds an entry into the map file.
+	ClearRuntimeMap(params *ClearRuntimeMapParams, authInfo runtime.ClientAuthInfoWriter) (*ClearRuntimeMapNoContent, error)
+
+	CreateRuntimeMap(params *CreateRuntimeMapParams, authInfo runtime.ClientAuthInfoWriter) (*CreateRuntimeMapCreated, error)
+
+	DeleteRuntimeMapEntry(params *DeleteRuntimeMapEntryParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteRuntimeMapEntryNoContent, error)
+
+	GetAllRuntimeMapFiles(params *GetAllRuntimeMapFilesParams, authInfo runtime.ClientAuthInfoWriter) (*GetAllRuntimeMapFilesOK, error)
+
+	GetOneRuntimeMap(params *GetOneRuntimeMapParams, authInfo runtime.ClientAuthInfoWriter) (*GetOneRuntimeMapOK, error)
+
+	GetRuntimeMapEntry(params *GetRuntimeMapEntryParams, authInfo runtime.ClientAuthInfoWriter) (*GetRuntimeMapEntryOK, error)
+
+	ReplaceRuntimeMapEntry(params *ReplaceRuntimeMapEntryParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceRuntimeMapEntryOK, error)
+
+	ShowRuntimeMap(params *ShowRuntimeMapParams, authInfo runtime.ClientAuthInfoWriter) (*ShowRuntimeMapOK, error)
+
+	SetTransport(transport runtime.ClientTransport)
+}
+
+/*
+  AddMapEntry adds an entry into the map file
+
+  Adds an entry into the map file.
 */
 func (a *Client) AddMapEntry(params *AddMapEntryParams, authInfo runtime.ClientAuthInfoWriter) (*AddMapEntryCreated, error) {
 	// TODO: Validate the params before sending
@@ -66,14 +88,19 @@ func (a *Client) AddMapEntry(params *AddMapEntryParams, authInfo runtime.ClientA
 	if err != nil {
 		return nil, err
 	}
-	return result.(*AddMapEntryCreated), nil
-
+	success, ok := result.(*AddMapEntryCreated)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*AddMapEntryDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-ClearRuntimeMap removes all map entries from the map file
+  ClearRuntimeMap removes all map entries from the map file
 
-Remove all map entries from the map file.
+  Remove all map entries from the map file.
 */
 func (a *Client) ClearRuntimeMap(params *ClearRuntimeMapParams, authInfo runtime.ClientAuthInfoWriter) (*ClearRuntimeMapNoContent, error) {
 	// TODO: Validate the params before sending
@@ -97,14 +124,19 @@ func (a *Client) ClearRuntimeMap(params *ClearRuntimeMapParams, authInfo runtime
 	if err != nil {
 		return nil, err
 	}
-	return result.(*ClearRuntimeMapNoContent), nil
-
+	success, ok := result.(*ClearRuntimeMapNoContent)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*ClearRuntimeMapDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-CreateRuntimeMap creates runtime map file with its entries
+  CreateRuntimeMap creates runtime map file with its entries
 
-Creates runtime map file with its entries.
+  Creates runtime map file with its entries.
 */
 func (a *Client) CreateRuntimeMap(params *CreateRuntimeMapParams, authInfo runtime.ClientAuthInfoWriter) (*CreateRuntimeMapCreated, error) {
 	// TODO: Validate the params before sending
@@ -128,14 +160,19 @@ func (a *Client) CreateRuntimeMap(params *CreateRuntimeMapParams, authInfo runti
 	if err != nil {
 		return nil, err
 	}
-	return result.(*CreateRuntimeMapCreated), nil
-
+	success, ok := result.(*CreateRuntimeMapCreated)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*CreateRuntimeMapDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-DeleteRuntimeMapEntry deletes all the map entries from the map by its id
+  DeleteRuntimeMapEntry deletes all the map entries from the map by its id
 
-Delete all the map entries from the map by its id.
+  Delete all the map entries from the map by its id.
 */
 func (a *Client) DeleteRuntimeMapEntry(params *DeleteRuntimeMapEntryParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteRuntimeMapEntryNoContent, error) {
 	// TODO: Validate the params before sending
@@ -159,14 +196,19 @@ func (a *Client) DeleteRuntimeMapEntry(params *DeleteRuntimeMapEntryParams, auth
 	if err != nil {
 		return nil, err
 	}
-	return result.(*DeleteRuntimeMapEntryNoContent), nil
-
+	success, ok := result.(*DeleteRuntimeMapEntryNoContent)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*DeleteRuntimeMapEntryDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-GetAllRuntimeMapFiles returns all available map files
+  GetAllRuntimeMapFiles returns all available map files
 
-Returns all available map files.
+  Returns all available map files.
 */
 func (a *Client) GetAllRuntimeMapFiles(params *GetAllRuntimeMapFilesParams, authInfo runtime.ClientAuthInfoWriter) (*GetAllRuntimeMapFilesOK, error) {
 	// TODO: Validate the params before sending
@@ -190,14 +232,19 @@ func (a *Client) GetAllRuntimeMapFiles(params *GetAllRuntimeMapFilesParams, auth
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetAllRuntimeMapFilesOK), nil
-
+	success, ok := result.(*GetAllRuntimeMapFilesOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetAllRuntimeMapFilesDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-GetOneRuntimeMap returns one runtime map file
+  GetOneRuntimeMap returns one runtime map file
 
-Returns one runtime map file.
+  Returns one runtime map file.
 */
 func (a *Client) GetOneRuntimeMap(params *GetOneRuntimeMapParams, authInfo runtime.ClientAuthInfoWriter) (*GetOneRuntimeMapOK, error) {
 	// TODO: Validate the params before sending
@@ -221,14 +268,19 @@ func (a *Client) GetOneRuntimeMap(params *GetOneRuntimeMapParams, authInfo runti
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetOneRuntimeMapOK), nil
-
+	success, ok := result.(*GetOneRuntimeMapOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetOneRuntimeMapDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-GetRuntimeMapEntry returns one map runtime setting
+  GetRuntimeMapEntry returns one map runtime setting
 
-Returns one map runtime setting by it's id.
+  Returns one map runtime setting by it's id.
 */
 func (a *Client) GetRuntimeMapEntry(params *GetRuntimeMapEntryParams, authInfo runtime.ClientAuthInfoWriter) (*GetRuntimeMapEntryOK, error) {
 	// TODO: Validate the params before sending
@@ -252,14 +304,19 @@ func (a *Client) GetRuntimeMapEntry(params *GetRuntimeMapEntryParams, authInfo r
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetRuntimeMapEntryOK), nil
-
+	success, ok := result.(*GetRuntimeMapEntryOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetRuntimeMapEntryDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-ReplaceRuntimeMapEntry replaces the value corresponding to each id in a map
+  ReplaceRuntimeMapEntry replaces the value corresponding to each id in a map
 
-Replaces the value corresponding to each id in a map.
+  Replaces the value corresponding to each id in a map.
 */
 func (a *Client) ReplaceRuntimeMapEntry(params *ReplaceRuntimeMapEntryParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceRuntimeMapEntryOK, error) {
 	// TODO: Validate the params before sending
@@ -283,14 +340,19 @@ func (a *Client) ReplaceRuntimeMapEntry(params *ReplaceRuntimeMapEntryParams, au
 	if err != nil {
 		return nil, err
 	}
-	return result.(*ReplaceRuntimeMapEntryOK), nil
-
+	success, ok := result.(*ReplaceRuntimeMapEntryOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*ReplaceRuntimeMapEntryDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-ShowRuntimeMap returns one map runtime entries
+  ShowRuntimeMap returns one map runtime entries
 
-Returns an array of all entries in a given runtime map file.
+  Returns an array of all entries in a given runtime map file.
 */
 func (a *Client) ShowRuntimeMap(params *ShowRuntimeMapParams, authInfo runtime.ClientAuthInfoWriter) (*ShowRuntimeMapOK, error) {
 	// TODO: Validate the params before sending
@@ -314,8 +376,13 @@ func (a *Client) ShowRuntimeMap(params *ShowRuntimeMapParams, authInfo runtime.C
 	if err != nil {
 		return nil, err
 	}
-	return result.(*ShowRuntimeMapOK), nil
-
+	success, ok := result.(*ShowRuntimeMapOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*ShowRuntimeMapDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 // SetTransport changes the transport on the client

@@ -26,9 +26,8 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-
-	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/haproxytech/models"
 )
@@ -41,28 +40,24 @@ type DeleteLogTargetReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *DeleteLogTargetReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 202:
 		result := NewDeleteLogTargetAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 204:
 		result := NewDeleteLogTargetNoContent()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 404:
 		result := NewDeleteLogTargetNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewDeleteLogTargetDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -146,6 +141,10 @@ func (o *DeleteLogTargetNotFound) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/configuration/log_targets/{index}][%d] deleteLogTargetNotFound  %+v", 404, o.Payload)
 }
 
+func (o *DeleteLogTargetNotFound) GetPayload() *models.Error {
+	return o.Payload
+}
+
 func (o *DeleteLogTargetNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
@@ -194,6 +193,10 @@ func (o *DeleteLogTargetDefault) Code() int {
 
 func (o *DeleteLogTargetDefault) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/configuration/log_targets/{index}][%d] deleteLogTarget default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *DeleteLogTargetDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *DeleteLogTargetDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

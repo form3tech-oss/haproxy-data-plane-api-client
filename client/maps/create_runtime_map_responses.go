@@ -26,11 +26,10 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	strfmt "github.com/go-openapi/strfmt"
-
-	models "github.com/form3tech-oss/haproxy-data-plane-api-client/models"
+	"github.com/haproxytech/models"
 )
 
 // CreateRuntimeMapReader is a Reader for the CreateRuntimeMap structure.
@@ -41,28 +40,24 @@ type CreateRuntimeMapReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *CreateRuntimeMapReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 201:
 		result := NewCreateRuntimeMapCreated()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 400:
 		result := NewCreateRuntimeMapBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	case 409:
 		result := NewCreateRuntimeMapConflict()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewCreateRuntimeMapDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -90,6 +85,10 @@ type CreateRuntimeMapCreated struct {
 
 func (o *CreateRuntimeMapCreated) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/runtime/maps][%d] createRuntimeMapCreated  %+v", 201, o.Payload)
+}
+
+func (o *CreateRuntimeMapCreated) GetPayload() models.MapEntries {
+	return o.Payload
 }
 
 func (o *CreateRuntimeMapCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -123,6 +122,10 @@ type CreateRuntimeMapBadRequest struct {
 
 func (o *CreateRuntimeMapBadRequest) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/runtime/maps][%d] createRuntimeMapBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *CreateRuntimeMapBadRequest) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *CreateRuntimeMapBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -165,6 +168,10 @@ type CreateRuntimeMapConflict struct {
 
 func (o *CreateRuntimeMapConflict) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/runtime/maps][%d] createRuntimeMapConflict  %+v", 409, o.Payload)
+}
+
+func (o *CreateRuntimeMapConflict) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *CreateRuntimeMapConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -215,6 +222,10 @@ func (o *CreateRuntimeMapDefault) Code() int {
 
 func (o *CreateRuntimeMapDefault) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/runtime/maps][%d] createRuntimeMap default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *CreateRuntimeMapDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *CreateRuntimeMapDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

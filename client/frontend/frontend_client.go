@@ -22,12 +22,11 @@ package frontend
 
 import (
 	"github.com/go-openapi/runtime"
-
-	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/strfmt"
 )
 
 // New creates a new frontend API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -39,10 +38,25 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-/*
-CreateFrontend adds a frontend
+// ClientService is the interface for Client methods
+type ClientService interface {
+	CreateFrontend(params *CreateFrontendParams, authInfo runtime.ClientAuthInfoWriter) (*CreateFrontendCreated, *CreateFrontendAccepted, error)
 
-Adds a new frontend to the configuration file.
+	DeleteFrontend(params *DeleteFrontendParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteFrontendAccepted, *DeleteFrontendNoContent, error)
+
+	GetFrontend(params *GetFrontendParams, authInfo runtime.ClientAuthInfoWriter) (*GetFrontendOK, error)
+
+	GetFrontends(params *GetFrontendsParams, authInfo runtime.ClientAuthInfoWriter) (*GetFrontendsOK, error)
+
+	ReplaceFrontend(params *ReplaceFrontendParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceFrontendOK, *ReplaceFrontendAccepted, error)
+
+	SetTransport(transport runtime.ClientTransport)
+}
+
+/*
+  CreateFrontend adds a frontend
+
+  Adds a new frontend to the configuration file.
 */
 func (a *Client) CreateFrontend(params *CreateFrontendParams, authInfo runtime.ClientAuthInfoWriter) (*CreateFrontendCreated, *CreateFrontendAccepted, error) {
 	// TODO: Validate the params before sending
@@ -72,14 +86,15 @@ func (a *Client) CreateFrontend(params *CreateFrontendParams, authInfo runtime.C
 	case *CreateFrontendAccepted:
 		return nil, value, nil
 	}
-	return nil, nil, nil
-
+	// unexpected success response
+	unexpectedSuccess := result.(*CreateFrontendDefault)
+	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-DeleteFrontend deletes a frontend
+  DeleteFrontend deletes a frontend
 
-Deletes a frontend from the configuration by it's name.
+  Deletes a frontend from the configuration by it's name.
 */
 func (a *Client) DeleteFrontend(params *DeleteFrontendParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteFrontendAccepted, *DeleteFrontendNoContent, error) {
 	// TODO: Validate the params before sending
@@ -109,14 +124,15 @@ func (a *Client) DeleteFrontend(params *DeleteFrontendParams, authInfo runtime.C
 	case *DeleteFrontendNoContent:
 		return nil, value, nil
 	}
-	return nil, nil, nil
-
+	// unexpected success response
+	unexpectedSuccess := result.(*DeleteFrontendDefault)
+	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-GetFrontend returns a frontend
+  GetFrontend returns a frontend
 
-Returns one frontend configuration by it's name.
+  Returns one frontend configuration by it's name.
 */
 func (a *Client) GetFrontend(params *GetFrontendParams, authInfo runtime.ClientAuthInfoWriter) (*GetFrontendOK, error) {
 	// TODO: Validate the params before sending
@@ -140,14 +156,19 @@ func (a *Client) GetFrontend(params *GetFrontendParams, authInfo runtime.ClientA
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetFrontendOK), nil
-
+	success, ok := result.(*GetFrontendOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetFrontendDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-GetFrontends returns an array of frontends
+  GetFrontends returns an array of frontends
 
-Returns an array of all configured frontends.
+  Returns an array of all configured frontends.
 */
 func (a *Client) GetFrontends(params *GetFrontendsParams, authInfo runtime.ClientAuthInfoWriter) (*GetFrontendsOK, error) {
 	// TODO: Validate the params before sending
@@ -171,14 +192,19 @@ func (a *Client) GetFrontends(params *GetFrontendsParams, authInfo runtime.Clien
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetFrontendsOK), nil
-
+	success, ok := result.(*GetFrontendsOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetFrontendsDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-ReplaceFrontend replaces a frontend
+  ReplaceFrontend replaces a frontend
 
-Replaces a frontend configuration by it's name.
+  Replaces a frontend configuration by it's name.
 */
 func (a *Client) ReplaceFrontend(params *ReplaceFrontendParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceFrontendOK, *ReplaceFrontendAccepted, error) {
 	// TODO: Validate the params before sending
@@ -208,8 +234,9 @@ func (a *Client) ReplaceFrontend(params *ReplaceFrontendParams, authInfo runtime
 	case *ReplaceFrontendAccepted:
 		return nil, value, nil
 	}
-	return nil, nil, nil
-
+	// unexpected success response
+	unexpectedSuccess := result.(*ReplaceFrontendDefault)
+	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 // SetTransport changes the transport on the client

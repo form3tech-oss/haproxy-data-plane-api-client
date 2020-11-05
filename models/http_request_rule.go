@@ -23,9 +23,8 @@ package models
 import (
 	"encoding/json"
 
-	strfmt "github.com/go-openapi/strfmt"
-
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
@@ -33,6 +32,7 @@ import (
 // HTTPRequestRule HTTP Request Rule
 //
 // HAProxy HTTP request rule configuration (corresponds to http-request directives)
+//
 // swagger:model http_request_rule
 type HTTPRequestRule struct {
 
@@ -47,6 +47,10 @@ type HTTPRequestRule struct {
 	// auth realm
 	// Pattern: ^[^\s]+$
 	AuthRealm string `json:"auth_realm,omitempty"`
+
+	// cache name
+	// Pattern: ^[^\s]+$
+	CacheName string `json:"cache_name,omitempty"`
 
 	// capture id
 	CaptureID *int64 `json:"capture_id,omitempty"`
@@ -67,7 +71,10 @@ type HTTPRequestRule struct {
 
 	// deny status
 	// Enum: [200 400 403 405 408 425 429 500 502 503 504]
-	DenyStatus int64 `json:"deny_status,omitempty"`
+	DenyStatus *int64 `json:"deny_status,omitempty"`
+
+	// expr
+	Expr string `json:"expr,omitempty"`
 
 	// hdr format
 	// Pattern: ^[^\s]+$
@@ -81,6 +88,14 @@ type HTTPRequestRule struct {
 	// Pattern: ^[^\s]+$
 	HdrName string `json:"hdr_name,omitempty"`
 
+	// hint format
+	// Pattern: ^[^\s]+$
+	HintFormat string `json:"hint_format,omitempty"`
+
+	// hint name
+	// Pattern: ^[^\s]+$
+	HintName string `json:"hint_name,omitempty"`
+
 	// index
 	// Required: true
 	Index *int64 `json:"index"`
@@ -88,6 +103,38 @@ type HTTPRequestRule struct {
 	// log level
 	// Enum: [emerg alert crit err warning notice info debug silent]
 	LogLevel string `json:"log_level,omitempty"`
+
+	// lua action
+	// Pattern: ^[^\s]+$
+	LuaAction string `json:"lua_action,omitempty"`
+
+	// lua params
+	LuaParams string `json:"lua_params,omitempty"`
+
+	// map file
+	// Pattern: ^[^\s]+$
+	MapFile string `json:"map_file,omitempty"`
+
+	// map keyfmt
+	// Pattern: ^[^\s]+$
+	MapKeyfmt string `json:"map_keyfmt,omitempty"`
+
+	// map valuefmt
+	// Pattern: ^[^\s]+$
+	MapValuefmt string `json:"map_valuefmt,omitempty"`
+
+	// mark value
+	// Pattern: ^(0x[0-9A-Fa-f]+|[0-9]+)$
+	MarkValue string `json:"mark_value,omitempty"`
+
+	// method fmt
+	// Pattern: ^[^\s]+$
+	MethodFmt string `json:"method_fmt,omitempty"`
+
+	// nice value
+	// Maximum: 1024
+	// Minimum: -1024
+	NiceValue int64 `json:"nice_value,omitempty"`
 
 	// path fmt
 	// Pattern: ^[^\s]+$
@@ -97,12 +144,16 @@ type HTTPRequestRule struct {
 	// Pattern: ^[^\s]+$
 	PathMatch string `json:"path_match,omitempty"`
 
+	// protocol
+	// Enum: [ipv4 ipv6]
+	Protocol string `json:"protocol,omitempty"`
+
 	// query fmt
 	QueryFmt string `json:"query-fmt,omitempty"`
 
 	// redir code
-	// Enum: [301 302 303]
-	RedirCode int64 `json:"redir_code,omitempty"`
+	// Enum: [301 302 303 307 308]
+	RedirCode *int64 `json:"redir_code,omitempty"`
 
 	// redir option
 	RedirOption string `json:"redir_option,omitempty"`
@@ -115,6 +166,21 @@ type HTTPRequestRule struct {
 	// Pattern: ^[^\s]+$
 	RedirValue string `json:"redir_value,omitempty"`
 
+	// resolvers
+	Resolvers string `json:"resolvers,omitempty"`
+
+	// sc expr
+	ScExpr string `json:"sc_expr,omitempty"`
+
+	// sc id
+	ScID int64 `json:"sc_id,omitempty"`
+
+	// sc int
+	ScInt *int64 `json:"sc_int,omitempty"`
+
+	// service name
+	ServiceName string `json:"service_name,omitempty"`
+
 	// spoe engine
 	// Pattern: ^[^\s]+$
 	SpoeEngine string `json:"spoe_engine,omitempty"`
@@ -122,6 +188,14 @@ type HTTPRequestRule struct {
 	// spoe group
 	// Pattern: ^[^\s]+$
 	SpoeGroup string `json:"spoe_group,omitempty"`
+
+	// strict mode
+	// Enum: [on off]
+	StrictMode string `json:"strict_mode,omitempty"`
+
+	// tos value
+	// Pattern: ^(0x[0-9A-Fa-f]+|[0-9]+)$
+	TosValue string `json:"tos_value,omitempty"`
 
 	// track sc0 key
 	// Pattern: ^[^\s]+$
@@ -149,11 +223,14 @@ type HTTPRequestRule struct {
 
 	// type
 	// Required: true
-	// Enum: [allow deny auth redirect tarpit add-header replace-header replace-value del-header set-header set-log-level set-path replace-path set-query set-uri set-var send-spoe-group add-acl del-acl capture track-sc0 track-sc1 track-sc2]
+	// Enum: [allow deny auth redirect tarpit add-header replace-header replace-value del-header set-header set-log-level set-path replace-path set-query set-uri set-var send-spoe-group add-acl del-acl capture track-sc0 track-sc1 track-sc2 set-map del-map cache-use disable-l7-retry early-hint replace-uri sc-inc-gpc0 sc-inc-gpc1 do-resolve set-dst set-dst-port sc-set-gpt0 set-mark set-nice set-method set-priority-class set-priority-offset set-src set-src-por wait-for-handshake set-tos silent-drop unset-var strict-mode lua use-service]
 	Type string `json:"type"`
 
 	// uri fmt
 	URIFmt string `json:"uri-fmt,omitempty"`
+
+	// uri match
+	URIMatch string `json:"uri-match,omitempty"`
 
 	// var expr
 	VarExpr string `json:"var_expr,omitempty"`
@@ -183,6 +260,10 @@ func (m *HTTPRequestRule) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := m.validateCacheName(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.validateCaptureSample(formats); err != nil {
 		res = append(res, err)
 	}
@@ -207,6 +288,14 @@ func (m *HTTPRequestRule) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := m.validateHintFormat(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateHintName(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.validateIndex(formats); err != nil {
 		res = append(res, err)
 	}
@@ -215,11 +304,43 @@ func (m *HTTPRequestRule) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := m.validateLuaAction(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateMapFile(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateMapKeyfmt(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateMapValuefmt(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateMarkValue(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateMethodFmt(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateNiceValue(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.validatePathFmt(formats); err != nil {
 		res = append(res, err)
 	}
 
 	if err := m.validatePathMatch(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateProtocol(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -240,6 +361,14 @@ func (m *HTTPRequestRule) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateSpoeGroup(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateStrictMode(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateTosValue(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -324,6 +453,19 @@ func (m *HTTPRequestRule) validateAuthRealm(formats strfmt.Registry) error {
 	return nil
 }
 
+func (m *HTTPRequestRule) validateCacheName(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.CacheName) { // not required
+		return nil
+	}
+
+	if err := validate.Pattern("cache_name", "body", string(m.CacheName), `^[^\s]+$`); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (m *HTTPRequestRule) validateCaptureSample(formats strfmt.Registry) error {
 
 	if swag.IsZero(m.CaptureSample) { // not required
@@ -360,7 +502,7 @@ const (
 
 // prop value enum
 func (m *HTTPRequestRule) validateCondEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, httpRequestRuleTypeCondPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, httpRequestRuleTypeCondPropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -394,7 +536,7 @@ func init() {
 
 // prop value enum
 func (m *HTTPRequestRule) validateDenyStatusEnum(path, location string, value int64) error {
-	if err := validate.Enum(path, location, value, httpRequestRuleTypeDenyStatusPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, httpRequestRuleTypeDenyStatusPropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -407,7 +549,7 @@ func (m *HTTPRequestRule) validateDenyStatus(formats strfmt.Registry) error {
 	}
 
 	// value enum
-	if err := m.validateDenyStatusEnum("deny_status", "body", m.DenyStatus); err != nil {
+	if err := m.validateDenyStatusEnum("deny_status", "body", *m.DenyStatus); err != nil {
 		return err
 	}
 
@@ -447,6 +589,32 @@ func (m *HTTPRequestRule) validateHdrName(formats strfmt.Registry) error {
 	}
 
 	if err := validate.Pattern("hdr_name", "body", string(m.HdrName), `^[^\s]+$`); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *HTTPRequestRule) validateHintFormat(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.HintFormat) { // not required
+		return nil
+	}
+
+	if err := validate.Pattern("hint_format", "body", string(m.HintFormat), `^[^\s]+$`); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *HTTPRequestRule) validateHintName(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.HintName) { // not required
+		return nil
+	}
+
+	if err := validate.Pattern("hint_name", "body", string(m.HintName), `^[^\s]+$`); err != nil {
 		return err
 	}
 
@@ -506,7 +674,7 @@ const (
 
 // prop value enum
 func (m *HTTPRequestRule) validateLogLevelEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, httpRequestRuleTypeLogLevelPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, httpRequestRuleTypeLogLevelPropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -520,6 +688,101 @@ func (m *HTTPRequestRule) validateLogLevel(formats strfmt.Registry) error {
 
 	// value enum
 	if err := m.validateLogLevelEnum("log_level", "body", m.LogLevel); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *HTTPRequestRule) validateLuaAction(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.LuaAction) { // not required
+		return nil
+	}
+
+	if err := validate.Pattern("lua_action", "body", string(m.LuaAction), `^[^\s]+$`); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *HTTPRequestRule) validateMapFile(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.MapFile) { // not required
+		return nil
+	}
+
+	if err := validate.Pattern("map_file", "body", string(m.MapFile), `^[^\s]+$`); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *HTTPRequestRule) validateMapKeyfmt(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.MapKeyfmt) { // not required
+		return nil
+	}
+
+	if err := validate.Pattern("map_keyfmt", "body", string(m.MapKeyfmt), `^[^\s]+$`); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *HTTPRequestRule) validateMapValuefmt(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.MapValuefmt) { // not required
+		return nil
+	}
+
+	if err := validate.Pattern("map_valuefmt", "body", string(m.MapValuefmt), `^[^\s]+$`); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *HTTPRequestRule) validateMarkValue(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.MarkValue) { // not required
+		return nil
+	}
+
+	if err := validate.Pattern("mark_value", "body", string(m.MarkValue), `^(0x[0-9A-Fa-f]+|[0-9]+)$`); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *HTTPRequestRule) validateMethodFmt(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.MethodFmt) { // not required
+		return nil
+	}
+
+	if err := validate.Pattern("method_fmt", "body", string(m.MethodFmt), `^[^\s]+$`); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *HTTPRequestRule) validateNiceValue(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.NiceValue) { // not required
+		return nil
+	}
+
+	if err := validate.MinimumInt("nice_value", "body", int64(m.NiceValue), -1024, false); err != nil {
+		return err
+	}
+
+	if err := validate.MaximumInt("nice_value", "body", int64(m.NiceValue), 1024, false); err != nil {
 		return err
 	}
 
@@ -552,11 +815,54 @@ func (m *HTTPRequestRule) validatePathMatch(formats strfmt.Registry) error {
 	return nil
 }
 
+var httpRequestRuleTypeProtocolPropEnum []interface{}
+
+func init() {
+	var res []string
+	if err := json.Unmarshal([]byte(`["ipv4","ipv6"]`), &res); err != nil {
+		panic(err)
+	}
+	for _, v := range res {
+		httpRequestRuleTypeProtocolPropEnum = append(httpRequestRuleTypeProtocolPropEnum, v)
+	}
+}
+
+const (
+
+	// HTTPRequestRuleProtocolIPV4 captures enum value "ipv4"
+	HTTPRequestRuleProtocolIPV4 string = "ipv4"
+
+	// HTTPRequestRuleProtocolIPV6 captures enum value "ipv6"
+	HTTPRequestRuleProtocolIPV6 string = "ipv6"
+)
+
+// prop value enum
+func (m *HTTPRequestRule) validateProtocolEnum(path, location string, value string) error {
+	if err := validate.EnumCase(path, location, value, httpRequestRuleTypeProtocolPropEnum, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *HTTPRequestRule) validateProtocol(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.Protocol) { // not required
+		return nil
+	}
+
+	// value enum
+	if err := m.validateProtocolEnum("protocol", "body", m.Protocol); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 var httpRequestRuleTypeRedirCodePropEnum []interface{}
 
 func init() {
 	var res []int64
-	if err := json.Unmarshal([]byte(`[301,302,303]`), &res); err != nil {
+	if err := json.Unmarshal([]byte(`[301,302,303,307,308]`), &res); err != nil {
 		panic(err)
 	}
 	for _, v := range res {
@@ -566,7 +872,7 @@ func init() {
 
 // prop value enum
 func (m *HTTPRequestRule) validateRedirCodeEnum(path, location string, value int64) error {
-	if err := validate.Enum(path, location, value, httpRequestRuleTypeRedirCodePropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, httpRequestRuleTypeRedirCodePropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -579,7 +885,7 @@ func (m *HTTPRequestRule) validateRedirCode(formats strfmt.Registry) error {
 	}
 
 	// value enum
-	if err := m.validateRedirCodeEnum("redir_code", "body", m.RedirCode); err != nil {
+	if err := m.validateRedirCodeEnum("redir_code", "body", *m.RedirCode); err != nil {
 		return err
 	}
 
@@ -612,7 +918,7 @@ const (
 
 // prop value enum
 func (m *HTTPRequestRule) validateRedirTypeEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, httpRequestRuleTypeRedirTypePropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, httpRequestRuleTypeRedirTypePropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -665,6 +971,62 @@ func (m *HTTPRequestRule) validateSpoeGroup(formats strfmt.Registry) error {
 	}
 
 	if err := validate.Pattern("spoe_group", "body", string(m.SpoeGroup), `^[^\s]+$`); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+var httpRequestRuleTypeStrictModePropEnum []interface{}
+
+func init() {
+	var res []string
+	if err := json.Unmarshal([]byte(`["on","off"]`), &res); err != nil {
+		panic(err)
+	}
+	for _, v := range res {
+		httpRequestRuleTypeStrictModePropEnum = append(httpRequestRuleTypeStrictModePropEnum, v)
+	}
+}
+
+const (
+
+	// HTTPRequestRuleStrictModeOn captures enum value "on"
+	HTTPRequestRuleStrictModeOn string = "on"
+
+	// HTTPRequestRuleStrictModeOff captures enum value "off"
+	HTTPRequestRuleStrictModeOff string = "off"
+)
+
+// prop value enum
+func (m *HTTPRequestRule) validateStrictModeEnum(path, location string, value string) error {
+	if err := validate.EnumCase(path, location, value, httpRequestRuleTypeStrictModePropEnum, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *HTTPRequestRule) validateStrictMode(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.StrictMode) { // not required
+		return nil
+	}
+
+	// value enum
+	if err := m.validateStrictModeEnum("strict_mode", "body", m.StrictMode); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *HTTPRequestRule) validateTosValue(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.TosValue) { // not required
+		return nil
+	}
+
+	if err := validate.Pattern("tos_value", "body", string(m.TosValue), `^(0x[0-9A-Fa-f]+|[0-9]+)$`); err != nil {
 		return err
 	}
 
@@ -753,7 +1115,7 @@ var httpRequestRuleTypeTypePropEnum []interface{}
 
 func init() {
 	var res []string
-	if err := json.Unmarshal([]byte(`["allow","deny","auth","redirect","tarpit","add-header","replace-header","replace-value","del-header","set-header","set-log-level","set-path","replace-path","set-query","set-uri","set-var","send-spoe-group","add-acl","del-acl","capture","track-sc0","track-sc1","track-sc2"]`), &res); err != nil {
+	if err := json.Unmarshal([]byte(`["allow","deny","auth","redirect","tarpit","add-header","replace-header","replace-value","del-header","set-header","set-log-level","set-path","replace-path","set-query","set-uri","set-var","send-spoe-group","add-acl","del-acl","capture","track-sc0","track-sc1","track-sc2","set-map","del-map","cache-use","disable-l7-retry","early-hint","replace-uri","sc-inc-gpc0","sc-inc-gpc1","do-resolve","set-dst","set-dst-port","sc-set-gpt0","set-mark","set-nice","set-method","set-priority-class","set-priority-offset","set-src","set-src-por","wait-for-handshake","set-tos","silent-drop","unset-var","strict-mode","lua","use-service"]`), &res); err != nil {
 		panic(err)
 	}
 	for _, v := range res {
@@ -831,11 +1193,89 @@ const (
 
 	// HTTPRequestRuleTypeTrackSc2 captures enum value "track-sc2"
 	HTTPRequestRuleTypeTrackSc2 string = "track-sc2"
+
+	// HTTPRequestRuleTypeSetMap captures enum value "set-map"
+	HTTPRequestRuleTypeSetMap string = "set-map"
+
+	// HTTPRequestRuleTypeDelMap captures enum value "del-map"
+	HTTPRequestRuleTypeDelMap string = "del-map"
+
+	// HTTPRequestRuleTypeCacheUse captures enum value "cache-use"
+	HTTPRequestRuleTypeCacheUse string = "cache-use"
+
+	// HTTPRequestRuleTypeDisableL7Retry captures enum value "disable-l7-retry"
+	HTTPRequestRuleTypeDisableL7Retry string = "disable-l7-retry"
+
+	// HTTPRequestRuleTypeEarlyHint captures enum value "early-hint"
+	HTTPRequestRuleTypeEarlyHint string = "early-hint"
+
+	// HTTPRequestRuleTypeReplaceURI captures enum value "replace-uri"
+	HTTPRequestRuleTypeReplaceURI string = "replace-uri"
+
+	// HTTPRequestRuleTypeScIncGpc0 captures enum value "sc-inc-gpc0"
+	HTTPRequestRuleTypeScIncGpc0 string = "sc-inc-gpc0"
+
+	// HTTPRequestRuleTypeScIncGpc1 captures enum value "sc-inc-gpc1"
+	HTTPRequestRuleTypeScIncGpc1 string = "sc-inc-gpc1"
+
+	// HTTPRequestRuleTypeDoResolve captures enum value "do-resolve"
+	HTTPRequestRuleTypeDoResolve string = "do-resolve"
+
+	// HTTPRequestRuleTypeSetDst captures enum value "set-dst"
+	HTTPRequestRuleTypeSetDst string = "set-dst"
+
+	// HTTPRequestRuleTypeSetDstPort captures enum value "set-dst-port"
+	HTTPRequestRuleTypeSetDstPort string = "set-dst-port"
+
+	// HTTPRequestRuleTypeScSetGpt0 captures enum value "sc-set-gpt0"
+	HTTPRequestRuleTypeScSetGpt0 string = "sc-set-gpt0"
+
+	// HTTPRequestRuleTypeSetMark captures enum value "set-mark"
+	HTTPRequestRuleTypeSetMark string = "set-mark"
+
+	// HTTPRequestRuleTypeSetNice captures enum value "set-nice"
+	HTTPRequestRuleTypeSetNice string = "set-nice"
+
+	// HTTPRequestRuleTypeSetMethod captures enum value "set-method"
+	HTTPRequestRuleTypeSetMethod string = "set-method"
+
+	// HTTPRequestRuleTypeSetPriorityClass captures enum value "set-priority-class"
+	HTTPRequestRuleTypeSetPriorityClass string = "set-priority-class"
+
+	// HTTPRequestRuleTypeSetPriorityOffset captures enum value "set-priority-offset"
+	HTTPRequestRuleTypeSetPriorityOffset string = "set-priority-offset"
+
+	// HTTPRequestRuleTypeSetSrc captures enum value "set-src"
+	HTTPRequestRuleTypeSetSrc string = "set-src"
+
+	// HTTPRequestRuleTypeSetSrcPor captures enum value "set-src-por"
+	HTTPRequestRuleTypeSetSrcPor string = "set-src-por"
+
+	// HTTPRequestRuleTypeWaitForHandshake captures enum value "wait-for-handshake"
+	HTTPRequestRuleTypeWaitForHandshake string = "wait-for-handshake"
+
+	// HTTPRequestRuleTypeSetTos captures enum value "set-tos"
+	HTTPRequestRuleTypeSetTos string = "set-tos"
+
+	// HTTPRequestRuleTypeSilentDrop captures enum value "silent-drop"
+	HTTPRequestRuleTypeSilentDrop string = "silent-drop"
+
+	// HTTPRequestRuleTypeUnsetVar captures enum value "unset-var"
+	HTTPRequestRuleTypeUnsetVar string = "unset-var"
+
+	// HTTPRequestRuleTypeStrictMode captures enum value "strict-mode"
+	HTTPRequestRuleTypeStrictMode string = "strict-mode"
+
+	// HTTPRequestRuleTypeLua captures enum value "lua"
+	HTTPRequestRuleTypeLua string = "lua"
+
+	// HTTPRequestRuleTypeUseService captures enum value "use-service"
+	HTTPRequestRuleTypeUseService string = "use-service"
 )
 
 // prop value enum
 func (m *HTTPRequestRule) validateTypeEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, httpRequestRuleTypeTypePropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, httpRequestRuleTypeTypePropEnum, true); err != nil {
 		return err
 	}
 	return nil

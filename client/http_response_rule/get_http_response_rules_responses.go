@@ -26,10 +26,9 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
-
-	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/haproxytech/models"
 )
@@ -42,14 +41,12 @@ type GetHTTPResponseRulesReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetHTTPResponseRulesReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewGetHTTPResponseRulesOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	default:
 		result := NewGetHTTPResponseRulesDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -81,6 +78,10 @@ type GetHTTPResponseRulesOK struct {
 
 func (o *GetHTTPResponseRulesOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/http_response_rules][%d] getHttpResponseRulesOK  %+v", 200, o.Payload)
+}
+
+func (o *GetHTTPResponseRulesOK) GetPayload() *GetHTTPResponseRulesOKBody {
+	return o.Payload
 }
 
 func (o *GetHTTPResponseRulesOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -131,6 +132,10 @@ func (o *GetHTTPResponseRulesDefault) Code() int {
 
 func (o *GetHTTPResponseRulesDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/http_response_rules][%d] getHTTPResponseRules default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *GetHTTPResponseRulesDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *GetHTTPResponseRulesDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

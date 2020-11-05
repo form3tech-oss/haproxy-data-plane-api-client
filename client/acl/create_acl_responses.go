@@ -26,9 +26,8 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-
-	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/haproxytech/models"
 )
@@ -41,35 +40,30 @@ type CreateACLReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *CreateACLReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 201:
 		result := NewCreateACLCreated()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 202:
 		result := NewCreateACLAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 400:
 		result := NewCreateACLBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	case 409:
 		result := NewCreateACLConflict()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewCreateACLDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -97,6 +91,10 @@ type CreateACLCreated struct {
 
 func (o *CreateACLCreated) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/acls][%d] createAclCreated  %+v", 201, o.Payload)
+}
+
+func (o *CreateACLCreated) GetPayload() *models.ACL {
+	return o.Payload
 }
 
 func (o *CreateACLCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -130,6 +128,10 @@ type CreateACLAccepted struct {
 
 func (o *CreateACLAccepted) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/acls][%d] createAclAccepted  %+v", 202, o.Payload)
+}
+
+func (o *CreateACLAccepted) GetPayload() *models.ACL {
+	return o.Payload
 }
 
 func (o *CreateACLAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -168,6 +170,10 @@ type CreateACLBadRequest struct {
 
 func (o *CreateACLBadRequest) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/acls][%d] createAclBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *CreateACLBadRequest) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *CreateACLBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -210,6 +216,10 @@ type CreateACLConflict struct {
 
 func (o *CreateACLConflict) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/acls][%d] createAclConflict  %+v", 409, o.Payload)
+}
+
+func (o *CreateACLConflict) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *CreateACLConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -260,6 +270,10 @@ func (o *CreateACLDefault) Code() int {
 
 func (o *CreateACLDefault) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/acls][%d] createAcl default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *CreateACLDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *CreateACLDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

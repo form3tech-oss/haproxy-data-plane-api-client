@@ -26,9 +26,8 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-
-	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/haproxytech/models"
 )
@@ -41,28 +40,24 @@ type DeleteStickRuleReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *DeleteStickRuleReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 202:
 		result := NewDeleteStickRuleAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 204:
 		result := NewDeleteStickRuleNoContent()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 404:
 		result := NewDeleteStickRuleNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		result := NewDeleteStickRuleDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -146,6 +141,10 @@ func (o *DeleteStickRuleNotFound) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/configuration/stick_rules/{index}][%d] deleteStickRuleNotFound  %+v", 404, o.Payload)
 }
 
+func (o *DeleteStickRuleNotFound) GetPayload() *models.Error {
+	return o.Payload
+}
+
 func (o *DeleteStickRuleNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
@@ -194,6 +193,10 @@ func (o *DeleteStickRuleDefault) Code() int {
 
 func (o *DeleteStickRuleDefault) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/configuration/stick_rules/{index}][%d] deleteStickRule default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *DeleteStickRuleDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *DeleteStickRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

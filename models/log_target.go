@@ -23,9 +23,8 @@ package models
 import (
 	"encoding/json"
 
-	strfmt "github.com/go-openapi/strfmt"
-
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
@@ -33,6 +32,7 @@ import (
 // LogTarget Log Target
 //
 // Per-instance logging of events and traffic.
+//
 // swagger:model log_target
 type LogTarget struct {
 
@@ -206,7 +206,7 @@ const (
 
 // prop value enum
 func (m *LogTarget) validateFacilityEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, logTargetTypeFacilityPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, logTargetTypeFacilityPropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -255,7 +255,7 @@ const (
 
 // prop value enum
 func (m *LogTarget) validateFormatEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, logTargetTypeFormatPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, logTargetTypeFormatPropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -325,7 +325,7 @@ const (
 
 // prop value enum
 func (m *LogTarget) validateLevelEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, logTargetTypeLevelPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, logTargetTypeLevelPropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -386,7 +386,7 @@ const (
 
 // prop value enum
 func (m *LogTarget) validateMinlevelEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, logTargetTypeMinlevelPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, logTargetTypeMinlevelPropEnum, true); err != nil {
 		return err
 	}
 	return nil

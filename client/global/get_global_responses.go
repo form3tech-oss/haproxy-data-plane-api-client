@@ -26,9 +26,8 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-
-	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/haproxytech/models"
 )
@@ -41,14 +40,12 @@ type GetGlobalReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetGlobalReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewGetGlobalOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	default:
 		result := NewGetGlobalDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -80,6 +77,10 @@ type GetGlobalOK struct {
 
 func (o *GetGlobalOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/global][%d] getGlobalOK  %+v", 200, o.Payload)
+}
+
+func (o *GetGlobalOK) GetPayload() *GetGlobalOKBody {
+	return o.Payload
 }
 
 func (o *GetGlobalOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -130,6 +131,10 @@ func (o *GetGlobalDefault) Code() int {
 
 func (o *GetGlobalDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/global][%d] getGlobal default  %+v", o._statusCode, o.Payload)
+}
+
+func (o *GetGlobalDefault) GetPayload() *models.Error {
+	return o.Payload
 }
 
 func (o *GetGlobalDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

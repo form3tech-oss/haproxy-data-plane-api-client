@@ -23,9 +23,8 @@ package models
 import (
 	"encoding/json"
 
-	strfmt "github.com/go-openapi/strfmt"
-
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
@@ -33,6 +32,7 @@ import (
 // StickRule Stick Rule
 //
 // Define a pattern used to create an entry in a stickiness table or matching condition or associate a user to a server.
+//
 // swagger:model stick_rule
 type StickRule struct {
 
@@ -115,7 +115,7 @@ const (
 
 // prop value enum
 func (m *StickRule) validateCondEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, stickRuleTypeCondPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, stickRuleTypeCondPropEnum, true); err != nil {
 		return err
 	}
 	return nil
@@ -199,7 +199,7 @@ const (
 
 // prop value enum
 func (m *StickRule) validateTypeEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, stickRuleTypeTypePropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, stickRuleTypeTypePropEnum, true); err != nil {
 		return err
 	}
 	return nil

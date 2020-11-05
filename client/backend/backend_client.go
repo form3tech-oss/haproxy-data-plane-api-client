@@ -22,12 +22,11 @@ package backend
 
 import (
 	"github.com/go-openapi/runtime"
-
-	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/strfmt"
 )
 
 // New creates a new backend API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -39,10 +38,25 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-/*
-CreateBackend adds a backend
+// ClientService is the interface for Client methods
+type ClientService interface {
+	CreateBackend(params *CreateBackendParams, authInfo runtime.ClientAuthInfoWriter) (*CreateBackendCreated, *CreateBackendAccepted, error)
 
-Adds a new backend to the configuration file.
+	DeleteBackend(params *DeleteBackendParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteBackendAccepted, *DeleteBackendNoContent, error)
+
+	GetBackend(params *GetBackendParams, authInfo runtime.ClientAuthInfoWriter) (*GetBackendOK, error)
+
+	GetBackends(params *GetBackendsParams, authInfo runtime.ClientAuthInfoWriter) (*GetBackendsOK, error)
+
+	ReplaceBackend(params *ReplaceBackendParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceBackendOK, *ReplaceBackendAccepted, error)
+
+	SetTransport(transport runtime.ClientTransport)
+}
+
+/*
+  CreateBackend adds a backend
+
+  Adds a new backend to the configuration file.
 */
 func (a *Client) CreateBackend(params *CreateBackendParams, authInfo runtime.ClientAuthInfoWriter) (*CreateBackendCreated, *CreateBackendAccepted, error) {
 	// TODO: Validate the params before sending
@@ -72,14 +86,15 @@ func (a *Client) CreateBackend(params *CreateBackendParams, authInfo runtime.Cli
 	case *CreateBackendAccepted:
 		return nil, value, nil
 	}
-	return nil, nil, nil
-
+	// unexpected success response
+	unexpectedSuccess := result.(*CreateBackendDefault)
+	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-DeleteBackend deletes a backend
+  DeleteBackend deletes a backend
 
-Deletes a frontend from the configuration by it's name.
+  Deletes a frontend from the configuration by it's name.
 */
 func (a *Client) DeleteBackend(params *DeleteBackendParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteBackendAccepted, *DeleteBackendNoContent, error) {
 	// TODO: Validate the params before sending
@@ -109,14 +124,15 @@ func (a *Client) DeleteBackend(params *DeleteBackendParams, authInfo runtime.Cli
 	case *DeleteBackendNoContent:
 		return nil, value, nil
 	}
-	return nil, nil, nil
-
+	// unexpected success response
+	unexpectedSuccess := result.(*DeleteBackendDefault)
+	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-GetBackend returns a backend
+  GetBackend returns a backend
 
-Returns one backend configuration by it's name.
+  Returns one backend configuration by it's name.
 */
 func (a *Client) GetBackend(params *GetBackendParams, authInfo runtime.ClientAuthInfoWriter) (*GetBackendOK, error) {
 	// TODO: Validate the params before sending
@@ -140,14 +156,19 @@ func (a *Client) GetBackend(params *GetBackendParams, authInfo runtime.ClientAut
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetBackendOK), nil
-
+	success, ok := result.(*GetBackendOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetBackendDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-GetBackends returns an array of backends
+  GetBackends returns an array of backends
 
-Returns an array of all configured backends.
+  Returns an array of all configured backends.
 */
 func (a *Client) GetBackends(params *GetBackendsParams, authInfo runtime.ClientAuthInfoWriter) (*GetBackendsOK, error) {
 	// TODO: Validate the params before sending
@@ -171,14 +192,19 @@ func (a *Client) GetBackends(params *GetBackendsParams, authInfo runtime.ClientA
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetBackendsOK), nil
-
+	success, ok := result.(*GetBackendsOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetBackendsDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-ReplaceBackend replaces a backend
+  ReplaceBackend replaces a backend
 
-Replaces a backend configuration by it's name.
+  Replaces a backend configuration by it's name.
 */
 func (a *Client) ReplaceBackend(params *ReplaceBackendParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceBackendOK, *ReplaceBackendAccepted, error) {
 	// TODO: Validate the params before sending
@@ -208,8 +234,9 @@ func (a *Client) ReplaceBackend(params *ReplaceBackendParams, authInfo runtime.C
 	case *ReplaceBackendAccepted:
 		return nil, value, nil
 	}
-	return nil, nil, nil
-
+	// unexpected success response
+	unexpectedSuccess := result.(*ReplaceBackendDefault)
+	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 // SetTransport changes the transport on the client
