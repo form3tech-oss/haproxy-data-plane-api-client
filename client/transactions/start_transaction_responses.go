@@ -46,6 +46,12 @@ func (o *StartTransactionReader) ReadResponse(response runtime.ClientResponse, c
 			return nil, err
 		}
 		return result, nil
+	case 429:
+		result := NewStartTransactionTooManyRequests()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	default:
 		result := NewStartTransactionDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -82,6 +88,39 @@ func (o *StartTransactionCreated) GetPayload() *models.Transaction {
 func (o *StartTransactionCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.Transaction)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewStartTransactionTooManyRequests creates a StartTransactionTooManyRequests with default headers values
+func NewStartTransactionTooManyRequests() *StartTransactionTooManyRequests {
+	return &StartTransactionTooManyRequests{}
+}
+
+/*StartTransactionTooManyRequests handles this case with default header values.
+
+Too many open transactions
+*/
+type StartTransactionTooManyRequests struct {
+	Payload *StartTransactionTooManyRequestsBody
+}
+
+func (o *StartTransactionTooManyRequests) Error() string {
+	return fmt.Sprintf("[POST /services/haproxy/transactions][%d] startTransactionTooManyRequests  %+v", 429, o.Payload)
+}
+
+func (o *StartTransactionTooManyRequests) GetPayload() *StartTransactionTooManyRequestsBody {
+	return o.Payload
+}
+
+func (o *StartTransactionTooManyRequests) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(StartTransactionTooManyRequestsBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -142,5 +181,40 @@ func (o *StartTransactionDefault) readResponse(response runtime.ClientResponse, 
 		return err
 	}
 
+	return nil
+}
+
+/*StartTransactionTooManyRequestsBody start transaction too many requests body
+swagger:model StartTransactionTooManyRequestsBody
+*/
+type StartTransactionTooManyRequestsBody struct {
+
+	// code
+	Code int64 `json:"code,omitempty"`
+
+	// message
+	Message string `json:"message,omitempty"`
+}
+
+// Validate validates this start transaction too many requests body
+func (o *StartTransactionTooManyRequestsBody) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *StartTransactionTooManyRequestsBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *StartTransactionTooManyRequestsBody) UnmarshalBinary(b []byte) error {
+	var res StartTransactionTooManyRequestsBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
 	return nil
 }

@@ -76,7 +76,7 @@ for the show runtime map operation typically these are written to a http.Request
 type ShowRuntimeMapParams struct {
 
 	/*Map
-	  Map file name
+	  Mapfile attribute storage_name
 
 	*/
 	Map string

@@ -29,13 +29,17 @@ import (
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
+	"github.com/go-openapi/swag"
 )
 
 // NewGetAllRuntimeMapFilesParams creates a new GetAllRuntimeMapFilesParams object
 // with the default values initialized.
 func NewGetAllRuntimeMapFilesParams() *GetAllRuntimeMapFilesParams {
-
+	var (
+		includeUnmanagedDefault = bool(false)
+	)
 	return &GetAllRuntimeMapFilesParams{
+		IncludeUnmanaged: &includeUnmanagedDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -44,8 +48,11 @@ func NewGetAllRuntimeMapFilesParams() *GetAllRuntimeMapFilesParams {
 // NewGetAllRuntimeMapFilesParamsWithTimeout creates a new GetAllRuntimeMapFilesParams object
 // with the default values initialized, and the ability to set a timeout on a request
 func NewGetAllRuntimeMapFilesParamsWithTimeout(timeout time.Duration) *GetAllRuntimeMapFilesParams {
-
+	var (
+		includeUnmanagedDefault = bool(false)
+	)
 	return &GetAllRuntimeMapFilesParams{
+		IncludeUnmanaged: &includeUnmanagedDefault,
 
 		timeout: timeout,
 	}
@@ -54,8 +61,11 @@ func NewGetAllRuntimeMapFilesParamsWithTimeout(timeout time.Duration) *GetAllRun
 // NewGetAllRuntimeMapFilesParamsWithContext creates a new GetAllRuntimeMapFilesParams object
 // with the default values initialized, and the ability to set a context for a request
 func NewGetAllRuntimeMapFilesParamsWithContext(ctx context.Context) *GetAllRuntimeMapFilesParams {
-
+	var (
+		includeUnmanagedDefault = bool(false)
+	)
 	return &GetAllRuntimeMapFilesParams{
+		IncludeUnmanaged: &includeUnmanagedDefault,
 
 		Context: ctx,
 	}
@@ -64,9 +74,12 @@ func NewGetAllRuntimeMapFilesParamsWithContext(ctx context.Context) *GetAllRunti
 // NewGetAllRuntimeMapFilesParamsWithHTTPClient creates a new GetAllRuntimeMapFilesParams object
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
 func NewGetAllRuntimeMapFilesParamsWithHTTPClient(client *http.Client) *GetAllRuntimeMapFilesParams {
-
+	var (
+		includeUnmanagedDefault = bool(false)
+	)
 	return &GetAllRuntimeMapFilesParams{
-		HTTPClient: client,
+		IncludeUnmanaged: &includeUnmanagedDefault,
+		HTTPClient:       client,
 	}
 }
 
@@ -74,6 +87,13 @@ func NewGetAllRuntimeMapFilesParamsWithHTTPClient(client *http.Client) *GetAllRu
 for the get all runtime map files operation typically these are written to a http.Request
 */
 type GetAllRuntimeMapFilesParams struct {
+
+	/*IncludeUnmanaged
+	  If true, also show unmanaged map files loaded in haproxy
+
+	*/
+	IncludeUnmanaged *bool
+
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
@@ -112,6 +132,17 @@ func (o *GetAllRuntimeMapFilesParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
+// WithIncludeUnmanaged adds the includeUnmanaged to the get all runtime map files params
+func (o *GetAllRuntimeMapFilesParams) WithIncludeUnmanaged(includeUnmanaged *bool) *GetAllRuntimeMapFilesParams {
+	o.SetIncludeUnmanaged(includeUnmanaged)
+	return o
+}
+
+// SetIncludeUnmanaged adds the includeUnmanaged to the get all runtime map files params
+func (o *GetAllRuntimeMapFilesParams) SetIncludeUnmanaged(includeUnmanaged *bool) {
+	o.IncludeUnmanaged = includeUnmanaged
+}
+
 // WriteToRequest writes these params to a swagger request
 func (o *GetAllRuntimeMapFilesParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
@@ -119,6 +150,22 @@ func (o *GetAllRuntimeMapFilesParams) WriteToRequest(r runtime.ClientRequest, re
 		return err
 	}
 	var res []error
+
+	if o.IncludeUnmanaged != nil {
+
+		// query param include_unmanaged
+		var qrIncludeUnmanaged bool
+		if o.IncludeUnmanaged != nil {
+			qrIncludeUnmanaged = *o.IncludeUnmanaged
+		}
+		qIncludeUnmanaged := swag.FormatBool(qrIncludeUnmanaged)
+		if qIncludeUnmanaged != "" {
+			if err := r.SetQueryParam("include_unmanaged", qIncludeUnmanaged); err != nil {
+				return err
+			}
+		}
+
+	}
 
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)

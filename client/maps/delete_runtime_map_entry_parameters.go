@@ -29,13 +29,17 @@ import (
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
+	"github.com/go-openapi/swag"
 )
 
 // NewDeleteRuntimeMapEntryParams creates a new DeleteRuntimeMapEntryParams object
 // with the default values initialized.
 func NewDeleteRuntimeMapEntryParams() *DeleteRuntimeMapEntryParams {
-	var ()
+	var (
+		forceSyncDefault = bool(false)
+	)
 	return &DeleteRuntimeMapEntryParams{
+		ForceSync: &forceSyncDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -44,8 +48,11 @@ func NewDeleteRuntimeMapEntryParams() *DeleteRuntimeMapEntryParams {
 // NewDeleteRuntimeMapEntryParamsWithTimeout creates a new DeleteRuntimeMapEntryParams object
 // with the default values initialized, and the ability to set a timeout on a request
 func NewDeleteRuntimeMapEntryParamsWithTimeout(timeout time.Duration) *DeleteRuntimeMapEntryParams {
-	var ()
+	var (
+		forceSyncDefault = bool(false)
+	)
 	return &DeleteRuntimeMapEntryParams{
+		ForceSync: &forceSyncDefault,
 
 		timeout: timeout,
 	}
@@ -54,8 +61,11 @@ func NewDeleteRuntimeMapEntryParamsWithTimeout(timeout time.Duration) *DeleteRun
 // NewDeleteRuntimeMapEntryParamsWithContext creates a new DeleteRuntimeMapEntryParams object
 // with the default values initialized, and the ability to set a context for a request
 func NewDeleteRuntimeMapEntryParamsWithContext(ctx context.Context) *DeleteRuntimeMapEntryParams {
-	var ()
+	var (
+		forceSyncDefault = bool(false)
+	)
 	return &DeleteRuntimeMapEntryParams{
+		ForceSync: &forceSyncDefault,
 
 		Context: ctx,
 	}
@@ -64,8 +74,11 @@ func NewDeleteRuntimeMapEntryParamsWithContext(ctx context.Context) *DeleteRunti
 // NewDeleteRuntimeMapEntryParamsWithHTTPClient creates a new DeleteRuntimeMapEntryParams object
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
 func NewDeleteRuntimeMapEntryParamsWithHTTPClient(client *http.Client) *DeleteRuntimeMapEntryParams {
-	var ()
+	var (
+		forceSyncDefault = bool(false)
+	)
 	return &DeleteRuntimeMapEntryParams{
+		ForceSync:  &forceSyncDefault,
 		HTTPClient: client,
 	}
 }
@@ -75,13 +88,18 @@ for the delete runtime map entry operation typically these are written to a http
 */
 type DeleteRuntimeMapEntryParams struct {
 
+	/*ForceSync
+	  If true, immediately syncs changes to disk
+
+	*/
+	ForceSync *bool
 	/*ID
 	  Map id
 
 	*/
 	ID string
 	/*Map
-	  Map file name
+	  Mapfile attribute storage_name
 
 	*/
 	Map string
@@ -124,6 +142,17 @@ func (o *DeleteRuntimeMapEntryParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
+// WithForceSync adds the forceSync to the delete runtime map entry params
+func (o *DeleteRuntimeMapEntryParams) WithForceSync(forceSync *bool) *DeleteRuntimeMapEntryParams {
+	o.SetForceSync(forceSync)
+	return o
+}
+
+// SetForceSync adds the forceSync to the delete runtime map entry params
+func (o *DeleteRuntimeMapEntryParams) SetForceSync(forceSync *bool) {
+	o.ForceSync = forceSync
+}
+
 // WithID adds the id to the delete runtime map entry params
 func (o *DeleteRuntimeMapEntryParams) WithID(id string) *DeleteRuntimeMapEntryParams {
 	o.SetID(id)
@@ -153,6 +182,22 @@ func (o *DeleteRuntimeMapEntryParams) WriteToRequest(r runtime.ClientRequest, re
 		return err
 	}
 	var res []error
+
+	if o.ForceSync != nil {
+
+		// query param force_sync
+		var qrForceSync bool
+		if o.ForceSync != nil {
+			qrForceSync = *o.ForceSync
+		}
+		qForceSync := swag.FormatBool(qrForceSync)
+		if qForceSync != "" {
+			if err := r.SetQueryParam("force_sync", qForceSync); err != nil {
+				return err
+			}
+		}
+
+	}
 
 	// path param id
 	if err := r.SetPathParam("id", o.ID); err != nil {

@@ -35,8 +35,11 @@ import (
 // NewClearRuntimeMapParams creates a new ClearRuntimeMapParams object
 // with the default values initialized.
 func NewClearRuntimeMapParams() *ClearRuntimeMapParams {
-	var ()
+	var (
+		forceSyncDefault = bool(false)
+	)
 	return &ClearRuntimeMapParams{
+		ForceSync: &forceSyncDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -45,8 +48,11 @@ func NewClearRuntimeMapParams() *ClearRuntimeMapParams {
 // NewClearRuntimeMapParamsWithTimeout creates a new ClearRuntimeMapParams object
 // with the default values initialized, and the ability to set a timeout on a request
 func NewClearRuntimeMapParamsWithTimeout(timeout time.Duration) *ClearRuntimeMapParams {
-	var ()
+	var (
+		forceSyncDefault = bool(false)
+	)
 	return &ClearRuntimeMapParams{
+		ForceSync: &forceSyncDefault,
 
 		timeout: timeout,
 	}
@@ -55,8 +61,11 @@ func NewClearRuntimeMapParamsWithTimeout(timeout time.Duration) *ClearRuntimeMap
 // NewClearRuntimeMapParamsWithContext creates a new ClearRuntimeMapParams object
 // with the default values initialized, and the ability to set a context for a request
 func NewClearRuntimeMapParamsWithContext(ctx context.Context) *ClearRuntimeMapParams {
-	var ()
+	var (
+		forceSyncDefault = bool(false)
+	)
 	return &ClearRuntimeMapParams{
+		ForceSync: &forceSyncDefault,
 
 		Context: ctx,
 	}
@@ -65,8 +74,11 @@ func NewClearRuntimeMapParamsWithContext(ctx context.Context) *ClearRuntimeMapPa
 // NewClearRuntimeMapParamsWithHTTPClient creates a new ClearRuntimeMapParams object
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
 func NewClearRuntimeMapParamsWithHTTPClient(client *http.Client) *ClearRuntimeMapParams {
-	var ()
+	var (
+		forceSyncDefault = bool(false)
+	)
 	return &ClearRuntimeMapParams{
+		ForceSync:  &forceSyncDefault,
 		HTTPClient: client,
 	}
 }
@@ -81,6 +93,11 @@ type ClearRuntimeMapParams struct {
 
 	*/
 	ForceDelete *bool
+	/*ForceSync
+	  If true, immediately syncs changes to disk
+
+	*/
+	ForceSync *bool
 	/*Name
 	  Map file name
 
@@ -136,6 +153,17 @@ func (o *ClearRuntimeMapParams) SetForceDelete(forceDelete *bool) {
 	o.ForceDelete = forceDelete
 }
 
+// WithForceSync adds the forceSync to the clear runtime map params
+func (o *ClearRuntimeMapParams) WithForceSync(forceSync *bool) *ClearRuntimeMapParams {
+	o.SetForceSync(forceSync)
+	return o
+}
+
+// SetForceSync adds the forceSync to the clear runtime map params
+func (o *ClearRuntimeMapParams) SetForceSync(forceSync *bool) {
+	o.ForceSync = forceSync
+}
+
 // WithName adds the name to the clear runtime map params
 func (o *ClearRuntimeMapParams) WithName(name string) *ClearRuntimeMapParams {
 	o.SetName(name)
@@ -165,6 +193,22 @@ func (o *ClearRuntimeMapParams) WriteToRequest(r runtime.ClientRequest, reg strf
 		qForceDelete := swag.FormatBool(qrForceDelete)
 		if qForceDelete != "" {
 			if err := r.SetQueryParam("forceDelete", qForceDelete); err != nil {
+				return err
+			}
+		}
+
+	}
+
+	if o.ForceSync != nil {
+
+		// query param force_sync
+		var qrForceSync bool
+		if o.ForceSync != nil {
+			qrForceSync = *o.ForceSync
+		}
+		qForceSync := swag.FormatBool(qrForceSync)
+		if qForceSync != "" {
+			if err := r.SetQueryParam("force_sync", qForceSync); err != nil {
 				return err
 			}
 		}

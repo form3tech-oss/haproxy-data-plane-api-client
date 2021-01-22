@@ -36,14 +36,16 @@ import (
 // with the default values initialized.
 func NewPostHAProxyConfigurationParams() *PostHAProxyConfigurationParams {
 	var (
-		forceReloadDefault = bool(false)
-		skipReloadDefault  = bool(false)
-		skipVersionDefault = bool(false)
+		forceReloadDefault  = bool(false)
+		onlyValidateDefault = bool(false)
+		skipReloadDefault   = bool(false)
+		skipVersionDefault  = bool(false)
 	)
 	return &PostHAProxyConfigurationParams{
-		ForceReload: &forceReloadDefault,
-		SkipReload:  &skipReloadDefault,
-		SkipVersion: &skipVersionDefault,
+		ForceReload:  &forceReloadDefault,
+		OnlyValidate: &onlyValidateDefault,
+		SkipReload:   &skipReloadDefault,
+		SkipVersion:  &skipVersionDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -53,14 +55,16 @@ func NewPostHAProxyConfigurationParams() *PostHAProxyConfigurationParams {
 // with the default values initialized, and the ability to set a timeout on a request
 func NewPostHAProxyConfigurationParamsWithTimeout(timeout time.Duration) *PostHAProxyConfigurationParams {
 	var (
-		forceReloadDefault = bool(false)
-		skipReloadDefault  = bool(false)
-		skipVersionDefault = bool(false)
+		forceReloadDefault  = bool(false)
+		onlyValidateDefault = bool(false)
+		skipReloadDefault   = bool(false)
+		skipVersionDefault  = bool(false)
 	)
 	return &PostHAProxyConfigurationParams{
-		ForceReload: &forceReloadDefault,
-		SkipReload:  &skipReloadDefault,
-		SkipVersion: &skipVersionDefault,
+		ForceReload:  &forceReloadDefault,
+		OnlyValidate: &onlyValidateDefault,
+		SkipReload:   &skipReloadDefault,
+		SkipVersion:  &skipVersionDefault,
 
 		timeout: timeout,
 	}
@@ -70,14 +74,16 @@ func NewPostHAProxyConfigurationParamsWithTimeout(timeout time.Duration) *PostHA
 // with the default values initialized, and the ability to set a context for a request
 func NewPostHAProxyConfigurationParamsWithContext(ctx context.Context) *PostHAProxyConfigurationParams {
 	var (
-		forceReloadDefault = bool(false)
-		skipReloadDefault  = bool(false)
-		skipVersionDefault = bool(false)
+		forceReloadDefault  = bool(false)
+		onlyValidateDefault = bool(false)
+		skipReloadDefault   = bool(false)
+		skipVersionDefault  = bool(false)
 	)
 	return &PostHAProxyConfigurationParams{
-		ForceReload: &forceReloadDefault,
-		SkipReload:  &skipReloadDefault,
-		SkipVersion: &skipVersionDefault,
+		ForceReload:  &forceReloadDefault,
+		OnlyValidate: &onlyValidateDefault,
+		SkipReload:   &skipReloadDefault,
+		SkipVersion:  &skipVersionDefault,
 
 		Context: ctx,
 	}
@@ -87,15 +93,17 @@ func NewPostHAProxyConfigurationParamsWithContext(ctx context.Context) *PostHAPr
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
 func NewPostHAProxyConfigurationParamsWithHTTPClient(client *http.Client) *PostHAProxyConfigurationParams {
 	var (
-		forceReloadDefault = bool(false)
-		skipReloadDefault  = bool(false)
-		skipVersionDefault = bool(false)
+		forceReloadDefault  = bool(false)
+		onlyValidateDefault = bool(false)
+		skipReloadDefault   = bool(false)
+		skipVersionDefault  = bool(false)
 	)
 	return &PostHAProxyConfigurationParams{
-		ForceReload: &forceReloadDefault,
-		SkipReload:  &skipReloadDefault,
-		SkipVersion: &skipVersionDefault,
-		HTTPClient:  client,
+		ForceReload:  &forceReloadDefault,
+		OnlyValidate: &onlyValidateDefault,
+		SkipReload:   &skipReloadDefault,
+		SkipVersion:  &skipVersionDefault,
+		HTTPClient:   client,
 	}
 }
 
@@ -116,6 +124,11 @@ type PostHAProxyConfigurationParams struct {
 
 	*/
 	ForceReload *bool
+	/*OnlyValidate
+	  If set, only validates configuration, without applying it
+
+	*/
+	OnlyValidate *bool
 	/*SkipReload
 	  If set, no reload will be initiated and runtime actions from X-Runtime-Actions will be applied
 
@@ -203,6 +216,17 @@ func (o *PostHAProxyConfigurationParams) SetForceReload(forceReload *bool) {
 	o.ForceReload = forceReload
 }
 
+// WithOnlyValidate adds the onlyValidate to the post h a proxy configuration params
+func (o *PostHAProxyConfigurationParams) WithOnlyValidate(onlyValidate *bool) *PostHAProxyConfigurationParams {
+	o.SetOnlyValidate(onlyValidate)
+	return o
+}
+
+// SetOnlyValidate adds the onlyValidate to the post h a proxy configuration params
+func (o *PostHAProxyConfigurationParams) SetOnlyValidate(onlyValidate *bool) {
+	o.OnlyValidate = onlyValidate
+}
+
 // WithSkipReload adds the skipReload to the post h a proxy configuration params
 func (o *PostHAProxyConfigurationParams) WithSkipReload(skipReload *bool) *PostHAProxyConfigurationParams {
 	o.SetSkipReload(skipReload)
@@ -267,6 +291,22 @@ func (o *PostHAProxyConfigurationParams) WriteToRequest(r runtime.ClientRequest,
 		qForceReload := swag.FormatBool(qrForceReload)
 		if qForceReload != "" {
 			if err := r.SetQueryParam("force_reload", qForceReload); err != nil {
+				return err
+			}
+		}
+
+	}
+
+	if o.OnlyValidate != nil {
+
+		// query param only_validate
+		var qrOnlyValidate bool
+		if o.OnlyValidate != nil {
+			qrOnlyValidate = *o.OnlyValidate
+		}
+		qOnlyValidate := swag.FormatBool(qrOnlyValidate)
+		if qOnlyValidate != "" {
+			if err := r.SetQueryParam("only_validate", qOnlyValidate); err != nil {
 				return err
 			}
 		}

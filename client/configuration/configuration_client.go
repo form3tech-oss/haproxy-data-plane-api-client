@@ -40,11 +40,49 @@ type Client struct {
 
 // ClientService is the interface for Client methods
 type ClientService interface {
+	GetConfigurationVersion(params *GetConfigurationVersionParams, authInfo runtime.ClientAuthInfoWriter) (*GetConfigurationVersionOK, error)
+
 	GetHAProxyConfiguration(params *GetHAProxyConfigurationParams, authInfo runtime.ClientAuthInfoWriter) (*GetHAProxyConfigurationOK, error)
 
 	PostHAProxyConfiguration(params *PostHAProxyConfigurationParams, authInfo runtime.ClientAuthInfoWriter) (*PostHAProxyConfigurationCreated, *PostHAProxyConfigurationAccepted, error)
 
 	SetTransport(transport runtime.ClientTransport)
+}
+
+/*
+  GetConfigurationVersion returns a configuration version
+
+  Returns configuration version.
+*/
+func (a *Client) GetConfigurationVersion(params *GetConfigurationVersionParams, authInfo runtime.ClientAuthInfoWriter) (*GetConfigurationVersionOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetConfigurationVersionParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getConfigurationVersion",
+		Method:             "GET",
+		PathPattern:        "/services/haproxy/configuration/version",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &GetConfigurationVersionReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*GetConfigurationVersionOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetConfigurationVersionDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*

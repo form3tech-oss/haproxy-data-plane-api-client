@@ -29,13 +29,17 @@ import (
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
+	"github.com/go-openapi/swag"
 )
 
 // NewReplaceRuntimeMapEntryParams creates a new ReplaceRuntimeMapEntryParams object
 // with the default values initialized.
 func NewReplaceRuntimeMapEntryParams() *ReplaceRuntimeMapEntryParams {
-	var ()
+	var (
+		forceSyncDefault = bool(false)
+	)
 	return &ReplaceRuntimeMapEntryParams{
+		ForceSync: &forceSyncDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -44,8 +48,11 @@ func NewReplaceRuntimeMapEntryParams() *ReplaceRuntimeMapEntryParams {
 // NewReplaceRuntimeMapEntryParamsWithTimeout creates a new ReplaceRuntimeMapEntryParams object
 // with the default values initialized, and the ability to set a timeout on a request
 func NewReplaceRuntimeMapEntryParamsWithTimeout(timeout time.Duration) *ReplaceRuntimeMapEntryParams {
-	var ()
+	var (
+		forceSyncDefault = bool(false)
+	)
 	return &ReplaceRuntimeMapEntryParams{
+		ForceSync: &forceSyncDefault,
 
 		timeout: timeout,
 	}
@@ -54,8 +61,11 @@ func NewReplaceRuntimeMapEntryParamsWithTimeout(timeout time.Duration) *ReplaceR
 // NewReplaceRuntimeMapEntryParamsWithContext creates a new ReplaceRuntimeMapEntryParams object
 // with the default values initialized, and the ability to set a context for a request
 func NewReplaceRuntimeMapEntryParamsWithContext(ctx context.Context) *ReplaceRuntimeMapEntryParams {
-	var ()
+	var (
+		forceSyncDefault = bool(false)
+	)
 	return &ReplaceRuntimeMapEntryParams{
+		ForceSync: &forceSyncDefault,
 
 		Context: ctx,
 	}
@@ -64,8 +74,11 @@ func NewReplaceRuntimeMapEntryParamsWithContext(ctx context.Context) *ReplaceRun
 // NewReplaceRuntimeMapEntryParamsWithHTTPClient creates a new ReplaceRuntimeMapEntryParams object
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
 func NewReplaceRuntimeMapEntryParamsWithHTTPClient(client *http.Client) *ReplaceRuntimeMapEntryParams {
-	var ()
+	var (
+		forceSyncDefault = bool(false)
+	)
 	return &ReplaceRuntimeMapEntryParams{
+		ForceSync:  &forceSyncDefault,
 		HTTPClient: client,
 	}
 }
@@ -77,13 +90,18 @@ type ReplaceRuntimeMapEntryParams struct {
 
 	/*Data*/
 	Data ReplaceRuntimeMapEntryBody
+	/*ForceSync
+	  If true, immediately syncs changes to disk
+
+	*/
+	ForceSync *bool
 	/*ID
 	  Map id
 
 	*/
 	ID string
 	/*Map
-	  Map file name
+	  Mapfile attribute storage_name
 
 	*/
 	Map string
@@ -137,6 +155,17 @@ func (o *ReplaceRuntimeMapEntryParams) SetData(data ReplaceRuntimeMapEntryBody) 
 	o.Data = data
 }
 
+// WithForceSync adds the forceSync to the replace runtime map entry params
+func (o *ReplaceRuntimeMapEntryParams) WithForceSync(forceSync *bool) *ReplaceRuntimeMapEntryParams {
+	o.SetForceSync(forceSync)
+	return o
+}
+
+// SetForceSync adds the forceSync to the replace runtime map entry params
+func (o *ReplaceRuntimeMapEntryParams) SetForceSync(forceSync *bool) {
+	o.ForceSync = forceSync
+}
+
 // WithID adds the id to the replace runtime map entry params
 func (o *ReplaceRuntimeMapEntryParams) WithID(id string) *ReplaceRuntimeMapEntryParams {
 	o.SetID(id)
@@ -169,6 +198,22 @@ func (o *ReplaceRuntimeMapEntryParams) WriteToRequest(r runtime.ClientRequest, r
 
 	if err := r.SetBodyParam(o.Data); err != nil {
 		return err
+	}
+
+	if o.ForceSync != nil {
+
+		// query param force_sync
+		var qrForceSync bool
+		if o.ForceSync != nil {
+			qrForceSync = *o.ForceSync
+		}
+		qForceSync := swag.FormatBool(qrForceSync)
+		if qForceSync != "" {
+			if err := r.SetQueryParam("force_sync", qForceSync); err != nil {
+				return err
+			}
+		}
+
 	}
 
 	// path param id

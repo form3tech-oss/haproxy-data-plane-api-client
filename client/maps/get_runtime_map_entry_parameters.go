@@ -81,7 +81,7 @@ type GetRuntimeMapEntryParams struct {
 	*/
 	ID string
 	/*Map
-	  Map file name
+	  Mapfile attribute storage_name
 
 	*/
 	Map string

@@ -94,7 +94,7 @@ func (a *Client) CreateBackend(params *CreateBackendParams, authInfo runtime.Cli
 /*
   DeleteBackend deletes a backend
 
-  Deletes a frontend from the configuration by it's name.
+  Deletes a backend from the configuration by it's name.
 */
 func (a *Client) DeleteBackend(params *DeleteBackendParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteBackendAccepted, *DeleteBackendNoContent, error) {
 	// TODO: Validate the params before sending

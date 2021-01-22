@@ -172,7 +172,7 @@ func (a *Client) GetRuntimeServer(params *GetRuntimeServerParams, authInfo runti
 }
 
 /*
-  GetRuntimeServers returns an array of runtime servers setings
+  GetRuntimeServers returns an array of runtime servers settings
 
   Returns an array of all servers' runtime settings.
 */
