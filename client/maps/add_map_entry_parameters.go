@@ -29,6 +29,7 @@ import (
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
+	"github.com/go-openapi/swag"
 
 	"github.com/haproxytech/models"
 )
@@ -36,8 +37,11 @@ import (
 // NewAddMapEntryParams creates a new AddMapEntryParams object
 // with the default values initialized.
 func NewAddMapEntryParams() *AddMapEntryParams {
-	var ()
+	var (
+		forceSyncDefault = bool(false)
+	)
 	return &AddMapEntryParams{
+		ForceSync: &forceSyncDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -46,8 +50,11 @@ func NewAddMapEntryParams() *AddMapEntryParams {
 // NewAddMapEntryParamsWithTimeout creates a new AddMapEntryParams object
 // with the default values initialized, and the ability to set a timeout on a request
 func NewAddMapEntryParamsWithTimeout(timeout time.Duration) *AddMapEntryParams {
-	var ()
+	var (
+		forceSyncDefault = bool(false)
+	)
 	return &AddMapEntryParams{
+		ForceSync: &forceSyncDefault,
 
 		timeout: timeout,
 	}
@@ -56,8 +63,11 @@ func NewAddMapEntryParamsWithTimeout(timeout time.Duration) *AddMapEntryParams {
 // NewAddMapEntryParamsWithContext creates a new AddMapEntryParams object
 // with the default values initialized, and the ability to set a context for a request
 func NewAddMapEntryParamsWithContext(ctx context.Context) *AddMapEntryParams {
-	var ()
+	var (
+		forceSyncDefault = bool(false)
+	)
 	return &AddMapEntryParams{
+		ForceSync: &forceSyncDefault,
 
 		Context: ctx,
 	}
@@ -66,8 +76,11 @@ func NewAddMapEntryParamsWithContext(ctx context.Context) *AddMapEntryParams {
 // NewAddMapEntryParamsWithHTTPClient creates a new AddMapEntryParams object
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
 func NewAddMapEntryParamsWithHTTPClient(client *http.Client) *AddMapEntryParams {
-	var ()
+	var (
+		forceSyncDefault = bool(false)
+	)
 	return &AddMapEntryParams{
+		ForceSync:  &forceSyncDefault,
 		HTTPClient: client,
 	}
 }
@@ -79,8 +92,13 @@ type AddMapEntryParams struct {
 
 	/*Data*/
 	Data *models.MapEntry
+	/*ForceSync
+	  If true, immediately syncs changes to disk
+
+	*/
+	ForceSync *bool
 	/*Map
-	  Map file name
+	  Mapfile attribute storage_name
 
 	*/
 	Map string
@@ -134,6 +152,17 @@ func (o *AddMapEntryParams) SetData(data *models.MapEntry) {
 	o.Data = data
 }
 
+// WithForceSync adds the forceSync to the add map entry params
+func (o *AddMapEntryParams) WithForceSync(forceSync *bool) *AddMapEntryParams {
+	o.SetForceSync(forceSync)
+	return o
+}
+
+// SetForceSync adds the forceSync to the add map entry params
+func (o *AddMapEntryParams) SetForceSync(forceSync *bool) {
+	o.ForceSync = forceSync
+}
+
 // WithMap adds the mapVar to the add map entry params
 func (o *AddMapEntryParams) WithMap(mapVar string) *AddMapEntryParams {
 	o.SetMap(mapVar)
@@ -157,6 +186,22 @@ func (o *AddMapEntryParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.R
 		if err := r.SetBodyParam(o.Data); err != nil {
 			return err
 		}
+	}
+
+	if o.ForceSync != nil {
+
+		// query param force_sync
+		var qrForceSync bool
+		if o.ForceSync != nil {
+			qrForceSync = *o.ForceSync
+		}
+		qForceSync := swag.FormatBool(qrForceSync)
+		if qForceSync != "" {
+			if err := r.SetQueryParam("force_sync", qForceSync); err != nil {
+				return err
+			}
+		}
+
 	}
 
 	// query param map

@@ -52,9 +52,12 @@ import (
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/sites"
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/specification"
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/specification_openapiv3"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/spoe"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/spoe_transactions"
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/stats"
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/stick_rule"
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/stick_table"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/storage"
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/tcp_request_rule"
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/tcp_response_rule"
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/transactions"
@@ -129,9 +132,12 @@ func New(transport runtime.ClientTransport, formats strfmt.Registry) *DataPlane 
 	cli.Sites = sites.New(transport, formats)
 	cli.Specification = specification.New(transport, formats)
 	cli.SpecificationOpenapiv3 = specification_openapiv3.New(transport, formats)
+	cli.Spoe = spoe.New(transport, formats)
+	cli.SpoeTransactions = spoe_transactions.New(transport, formats)
 	cli.Stats = stats.New(transport, formats)
 	cli.StickRule = stick_rule.New(transport, formats)
 	cli.StickTable = stick_table.New(transport, formats)
+	cli.Storage = storage.New(transport, formats)
 	cli.TCPRequestRule = tcp_request_rule.New(transport, formats)
 	cli.TCPResponseRule = tcp_response_rule.New(transport, formats)
 	cli.Transactions = transactions.New(transport, formats)
@@ -233,11 +239,17 @@ type DataPlane struct {
 
 	SpecificationOpenapiv3 specification_openapiv3.ClientService
 
+	Spoe spoe.ClientService
+
+	SpoeTransactions spoe_transactions.ClientService
+
 	Stats stats.ClientService
 
 	StickRule stick_rule.ClientService
 
 	StickTable stick_table.ClientService
+
+	Storage storage.ClientService
 
 	TCPRequestRule tcp_request_rule.ClientService
 
@@ -278,9 +290,12 @@ func (c *DataPlane) SetTransport(transport runtime.ClientTransport) {
 	c.Sites.SetTransport(transport)
 	c.Specification.SetTransport(transport)
 	c.SpecificationOpenapiv3.SetTransport(transport)
+	c.Spoe.SetTransport(transport)
+	c.SpoeTransactions.SetTransport(transport)
 	c.Stats.SetTransport(transport)
 	c.StickRule.SetTransport(transport)
 	c.StickTable.SetTransport(transport)
+	c.Storage.SetTransport(transport)
 	c.TCPRequestRule.SetTransport(transport)
 	c.TCPResponseRule.SetTransport(transport)
 	c.Transactions.SetTransport(transport)

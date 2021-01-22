@@ -44,8 +44,6 @@ type ClientService interface {
 
 	ClearRuntimeMap(params *ClearRuntimeMapParams, authInfo runtime.ClientAuthInfoWriter) (*ClearRuntimeMapNoContent, error)
 
-	CreateRuntimeMap(params *CreateRuntimeMapParams, authInfo runtime.ClientAuthInfoWriter) (*CreateRuntimeMapCreated, error)
-
 	DeleteRuntimeMapEntry(params *DeleteRuntimeMapEntryParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteRuntimeMapEntryNoContent, error)
 
 	GetAllRuntimeMapFiles(params *GetAllRuntimeMapFilesParams, authInfo runtime.ClientAuthInfoWriter) (*GetAllRuntimeMapFilesOK, error)
@@ -134,42 +132,6 @@ func (a *Client) ClearRuntimeMap(params *ClearRuntimeMapParams, authInfo runtime
 }
 
 /*
-  CreateRuntimeMap creates runtime map file with its entries
-
-  Creates runtime map file with its entries.
-*/
-func (a *Client) CreateRuntimeMap(params *CreateRuntimeMapParams, authInfo runtime.ClientAuthInfoWriter) (*CreateRuntimeMapCreated, error) {
-	// TODO: Validate the params before sending
-	if params == nil {
-		params = NewCreateRuntimeMapParams()
-	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "createRuntimeMap",
-		Method:             "POST",
-		PathPattern:        "/services/haproxy/runtime/maps",
-		ProducesMediaTypes: []string{"application/json"},
-		ConsumesMediaTypes: []string{"multipart/form-data"},
-		Schemes:            []string{"http"},
-		Params:             params,
-		Reader:             &CreateRuntimeMapReader{formats: a.formats},
-		AuthInfo:           authInfo,
-		Context:            params.Context,
-		Client:             params.HTTPClient,
-	})
-	if err != nil {
-		return nil, err
-	}
-	success, ok := result.(*CreateRuntimeMapCreated)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*CreateRuntimeMapDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
-}
-
-/*
   DeleteRuntimeMapEntry deletes all the map entries from the map by its id
 
   Delete all the map entries from the map by its id.
@@ -206,9 +168,9 @@ func (a *Client) DeleteRuntimeMapEntry(params *DeleteRuntimeMapEntryParams, auth
 }
 
 /*
-  GetAllRuntimeMapFiles returns all available map files
+  GetAllRuntimeMapFiles returns runtime map files
 
-  Returns all available map files.
+  Returns runtime map files.
 */
 func (a *Client) GetAllRuntimeMapFiles(params *GetAllRuntimeMapFilesParams, authInfo runtime.ClientAuthInfoWriter) (*GetAllRuntimeMapFilesOK, error) {
 	// TODO: Validate the params before sending
