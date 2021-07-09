@@ -28,10 +28,11 @@ import (
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
-	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // NewReplaceFrontendParams creates a new ReplaceFrontendParams object

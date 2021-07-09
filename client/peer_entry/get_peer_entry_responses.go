@@ -26,10 +26,11 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // GetPeerEntryReader is a Reader for the GetPeerEntry structure.
@@ -40,18 +41,21 @@ type GetPeerEntryReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetPeerEntryReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetPeerEntryOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewGetPeerEntryNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewGetPeerEntryDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -76,7 +80,7 @@ Successful operation
 type GetPeerEntryOK struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *GetPeerEntryOKBody
 }
@@ -85,18 +89,10 @@ func (o *GetPeerEntryOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/peer_entries/{name}][%d] getPeerEntryOK  %+v", 200, o.Payload)
 }
 
-func (o *GetPeerEntryOK) GetPayload() *GetPeerEntryOKBody {
-	return o.Payload
-}
-
 func (o *GetPeerEntryOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(GetPeerEntryOKBody)
 
@@ -110,9 +106,7 @@ func (o *GetPeerEntryOK) readResponse(response runtime.ClientResponse, consumer 
 
 // NewGetPeerEntryNotFound creates a GetPeerEntryNotFound with default headers values
 func NewGetPeerEntryNotFound() *GetPeerEntryNotFound {
-	return &GetPeerEntryNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &GetPeerEntryNotFound{}
 }
 
 /*GetPeerEntryNotFound handles this case with default header values.
@@ -122,7 +116,7 @@ The specified resource already exists
 type GetPeerEntryNotFound struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -131,18 +125,10 @@ func (o *GetPeerEntryNotFound) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/peer_entries/{name}][%d] getPeerEntryNotFound  %+v", 404, o.Payload)
 }
 
-func (o *GetPeerEntryNotFound) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetPeerEntryNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -157,8 +143,7 @@ func (o *GetPeerEntryNotFound) readResponse(response runtime.ClientResponse, con
 // NewGetPeerEntryDefault creates a GetPeerEntryDefault with default headers values
 func NewGetPeerEntryDefault(code int) *GetPeerEntryDefault {
 	return &GetPeerEntryDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -171,7 +156,7 @@ type GetPeerEntryDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -185,18 +170,10 @@ func (o *GetPeerEntryDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/peer_entries/{name}][%d] getPeerEntry default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *GetPeerEntryDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetPeerEntryDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

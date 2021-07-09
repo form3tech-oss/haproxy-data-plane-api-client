@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // DeleteResolverReader is a Reader for the DeleteResolver structure.
@@ -40,24 +39,28 @@ type DeleteResolverReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *DeleteResolverReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 202:
 		result := NewDeleteResolverAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 204:
 		result := NewDeleteResolverNoContent()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewDeleteResolverNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewDeleteResolverDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -120,9 +123,7 @@ func (o *DeleteResolverNoContent) readResponse(response runtime.ClientResponse, 
 
 // NewDeleteResolverNotFound creates a DeleteResolverNotFound with default headers values
 func NewDeleteResolverNotFound() *DeleteResolverNotFound {
-	return &DeleteResolverNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &DeleteResolverNotFound{}
 }
 
 /*DeleteResolverNotFound handles this case with default header values.
@@ -132,7 +133,7 @@ The specified resource was not found
 type DeleteResolverNotFound struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -141,18 +142,10 @@ func (o *DeleteResolverNotFound) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/configuration/resolvers/{name}][%d] deleteResolverNotFound  %+v", 404, o.Payload)
 }
 
-func (o *DeleteResolverNotFound) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *DeleteResolverNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -167,8 +160,7 @@ func (o *DeleteResolverNotFound) readResponse(response runtime.ClientResponse, c
 // NewDeleteResolverDefault creates a DeleteResolverDefault with default headers values
 func NewDeleteResolverDefault(code int) *DeleteResolverDefault {
 	return &DeleteResolverDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -181,7 +173,7 @@ type DeleteResolverDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -195,18 +187,10 @@ func (o *DeleteResolverDefault) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/configuration/resolvers/{name}][%d] deleteResolver default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *DeleteResolverDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *DeleteResolverDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

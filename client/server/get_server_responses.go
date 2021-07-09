@@ -26,10 +26,11 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // GetServerReader is a Reader for the GetServer structure.
@@ -40,18 +41,21 @@ type GetServerReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetServerReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetServerOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewGetServerNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewGetServerDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -76,7 +80,7 @@ Successful operation
 type GetServerOK struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *GetServerOKBody
 }
@@ -85,18 +89,10 @@ func (o *GetServerOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/servers/{name}][%d] getServerOK  %+v", 200, o.Payload)
 }
 
-func (o *GetServerOK) GetPayload() *GetServerOKBody {
-	return o.Payload
-}
-
 func (o *GetServerOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(GetServerOKBody)
 
@@ -110,9 +106,7 @@ func (o *GetServerOK) readResponse(response runtime.ClientResponse, consumer run
 
 // NewGetServerNotFound creates a GetServerNotFound with default headers values
 func NewGetServerNotFound() *GetServerNotFound {
-	return &GetServerNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &GetServerNotFound{}
 }
 
 /*GetServerNotFound handles this case with default header values.
@@ -122,7 +116,7 @@ The specified resource was not found
 type GetServerNotFound struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -131,18 +125,10 @@ func (o *GetServerNotFound) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/servers/{name}][%d] getServerNotFound  %+v", 404, o.Payload)
 }
 
-func (o *GetServerNotFound) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetServerNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -157,8 +143,7 @@ func (o *GetServerNotFound) readResponse(response runtime.ClientResponse, consum
 // NewGetServerDefault creates a GetServerDefault with default headers values
 func NewGetServerDefault(code int) *GetServerDefault {
 	return &GetServerDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -171,7 +156,7 @@ type GetServerDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -185,18 +170,10 @@ func (o *GetServerDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/servers/{name}][%d] getServer default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *GetServerDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetServerDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

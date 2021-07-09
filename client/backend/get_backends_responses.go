@@ -26,11 +26,12 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // GetBackendsReader is a Reader for the GetBackends structure.
@@ -41,12 +42,14 @@ type GetBackendsReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetBackendsReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetBackendsOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	default:
 		result := NewGetBackendsDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -71,7 +74,7 @@ Successful operation
 type GetBackendsOK struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *GetBackendsOKBody
 }
@@ -80,18 +83,10 @@ func (o *GetBackendsOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/backends][%d] getBackendsOK  %+v", 200, o.Payload)
 }
 
-func (o *GetBackendsOK) GetPayload() *GetBackendsOKBody {
-	return o.Payload
-}
-
 func (o *GetBackendsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(GetBackendsOKBody)
 
@@ -106,8 +101,7 @@ func (o *GetBackendsOK) readResponse(response runtime.ClientResponse, consumer r
 // NewGetBackendsDefault creates a GetBackendsDefault with default headers values
 func NewGetBackendsDefault(code int) *GetBackendsDefault {
 	return &GetBackendsDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -120,7 +114,7 @@ type GetBackendsDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -134,18 +128,10 @@ func (o *GetBackendsDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/backends][%d] getBackends default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *GetBackendsDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetBackendsDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

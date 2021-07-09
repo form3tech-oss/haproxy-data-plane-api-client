@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // GetAllStorageMapFilesReader is a Reader for the GetAllStorageMapFiles structure.
@@ -40,18 +39,21 @@ type GetAllStorageMapFilesReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetAllStorageMapFilesReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetAllStorageMapFilesOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewGetAllStorageMapFilesNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewGetAllStorageMapFilesDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -81,10 +83,6 @@ func (o *GetAllStorageMapFilesOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/storage/maps][%d] getAllStorageMapFilesOK  %+v", 200, o.Payload)
 }
 
-func (o *GetAllStorageMapFilesOK) GetPayload() models.Maps {
-	return o.Payload
-}
-
 func (o *GetAllStorageMapFilesOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response payload
@@ -97,9 +95,7 @@ func (o *GetAllStorageMapFilesOK) readResponse(response runtime.ClientResponse, 
 
 // NewGetAllStorageMapFilesNotFound creates a GetAllStorageMapFilesNotFound with default headers values
 func NewGetAllStorageMapFilesNotFound() *GetAllStorageMapFilesNotFound {
-	return &GetAllStorageMapFilesNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &GetAllStorageMapFilesNotFound{}
 }
 
 /*GetAllStorageMapFilesNotFound handles this case with default header values.
@@ -109,7 +105,7 @@ The specified resource was not found
 type GetAllStorageMapFilesNotFound struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -118,18 +114,10 @@ func (o *GetAllStorageMapFilesNotFound) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/storage/maps][%d] getAllStorageMapFilesNotFound  %+v", 404, o.Payload)
 }
 
-func (o *GetAllStorageMapFilesNotFound) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetAllStorageMapFilesNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -144,8 +132,7 @@ func (o *GetAllStorageMapFilesNotFound) readResponse(response runtime.ClientResp
 // NewGetAllStorageMapFilesDefault creates a GetAllStorageMapFilesDefault with default headers values
 func NewGetAllStorageMapFilesDefault(code int) *GetAllStorageMapFilesDefault {
 	return &GetAllStorageMapFilesDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -158,7 +145,7 @@ type GetAllStorageMapFilesDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -172,18 +159,10 @@ func (o *GetAllStorageMapFilesDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/storage/maps][%d] getAllStorageMapFiles default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *GetAllStorageMapFilesDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetAllStorageMapFilesDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

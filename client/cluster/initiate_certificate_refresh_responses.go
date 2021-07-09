@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // InitiateCertificateRefreshReader is a Reader for the InitiateCertificateRefresh structure.
@@ -40,18 +39,21 @@ type InitiateCertificateRefreshReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *InitiateCertificateRefreshReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewInitiateCertificateRefreshOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 403:
 		result := NewInitiateCertificateRefreshForbidden()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewInitiateCertificateRefreshDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -109,8 +111,7 @@ func (o *InitiateCertificateRefreshForbidden) readResponse(response runtime.Clie
 // NewInitiateCertificateRefreshDefault creates a InitiateCertificateRefreshDefault with default headers values
 func NewInitiateCertificateRefreshDefault(code int) *InitiateCertificateRefreshDefault {
 	return &InitiateCertificateRefreshDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -123,7 +124,7 @@ type InitiateCertificateRefreshDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -137,18 +138,10 @@ func (o *InitiateCertificateRefreshDefault) Error() string {
 	return fmt.Sprintf("[POST /cluster/certificate][%d] initiateCertificateRefresh default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *InitiateCertificateRefreshDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *InitiateCertificateRefreshDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

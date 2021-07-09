@@ -26,10 +26,11 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // GetBackendSwitchingRuleReader is a Reader for the GetBackendSwitchingRule structure.
@@ -40,18 +41,21 @@ type GetBackendSwitchingRuleReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetBackendSwitchingRuleReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetBackendSwitchingRuleOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewGetBackendSwitchingRuleNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewGetBackendSwitchingRuleDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -76,7 +80,7 @@ Successful operation
 type GetBackendSwitchingRuleOK struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *GetBackendSwitchingRuleOKBody
 }
@@ -85,18 +89,10 @@ func (o *GetBackendSwitchingRuleOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/backend_switching_rules/{index}][%d] getBackendSwitchingRuleOK  %+v", 200, o.Payload)
 }
 
-func (o *GetBackendSwitchingRuleOK) GetPayload() *GetBackendSwitchingRuleOKBody {
-	return o.Payload
-}
-
 func (o *GetBackendSwitchingRuleOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(GetBackendSwitchingRuleOKBody)
 
@@ -110,9 +106,7 @@ func (o *GetBackendSwitchingRuleOK) readResponse(response runtime.ClientResponse
 
 // NewGetBackendSwitchingRuleNotFound creates a GetBackendSwitchingRuleNotFound with default headers values
 func NewGetBackendSwitchingRuleNotFound() *GetBackendSwitchingRuleNotFound {
-	return &GetBackendSwitchingRuleNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &GetBackendSwitchingRuleNotFound{}
 }
 
 /*GetBackendSwitchingRuleNotFound handles this case with default header values.
@@ -122,7 +116,7 @@ The specified resource was not found
 type GetBackendSwitchingRuleNotFound struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -131,18 +125,10 @@ func (o *GetBackendSwitchingRuleNotFound) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/backend_switching_rules/{index}][%d] getBackendSwitchingRuleNotFound  %+v", 404, o.Payload)
 }
 
-func (o *GetBackendSwitchingRuleNotFound) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetBackendSwitchingRuleNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -157,8 +143,7 @@ func (o *GetBackendSwitchingRuleNotFound) readResponse(response runtime.ClientRe
 // NewGetBackendSwitchingRuleDefault creates a GetBackendSwitchingRuleDefault with default headers values
 func NewGetBackendSwitchingRuleDefault(code int) *GetBackendSwitchingRuleDefault {
 	return &GetBackendSwitchingRuleDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -171,7 +156,7 @@ type GetBackendSwitchingRuleDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -185,18 +170,10 @@ func (o *GetBackendSwitchingRuleDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/backend_switching_rules/{index}][%d] getBackendSwitchingRule default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *GetBackendSwitchingRuleDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetBackendSwitchingRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

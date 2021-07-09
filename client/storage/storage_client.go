@@ -24,11 +24,12 @@ import (
 	"io"
 
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
+
+	strfmt "github.com/go-openapi/strfmt"
 )
 
 // New creates a new storage API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -40,51 +41,26 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-// ClientService is the interface for Client methods
-type ClientService interface {
-	CreateRuntimeMap(params *CreateRuntimeMapParams, authInfo runtime.ClientAuthInfoWriter) (*CreateRuntimeMapCreated, error)
-
-	CreateStorageSSLCertificate(params *CreateStorageSSLCertificateParams, authInfo runtime.ClientAuthInfoWriter) (*CreateStorageSSLCertificateCreated, error)
-
-	DeleteStorageMap(params *DeleteStorageMapParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteStorageMapNoContent, error)
-
-	DeleteStorageSSLCertificate(params *DeleteStorageSSLCertificateParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteStorageSSLCertificateNoContent, error)
-
-	GetAllStorageMapFiles(params *GetAllStorageMapFilesParams, authInfo runtime.ClientAuthInfoWriter) (*GetAllStorageMapFilesOK, error)
-
-	GetAllStorageSSLCertificates(params *GetAllStorageSSLCertificatesParams, authInfo runtime.ClientAuthInfoWriter) (*GetAllStorageSSLCertificatesOK, error)
-
-	GetOneStorageMap(params *GetOneStorageMapParams, authInfo runtime.ClientAuthInfoWriter, writer io.Writer) (*GetOneStorageMapOK, error)
-
-	GetOneStorageSSLCertificate(params *GetOneStorageSSLCertificateParams, authInfo runtime.ClientAuthInfoWriter) (*GetOneStorageSSLCertificateOK, error)
-
-	ReplaceStorageMapFile(params *ReplaceStorageMapFileParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceStorageMapFileAccepted, *ReplaceStorageMapFileNoContent, error)
-
-	ReplaceStorageSSLCertificate(params *ReplaceStorageSSLCertificateParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceStorageSSLCertificateAccepted, error)
-
-	SetTransport(transport runtime.ClientTransport)
-}
-
 /*
-  CreateRuntimeMap creates a managed runtime map file with its entries
+CreateStorageMapFile creates a managed storage map file with its entries
 
-  Creates a managed runtime map file with its entries.
+Creates a managed storage map file with its entries.
 */
-func (a *Client) CreateRuntimeMap(params *CreateRuntimeMapParams, authInfo runtime.ClientAuthInfoWriter) (*CreateRuntimeMapCreated, error) {
+func (a *Client) CreateStorageMapFile(params *CreateStorageMapFileParams, authInfo runtime.ClientAuthInfoWriter) (*CreateStorageMapFileCreated, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewCreateRuntimeMapParams()
+		params = NewCreateStorageMapFileParams()
 	}
 
 	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "createRuntimeMap",
+		ID:                 "createStorageMapFile",
 		Method:             "POST",
 		PathPattern:        "/services/haproxy/storage/maps",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"multipart/form-data"},
 		Schemes:            []string{"http"},
 		Params:             params,
-		Reader:             &CreateRuntimeMapReader{formats: a.formats},
+		Reader:             &CreateStorageMapFileReader{formats: a.formats},
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
@@ -92,19 +68,14 @@ func (a *Client) CreateRuntimeMap(params *CreateRuntimeMapParams, authInfo runti
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*CreateRuntimeMapCreated)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*CreateRuntimeMapDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*CreateStorageMapFileCreated), nil
+
 }
 
 /*
-  CreateStorageSSLCertificate creates s s l certificate
+CreateStorageSSLCertificate creates s s l certificate
 
-  Creates SSL certificate.
+Creates SSL certificate.
 */
 func (a *Client) CreateStorageSSLCertificate(params *CreateStorageSSLCertificateParams, authInfo runtime.ClientAuthInfoWriter) (*CreateStorageSSLCertificateCreated, error) {
 	// TODO: Validate the params before sending
@@ -128,19 +99,14 @@ func (a *Client) CreateStorageSSLCertificate(params *CreateStorageSSLCertificate
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*CreateStorageSSLCertificateCreated)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*CreateStorageSSLCertificateDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*CreateStorageSSLCertificateCreated), nil
+
 }
 
 /*
-  DeleteStorageMap deletes a managed map file from disk
+DeleteStorageMap deletes a managed map file from disk
 
-  Deletes a managed map file from disk.
+Deletes a managed map file from disk.
 */
 func (a *Client) DeleteStorageMap(params *DeleteStorageMapParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteStorageMapNoContent, error) {
 	// TODO: Validate the params before sending
@@ -164,21 +130,16 @@ func (a *Client) DeleteStorageMap(params *DeleteStorageMapParams, authInfo runti
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*DeleteStorageMapNoContent)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*DeleteStorageMapDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*DeleteStorageMapNoContent), nil
+
 }
 
 /*
-  DeleteStorageSSLCertificate deletes s s l certificate from disk
+DeleteStorageSSLCertificate deletes s s l certificate from disk
 
-  Deletes SSL certificate from disk.
+Deletes SSL certificate from disk.
 */
-func (a *Client) DeleteStorageSSLCertificate(params *DeleteStorageSSLCertificateParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteStorageSSLCertificateNoContent, error) {
+func (a *Client) DeleteStorageSSLCertificate(params *DeleteStorageSSLCertificateParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteStorageSSLCertificateAccepted, *DeleteStorageSSLCertificateNoContent, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewDeleteStorageSSLCertificateParams()
@@ -198,21 +159,22 @@ func (a *Client) DeleteStorageSSLCertificate(params *DeleteStorageSSLCertificate
 		Client:             params.HTTPClient,
 	})
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
-	success, ok := result.(*DeleteStorageSSLCertificateNoContent)
-	if ok {
-		return success, nil
+	switch value := result.(type) {
+	case *DeleteStorageSSLCertificateAccepted:
+		return value, nil, nil
+	case *DeleteStorageSSLCertificateNoContent:
+		return nil, value, nil
 	}
-	// unexpected success response
-	unexpectedSuccess := result.(*DeleteStorageSSLCertificateDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return nil, nil, nil
+
 }
 
 /*
-  GetAllStorageMapFiles returns a list of all managed map files
+GetAllStorageMapFiles returns a list of all managed map files
 
-  Returns a list of all managed map files
+Returns a list of all managed map files
 */
 func (a *Client) GetAllStorageMapFiles(params *GetAllStorageMapFilesParams, authInfo runtime.ClientAuthInfoWriter) (*GetAllStorageMapFilesOK, error) {
 	// TODO: Validate the params before sending
@@ -236,19 +198,14 @@ func (a *Client) GetAllStorageMapFiles(params *GetAllStorageMapFilesParams, auth
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetAllStorageMapFilesOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetAllStorageMapFilesDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetAllStorageMapFilesOK), nil
+
 }
 
 /*
-  GetAllStorageSSLCertificates returns all available s s l certificates on disk
+GetAllStorageSSLCertificates returns all available s s l certificates on disk
 
-  Returns all available SSL certificates on disk.
+Returns all available SSL certificates on disk.
 */
 func (a *Client) GetAllStorageSSLCertificates(params *GetAllStorageSSLCertificatesParams, authInfo runtime.ClientAuthInfoWriter) (*GetAllStorageSSLCertificatesOK, error) {
 	// TODO: Validate the params before sending
@@ -272,19 +229,14 @@ func (a *Client) GetAllStorageSSLCertificates(params *GetAllStorageSSLCertificat
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetAllStorageSSLCertificatesOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetAllStorageSSLCertificatesDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetAllStorageSSLCertificatesOK), nil
+
 }
 
 /*
-  GetOneStorageMap returns the contents of one managed map file from disk
+GetOneStorageMap returns the contents of one managed map file from disk
 
-  Returns the contents of one managed map file from disk
+Returns the contents of one managed map file from disk
 */
 func (a *Client) GetOneStorageMap(params *GetOneStorageMapParams, authInfo runtime.ClientAuthInfoWriter, writer io.Writer) (*GetOneStorageMapOK, error) {
 	// TODO: Validate the params before sending
@@ -308,19 +260,14 @@ func (a *Client) GetOneStorageMap(params *GetOneStorageMapParams, authInfo runti
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetOneStorageMapOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetOneStorageMapDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetOneStorageMapOK), nil
+
 }
 
 /*
-  GetOneStorageSSLCertificate returns one s s l certificate from disk
+GetOneStorageSSLCertificate returns one s s l certificate from disk
 
-  Returns one SSL certificate from disk.
+Returns one SSL certificate from disk.
 */
 func (a *Client) GetOneStorageSSLCertificate(params *GetOneStorageSSLCertificateParams, authInfo runtime.ClientAuthInfoWriter) (*GetOneStorageSSLCertificateOK, error) {
 	// TODO: Validate the params before sending
@@ -344,19 +291,14 @@ func (a *Client) GetOneStorageSSLCertificate(params *GetOneStorageSSLCertificate
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetOneStorageSSLCertificateOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetOneStorageSSLCertificateDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetOneStorageSSLCertificateOK), nil
+
 }
 
 /*
-  ReplaceStorageMapFile replaces contents of a managed map file on disk
+ReplaceStorageMapFile replaces contents of a managed map file on disk
 
-  Replaces the contents of a managed map file on disk
+Replaces the contents of a managed map file on disk
 */
 func (a *Client) ReplaceStorageMapFile(params *ReplaceStorageMapFileParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceStorageMapFileAccepted, *ReplaceStorageMapFileNoContent, error) {
 	// TODO: Validate the params before sending
@@ -386,17 +328,16 @@ func (a *Client) ReplaceStorageMapFile(params *ReplaceStorageMapFileParams, auth
 	case *ReplaceStorageMapFileNoContent:
 		return nil, value, nil
 	}
-	// unexpected success response
-	unexpectedSuccess := result.(*ReplaceStorageMapFileDefault)
-	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return nil, nil, nil
+
 }
 
 /*
-  ReplaceStorageSSLCertificate replaces s s l certificates on disk
+ReplaceStorageSSLCertificate replaces s s l certificates on disk
 
-  Replaces SSL certificate on disk.
+Replaces SSL certificate on disk.
 */
-func (a *Client) ReplaceStorageSSLCertificate(params *ReplaceStorageSSLCertificateParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceStorageSSLCertificateAccepted, error) {
+func (a *Client) ReplaceStorageSSLCertificate(params *ReplaceStorageSSLCertificateParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceStorageSSLCertificateOK, *ReplaceStorageSSLCertificateAccepted, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewReplaceStorageSSLCertificateParams()
@@ -416,15 +357,16 @@ func (a *Client) ReplaceStorageSSLCertificate(params *ReplaceStorageSSLCertifica
 		Client:             params.HTTPClient,
 	})
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
-	success, ok := result.(*ReplaceStorageSSLCertificateAccepted)
-	if ok {
-		return success, nil
+	switch value := result.(type) {
+	case *ReplaceStorageSSLCertificateOK:
+		return value, nil, nil
+	case *ReplaceStorageSSLCertificateAccepted:
+		return nil, value, nil
 	}
-	// unexpected success response
-	unexpectedSuccess := result.(*ReplaceStorageSSLCertificateDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return nil, nil, nil
+
 }
 
 // SetTransport changes the transport on the client

@@ -22,11 +22,12 @@ package stats
 
 import (
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
+
+	strfmt "github.com/go-openapi/strfmt"
 )
 
 // New creates a new stats API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -38,17 +39,10 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-// ClientService is the interface for Client methods
-type ClientService interface {
-	GetStats(params *GetStatsParams, authInfo runtime.ClientAuthInfoWriter) (*GetStatsOK, error)
-
-	SetTransport(transport runtime.ClientTransport)
-}
-
 /*
-  GetStats gets stats
+GetStats gets stats
 
-  Getting stats from the HAProxy.
+Getting stats from the HAProxy.
 */
 func (a *Client) GetStats(params *GetStatsParams, authInfo runtime.ClientAuthInfoWriter) (*GetStatsOK, error) {
 	// TODO: Validate the params before sending
@@ -72,13 +66,8 @@ func (a *Client) GetStats(params *GetStatsParams, authInfo runtime.ClientAuthInf
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetStatsOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetStatsDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetStatsOK), nil
+
 }
 
 // SetTransport changes the transport on the client

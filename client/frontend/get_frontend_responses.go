@@ -26,10 +26,11 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // GetFrontendReader is a Reader for the GetFrontend structure.
@@ -40,18 +41,21 @@ type GetFrontendReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetFrontendReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetFrontendOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewGetFrontendNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewGetFrontendDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -76,7 +80,7 @@ Successful operation
 type GetFrontendOK struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *GetFrontendOKBody
 }
@@ -85,18 +89,10 @@ func (o *GetFrontendOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/frontends/{name}][%d] getFrontendOK  %+v", 200, o.Payload)
 }
 
-func (o *GetFrontendOK) GetPayload() *GetFrontendOKBody {
-	return o.Payload
-}
-
 func (o *GetFrontendOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(GetFrontendOKBody)
 
@@ -110,9 +106,7 @@ func (o *GetFrontendOK) readResponse(response runtime.ClientResponse, consumer r
 
 // NewGetFrontendNotFound creates a GetFrontendNotFound with default headers values
 func NewGetFrontendNotFound() *GetFrontendNotFound {
-	return &GetFrontendNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &GetFrontendNotFound{}
 }
 
 /*GetFrontendNotFound handles this case with default header values.
@@ -122,7 +116,7 @@ The specified resource was not found
 type GetFrontendNotFound struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -131,18 +125,10 @@ func (o *GetFrontendNotFound) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/frontends/{name}][%d] getFrontendNotFound  %+v", 404, o.Payload)
 }
 
-func (o *GetFrontendNotFound) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetFrontendNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -157,8 +143,7 @@ func (o *GetFrontendNotFound) readResponse(response runtime.ClientResponse, cons
 // NewGetFrontendDefault creates a GetFrontendDefault with default headers values
 func NewGetFrontendDefault(code int) *GetFrontendDefault {
 	return &GetFrontendDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -171,7 +156,7 @@ type GetFrontendDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -185,18 +170,10 @@ func (o *GetFrontendDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/frontends/{name}][%d] getFrontend default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *GetFrontendDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetFrontendDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

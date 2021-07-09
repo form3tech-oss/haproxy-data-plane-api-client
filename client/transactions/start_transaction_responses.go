@@ -24,12 +24,12 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // StartTransactionReader is a Reader for the StartTransaction structure.
@@ -40,18 +40,21 @@ type StartTransactionReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *StartTransactionReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 201:
 		result := NewStartTransactionCreated()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 429:
 		result := NewStartTransactionTooManyRequests()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewStartTransactionDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -79,10 +82,6 @@ type StartTransactionCreated struct {
 
 func (o *StartTransactionCreated) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/transactions][%d] startTransactionCreated  %+v", 201, o.Payload)
-}
-
-func (o *StartTransactionCreated) GetPayload() *models.Transaction {
-	return o.Payload
 }
 
 func (o *StartTransactionCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -114,10 +113,6 @@ func (o *StartTransactionTooManyRequests) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/transactions][%d] startTransactionTooManyRequests  %+v", 429, o.Payload)
 }
 
-func (o *StartTransactionTooManyRequests) GetPayload() *StartTransactionTooManyRequestsBody {
-	return o.Payload
-}
-
 func (o *StartTransactionTooManyRequests) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(StartTransactionTooManyRequestsBody)
@@ -133,8 +128,7 @@ func (o *StartTransactionTooManyRequests) readResponse(response runtime.ClientRe
 // NewStartTransactionDefault creates a StartTransactionDefault with default headers values
 func NewStartTransactionDefault(code int) *StartTransactionDefault {
 	return &StartTransactionDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -147,7 +141,7 @@ type StartTransactionDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -161,18 +155,10 @@ func (o *StartTransactionDefault) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/transactions][%d] startTransaction default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *StartTransactionDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *StartTransactionDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

@@ -26,11 +26,12 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // ReplaceRuntimeMapEntryReader is a Reader for the ReplaceRuntimeMapEntry structure.
@@ -41,24 +42,28 @@ type ReplaceRuntimeMapEntryReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *ReplaceRuntimeMapEntryReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewReplaceRuntimeMapEntryOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 400:
 		result := NewReplaceRuntimeMapEntryBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	case 404:
 		result := NewReplaceRuntimeMapEntryNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewReplaceRuntimeMapEntryDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -88,10 +93,6 @@ func (o *ReplaceRuntimeMapEntryOK) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/runtime/maps_entries/{id}][%d] replaceRuntimeMapEntryOK  %+v", 200, o.Payload)
 }
 
-func (o *ReplaceRuntimeMapEntryOK) GetPayload() *models.MapEntry {
-	return o.Payload
-}
-
 func (o *ReplaceRuntimeMapEntryOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.MapEntry)
@@ -106,9 +107,7 @@ func (o *ReplaceRuntimeMapEntryOK) readResponse(response runtime.ClientResponse,
 
 // NewReplaceRuntimeMapEntryBadRequest creates a ReplaceRuntimeMapEntryBadRequest with default headers values
 func NewReplaceRuntimeMapEntryBadRequest() *ReplaceRuntimeMapEntryBadRequest {
-	return &ReplaceRuntimeMapEntryBadRequest{
-		ConfigurationVersion: 0,
-	}
+	return &ReplaceRuntimeMapEntryBadRequest{}
 }
 
 /*ReplaceRuntimeMapEntryBadRequest handles this case with default header values.
@@ -118,7 +117,7 @@ Bad request
 type ReplaceRuntimeMapEntryBadRequest struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -127,18 +126,10 @@ func (o *ReplaceRuntimeMapEntryBadRequest) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/runtime/maps_entries/{id}][%d] replaceRuntimeMapEntryBadRequest  %+v", 400, o.Payload)
 }
 
-func (o *ReplaceRuntimeMapEntryBadRequest) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *ReplaceRuntimeMapEntryBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -152,9 +143,7 @@ func (o *ReplaceRuntimeMapEntryBadRequest) readResponse(response runtime.ClientR
 
 // NewReplaceRuntimeMapEntryNotFound creates a ReplaceRuntimeMapEntryNotFound with default headers values
 func NewReplaceRuntimeMapEntryNotFound() *ReplaceRuntimeMapEntryNotFound {
-	return &ReplaceRuntimeMapEntryNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &ReplaceRuntimeMapEntryNotFound{}
 }
 
 /*ReplaceRuntimeMapEntryNotFound handles this case with default header values.
@@ -164,7 +153,7 @@ The specified resource was not found
 type ReplaceRuntimeMapEntryNotFound struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -173,18 +162,10 @@ func (o *ReplaceRuntimeMapEntryNotFound) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/runtime/maps_entries/{id}][%d] replaceRuntimeMapEntryNotFound  %+v", 404, o.Payload)
 }
 
-func (o *ReplaceRuntimeMapEntryNotFound) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *ReplaceRuntimeMapEntryNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -199,8 +180,7 @@ func (o *ReplaceRuntimeMapEntryNotFound) readResponse(response runtime.ClientRes
 // NewReplaceRuntimeMapEntryDefault creates a ReplaceRuntimeMapEntryDefault with default headers values
 func NewReplaceRuntimeMapEntryDefault(code int) *ReplaceRuntimeMapEntryDefault {
 	return &ReplaceRuntimeMapEntryDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -213,7 +193,7 @@ type ReplaceRuntimeMapEntryDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -227,18 +207,10 @@ func (o *ReplaceRuntimeMapEntryDefault) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/runtime/maps_entries/{id}][%d] replaceRuntimeMapEntry default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *ReplaceRuntimeMapEntryDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *ReplaceRuntimeMapEntryDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

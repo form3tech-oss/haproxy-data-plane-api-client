@@ -26,11 +26,12 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // GetSpoeAgentsReader is a Reader for the GetSpoeAgents structure.
@@ -41,12 +42,14 @@ type GetSpoeAgentsReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetSpoeAgentsReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetSpoeAgentsOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	default:
 		result := NewGetSpoeAgentsDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -71,7 +74,7 @@ Successful operation
 type GetSpoeAgentsOK struct {
 	/*Spoe configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *GetSpoeAgentsOKBody
 }
@@ -80,18 +83,10 @@ func (o *GetSpoeAgentsOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/spoe/spoe_agents][%d] getSpoeAgentsOK  %+v", 200, o.Payload)
 }
 
-func (o *GetSpoeAgentsOK) GetPayload() *GetSpoeAgentsOKBody {
-	return o.Payload
-}
-
 func (o *GetSpoeAgentsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(GetSpoeAgentsOKBody)
 
@@ -106,8 +101,7 @@ func (o *GetSpoeAgentsOK) readResponse(response runtime.ClientResponse, consumer
 // NewGetSpoeAgentsDefault creates a GetSpoeAgentsDefault with default headers values
 func NewGetSpoeAgentsDefault(code int) *GetSpoeAgentsDefault {
 	return &GetSpoeAgentsDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -120,7 +114,7 @@ type GetSpoeAgentsDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -134,18 +128,10 @@ func (o *GetSpoeAgentsDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/spoe/spoe_agents][%d] getSpoeAgents default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *GetSpoeAgentsDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetSpoeAgentsDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

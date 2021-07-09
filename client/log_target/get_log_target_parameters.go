@@ -28,8 +28,9 @@ import (
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
-	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
+
+	strfmt "github.com/go-openapi/strfmt"
 )
 
 // NewGetLogTargetParams creates a new GetLogTargetParams object
@@ -85,7 +86,7 @@ type GetLogTargetParams struct {
 	  Parent name
 
 	*/
-	ParentName string
+	ParentName *string
 	/*ParentType
 	  Parent type
 
@@ -147,13 +148,13 @@ func (o *GetLogTargetParams) SetIndex(index int64) {
 }
 
 // WithParentName adds the parentName to the get log target params
-func (o *GetLogTargetParams) WithParentName(parentName string) *GetLogTargetParams {
+func (o *GetLogTargetParams) WithParentName(parentName *string) *GetLogTargetParams {
 	o.SetParentName(parentName)
 	return o
 }
 
 // SetParentName adds the parentName to the get log target params
-func (o *GetLogTargetParams) SetParentName(parentName string) {
+func (o *GetLogTargetParams) SetParentName(parentName *string) {
 	o.ParentName = parentName
 }
 
@@ -192,13 +193,20 @@ func (o *GetLogTargetParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.
 		return err
 	}
 
-	// query param parent_name
-	qrParentName := o.ParentName
-	qParentName := qrParentName
-	if qParentName != "" {
-		if err := r.SetQueryParam("parent_name", qParentName); err != nil {
-			return err
+	if o.ParentName != nil {
+
+		// query param parent_name
+		var qrParentName string
+		if o.ParentName != nil {
+			qrParentName = *o.ParentName
 		}
+		qParentName := qrParentName
+		if qParentName != "" {
+			if err := r.SetQueryParam("parent_name", qParentName); err != nil {
+				return err
+			}
+		}
+
 	}
 
 	// query param parent_type

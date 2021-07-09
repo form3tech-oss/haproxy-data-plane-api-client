@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // CreateACLReader is a Reader for the CreateACL structure.
@@ -40,30 +39,35 @@ type CreateACLReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *CreateACLReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 201:
 		result := NewCreateACLCreated()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 202:
 		result := NewCreateACLAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 400:
 		result := NewCreateACLBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	case 409:
 		result := NewCreateACLConflict()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewCreateACLDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -91,10 +95,6 @@ type CreateACLCreated struct {
 
 func (o *CreateACLCreated) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/acls][%d] createAclCreated  %+v", 201, o.Payload)
-}
-
-func (o *CreateACLCreated) GetPayload() *models.ACL {
-	return o.Payload
 }
 
 func (o *CreateACLCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -130,10 +130,6 @@ func (o *CreateACLAccepted) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/acls][%d] createAclAccepted  %+v", 202, o.Payload)
 }
 
-func (o *CreateACLAccepted) GetPayload() *models.ACL {
-	return o.Payload
-}
-
 func (o *CreateACLAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Reload-ID
@@ -151,9 +147,7 @@ func (o *CreateACLAccepted) readResponse(response runtime.ClientResponse, consum
 
 // NewCreateACLBadRequest creates a CreateACLBadRequest with default headers values
 func NewCreateACLBadRequest() *CreateACLBadRequest {
-	return &CreateACLBadRequest{
-		ConfigurationVersion: 0,
-	}
+	return &CreateACLBadRequest{}
 }
 
 /*CreateACLBadRequest handles this case with default header values.
@@ -163,7 +157,7 @@ Bad request
 type CreateACLBadRequest struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -172,18 +166,10 @@ func (o *CreateACLBadRequest) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/acls][%d] createAclBadRequest  %+v", 400, o.Payload)
 }
 
-func (o *CreateACLBadRequest) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateACLBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -197,9 +183,7 @@ func (o *CreateACLBadRequest) readResponse(response runtime.ClientResponse, cons
 
 // NewCreateACLConflict creates a CreateACLConflict with default headers values
 func NewCreateACLConflict() *CreateACLConflict {
-	return &CreateACLConflict{
-		ConfigurationVersion: 0,
-	}
+	return &CreateACLConflict{}
 }
 
 /*CreateACLConflict handles this case with default header values.
@@ -209,7 +193,7 @@ The specified resource already exists
 type CreateACLConflict struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -218,18 +202,10 @@ func (o *CreateACLConflict) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/acls][%d] createAclConflict  %+v", 409, o.Payload)
 }
 
-func (o *CreateACLConflict) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateACLConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -244,8 +220,7 @@ func (o *CreateACLConflict) readResponse(response runtime.ClientResponse, consum
 // NewCreateACLDefault creates a CreateACLDefault with default headers values
 func NewCreateACLDefault(code int) *CreateACLDefault {
 	return &CreateACLDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -258,7 +233,7 @@ type CreateACLDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -272,18 +247,10 @@ func (o *CreateACLDefault) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/acls][%d] createAcl default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *CreateACLDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateACLDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

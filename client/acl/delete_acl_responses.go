@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // DeleteACLReader is a Reader for the DeleteACL structure.
@@ -40,24 +39,28 @@ type DeleteACLReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *DeleteACLReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 202:
 		result := NewDeleteACLAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 204:
 		result := NewDeleteACLNoContent()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewDeleteACLNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewDeleteACLDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -120,9 +123,7 @@ func (o *DeleteACLNoContent) readResponse(response runtime.ClientResponse, consu
 
 // NewDeleteACLNotFound creates a DeleteACLNotFound with default headers values
 func NewDeleteACLNotFound() *DeleteACLNotFound {
-	return &DeleteACLNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &DeleteACLNotFound{}
 }
 
 /*DeleteACLNotFound handles this case with default header values.
@@ -132,7 +133,7 @@ The specified resource was not found
 type DeleteACLNotFound struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -141,18 +142,10 @@ func (o *DeleteACLNotFound) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/configuration/acls/{index}][%d] deleteAclNotFound  %+v", 404, o.Payload)
 }
 
-func (o *DeleteACLNotFound) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *DeleteACLNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -167,8 +160,7 @@ func (o *DeleteACLNotFound) readResponse(response runtime.ClientResponse, consum
 // NewDeleteACLDefault creates a DeleteACLDefault with default headers values
 func NewDeleteACLDefault(code int) *DeleteACLDefault {
 	return &DeleteACLDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -181,7 +173,7 @@ type DeleteACLDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -195,18 +187,10 @@ func (o *DeleteACLDefault) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/configuration/acls/{index}][%d] deleteAcl default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *DeleteACLDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *DeleteACLDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

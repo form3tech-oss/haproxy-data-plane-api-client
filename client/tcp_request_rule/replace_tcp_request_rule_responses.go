@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // ReplaceTCPRequestRuleReader is a Reader for the ReplaceTCPRequestRule structure.
@@ -40,30 +39,35 @@ type ReplaceTCPRequestRuleReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *ReplaceTCPRequestRuleReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewReplaceTCPRequestRuleOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 202:
 		result := NewReplaceTCPRequestRuleAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 400:
 		result := NewReplaceTCPRequestRuleBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	case 404:
 		result := NewReplaceTCPRequestRuleNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewReplaceTCPRequestRuleDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -91,10 +95,6 @@ type ReplaceTCPRequestRuleOK struct {
 
 func (o *ReplaceTCPRequestRuleOK) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/tcp_request_rules/{index}][%d] replaceTcpRequestRuleOK  %+v", 200, o.Payload)
-}
-
-func (o *ReplaceTCPRequestRuleOK) GetPayload() *models.TCPRequestRule {
-	return o.Payload
 }
 
 func (o *ReplaceTCPRequestRuleOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -130,10 +130,6 @@ func (o *ReplaceTCPRequestRuleAccepted) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/tcp_request_rules/{index}][%d] replaceTcpRequestRuleAccepted  %+v", 202, o.Payload)
 }
 
-func (o *ReplaceTCPRequestRuleAccepted) GetPayload() *models.TCPRequestRule {
-	return o.Payload
-}
-
 func (o *ReplaceTCPRequestRuleAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Reload-ID
@@ -151,9 +147,7 @@ func (o *ReplaceTCPRequestRuleAccepted) readResponse(response runtime.ClientResp
 
 // NewReplaceTCPRequestRuleBadRequest creates a ReplaceTCPRequestRuleBadRequest with default headers values
 func NewReplaceTCPRequestRuleBadRequest() *ReplaceTCPRequestRuleBadRequest {
-	return &ReplaceTCPRequestRuleBadRequest{
-		ConfigurationVersion: 0,
-	}
+	return &ReplaceTCPRequestRuleBadRequest{}
 }
 
 /*ReplaceTCPRequestRuleBadRequest handles this case with default header values.
@@ -163,7 +157,7 @@ Bad request
 type ReplaceTCPRequestRuleBadRequest struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -172,18 +166,10 @@ func (o *ReplaceTCPRequestRuleBadRequest) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/tcp_request_rules/{index}][%d] replaceTcpRequestRuleBadRequest  %+v", 400, o.Payload)
 }
 
-func (o *ReplaceTCPRequestRuleBadRequest) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *ReplaceTCPRequestRuleBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -197,9 +183,7 @@ func (o *ReplaceTCPRequestRuleBadRequest) readResponse(response runtime.ClientRe
 
 // NewReplaceTCPRequestRuleNotFound creates a ReplaceTCPRequestRuleNotFound with default headers values
 func NewReplaceTCPRequestRuleNotFound() *ReplaceTCPRequestRuleNotFound {
-	return &ReplaceTCPRequestRuleNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &ReplaceTCPRequestRuleNotFound{}
 }
 
 /*ReplaceTCPRequestRuleNotFound handles this case with default header values.
@@ -209,7 +193,7 @@ The specified resource was not found
 type ReplaceTCPRequestRuleNotFound struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -218,18 +202,10 @@ func (o *ReplaceTCPRequestRuleNotFound) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/tcp_request_rules/{index}][%d] replaceTcpRequestRuleNotFound  %+v", 404, o.Payload)
 }
 
-func (o *ReplaceTCPRequestRuleNotFound) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *ReplaceTCPRequestRuleNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -244,8 +220,7 @@ func (o *ReplaceTCPRequestRuleNotFound) readResponse(response runtime.ClientResp
 // NewReplaceTCPRequestRuleDefault creates a ReplaceTCPRequestRuleDefault with default headers values
 func NewReplaceTCPRequestRuleDefault(code int) *ReplaceTCPRequestRuleDefault {
 	return &ReplaceTCPRequestRuleDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -258,7 +233,7 @@ type ReplaceTCPRequestRuleDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -272,18 +247,10 @@ func (o *ReplaceTCPRequestRuleDefault) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/tcp_request_rules/{index}][%d] replaceTCPRequestRule default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *ReplaceTCPRequestRuleDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *ReplaceTCPRequestRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

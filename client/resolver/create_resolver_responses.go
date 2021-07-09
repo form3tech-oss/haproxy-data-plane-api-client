@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // CreateResolverReader is a Reader for the CreateResolver structure.
@@ -40,30 +39,35 @@ type CreateResolverReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *CreateResolverReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 201:
 		result := NewCreateResolverCreated()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 202:
 		result := NewCreateResolverAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 400:
 		result := NewCreateResolverBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	case 409:
 		result := NewCreateResolverConflict()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewCreateResolverDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -91,10 +95,6 @@ type CreateResolverCreated struct {
 
 func (o *CreateResolverCreated) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/resolvers][%d] createResolverCreated  %+v", 201, o.Payload)
-}
-
-func (o *CreateResolverCreated) GetPayload() *models.Resolver {
-	return o.Payload
 }
 
 func (o *CreateResolverCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -130,10 +130,6 @@ func (o *CreateResolverAccepted) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/resolvers][%d] createResolverAccepted  %+v", 202, o.Payload)
 }
 
-func (o *CreateResolverAccepted) GetPayload() *models.Resolver {
-	return o.Payload
-}
-
 func (o *CreateResolverAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Reload-ID
@@ -151,9 +147,7 @@ func (o *CreateResolverAccepted) readResponse(response runtime.ClientResponse, c
 
 // NewCreateResolverBadRequest creates a CreateResolverBadRequest with default headers values
 func NewCreateResolverBadRequest() *CreateResolverBadRequest {
-	return &CreateResolverBadRequest{
-		ConfigurationVersion: 0,
-	}
+	return &CreateResolverBadRequest{}
 }
 
 /*CreateResolverBadRequest handles this case with default header values.
@@ -163,7 +157,7 @@ Bad request
 type CreateResolverBadRequest struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -172,18 +166,10 @@ func (o *CreateResolverBadRequest) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/resolvers][%d] createResolverBadRequest  %+v", 400, o.Payload)
 }
 
-func (o *CreateResolverBadRequest) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateResolverBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -197,9 +183,7 @@ func (o *CreateResolverBadRequest) readResponse(response runtime.ClientResponse,
 
 // NewCreateResolverConflict creates a CreateResolverConflict with default headers values
 func NewCreateResolverConflict() *CreateResolverConflict {
-	return &CreateResolverConflict{
-		ConfigurationVersion: 0,
-	}
+	return &CreateResolverConflict{}
 }
 
 /*CreateResolverConflict handles this case with default header values.
@@ -209,7 +193,7 @@ The specified resource already exists
 type CreateResolverConflict struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -218,18 +202,10 @@ func (o *CreateResolverConflict) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/resolvers][%d] createResolverConflict  %+v", 409, o.Payload)
 }
 
-func (o *CreateResolverConflict) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateResolverConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -244,8 +220,7 @@ func (o *CreateResolverConflict) readResponse(response runtime.ClientResponse, c
 // NewCreateResolverDefault creates a CreateResolverDefault with default headers values
 func NewCreateResolverDefault(code int) *CreateResolverDefault {
 	return &CreateResolverDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -258,7 +233,7 @@ type CreateResolverDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -272,18 +247,10 @@ func (o *CreateResolverDefault) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/resolvers][%d] createResolver default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *CreateResolverDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateResolverDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

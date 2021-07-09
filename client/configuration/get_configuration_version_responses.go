@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // GetConfigurationVersionReader is a Reader for the GetConfigurationVersion structure.
@@ -40,18 +39,21 @@ type GetConfigurationVersionReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetConfigurationVersionReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetConfigurationVersionOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewGetConfigurationVersionNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewGetConfigurationVersionDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -81,10 +83,6 @@ func (o *GetConfigurationVersionOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/version][%d] getConfigurationVersionOK  %+v", 200, o.Payload)
 }
 
-func (o *GetConfigurationVersionOK) GetPayload() int64 {
-	return o.Payload
-}
-
 func (o *GetConfigurationVersionOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response payload
@@ -97,9 +95,7 @@ func (o *GetConfigurationVersionOK) readResponse(response runtime.ClientResponse
 
 // NewGetConfigurationVersionNotFound creates a GetConfigurationVersionNotFound with default headers values
 func NewGetConfigurationVersionNotFound() *GetConfigurationVersionNotFound {
-	return &GetConfigurationVersionNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &GetConfigurationVersionNotFound{}
 }
 
 /*GetConfigurationVersionNotFound handles this case with default header values.
@@ -109,7 +105,7 @@ The specified resource was not found
 type GetConfigurationVersionNotFound struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -118,18 +114,10 @@ func (o *GetConfigurationVersionNotFound) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/version][%d] getConfigurationVersionNotFound  %+v", 404, o.Payload)
 }
 
-func (o *GetConfigurationVersionNotFound) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetConfigurationVersionNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -144,8 +132,7 @@ func (o *GetConfigurationVersionNotFound) readResponse(response runtime.ClientRe
 // NewGetConfigurationVersionDefault creates a GetConfigurationVersionDefault with default headers values
 func NewGetConfigurationVersionDefault(code int) *GetConfigurationVersionDefault {
 	return &GetConfigurationVersionDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -158,7 +145,7 @@ type GetConfigurationVersionDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -172,18 +159,10 @@ func (o *GetConfigurationVersionDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/version][%d] getConfigurationVersion default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *GetConfigurationVersionDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetConfigurationVersionDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

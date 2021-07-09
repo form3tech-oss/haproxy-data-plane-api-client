@@ -22,11 +22,12 @@ package peer
 
 import (
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
+
+	strfmt "github.com/go-openapi/strfmt"
 )
 
 // New creates a new peer API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -38,23 +39,10 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-// ClientService is the interface for Client methods
-type ClientService interface {
-	CreatePeer(params *CreatePeerParams, authInfo runtime.ClientAuthInfoWriter) (*CreatePeerCreated, *CreatePeerAccepted, error)
-
-	DeletePeer(params *DeletePeerParams, authInfo runtime.ClientAuthInfoWriter) (*DeletePeerAccepted, *DeletePeerNoContent, error)
-
-	GetPeerSection(params *GetPeerSectionParams, authInfo runtime.ClientAuthInfoWriter) (*GetPeerSectionOK, error)
-
-	GetPeerSections(params *GetPeerSectionsParams, authInfo runtime.ClientAuthInfoWriter) (*GetPeerSectionsOK, error)
-
-	SetTransport(transport runtime.ClientTransport)
-}
-
 /*
-  CreatePeer adds a peer
+CreatePeer adds a peer
 
-  Adds a new peer to the configuration file.
+Adds a new peer to the configuration file.
 */
 func (a *Client) CreatePeer(params *CreatePeerParams, authInfo runtime.ClientAuthInfoWriter) (*CreatePeerCreated, *CreatePeerAccepted, error) {
 	// TODO: Validate the params before sending
@@ -84,15 +72,14 @@ func (a *Client) CreatePeer(params *CreatePeerParams, authInfo runtime.ClientAut
 	case *CreatePeerAccepted:
 		return nil, value, nil
 	}
-	// unexpected success response
-	unexpectedSuccess := result.(*CreatePeerDefault)
-	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return nil, nil, nil
+
 }
 
 /*
-  DeletePeer deletes a peer
+DeletePeer deletes a peer
 
-  Deletes a peer from the configuration by it's name.
+Deletes a peer from the configuration by it's name.
 */
 func (a *Client) DeletePeer(params *DeletePeerParams, authInfo runtime.ClientAuthInfoWriter) (*DeletePeerAccepted, *DeletePeerNoContent, error) {
 	// TODO: Validate the params before sending
@@ -122,15 +109,14 @@ func (a *Client) DeletePeer(params *DeletePeerParams, authInfo runtime.ClientAut
 	case *DeletePeerNoContent:
 		return nil, value, nil
 	}
-	// unexpected success response
-	unexpectedSuccess := result.(*DeletePeerDefault)
-	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return nil, nil, nil
+
 }
 
 /*
-  GetPeerSection returns a peer
+GetPeerSection returns a peer
 
-  Returns one peer configuration by it's name.
+Returns one peer configuration by it's name.
 */
 func (a *Client) GetPeerSection(params *GetPeerSectionParams, authInfo runtime.ClientAuthInfoWriter) (*GetPeerSectionOK, error) {
 	// TODO: Validate the params before sending
@@ -154,19 +140,14 @@ func (a *Client) GetPeerSection(params *GetPeerSectionParams, authInfo runtime.C
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetPeerSectionOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetPeerSectionDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetPeerSectionOK), nil
+
 }
 
 /*
-  GetPeerSections returns an array of peer section
+GetPeerSections returns an array of peer section
 
-  Returns an array of all configured peer_section.
+Returns an array of all configured peer_section.
 */
 func (a *Client) GetPeerSections(params *GetPeerSectionsParams, authInfo runtime.ClientAuthInfoWriter) (*GetPeerSectionsOK, error) {
 	// TODO: Validate the params before sending
@@ -190,13 +171,8 @@ func (a *Client) GetPeerSections(params *GetPeerSectionsParams, authInfo runtime
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetPeerSectionsOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetPeerSectionsDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetPeerSectionsOK), nil
+
 }
 
 // SetTransport changes the transport on the client

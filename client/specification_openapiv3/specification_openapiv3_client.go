@@ -22,11 +22,12 @@ package specification_openapiv3
 
 import (
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
+
+	strfmt "github.com/go-openapi/strfmt"
 )
 
 // New creates a new specification openapiv3 API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -38,17 +39,10 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-// ClientService is the interface for Client methods
-type ClientService interface {
-	GetOpenapiv3Specification(params *GetOpenapiv3SpecificationParams, authInfo runtime.ClientAuthInfoWriter) (*GetOpenapiv3SpecificationOK, error)
-
-	SetTransport(transport runtime.ClientTransport)
-}
-
 /*
-  GetOpenapiv3Specification data plane API v3 specification
+GetOpenapiv3Specification data plane API v3 specification
 
-  Return Data Plane API OpenAPI v3 specification
+Return Data Plane API OpenAPI v3 specification
 */
 func (a *Client) GetOpenapiv3Specification(params *GetOpenapiv3SpecificationParams, authInfo runtime.ClientAuthInfoWriter) (*GetOpenapiv3SpecificationOK, error) {
 	// TODO: Validate the params before sending
@@ -72,13 +66,8 @@ func (a *Client) GetOpenapiv3Specification(params *GetOpenapiv3SpecificationPara
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetOpenapiv3SpecificationOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetOpenapiv3SpecificationDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetOpenapiv3SpecificationOK), nil
+
 }
 
 // SetTransport changes the transport on the client

@@ -26,10 +26,11 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // GetStickRuleReader is a Reader for the GetStickRule structure.
@@ -40,18 +41,21 @@ type GetStickRuleReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetStickRuleReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetStickRuleOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewGetStickRuleNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewGetStickRuleDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -76,7 +80,7 @@ Successful operation
 type GetStickRuleOK struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *GetStickRuleOKBody
 }
@@ -85,18 +89,10 @@ func (o *GetStickRuleOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/stick_rules/{index}][%d] getStickRuleOK  %+v", 200, o.Payload)
 }
 
-func (o *GetStickRuleOK) GetPayload() *GetStickRuleOKBody {
-	return o.Payload
-}
-
 func (o *GetStickRuleOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(GetStickRuleOKBody)
 
@@ -110,9 +106,7 @@ func (o *GetStickRuleOK) readResponse(response runtime.ClientResponse, consumer 
 
 // NewGetStickRuleNotFound creates a GetStickRuleNotFound with default headers values
 func NewGetStickRuleNotFound() *GetStickRuleNotFound {
-	return &GetStickRuleNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &GetStickRuleNotFound{}
 }
 
 /*GetStickRuleNotFound handles this case with default header values.
@@ -122,7 +116,7 @@ The specified resource was not found
 type GetStickRuleNotFound struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -131,18 +125,10 @@ func (o *GetStickRuleNotFound) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/stick_rules/{index}][%d] getStickRuleNotFound  %+v", 404, o.Payload)
 }
 
-func (o *GetStickRuleNotFound) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetStickRuleNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -157,8 +143,7 @@ func (o *GetStickRuleNotFound) readResponse(response runtime.ClientResponse, con
 // NewGetStickRuleDefault creates a GetStickRuleDefault with default headers values
 func NewGetStickRuleDefault(code int) *GetStickRuleDefault {
 	return &GetStickRuleDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -171,7 +156,7 @@ type GetStickRuleDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -185,18 +170,10 @@ func (o *GetStickRuleDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/stick_rules/{index}][%d] getStickRule default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *GetStickRuleDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetStickRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

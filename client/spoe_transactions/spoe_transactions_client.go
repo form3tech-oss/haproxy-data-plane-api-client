@@ -22,11 +22,12 @@ package spoe_transactions
 
 import (
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
+
+	strfmt "github.com/go-openapi/strfmt"
 )
 
 // New creates a new spoe transactions API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -38,25 +39,10 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-// ClientService is the interface for Client methods
-type ClientService interface {
-	CommitSpoeTransaction(params *CommitSpoeTransactionParams, authInfo runtime.ClientAuthInfoWriter) (*CommitSpoeTransactionOK, *CommitSpoeTransactionAccepted, error)
-
-	DeleteSpoeTransaction(params *DeleteSpoeTransactionParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteSpoeTransactionNoContent, error)
-
-	GetSpoeTransaction(params *GetSpoeTransactionParams, authInfo runtime.ClientAuthInfoWriter) (*GetSpoeTransactionOK, error)
-
-	GetSpoeTransactions(params *GetSpoeTransactionsParams, authInfo runtime.ClientAuthInfoWriter) (*GetSpoeTransactionsOK, error)
-
-	StartSpoeTransaction(params *StartSpoeTransactionParams, authInfo runtime.ClientAuthInfoWriter) (*StartSpoeTransactionCreated, error)
-
-	SetTransport(transport runtime.ClientTransport)
-}
-
 /*
-  CommitSpoeTransaction commits transaction
+CommitSpoeTransaction commits transaction
 
-  Commit transaction, execute all operations in transaction and return msg
+Commit transaction, execute all operations in transaction and return msg
 */
 func (a *Client) CommitSpoeTransaction(params *CommitSpoeTransactionParams, authInfo runtime.ClientAuthInfoWriter) (*CommitSpoeTransactionOK, *CommitSpoeTransactionAccepted, error) {
 	// TODO: Validate the params before sending
@@ -86,15 +72,14 @@ func (a *Client) CommitSpoeTransaction(params *CommitSpoeTransactionParams, auth
 	case *CommitSpoeTransactionAccepted:
 		return nil, value, nil
 	}
-	// unexpected success response
-	unexpectedSuccess := result.(*CommitSpoeTransactionDefault)
-	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return nil, nil, nil
+
 }
 
 /*
-  DeleteSpoeTransaction deletes a transaction
+DeleteSpoeTransaction deletes a transaction
 
-  Deletes a transaction.
+Deletes a transaction.
 */
 func (a *Client) DeleteSpoeTransaction(params *DeleteSpoeTransactionParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteSpoeTransactionNoContent, error) {
 	// TODO: Validate the params before sending
@@ -118,19 +103,14 @@ func (a *Client) DeleteSpoeTransaction(params *DeleteSpoeTransactionParams, auth
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*DeleteSpoeTransactionNoContent)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*DeleteSpoeTransactionDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*DeleteSpoeTransactionNoContent), nil
+
 }
 
 /*
-  GetSpoeTransaction returns one s p o e configuration transactions
+GetSpoeTransaction returns one s p o e configuration transactions
 
-  Returns one SPOE configuration transactions.
+Returns one SPOE configuration transactions.
 */
 func (a *Client) GetSpoeTransaction(params *GetSpoeTransactionParams, authInfo runtime.ClientAuthInfoWriter) (*GetSpoeTransactionOK, error) {
 	// TODO: Validate the params before sending
@@ -154,19 +134,14 @@ func (a *Client) GetSpoeTransaction(params *GetSpoeTransactionParams, authInfo r
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetSpoeTransactionOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetSpoeTransactionDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetSpoeTransactionOK), nil
+
 }
 
 /*
-  GetSpoeTransactions returns list of s p o e configuration transactions
+GetSpoeTransactions returns list of s p o e configuration transactions
 
-  Returns a list of SPOE configuration transactions. Transactions can be filtered by their status.
+Returns a list of SPOE configuration transactions. Transactions can be filtered by their status.
 */
 func (a *Client) GetSpoeTransactions(params *GetSpoeTransactionsParams, authInfo runtime.ClientAuthInfoWriter) (*GetSpoeTransactionsOK, error) {
 	// TODO: Validate the params before sending
@@ -190,19 +165,14 @@ func (a *Client) GetSpoeTransactions(params *GetSpoeTransactionsParams, authInfo
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetSpoeTransactionsOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetSpoeTransactionsDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetSpoeTransactionsOK), nil
+
 }
 
 /*
-  StartSpoeTransaction starts a new transaction
+StartSpoeTransaction starts a new transaction
 
-  Starts a new transaction and returns it's id
+Starts a new transaction and returns it's id
 */
 func (a *Client) StartSpoeTransaction(params *StartSpoeTransactionParams, authInfo runtime.ClientAuthInfoWriter) (*StartSpoeTransactionCreated, error) {
 	// TODO: Validate the params before sending
@@ -226,13 +196,8 @@ func (a *Client) StartSpoeTransaction(params *StartSpoeTransactionParams, authIn
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*StartSpoeTransactionCreated)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*StartSpoeTransactionDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*StartSpoeTransactionCreated), nil
+
 }
 
 // SetTransport changes the transport on the client

@@ -22,11 +22,12 @@ package reloads
 
 import (
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
+
+	strfmt "github.com/go-openapi/strfmt"
 )
 
 // New creates a new reloads API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -38,19 +39,10 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-// ClientService is the interface for Client methods
-type ClientService interface {
-	GetReload(params *GetReloadParams, authInfo runtime.ClientAuthInfoWriter) (*GetReloadOK, error)
-
-	GetReloads(params *GetReloadsParams, authInfo runtime.ClientAuthInfoWriter) (*GetReloadsOK, error)
-
-	SetTransport(transport runtime.ClientTransport)
-}
-
 /*
-  GetReload returns one h a proxy reload status
+GetReload returns one h a proxy reload status
 
-  Returns one HAProxy reload status.
+Returns one HAProxy reload status.
 */
 func (a *Client) GetReload(params *GetReloadParams, authInfo runtime.ClientAuthInfoWriter) (*GetReloadOK, error) {
 	// TODO: Validate the params before sending
@@ -74,19 +66,14 @@ func (a *Client) GetReload(params *GetReloadParams, authInfo runtime.ClientAuthI
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetReloadOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetReloadDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetReloadOK), nil
+
 }
 
 /*
-  GetReloads returns list of h a proxy reloads
+GetReloads returns list of h a proxy reloads
 
-  Returns a list of HAProxy reloads.
+Returns a list of HAProxy reloads.
 */
 func (a *Client) GetReloads(params *GetReloadsParams, authInfo runtime.ClientAuthInfoWriter) (*GetReloadsOK, error) {
 	// TODO: Validate the params before sending
@@ -110,13 +97,8 @@ func (a *Client) GetReloads(params *GetReloadsParams, authInfo runtime.ClientAut
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetReloadsOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetReloadsDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetReloadsOK), nil
+
 }
 
 // SetTransport changes the transport on the client

@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // DeleteSpoeScopeReader is a Reader for the DeleteSpoeScope structure.
@@ -40,18 +39,21 @@ type DeleteSpoeScopeReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *DeleteSpoeScopeReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 204:
 		result := NewDeleteSpoeScopeNoContent()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewDeleteSpoeScopeNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewDeleteSpoeScopeDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -87,9 +89,7 @@ func (o *DeleteSpoeScopeNoContent) readResponse(response runtime.ClientResponse,
 
 // NewDeleteSpoeScopeNotFound creates a DeleteSpoeScopeNotFound with default headers values
 func NewDeleteSpoeScopeNotFound() *DeleteSpoeScopeNotFound {
-	return &DeleteSpoeScopeNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &DeleteSpoeScopeNotFound{}
 }
 
 /*DeleteSpoeScopeNotFound handles this case with default header values.
@@ -99,7 +99,7 @@ The specified resource was not found
 type DeleteSpoeScopeNotFound struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -108,18 +108,10 @@ func (o *DeleteSpoeScopeNotFound) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/spoe/spoe_scopes/{name}][%d] deleteSpoeScopeNotFound  %+v", 404, o.Payload)
 }
 
-func (o *DeleteSpoeScopeNotFound) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *DeleteSpoeScopeNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -134,8 +126,7 @@ func (o *DeleteSpoeScopeNotFound) readResponse(response runtime.ClientResponse, 
 // NewDeleteSpoeScopeDefault creates a DeleteSpoeScopeDefault with default headers values
 func NewDeleteSpoeScopeDefault(code int) *DeleteSpoeScopeDefault {
 	return &DeleteSpoeScopeDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -148,7 +139,7 @@ type DeleteSpoeScopeDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -162,18 +153,10 @@ func (o *DeleteSpoeScopeDefault) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/spoe/spoe_scopes/{name}][%d] deleteSpoeScope default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *DeleteSpoeScopeDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *DeleteSpoeScopeDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

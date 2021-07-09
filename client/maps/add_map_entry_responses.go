@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // AddMapEntryReader is a Reader for the AddMapEntry structure.
@@ -40,24 +39,28 @@ type AddMapEntryReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *AddMapEntryReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 201:
 		result := NewAddMapEntryCreated()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 400:
 		result := NewAddMapEntryBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	case 409:
 		result := NewAddMapEntryConflict()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewAddMapEntryDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -87,10 +90,6 @@ func (o *AddMapEntryCreated) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/runtime/maps_entries][%d] addMapEntryCreated  %+v", 201, o.Payload)
 }
 
-func (o *AddMapEntryCreated) GetPayload() *models.MapEntry {
-	return o.Payload
-}
-
 func (o *AddMapEntryCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.MapEntry)
@@ -105,9 +104,7 @@ func (o *AddMapEntryCreated) readResponse(response runtime.ClientResponse, consu
 
 // NewAddMapEntryBadRequest creates a AddMapEntryBadRequest with default headers values
 func NewAddMapEntryBadRequest() *AddMapEntryBadRequest {
-	return &AddMapEntryBadRequest{
-		ConfigurationVersion: 0,
-	}
+	return &AddMapEntryBadRequest{}
 }
 
 /*AddMapEntryBadRequest handles this case with default header values.
@@ -117,7 +114,7 @@ Bad request
 type AddMapEntryBadRequest struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -126,18 +123,10 @@ func (o *AddMapEntryBadRequest) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/runtime/maps_entries][%d] addMapEntryBadRequest  %+v", 400, o.Payload)
 }
 
-func (o *AddMapEntryBadRequest) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *AddMapEntryBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -151,9 +140,7 @@ func (o *AddMapEntryBadRequest) readResponse(response runtime.ClientResponse, co
 
 // NewAddMapEntryConflict creates a AddMapEntryConflict with default headers values
 func NewAddMapEntryConflict() *AddMapEntryConflict {
-	return &AddMapEntryConflict{
-		ConfigurationVersion: 0,
-	}
+	return &AddMapEntryConflict{}
 }
 
 /*AddMapEntryConflict handles this case with default header values.
@@ -163,7 +150,7 @@ The specified resource already exists
 type AddMapEntryConflict struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -172,18 +159,10 @@ func (o *AddMapEntryConflict) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/runtime/maps_entries][%d] addMapEntryConflict  %+v", 409, o.Payload)
 }
 
-func (o *AddMapEntryConflict) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *AddMapEntryConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -198,8 +177,7 @@ func (o *AddMapEntryConflict) readResponse(response runtime.ClientResponse, cons
 // NewAddMapEntryDefault creates a AddMapEntryDefault with default headers values
 func NewAddMapEntryDefault(code int) *AddMapEntryDefault {
 	return &AddMapEntryDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -212,7 +190,7 @@ type AddMapEntryDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -226,18 +204,10 @@ func (o *AddMapEntryDefault) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/runtime/maps_entries][%d] addMapEntry default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *AddMapEntryDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *AddMapEntryDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

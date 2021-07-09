@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // CreateHTTPRequestRuleReader is a Reader for the CreateHTTPRequestRule structure.
@@ -40,30 +39,35 @@ type CreateHTTPRequestRuleReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *CreateHTTPRequestRuleReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 201:
 		result := NewCreateHTTPRequestRuleCreated()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 202:
 		result := NewCreateHTTPRequestRuleAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 400:
 		result := NewCreateHTTPRequestRuleBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	case 409:
 		result := NewCreateHTTPRequestRuleConflict()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewCreateHTTPRequestRuleDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -91,10 +95,6 @@ type CreateHTTPRequestRuleCreated struct {
 
 func (o *CreateHTTPRequestRuleCreated) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/http_request_rules][%d] createHttpRequestRuleCreated  %+v", 201, o.Payload)
-}
-
-func (o *CreateHTTPRequestRuleCreated) GetPayload() *models.HTTPRequestRule {
-	return o.Payload
 }
 
 func (o *CreateHTTPRequestRuleCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -130,10 +130,6 @@ func (o *CreateHTTPRequestRuleAccepted) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/http_request_rules][%d] createHttpRequestRuleAccepted  %+v", 202, o.Payload)
 }
 
-func (o *CreateHTTPRequestRuleAccepted) GetPayload() *models.HTTPRequestRule {
-	return o.Payload
-}
-
 func (o *CreateHTTPRequestRuleAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Reload-ID
@@ -151,9 +147,7 @@ func (o *CreateHTTPRequestRuleAccepted) readResponse(response runtime.ClientResp
 
 // NewCreateHTTPRequestRuleBadRequest creates a CreateHTTPRequestRuleBadRequest with default headers values
 func NewCreateHTTPRequestRuleBadRequest() *CreateHTTPRequestRuleBadRequest {
-	return &CreateHTTPRequestRuleBadRequest{
-		ConfigurationVersion: 0,
-	}
+	return &CreateHTTPRequestRuleBadRequest{}
 }
 
 /*CreateHTTPRequestRuleBadRequest handles this case with default header values.
@@ -163,7 +157,7 @@ Bad request
 type CreateHTTPRequestRuleBadRequest struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -172,18 +166,10 @@ func (o *CreateHTTPRequestRuleBadRequest) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/http_request_rules][%d] createHttpRequestRuleBadRequest  %+v", 400, o.Payload)
 }
 
-func (o *CreateHTTPRequestRuleBadRequest) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateHTTPRequestRuleBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -197,9 +183,7 @@ func (o *CreateHTTPRequestRuleBadRequest) readResponse(response runtime.ClientRe
 
 // NewCreateHTTPRequestRuleConflict creates a CreateHTTPRequestRuleConflict with default headers values
 func NewCreateHTTPRequestRuleConflict() *CreateHTTPRequestRuleConflict {
-	return &CreateHTTPRequestRuleConflict{
-		ConfigurationVersion: 0,
-	}
+	return &CreateHTTPRequestRuleConflict{}
 }
 
 /*CreateHTTPRequestRuleConflict handles this case with default header values.
@@ -209,7 +193,7 @@ The specified resource already exists
 type CreateHTTPRequestRuleConflict struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -218,18 +202,10 @@ func (o *CreateHTTPRequestRuleConflict) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/http_request_rules][%d] createHttpRequestRuleConflict  %+v", 409, o.Payload)
 }
 
-func (o *CreateHTTPRequestRuleConflict) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateHTTPRequestRuleConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -244,8 +220,7 @@ func (o *CreateHTTPRequestRuleConflict) readResponse(response runtime.ClientResp
 // NewCreateHTTPRequestRuleDefault creates a CreateHTTPRequestRuleDefault with default headers values
 func NewCreateHTTPRequestRuleDefault(code int) *CreateHTTPRequestRuleDefault {
 	return &CreateHTTPRequestRuleDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -258,7 +233,7 @@ type CreateHTTPRequestRuleDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -272,18 +247,10 @@ func (o *CreateHTTPRequestRuleDefault) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/http_request_rules][%d] createHTTPRequestRule default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *CreateHTTPRequestRuleDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateHTTPRequestRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

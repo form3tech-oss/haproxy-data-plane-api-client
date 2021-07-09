@@ -26,10 +26,11 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // GetNameserverReader is a Reader for the GetNameserver structure.
@@ -40,18 +41,21 @@ type GetNameserverReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetNameserverReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetNameserverOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewGetNameserverNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewGetNameserverDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -76,7 +80,7 @@ Successful operation
 type GetNameserverOK struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *GetNameserverOKBody
 }
@@ -85,18 +89,10 @@ func (o *GetNameserverOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/nameservers/{name}][%d] getNameserverOK  %+v", 200, o.Payload)
 }
 
-func (o *GetNameserverOK) GetPayload() *GetNameserverOKBody {
-	return o.Payload
-}
-
 func (o *GetNameserverOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(GetNameserverOKBody)
 
@@ -110,9 +106,7 @@ func (o *GetNameserverOK) readResponse(response runtime.ClientResponse, consumer
 
 // NewGetNameserverNotFound creates a GetNameserverNotFound with default headers values
 func NewGetNameserverNotFound() *GetNameserverNotFound {
-	return &GetNameserverNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &GetNameserverNotFound{}
 }
 
 /*GetNameserverNotFound handles this case with default header values.
@@ -122,7 +116,7 @@ The specified resource was not found
 type GetNameserverNotFound struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -131,18 +125,10 @@ func (o *GetNameserverNotFound) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/nameservers/{name}][%d] getNameserverNotFound  %+v", 404, o.Payload)
 }
 
-func (o *GetNameserverNotFound) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetNameserverNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -157,8 +143,7 @@ func (o *GetNameserverNotFound) readResponse(response runtime.ClientResponse, co
 // NewGetNameserverDefault creates a GetNameserverDefault with default headers values
 func NewGetNameserverDefault(code int) *GetNameserverDefault {
 	return &GetNameserverDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -171,7 +156,7 @@ type GetNameserverDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -185,18 +170,10 @@ func (o *GetNameserverDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/nameservers/{name}][%d] getNameserver default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *GetNameserverDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetNameserverDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

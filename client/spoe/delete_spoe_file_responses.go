@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // DeleteSpoeFileReader is a Reader for the DeleteSpoeFile structure.
@@ -40,18 +39,21 @@ type DeleteSpoeFileReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *DeleteSpoeFileReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 204:
 		result := NewDeleteSpoeFileNoContent()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewDeleteSpoeFileNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewDeleteSpoeFileDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -87,9 +89,7 @@ func (o *DeleteSpoeFileNoContent) readResponse(response runtime.ClientResponse, 
 
 // NewDeleteSpoeFileNotFound creates a DeleteSpoeFileNotFound with default headers values
 func NewDeleteSpoeFileNotFound() *DeleteSpoeFileNotFound {
-	return &DeleteSpoeFileNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &DeleteSpoeFileNotFound{}
 }
 
 /*DeleteSpoeFileNotFound handles this case with default header values.
@@ -99,7 +99,7 @@ The specified resource was not found
 type DeleteSpoeFileNotFound struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -108,18 +108,10 @@ func (o *DeleteSpoeFileNotFound) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/spoe/spoe_files/{name}][%d] deleteSpoeFileNotFound  %+v", 404, o.Payload)
 }
 
-func (o *DeleteSpoeFileNotFound) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *DeleteSpoeFileNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -134,8 +126,7 @@ func (o *DeleteSpoeFileNotFound) readResponse(response runtime.ClientResponse, c
 // NewDeleteSpoeFileDefault creates a DeleteSpoeFileDefault with default headers values
 func NewDeleteSpoeFileDefault(code int) *DeleteSpoeFileDefault {
 	return &DeleteSpoeFileDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -148,7 +139,7 @@ type DeleteSpoeFileDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -162,18 +153,10 @@ func (o *DeleteSpoeFileDefault) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/spoe/spoe_files/{name}][%d] deleteSpoeFile default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *DeleteSpoeFileDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *DeleteSpoeFileDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

@@ -22,11 +22,12 @@ package peer_entry
 
 import (
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
+
+	strfmt "github.com/go-openapi/strfmt"
 )
 
 // New creates a new peer entry API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -38,25 +39,10 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-// ClientService is the interface for Client methods
-type ClientService interface {
-	CreatePeerEntry(params *CreatePeerEntryParams, authInfo runtime.ClientAuthInfoWriter) (*CreatePeerEntryCreated, *CreatePeerEntryAccepted, error)
-
-	DeletePeerEntry(params *DeletePeerEntryParams, authInfo runtime.ClientAuthInfoWriter) (*DeletePeerEntryAccepted, *DeletePeerEntryNoContent, error)
-
-	GetPeerEntries(params *GetPeerEntriesParams, authInfo runtime.ClientAuthInfoWriter) (*GetPeerEntriesOK, error)
-
-	GetPeerEntry(params *GetPeerEntryParams, authInfo runtime.ClientAuthInfoWriter) (*GetPeerEntryOK, error)
-
-	ReplacePeerEntry(params *ReplacePeerEntryParams, authInfo runtime.ClientAuthInfoWriter) (*ReplacePeerEntryOK, *ReplacePeerEntryAccepted, error)
-
-	SetTransport(transport runtime.ClientTransport)
-}
-
 /*
-  CreatePeerEntry adds a new peer entry
+CreatePeerEntry adds a new peer entry
 
-  Adds a new peer entry in the specified peer section in the configuration file.
+Adds a new peer entry in the specified peer section in the configuration file.
 */
 func (a *Client) CreatePeerEntry(params *CreatePeerEntryParams, authInfo runtime.ClientAuthInfoWriter) (*CreatePeerEntryCreated, *CreatePeerEntryAccepted, error) {
 	// TODO: Validate the params before sending
@@ -86,15 +72,14 @@ func (a *Client) CreatePeerEntry(params *CreatePeerEntryParams, authInfo runtime
 	case *CreatePeerEntryAccepted:
 		return nil, value, nil
 	}
-	// unexpected success response
-	unexpectedSuccess := result.(*CreatePeerEntryDefault)
-	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return nil, nil, nil
+
 }
 
 /*
-  DeletePeerEntry deletes a peer entry
+DeletePeerEntry deletes a peer entry
 
-  Deletes a peer entry configuration by it's name in the specified peer section.
+Deletes a peer entry configuration by it's name in the specified peer section.
 */
 func (a *Client) DeletePeerEntry(params *DeletePeerEntryParams, authInfo runtime.ClientAuthInfoWriter) (*DeletePeerEntryAccepted, *DeletePeerEntryNoContent, error) {
 	// TODO: Validate the params before sending
@@ -124,15 +109,14 @@ func (a *Client) DeletePeerEntry(params *DeletePeerEntryParams, authInfo runtime
 	case *DeletePeerEntryNoContent:
 		return nil, value, nil
 	}
-	// unexpected success response
-	unexpectedSuccess := result.(*DeletePeerEntryDefault)
-	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return nil, nil, nil
+
 }
 
 /*
-  GetPeerEntries returns an array of peer entries
+GetPeerEntries returns an array of peer entries
 
-  Returns an array of all peer_entries that are configured in specified peer section.
+Returns an array of all peer_entries that are configured in specified peer section.
 */
 func (a *Client) GetPeerEntries(params *GetPeerEntriesParams, authInfo runtime.ClientAuthInfoWriter) (*GetPeerEntriesOK, error) {
 	// TODO: Validate the params before sending
@@ -156,19 +140,14 @@ func (a *Client) GetPeerEntries(params *GetPeerEntriesParams, authInfo runtime.C
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetPeerEntriesOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetPeerEntriesDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetPeerEntriesOK), nil
+
 }
 
 /*
-  GetPeerEntry returns one peer entry
+GetPeerEntry returns one peer entry
 
-  Returns one peer_entry configuration by it's name in the specified peer section.
+Returns one peer_entry configuration by it's name in the specified peer section.
 */
 func (a *Client) GetPeerEntry(params *GetPeerEntryParams, authInfo runtime.ClientAuthInfoWriter) (*GetPeerEntryOK, error) {
 	// TODO: Validate the params before sending
@@ -192,19 +171,14 @@ func (a *Client) GetPeerEntry(params *GetPeerEntryParams, authInfo runtime.Clien
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetPeerEntryOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetPeerEntryDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetPeerEntryOK), nil
+
 }
 
 /*
-  ReplacePeerEntry replaces a peer entry
+ReplacePeerEntry replaces a peer entry
 
-  Replaces a peer entry configuration by it's name in the specified peer section.
+Replaces a peer entry configuration by it's name in the specified peer section.
 */
 func (a *Client) ReplacePeerEntry(params *ReplacePeerEntryParams, authInfo runtime.ClientAuthInfoWriter) (*ReplacePeerEntryOK, *ReplacePeerEntryAccepted, error) {
 	// TODO: Validate the params before sending
@@ -234,9 +208,8 @@ func (a *Client) ReplacePeerEntry(params *ReplacePeerEntryParams, authInfo runti
 	case *ReplacePeerEntryAccepted:
 		return nil, value, nil
 	}
-	// unexpected success response
-	unexpectedSuccess := result.(*ReplacePeerEntryDefault)
-	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return nil, nil, nil
+
 }
 
 // SetTransport changes the transport on the client

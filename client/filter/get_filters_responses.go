@@ -26,11 +26,12 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // GetFiltersReader is a Reader for the GetFilters structure.
@@ -41,12 +42,14 @@ type GetFiltersReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetFiltersReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetFiltersOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	default:
 		result := NewGetFiltersDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -71,7 +74,7 @@ Successful operation
 type GetFiltersOK struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *GetFiltersOKBody
 }
@@ -80,18 +83,10 @@ func (o *GetFiltersOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/filters][%d] getFiltersOK  %+v", 200, o.Payload)
 }
 
-func (o *GetFiltersOK) GetPayload() *GetFiltersOKBody {
-	return o.Payload
-}
-
 func (o *GetFiltersOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(GetFiltersOKBody)
 
@@ -106,8 +101,7 @@ func (o *GetFiltersOK) readResponse(response runtime.ClientResponse, consumer ru
 // NewGetFiltersDefault creates a GetFiltersDefault with default headers values
 func NewGetFiltersDefault(code int) *GetFiltersDefault {
 	return &GetFiltersDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -120,7 +114,7 @@ type GetFiltersDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -134,18 +128,10 @@ func (o *GetFiltersDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/filters][%d] getFilters default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *GetFiltersDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetFiltersDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

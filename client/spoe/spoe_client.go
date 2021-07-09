@@ -22,11 +22,12 @@ package spoe
 
 import (
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
+
+	strfmt "github.com/go-openapi/strfmt"
 )
 
 // New creates a new spoe API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -38,61 +39,10 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-// ClientService is the interface for Client methods
-type ClientService interface {
-	CreateSpoe(params *CreateSpoeParams, authInfo runtime.ClientAuthInfoWriter) (*CreateSpoeCreated, error)
-
-	CreateSpoeAgent(params *CreateSpoeAgentParams, authInfo runtime.ClientAuthInfoWriter) (*CreateSpoeAgentCreated, error)
-
-	CreateSpoeGroup(params *CreateSpoeGroupParams, authInfo runtime.ClientAuthInfoWriter) (*CreateSpoeGroupCreated, error)
-
-	CreateSpoeMessage(params *CreateSpoeMessageParams, authInfo runtime.ClientAuthInfoWriter) (*CreateSpoeMessageCreated, error)
-
-	CreateSpoeScope(params *CreateSpoeScopeParams, authInfo runtime.ClientAuthInfoWriter) (*CreateSpoeScopeCreated, error)
-
-	DeleteSpoeAgent(params *DeleteSpoeAgentParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteSpoeAgentNoContent, error)
-
-	DeleteSpoeFile(params *DeleteSpoeFileParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteSpoeFileNoContent, error)
-
-	DeleteSpoeGroup(params *DeleteSpoeGroupParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteSpoeGroupNoContent, error)
-
-	DeleteSpoeMessage(params *DeleteSpoeMessageParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteSpoeMessageNoContent, error)
-
-	DeleteSpoeScope(params *DeleteSpoeScopeParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteSpoeScopeNoContent, error)
-
-	GetAllSpoeFiles(params *GetAllSpoeFilesParams, authInfo runtime.ClientAuthInfoWriter) (*GetAllSpoeFilesOK, error)
-
-	GetOneSpoeFile(params *GetOneSpoeFileParams, authInfo runtime.ClientAuthInfoWriter) (*GetOneSpoeFileOK, error)
-
-	GetSpoeAgent(params *GetSpoeAgentParams, authInfo runtime.ClientAuthInfoWriter) (*GetSpoeAgentOK, error)
-
-	GetSpoeAgents(params *GetSpoeAgentsParams, authInfo runtime.ClientAuthInfoWriter) (*GetSpoeAgentsOK, error)
-
-	GetSpoeGroup(params *GetSpoeGroupParams, authInfo runtime.ClientAuthInfoWriter) (*GetSpoeGroupOK, error)
-
-	GetSpoeGroups(params *GetSpoeGroupsParams, authInfo runtime.ClientAuthInfoWriter) (*GetSpoeGroupsOK, error)
-
-	GetSpoeMessage(params *GetSpoeMessageParams, authInfo runtime.ClientAuthInfoWriter) (*GetSpoeMessageOK, error)
-
-	GetSpoeMessages(params *GetSpoeMessagesParams, authInfo runtime.ClientAuthInfoWriter) (*GetSpoeMessagesOK, error)
-
-	GetSpoeScope(params *GetSpoeScopeParams, authInfo runtime.ClientAuthInfoWriter) (*GetSpoeScopeOK, error)
-
-	GetSpoeScopes(params *GetSpoeScopesParams, authInfo runtime.ClientAuthInfoWriter) (*GetSpoeScopesOK, error)
-
-	ReplaceSpoeAgent(params *ReplaceSpoeAgentParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceSpoeAgentOK, error)
-
-	ReplaceSpoeGroup(params *ReplaceSpoeGroupParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceSpoeGroupOK, error)
-
-	ReplaceSpoeMessage(params *ReplaceSpoeMessageParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceSpoeMessageOK, error)
-
-	SetTransport(transport runtime.ClientTransport)
-}
-
 /*
-  CreateSpoe creates s p o e file with its entries
+CreateSpoe creates s p o e file with its entries
 
-  Creates SPOE file with its entries.
+Creates SPOE file with its entries.
 */
 func (a *Client) CreateSpoe(params *CreateSpoeParams, authInfo runtime.ClientAuthInfoWriter) (*CreateSpoeCreated, error) {
 	// TODO: Validate the params before sending
@@ -116,19 +66,14 @@ func (a *Client) CreateSpoe(params *CreateSpoeParams, authInfo runtime.ClientAut
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*CreateSpoeCreated)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*CreateSpoeDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*CreateSpoeCreated), nil
+
 }
 
 /*
-  CreateSpoeAgent adds a new spoe agent to scope
+CreateSpoeAgent adds a new spoe agent to scope
 
-  Adds a new spoe agent to the spoe scope.
+Adds a new spoe agent to the spoe scope.
 */
 func (a *Client) CreateSpoeAgent(params *CreateSpoeAgentParams, authInfo runtime.ClientAuthInfoWriter) (*CreateSpoeAgentCreated, error) {
 	// TODO: Validate the params before sending
@@ -152,19 +97,14 @@ func (a *Client) CreateSpoeAgent(params *CreateSpoeAgentParams, authInfo runtime
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*CreateSpoeAgentCreated)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*CreateSpoeAgentDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*CreateSpoeAgentCreated), nil
+
 }
 
 /*
-  CreateSpoeGroup adds a new s p o e groups
+CreateSpoeGroup adds a new s p o e groups
 
-  Adds a new SPOE groups to the SPOE scope.
+Adds a new SPOE groups to the SPOE scope.
 */
 func (a *Client) CreateSpoeGroup(params *CreateSpoeGroupParams, authInfo runtime.ClientAuthInfoWriter) (*CreateSpoeGroupCreated, error) {
 	// TODO: Validate the params before sending
@@ -188,19 +128,14 @@ func (a *Client) CreateSpoeGroup(params *CreateSpoeGroupParams, authInfo runtime
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*CreateSpoeGroupCreated)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*CreateSpoeGroupDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*CreateSpoeGroupCreated), nil
+
 }
 
 /*
-  CreateSpoeMessage adds a new spoe message to scope
+CreateSpoeMessage adds a new spoe message to scope
 
-  Adds a new spoe message to the spoe scope.
+Adds a new spoe message to the spoe scope.
 */
 func (a *Client) CreateSpoeMessage(params *CreateSpoeMessageParams, authInfo runtime.ClientAuthInfoWriter) (*CreateSpoeMessageCreated, error) {
 	// TODO: Validate the params before sending
@@ -224,19 +159,14 @@ func (a *Client) CreateSpoeMessage(params *CreateSpoeMessageParams, authInfo run
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*CreateSpoeMessageCreated)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*CreateSpoeMessageDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*CreateSpoeMessageCreated), nil
+
 }
 
 /*
-  CreateSpoeScope adds a new spoe scope
+CreateSpoeScope adds a new spoe scope
 
-  Adds a new spoe scope.
+Adds a new spoe scope.
 */
 func (a *Client) CreateSpoeScope(params *CreateSpoeScopeParams, authInfo runtime.ClientAuthInfoWriter) (*CreateSpoeScopeCreated, error) {
 	// TODO: Validate the params before sending
@@ -260,19 +190,14 @@ func (a *Client) CreateSpoeScope(params *CreateSpoeScopeParams, authInfo runtime
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*CreateSpoeScopeCreated)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*CreateSpoeScopeDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*CreateSpoeScopeCreated), nil
+
 }
 
 /*
-  DeleteSpoeAgent deletes a s p o e agent
+DeleteSpoeAgent deletes a s p o e agent
 
-  Deletes a SPOE agent from the configuration in one SPOE scope.
+Deletes a SPOE agent from the configuration in one SPOE scope.
 */
 func (a *Client) DeleteSpoeAgent(params *DeleteSpoeAgentParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteSpoeAgentNoContent, error) {
 	// TODO: Validate the params before sending
@@ -296,19 +221,14 @@ func (a *Client) DeleteSpoeAgent(params *DeleteSpoeAgentParams, authInfo runtime
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*DeleteSpoeAgentNoContent)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*DeleteSpoeAgentDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*DeleteSpoeAgentNoContent), nil
+
 }
 
 /*
-  DeleteSpoeFile deletes s p o e file
+DeleteSpoeFile deletes s p o e file
 
-  Deletes SPOE file.
+Deletes SPOE file.
 */
 func (a *Client) DeleteSpoeFile(params *DeleteSpoeFileParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteSpoeFileNoContent, error) {
 	// TODO: Validate the params before sending
@@ -332,19 +252,14 @@ func (a *Client) DeleteSpoeFile(params *DeleteSpoeFileParams, authInfo runtime.C
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*DeleteSpoeFileNoContent)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*DeleteSpoeFileDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*DeleteSpoeFileNoContent), nil
+
 }
 
 /*
-  DeleteSpoeGroup deletes a s p o e groups
+DeleteSpoeGroup deletes a s p o e groups
 
-  Deletes a SPOE groups from the one SPOE scope.
+Deletes a SPOE groups from the one SPOE scope.
 */
 func (a *Client) DeleteSpoeGroup(params *DeleteSpoeGroupParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteSpoeGroupNoContent, error) {
 	// TODO: Validate the params before sending
@@ -368,19 +283,14 @@ func (a *Client) DeleteSpoeGroup(params *DeleteSpoeGroupParams, authInfo runtime
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*DeleteSpoeGroupNoContent)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*DeleteSpoeGroupDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*DeleteSpoeGroupNoContent), nil
+
 }
 
 /*
-  DeleteSpoeMessage deletes a spoe message
+DeleteSpoeMessage deletes a spoe message
 
-  Deletes a spoe message from the SPOE scope.
+Deletes a spoe message from the SPOE scope.
 */
 func (a *Client) DeleteSpoeMessage(params *DeleteSpoeMessageParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteSpoeMessageNoContent, error) {
 	// TODO: Validate the params before sending
@@ -404,19 +314,14 @@ func (a *Client) DeleteSpoeMessage(params *DeleteSpoeMessageParams, authInfo run
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*DeleteSpoeMessageNoContent)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*DeleteSpoeMessageDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*DeleteSpoeMessageNoContent), nil
+
 }
 
 /*
-  DeleteSpoeScope deletes a s p o e scope
+DeleteSpoeScope deletes a s p o e scope
 
-  Deletes a SPOE scope from the configuration file.
+Deletes a SPOE scope from the configuration file.
 */
 func (a *Client) DeleteSpoeScope(params *DeleteSpoeScopeParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteSpoeScopeNoContent, error) {
 	// TODO: Validate the params before sending
@@ -440,19 +345,14 @@ func (a *Client) DeleteSpoeScope(params *DeleteSpoeScopeParams, authInfo runtime
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*DeleteSpoeScopeNoContent)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*DeleteSpoeScopeDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*DeleteSpoeScopeNoContent), nil
+
 }
 
 /*
-  GetAllSpoeFiles returns all available s p o e files
+GetAllSpoeFiles returns all available s p o e files
 
-  Returns all available SPOE files.
+Returns all available SPOE files.
 */
 func (a *Client) GetAllSpoeFiles(params *GetAllSpoeFilesParams, authInfo runtime.ClientAuthInfoWriter) (*GetAllSpoeFilesOK, error) {
 	// TODO: Validate the params before sending
@@ -476,19 +376,14 @@ func (a *Client) GetAllSpoeFiles(params *GetAllSpoeFilesParams, authInfo runtime
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetAllSpoeFilesOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetAllSpoeFilesDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetAllSpoeFilesOK), nil
+
 }
 
 /*
-  GetOneSpoeFile returns one s p o e file
+GetOneSpoeFile returns one s p o e file
 
-  Returns one SPOE file.
+Returns one SPOE file.
 */
 func (a *Client) GetOneSpoeFile(params *GetOneSpoeFileParams, authInfo runtime.ClientAuthInfoWriter) (*GetOneSpoeFileOK, error) {
 	// TODO: Validate the params before sending
@@ -512,19 +407,14 @@ func (a *Client) GetOneSpoeFile(params *GetOneSpoeFileParams, authInfo runtime.C
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetOneSpoeFileOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetOneSpoeFileDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetOneSpoeFileOK), nil
+
 }
 
 /*
-  GetSpoeAgent returns a spoe agent
+GetSpoeAgent returns a spoe agent
 
-  Returns one spoe agent configuration in one SPOE scope.
+Returns one spoe agent configuration in one SPOE scope.
 */
 func (a *Client) GetSpoeAgent(params *GetSpoeAgentParams, authInfo runtime.ClientAuthInfoWriter) (*GetSpoeAgentOK, error) {
 	// TODO: Validate the params before sending
@@ -548,19 +438,14 @@ func (a *Client) GetSpoeAgent(params *GetSpoeAgentParams, authInfo runtime.Clien
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetSpoeAgentOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetSpoeAgentDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetSpoeAgentOK), nil
+
 }
 
 /*
-  GetSpoeAgents returns an array of spoe agents in one scope
+GetSpoeAgents returns an array of spoe agents in one scope
 
-  Returns an array of all configured spoe agents in one scope.
+Returns an array of all configured spoe agents in one scope.
 */
 func (a *Client) GetSpoeAgents(params *GetSpoeAgentsParams, authInfo runtime.ClientAuthInfoWriter) (*GetSpoeAgentsOK, error) {
 	// TODO: Validate the params before sending
@@ -584,19 +469,45 @@ func (a *Client) GetSpoeAgents(params *GetSpoeAgentsParams, authInfo runtime.Cli
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetSpoeAgentsOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetSpoeAgentsDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetSpoeAgentsOK), nil
+
 }
 
 /*
-  GetSpoeGroup returns a s p o e groups
+GetSpoeConfigurationVersion returns a s p o e configuration version
 
-  Returns one SPOE groups configuration in one SPOE scope.
+Returns SPOE configuration version.
+*/
+func (a *Client) GetSpoeConfigurationVersion(params *GetSpoeConfigurationVersionParams, authInfo runtime.ClientAuthInfoWriter) (*GetSpoeConfigurationVersionOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetSpoeConfigurationVersionParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getSpoeConfigurationVersion",
+		Method:             "GET",
+		PathPattern:        "/services/haproxy/spoe/version",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &GetSpoeConfigurationVersionReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetSpoeConfigurationVersionOK), nil
+
+}
+
+/*
+GetSpoeGroup returns a s p o e groups
+
+Returns one SPOE groups configuration in one SPOE scope.
 */
 func (a *Client) GetSpoeGroup(params *GetSpoeGroupParams, authInfo runtime.ClientAuthInfoWriter) (*GetSpoeGroupOK, error) {
 	// TODO: Validate the params before sending
@@ -620,19 +531,14 @@ func (a *Client) GetSpoeGroup(params *GetSpoeGroupParams, authInfo runtime.Clien
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetSpoeGroupOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetSpoeGroupDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetSpoeGroupOK), nil
+
 }
 
 /*
-  GetSpoeGroups returns an array of s p o e groups
+GetSpoeGroups returns an array of s p o e groups
 
-  Returns an array of all configured SPOE groups in one SPOE scope.
+Returns an array of all configured SPOE groups in one SPOE scope.
 */
 func (a *Client) GetSpoeGroups(params *GetSpoeGroupsParams, authInfo runtime.ClientAuthInfoWriter) (*GetSpoeGroupsOK, error) {
 	// TODO: Validate the params before sending
@@ -656,19 +562,14 @@ func (a *Client) GetSpoeGroups(params *GetSpoeGroupsParams, authInfo runtime.Cli
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetSpoeGroupsOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetSpoeGroupsDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetSpoeGroupsOK), nil
+
 }
 
 /*
-  GetSpoeMessage returns a spoe message
+GetSpoeMessage returns a spoe message
 
-  Returns one spoe message configuration in SPOE scope.
+Returns one spoe message configuration in SPOE scope.
 */
 func (a *Client) GetSpoeMessage(params *GetSpoeMessageParams, authInfo runtime.ClientAuthInfoWriter) (*GetSpoeMessageOK, error) {
 	// TODO: Validate the params before sending
@@ -692,19 +593,14 @@ func (a *Client) GetSpoeMessage(params *GetSpoeMessageParams, authInfo runtime.C
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetSpoeMessageOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetSpoeMessageDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetSpoeMessageOK), nil
+
 }
 
 /*
-  GetSpoeMessages returns an array of spoe messages in one scope
+GetSpoeMessages returns an array of spoe messages in one scope
 
-  Returns an array of all configured spoe messages in one scope.
+Returns an array of all configured spoe messages in one scope.
 */
 func (a *Client) GetSpoeMessages(params *GetSpoeMessagesParams, authInfo runtime.ClientAuthInfoWriter) (*GetSpoeMessagesOK, error) {
 	// TODO: Validate the params before sending
@@ -728,19 +624,14 @@ func (a *Client) GetSpoeMessages(params *GetSpoeMessagesParams, authInfo runtime
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetSpoeMessagesOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetSpoeMessagesDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetSpoeMessagesOK), nil
+
 }
 
 /*
-  GetSpoeScope returns one s p o e scope
+GetSpoeScope returns one s p o e scope
 
-  Returns one SPOE scope in one SPOE file.
+Returns one SPOE scope in one SPOE file.
 */
 func (a *Client) GetSpoeScope(params *GetSpoeScopeParams, authInfo runtime.ClientAuthInfoWriter) (*GetSpoeScopeOK, error) {
 	// TODO: Validate the params before sending
@@ -764,19 +655,14 @@ func (a *Client) GetSpoeScope(params *GetSpoeScopeParams, authInfo runtime.Clien
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetSpoeScopeOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetSpoeScopeDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetSpoeScopeOK), nil
+
 }
 
 /*
-  GetSpoeScopes returns an array of spoe scopes
+GetSpoeScopes returns an array of spoe scopes
 
-  Returns an array of all configured spoe scopes.
+Returns an array of all configured spoe scopes.
 */
 func (a *Client) GetSpoeScopes(params *GetSpoeScopesParams, authInfo runtime.ClientAuthInfoWriter) (*GetSpoeScopesOK, error) {
 	// TODO: Validate the params before sending
@@ -800,19 +686,14 @@ func (a *Client) GetSpoeScopes(params *GetSpoeScopesParams, authInfo runtime.Cli
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetSpoeScopesOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetSpoeScopesDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetSpoeScopesOK), nil
+
 }
 
 /*
-  ReplaceSpoeAgent replaces a s p o e agent
+ReplaceSpoeAgent replaces a s p o e agent
 
-  Replaces a SPOE agent configuration in one SPOE scope.
+Replaces a SPOE agent configuration in one SPOE scope.
 */
 func (a *Client) ReplaceSpoeAgent(params *ReplaceSpoeAgentParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceSpoeAgentOK, error) {
 	// TODO: Validate the params before sending
@@ -836,19 +717,14 @@ func (a *Client) ReplaceSpoeAgent(params *ReplaceSpoeAgentParams, authInfo runti
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*ReplaceSpoeAgentOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*ReplaceSpoeAgentDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*ReplaceSpoeAgentOK), nil
+
 }
 
 /*
-  ReplaceSpoeGroup replaces a s p o e groups
+ReplaceSpoeGroup replaces a s p o e groups
 
-  Replaces a SPOE groups configuration in one SPOE scope.
+Replaces a SPOE groups configuration in one SPOE scope.
 */
 func (a *Client) ReplaceSpoeGroup(params *ReplaceSpoeGroupParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceSpoeGroupOK, error) {
 	// TODO: Validate the params before sending
@@ -872,19 +748,14 @@ func (a *Client) ReplaceSpoeGroup(params *ReplaceSpoeGroupParams, authInfo runti
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*ReplaceSpoeGroupOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*ReplaceSpoeGroupDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*ReplaceSpoeGroupOK), nil
+
 }
 
 /*
-  ReplaceSpoeMessage replaces a spoe message
+ReplaceSpoeMessage replaces a spoe message
 
-  Replaces a spoe message configuration in one SPOE scope.
+Replaces a spoe message configuration in one SPOE scope.
 */
 func (a *Client) ReplaceSpoeMessage(params *ReplaceSpoeMessageParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceSpoeMessageOK, error) {
 	// TODO: Validate the params before sending
@@ -908,13 +779,8 @@ func (a *Client) ReplaceSpoeMessage(params *ReplaceSpoeMessageParams, authInfo r
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*ReplaceSpoeMessageOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*ReplaceSpoeMessageDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*ReplaceSpoeMessageOK), nil
+
 }
 
 // SetTransport changes the transport on the client

@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // CreateStickRuleReader is a Reader for the CreateStickRule structure.
@@ -40,30 +39,35 @@ type CreateStickRuleReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *CreateStickRuleReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 201:
 		result := NewCreateStickRuleCreated()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 202:
 		result := NewCreateStickRuleAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 400:
 		result := NewCreateStickRuleBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	case 409:
 		result := NewCreateStickRuleConflict()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewCreateStickRuleDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -91,10 +95,6 @@ type CreateStickRuleCreated struct {
 
 func (o *CreateStickRuleCreated) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/stick_rules][%d] createStickRuleCreated  %+v", 201, o.Payload)
-}
-
-func (o *CreateStickRuleCreated) GetPayload() *models.StickRule {
-	return o.Payload
 }
 
 func (o *CreateStickRuleCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -130,10 +130,6 @@ func (o *CreateStickRuleAccepted) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/stick_rules][%d] createStickRuleAccepted  %+v", 202, o.Payload)
 }
 
-func (o *CreateStickRuleAccepted) GetPayload() *models.StickRule {
-	return o.Payload
-}
-
 func (o *CreateStickRuleAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Reload-ID
@@ -151,9 +147,7 @@ func (o *CreateStickRuleAccepted) readResponse(response runtime.ClientResponse, 
 
 // NewCreateStickRuleBadRequest creates a CreateStickRuleBadRequest with default headers values
 func NewCreateStickRuleBadRequest() *CreateStickRuleBadRequest {
-	return &CreateStickRuleBadRequest{
-		ConfigurationVersion: 0,
-	}
+	return &CreateStickRuleBadRequest{}
 }
 
 /*CreateStickRuleBadRequest handles this case with default header values.
@@ -163,7 +157,7 @@ Bad request
 type CreateStickRuleBadRequest struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -172,18 +166,10 @@ func (o *CreateStickRuleBadRequest) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/stick_rules][%d] createStickRuleBadRequest  %+v", 400, o.Payload)
 }
 
-func (o *CreateStickRuleBadRequest) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateStickRuleBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -197,9 +183,7 @@ func (o *CreateStickRuleBadRequest) readResponse(response runtime.ClientResponse
 
 // NewCreateStickRuleConflict creates a CreateStickRuleConflict with default headers values
 func NewCreateStickRuleConflict() *CreateStickRuleConflict {
-	return &CreateStickRuleConflict{
-		ConfigurationVersion: 0,
-	}
+	return &CreateStickRuleConflict{}
 }
 
 /*CreateStickRuleConflict handles this case with default header values.
@@ -209,7 +193,7 @@ The specified resource already exists
 type CreateStickRuleConflict struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -218,18 +202,10 @@ func (o *CreateStickRuleConflict) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/stick_rules][%d] createStickRuleConflict  %+v", 409, o.Payload)
 }
 
-func (o *CreateStickRuleConflict) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateStickRuleConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -244,8 +220,7 @@ func (o *CreateStickRuleConflict) readResponse(response runtime.ClientResponse, 
 // NewCreateStickRuleDefault creates a CreateStickRuleDefault with default headers values
 func NewCreateStickRuleDefault(code int) *CreateStickRuleDefault {
 	return &CreateStickRuleDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -258,7 +233,7 @@ type CreateStickRuleDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -272,18 +247,10 @@ func (o *CreateStickRuleDefault) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/stick_rules][%d] createStickRule default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *CreateStickRuleDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateStickRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

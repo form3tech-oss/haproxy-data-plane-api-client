@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // CreateSpoeAgentReader is a Reader for the CreateSpoeAgent structure.
@@ -40,24 +39,28 @@ type CreateSpoeAgentReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *CreateSpoeAgentReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 201:
 		result := NewCreateSpoeAgentCreated()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 400:
 		result := NewCreateSpoeAgentBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	case 409:
 		result := NewCreateSpoeAgentConflict()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewCreateSpoeAgentDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -87,10 +90,6 @@ func (o *CreateSpoeAgentCreated) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/spoe/spoe_agents][%d] createSpoeAgentCreated  %+v", 201, o.Payload)
 }
 
-func (o *CreateSpoeAgentCreated) GetPayload() *models.SpoeAgent {
-	return o.Payload
-}
-
 func (o *CreateSpoeAgentCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.SpoeAgent)
@@ -105,9 +104,7 @@ func (o *CreateSpoeAgentCreated) readResponse(response runtime.ClientResponse, c
 
 // NewCreateSpoeAgentBadRequest creates a CreateSpoeAgentBadRequest with default headers values
 func NewCreateSpoeAgentBadRequest() *CreateSpoeAgentBadRequest {
-	return &CreateSpoeAgentBadRequest{
-		ConfigurationVersion: 0,
-	}
+	return &CreateSpoeAgentBadRequest{}
 }
 
 /*CreateSpoeAgentBadRequest handles this case with default header values.
@@ -117,7 +114,7 @@ Bad request
 type CreateSpoeAgentBadRequest struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -126,18 +123,10 @@ func (o *CreateSpoeAgentBadRequest) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/spoe/spoe_agents][%d] createSpoeAgentBadRequest  %+v", 400, o.Payload)
 }
 
-func (o *CreateSpoeAgentBadRequest) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateSpoeAgentBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -151,9 +140,7 @@ func (o *CreateSpoeAgentBadRequest) readResponse(response runtime.ClientResponse
 
 // NewCreateSpoeAgentConflict creates a CreateSpoeAgentConflict with default headers values
 func NewCreateSpoeAgentConflict() *CreateSpoeAgentConflict {
-	return &CreateSpoeAgentConflict{
-		ConfigurationVersion: 0,
-	}
+	return &CreateSpoeAgentConflict{}
 }
 
 /*CreateSpoeAgentConflict handles this case with default header values.
@@ -163,7 +150,7 @@ The specified resource already exists
 type CreateSpoeAgentConflict struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -172,18 +159,10 @@ func (o *CreateSpoeAgentConflict) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/spoe/spoe_agents][%d] createSpoeAgentConflict  %+v", 409, o.Payload)
 }
 
-func (o *CreateSpoeAgentConflict) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateSpoeAgentConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -198,8 +177,7 @@ func (o *CreateSpoeAgentConflict) readResponse(response runtime.ClientResponse, 
 // NewCreateSpoeAgentDefault creates a CreateSpoeAgentDefault with default headers values
 func NewCreateSpoeAgentDefault(code int) *CreateSpoeAgentDefault {
 	return &CreateSpoeAgentDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -212,7 +190,7 @@ type CreateSpoeAgentDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -226,18 +204,10 @@ func (o *CreateSpoeAgentDefault) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/spoe/spoe_agents][%d] createSpoeAgent default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *CreateSpoeAgentDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateSpoeAgentDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

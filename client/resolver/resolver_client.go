@@ -22,11 +22,12 @@ package resolver
 
 import (
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
+
+	strfmt "github.com/go-openapi/strfmt"
 )
 
 // New creates a new resolver API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -38,25 +39,10 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-// ClientService is the interface for Client methods
-type ClientService interface {
-	CreateResolver(params *CreateResolverParams, authInfo runtime.ClientAuthInfoWriter) (*CreateResolverCreated, *CreateResolverAccepted, error)
-
-	DeleteResolver(params *DeleteResolverParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteResolverAccepted, *DeleteResolverNoContent, error)
-
-	GetResolver(params *GetResolverParams, authInfo runtime.ClientAuthInfoWriter) (*GetResolverOK, error)
-
-	GetResolvers(params *GetResolversParams, authInfo runtime.ClientAuthInfoWriter) (*GetResolversOK, error)
-
-	ReplaceResolver(params *ReplaceResolverParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceResolverOK, *ReplaceResolverAccepted, error)
-
-	SetTransport(transport runtime.ClientTransport)
-}
-
 /*
-  CreateResolver adds a resolver
+CreateResolver adds a resolver
 
-  Adds a new resolver section to the configuration file.
+Adds a new resolver section to the configuration file.
 */
 func (a *Client) CreateResolver(params *CreateResolverParams, authInfo runtime.ClientAuthInfoWriter) (*CreateResolverCreated, *CreateResolverAccepted, error) {
 	// TODO: Validate the params before sending
@@ -86,15 +72,14 @@ func (a *Client) CreateResolver(params *CreateResolverParams, authInfo runtime.C
 	case *CreateResolverAccepted:
 		return nil, value, nil
 	}
-	// unexpected success response
-	unexpectedSuccess := result.(*CreateResolverDefault)
-	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return nil, nil, nil
+
 }
 
 /*
-  DeleteResolver deletes a resolver
+DeleteResolver deletes a resolver
 
-  Deletes a resolver from the configuration by it's name.
+Deletes a resolver from the configuration by it's name.
 */
 func (a *Client) DeleteResolver(params *DeleteResolverParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteResolverAccepted, *DeleteResolverNoContent, error) {
 	// TODO: Validate the params before sending
@@ -124,15 +109,14 @@ func (a *Client) DeleteResolver(params *DeleteResolverParams, authInfo runtime.C
 	case *DeleteResolverNoContent:
 		return nil, value, nil
 	}
-	// unexpected success response
-	unexpectedSuccess := result.(*DeleteResolverDefault)
-	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return nil, nil, nil
+
 }
 
 /*
-  GetResolver returns a resolver
+GetResolver returns a resolver
 
-  Returns one resolver section configuration by it's name.
+Returns one resolver section configuration by it's name.
 */
 func (a *Client) GetResolver(params *GetResolverParams, authInfo runtime.ClientAuthInfoWriter) (*GetResolverOK, error) {
 	// TODO: Validate the params before sending
@@ -156,19 +140,14 @@ func (a *Client) GetResolver(params *GetResolverParams, authInfo runtime.ClientA
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetResolverOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetResolverDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetResolverOK), nil
+
 }
 
 /*
-  GetResolvers returns an array of resolvers
+GetResolvers returns an array of resolvers
 
-  Returns an array of all configured resolvers.
+Returns an array of all configured resolvers.
 */
 func (a *Client) GetResolvers(params *GetResolversParams, authInfo runtime.ClientAuthInfoWriter) (*GetResolversOK, error) {
 	// TODO: Validate the params before sending
@@ -192,19 +171,14 @@ func (a *Client) GetResolvers(params *GetResolversParams, authInfo runtime.Clien
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetResolversOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetResolversDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetResolversOK), nil
+
 }
 
 /*
-  ReplaceResolver replaces a resolver
+ReplaceResolver replaces a resolver
 
-  Replaces a resolver configuration by it's name.
+Replaces a resolver configuration by it's name.
 */
 func (a *Client) ReplaceResolver(params *ReplaceResolverParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceResolverOK, *ReplaceResolverAccepted, error) {
 	// TODO: Validate the params before sending
@@ -234,9 +208,8 @@ func (a *Client) ReplaceResolver(params *ReplaceResolverParams, authInfo runtime
 	case *ReplaceResolverAccepted:
 		return nil, value, nil
 	}
-	// unexpected success response
-	unexpectedSuccess := result.(*ReplaceResolverDefault)
-	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return nil, nil, nil
+
 }
 
 // SetTransport changes the transport on the client

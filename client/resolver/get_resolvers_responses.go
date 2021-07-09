@@ -26,11 +26,12 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // GetResolversReader is a Reader for the GetResolvers structure.
@@ -41,12 +42,14 @@ type GetResolversReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetResolversReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetResolversOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	default:
 		result := NewGetResolversDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -71,7 +74,7 @@ Successful operation
 type GetResolversOK struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *GetResolversOKBody
 }
@@ -80,18 +83,10 @@ func (o *GetResolversOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/resolvers][%d] getResolversOK  %+v", 200, o.Payload)
 }
 
-func (o *GetResolversOK) GetPayload() *GetResolversOKBody {
-	return o.Payload
-}
-
 func (o *GetResolversOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(GetResolversOKBody)
 
@@ -106,8 +101,7 @@ func (o *GetResolversOK) readResponse(response runtime.ClientResponse, consumer 
 // NewGetResolversDefault creates a GetResolversDefault with default headers values
 func NewGetResolversDefault(code int) *GetResolversDefault {
 	return &GetResolversDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -120,7 +114,7 @@ type GetResolversDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -134,18 +128,10 @@ func (o *GetResolversDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/resolvers][%d] getResolvers default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *GetResolversDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetResolversDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

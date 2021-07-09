@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // ReplaceACLReader is a Reader for the ReplaceACL structure.
@@ -40,30 +39,35 @@ type ReplaceACLReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *ReplaceACLReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewReplaceACLOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 202:
 		result := NewReplaceACLAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 400:
 		result := NewReplaceACLBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	case 404:
 		result := NewReplaceACLNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewReplaceACLDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -91,10 +95,6 @@ type ReplaceACLOK struct {
 
 func (o *ReplaceACLOK) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/acls/{index}][%d] replaceAclOK  %+v", 200, o.Payload)
-}
-
-func (o *ReplaceACLOK) GetPayload() *models.ACL {
-	return o.Payload
 }
 
 func (o *ReplaceACLOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -130,10 +130,6 @@ func (o *ReplaceACLAccepted) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/acls/{index}][%d] replaceAclAccepted  %+v", 202, o.Payload)
 }
 
-func (o *ReplaceACLAccepted) GetPayload() *models.ACL {
-	return o.Payload
-}
-
 func (o *ReplaceACLAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Reload-ID
@@ -151,9 +147,7 @@ func (o *ReplaceACLAccepted) readResponse(response runtime.ClientResponse, consu
 
 // NewReplaceACLBadRequest creates a ReplaceACLBadRequest with default headers values
 func NewReplaceACLBadRequest() *ReplaceACLBadRequest {
-	return &ReplaceACLBadRequest{
-		ConfigurationVersion: 0,
-	}
+	return &ReplaceACLBadRequest{}
 }
 
 /*ReplaceACLBadRequest handles this case with default header values.
@@ -163,7 +157,7 @@ Bad request
 type ReplaceACLBadRequest struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -172,18 +166,10 @@ func (o *ReplaceACLBadRequest) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/acls/{index}][%d] replaceAclBadRequest  %+v", 400, o.Payload)
 }
 
-func (o *ReplaceACLBadRequest) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *ReplaceACLBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -197,9 +183,7 @@ func (o *ReplaceACLBadRequest) readResponse(response runtime.ClientResponse, con
 
 // NewReplaceACLNotFound creates a ReplaceACLNotFound with default headers values
 func NewReplaceACLNotFound() *ReplaceACLNotFound {
-	return &ReplaceACLNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &ReplaceACLNotFound{}
 }
 
 /*ReplaceACLNotFound handles this case with default header values.
@@ -209,7 +193,7 @@ The specified resource was not found
 type ReplaceACLNotFound struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -218,18 +202,10 @@ func (o *ReplaceACLNotFound) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/acls/{index}][%d] replaceAclNotFound  %+v", 404, o.Payload)
 }
 
-func (o *ReplaceACLNotFound) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *ReplaceACLNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -244,8 +220,7 @@ func (o *ReplaceACLNotFound) readResponse(response runtime.ClientResponse, consu
 // NewReplaceACLDefault creates a ReplaceACLDefault with default headers values
 func NewReplaceACLDefault(code int) *ReplaceACLDefault {
 	return &ReplaceACLDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -258,7 +233,7 @@ type ReplaceACLDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -272,18 +247,10 @@ func (o *ReplaceACLDefault) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/acls/{index}][%d] replaceAcl default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *ReplaceACLDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *ReplaceACLDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

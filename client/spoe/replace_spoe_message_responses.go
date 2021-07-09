@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // ReplaceSpoeMessageReader is a Reader for the ReplaceSpoeMessage structure.
@@ -40,24 +39,28 @@ type ReplaceSpoeMessageReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *ReplaceSpoeMessageReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewReplaceSpoeMessageOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 400:
 		result := NewReplaceSpoeMessageBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	case 404:
 		result := NewReplaceSpoeMessageNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewReplaceSpoeMessageDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -87,10 +90,6 @@ func (o *ReplaceSpoeMessageOK) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/spoe/spoe_messages/{name}][%d] replaceSpoeMessageOK  %+v", 200, o.Payload)
 }
 
-func (o *ReplaceSpoeMessageOK) GetPayload() *models.SpoeMessage {
-	return o.Payload
-}
-
 func (o *ReplaceSpoeMessageOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.SpoeMessage)
@@ -105,9 +104,7 @@ func (o *ReplaceSpoeMessageOK) readResponse(response runtime.ClientResponse, con
 
 // NewReplaceSpoeMessageBadRequest creates a ReplaceSpoeMessageBadRequest with default headers values
 func NewReplaceSpoeMessageBadRequest() *ReplaceSpoeMessageBadRequest {
-	return &ReplaceSpoeMessageBadRequest{
-		ConfigurationVersion: 0,
-	}
+	return &ReplaceSpoeMessageBadRequest{}
 }
 
 /*ReplaceSpoeMessageBadRequest handles this case with default header values.
@@ -117,7 +114,7 @@ Bad request
 type ReplaceSpoeMessageBadRequest struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -126,18 +123,10 @@ func (o *ReplaceSpoeMessageBadRequest) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/spoe/spoe_messages/{name}][%d] replaceSpoeMessageBadRequest  %+v", 400, o.Payload)
 }
 
-func (o *ReplaceSpoeMessageBadRequest) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *ReplaceSpoeMessageBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -151,9 +140,7 @@ func (o *ReplaceSpoeMessageBadRequest) readResponse(response runtime.ClientRespo
 
 // NewReplaceSpoeMessageNotFound creates a ReplaceSpoeMessageNotFound with default headers values
 func NewReplaceSpoeMessageNotFound() *ReplaceSpoeMessageNotFound {
-	return &ReplaceSpoeMessageNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &ReplaceSpoeMessageNotFound{}
 }
 
 /*ReplaceSpoeMessageNotFound handles this case with default header values.
@@ -163,7 +150,7 @@ The specified resource was not found
 type ReplaceSpoeMessageNotFound struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -172,18 +159,10 @@ func (o *ReplaceSpoeMessageNotFound) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/spoe/spoe_messages/{name}][%d] replaceSpoeMessageNotFound  %+v", 404, o.Payload)
 }
 
-func (o *ReplaceSpoeMessageNotFound) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *ReplaceSpoeMessageNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -198,8 +177,7 @@ func (o *ReplaceSpoeMessageNotFound) readResponse(response runtime.ClientRespons
 // NewReplaceSpoeMessageDefault creates a ReplaceSpoeMessageDefault with default headers values
 func NewReplaceSpoeMessageDefault(code int) *ReplaceSpoeMessageDefault {
 	return &ReplaceSpoeMessageDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -212,7 +190,7 @@ type ReplaceSpoeMessageDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -226,18 +204,10 @@ func (o *ReplaceSpoeMessageDefault) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/spoe/spoe_messages/{name}][%d] replaceSpoeMessage default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *ReplaceSpoeMessageDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *ReplaceSpoeMessageDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

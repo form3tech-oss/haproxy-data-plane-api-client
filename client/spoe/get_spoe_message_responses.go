@@ -26,11 +26,12 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // GetSpoeMessageReader is a Reader for the GetSpoeMessage structure.
@@ -41,18 +42,21 @@ type GetSpoeMessageReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetSpoeMessageReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetSpoeMessageOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewGetSpoeMessageNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewGetSpoeMessageDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -77,7 +81,7 @@ Successful operation
 type GetSpoeMessageOK struct {
 	/*Spoe configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *GetSpoeMessageOKBody
 }
@@ -86,18 +90,10 @@ func (o *GetSpoeMessageOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/spoe/spoe_messages/{name}][%d] getSpoeMessageOK  %+v", 200, o.Payload)
 }
 
-func (o *GetSpoeMessageOK) GetPayload() *GetSpoeMessageOKBody {
-	return o.Payload
-}
-
 func (o *GetSpoeMessageOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(GetSpoeMessageOKBody)
 
@@ -111,9 +107,7 @@ func (o *GetSpoeMessageOK) readResponse(response runtime.ClientResponse, consume
 
 // NewGetSpoeMessageNotFound creates a GetSpoeMessageNotFound with default headers values
 func NewGetSpoeMessageNotFound() *GetSpoeMessageNotFound {
-	return &GetSpoeMessageNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &GetSpoeMessageNotFound{}
 }
 
 /*GetSpoeMessageNotFound handles this case with default header values.
@@ -123,7 +117,7 @@ The specified resource was not found
 type GetSpoeMessageNotFound struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -132,18 +126,10 @@ func (o *GetSpoeMessageNotFound) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/spoe/spoe_messages/{name}][%d] getSpoeMessageNotFound  %+v", 404, o.Payload)
 }
 
-func (o *GetSpoeMessageNotFound) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetSpoeMessageNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -158,8 +144,7 @@ func (o *GetSpoeMessageNotFound) readResponse(response runtime.ClientResponse, c
 // NewGetSpoeMessageDefault creates a GetSpoeMessageDefault with default headers values
 func NewGetSpoeMessageDefault(code int) *GetSpoeMessageDefault {
 	return &GetSpoeMessageDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -172,7 +157,7 @@ type GetSpoeMessageDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -186,18 +171,10 @@ func (o *GetSpoeMessageDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/spoe/spoe_messages/{name}][%d] getSpoeMessage default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *GetSpoeMessageDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetSpoeMessageDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

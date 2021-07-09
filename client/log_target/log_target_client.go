@@ -22,11 +22,12 @@ package log_target
 
 import (
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
+
+	strfmt "github.com/go-openapi/strfmt"
 )
 
 // New creates a new log target API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -38,25 +39,10 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-// ClientService is the interface for Client methods
-type ClientService interface {
-	CreateLogTarget(params *CreateLogTargetParams, authInfo runtime.ClientAuthInfoWriter) (*CreateLogTargetCreated, *CreateLogTargetAccepted, error)
-
-	DeleteLogTarget(params *DeleteLogTargetParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteLogTargetAccepted, *DeleteLogTargetNoContent, error)
-
-	GetLogTarget(params *GetLogTargetParams, authInfo runtime.ClientAuthInfoWriter) (*GetLogTargetOK, error)
-
-	GetLogTargets(params *GetLogTargetsParams, authInfo runtime.ClientAuthInfoWriter) (*GetLogTargetsOK, error)
-
-	ReplaceLogTarget(params *ReplaceLogTargetParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceLogTargetOK, *ReplaceLogTargetAccepted, error)
-
-	SetTransport(transport runtime.ClientTransport)
-}
-
 /*
-  CreateLogTarget adds a new log target
+CreateLogTarget adds a new log target
 
-  Adds a new Log Target of the specified type in the specified parent.
+Adds a new Log Target of the specified type in the specified parent.
 */
 func (a *Client) CreateLogTarget(params *CreateLogTargetParams, authInfo runtime.ClientAuthInfoWriter) (*CreateLogTargetCreated, *CreateLogTargetAccepted, error) {
 	// TODO: Validate the params before sending
@@ -86,15 +72,14 @@ func (a *Client) CreateLogTarget(params *CreateLogTargetParams, authInfo runtime
 	case *CreateLogTargetAccepted:
 		return nil, value, nil
 	}
-	// unexpected success response
-	unexpectedSuccess := result.(*CreateLogTargetDefault)
-	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return nil, nil, nil
+
 }
 
 /*
-  DeleteLogTarget deletes a log target
+DeleteLogTarget deletes a log target
 
-  Deletes a Log Target configuration by it's index from the specified parent.
+Deletes a Log Target configuration by it's index from the specified parent.
 */
 func (a *Client) DeleteLogTarget(params *DeleteLogTargetParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteLogTargetAccepted, *DeleteLogTargetNoContent, error) {
 	// TODO: Validate the params before sending
@@ -124,15 +109,14 @@ func (a *Client) DeleteLogTarget(params *DeleteLogTargetParams, authInfo runtime
 	case *DeleteLogTargetNoContent:
 		return nil, value, nil
 	}
-	// unexpected success response
-	unexpectedSuccess := result.(*DeleteLogTargetDefault)
-	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return nil, nil, nil
+
 }
 
 /*
-  GetLogTarget returns one log target
+GetLogTarget returns one log target
 
-  Returns one Log Target configuration by it's index in the specified parent.
+Returns one Log Target configuration by it's index in the specified parent.
 */
 func (a *Client) GetLogTarget(params *GetLogTargetParams, authInfo runtime.ClientAuthInfoWriter) (*GetLogTargetOK, error) {
 	// TODO: Validate the params before sending
@@ -156,19 +140,14 @@ func (a *Client) GetLogTarget(params *GetLogTargetParams, authInfo runtime.Clien
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetLogTargetOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetLogTargetDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetLogTargetOK), nil
+
 }
 
 /*
-  GetLogTargets returns an array of all log targets
+GetLogTargets returns an array of all log targets
 
-  Returns all Log Targets that are configured in specified parent.
+Returns all Log Targets that are configured in specified parent.
 */
 func (a *Client) GetLogTargets(params *GetLogTargetsParams, authInfo runtime.ClientAuthInfoWriter) (*GetLogTargetsOK, error) {
 	// TODO: Validate the params before sending
@@ -192,19 +171,14 @@ func (a *Client) GetLogTargets(params *GetLogTargetsParams, authInfo runtime.Cli
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetLogTargetsOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetLogTargetsDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetLogTargetsOK), nil
+
 }
 
 /*
-  ReplaceLogTarget replaces a log target
+ReplaceLogTarget replaces a log target
 
-  Replaces a Log Target configuration by it's index in the specified parent.
+Replaces a Log Target configuration by it's index in the specified parent.
 */
 func (a *Client) ReplaceLogTarget(params *ReplaceLogTargetParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceLogTargetOK, *ReplaceLogTargetAccepted, error) {
 	// TODO: Validate the params before sending
@@ -234,9 +208,8 @@ func (a *Client) ReplaceLogTarget(params *ReplaceLogTargetParams, authInfo runti
 	case *ReplaceLogTargetAccepted:
 		return nil, value, nil
 	}
-	// unexpected success response
-	unexpectedSuccess := result.(*ReplaceLogTargetDefault)
-	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return nil, nil, nil
+
 }
 
 // SetTransport changes the transport on the client

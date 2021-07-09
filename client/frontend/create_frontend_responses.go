@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // CreateFrontendReader is a Reader for the CreateFrontend structure.
@@ -40,30 +39,35 @@ type CreateFrontendReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *CreateFrontendReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 201:
 		result := NewCreateFrontendCreated()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 202:
 		result := NewCreateFrontendAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 400:
 		result := NewCreateFrontendBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	case 409:
 		result := NewCreateFrontendConflict()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewCreateFrontendDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -91,10 +95,6 @@ type CreateFrontendCreated struct {
 
 func (o *CreateFrontendCreated) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/frontends][%d] createFrontendCreated  %+v", 201, o.Payload)
-}
-
-func (o *CreateFrontendCreated) GetPayload() *models.Frontend {
-	return o.Payload
 }
 
 func (o *CreateFrontendCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -130,10 +130,6 @@ func (o *CreateFrontendAccepted) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/frontends][%d] createFrontendAccepted  %+v", 202, o.Payload)
 }
 
-func (o *CreateFrontendAccepted) GetPayload() *models.Frontend {
-	return o.Payload
-}
-
 func (o *CreateFrontendAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Reload-ID
@@ -151,9 +147,7 @@ func (o *CreateFrontendAccepted) readResponse(response runtime.ClientResponse, c
 
 // NewCreateFrontendBadRequest creates a CreateFrontendBadRequest with default headers values
 func NewCreateFrontendBadRequest() *CreateFrontendBadRequest {
-	return &CreateFrontendBadRequest{
-		ConfigurationVersion: 0,
-	}
+	return &CreateFrontendBadRequest{}
 }
 
 /*CreateFrontendBadRequest handles this case with default header values.
@@ -163,7 +157,7 @@ Bad request
 type CreateFrontendBadRequest struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -172,18 +166,10 @@ func (o *CreateFrontendBadRequest) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/frontends][%d] createFrontendBadRequest  %+v", 400, o.Payload)
 }
 
-func (o *CreateFrontendBadRequest) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateFrontendBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -197,9 +183,7 @@ func (o *CreateFrontendBadRequest) readResponse(response runtime.ClientResponse,
 
 // NewCreateFrontendConflict creates a CreateFrontendConflict with default headers values
 func NewCreateFrontendConflict() *CreateFrontendConflict {
-	return &CreateFrontendConflict{
-		ConfigurationVersion: 0,
-	}
+	return &CreateFrontendConflict{}
 }
 
 /*CreateFrontendConflict handles this case with default header values.
@@ -209,7 +193,7 @@ The specified resource already exists
 type CreateFrontendConflict struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -218,18 +202,10 @@ func (o *CreateFrontendConflict) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/frontends][%d] createFrontendConflict  %+v", 409, o.Payload)
 }
 
-func (o *CreateFrontendConflict) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateFrontendConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -244,8 +220,7 @@ func (o *CreateFrontendConflict) readResponse(response runtime.ClientResponse, c
 // NewCreateFrontendDefault creates a CreateFrontendDefault with default headers values
 func NewCreateFrontendDefault(code int) *CreateFrontendDefault {
 	return &CreateFrontendDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -258,7 +233,7 @@ type CreateFrontendDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -272,18 +247,10 @@ func (o *CreateFrontendDefault) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/frontends][%d] createFrontend default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *CreateFrontendDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateFrontendDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

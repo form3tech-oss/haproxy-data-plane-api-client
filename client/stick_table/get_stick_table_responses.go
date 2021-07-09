@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // GetStickTableReader is a Reader for the GetStickTable structure.
@@ -40,18 +39,21 @@ type GetStickTableReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetStickTableReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetStickTableOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewGetStickTableNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewGetStickTableDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -81,10 +83,6 @@ func (o *GetStickTableOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/runtime/stick_tables/{name}][%d] getStickTableOK  %+v", 200, o.Payload)
 }
 
-func (o *GetStickTableOK) GetPayload() *models.StickTable {
-	return o.Payload
-}
-
 func (o *GetStickTableOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.StickTable)
@@ -99,9 +97,7 @@ func (o *GetStickTableOK) readResponse(response runtime.ClientResponse, consumer
 
 // NewGetStickTableNotFound creates a GetStickTableNotFound with default headers values
 func NewGetStickTableNotFound() *GetStickTableNotFound {
-	return &GetStickTableNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &GetStickTableNotFound{}
 }
 
 /*GetStickTableNotFound handles this case with default header values.
@@ -111,7 +107,7 @@ The specified resource was not found
 type GetStickTableNotFound struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -120,18 +116,10 @@ func (o *GetStickTableNotFound) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/runtime/stick_tables/{name}][%d] getStickTableNotFound  %+v", 404, o.Payload)
 }
 
-func (o *GetStickTableNotFound) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetStickTableNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -146,8 +134,7 @@ func (o *GetStickTableNotFound) readResponse(response runtime.ClientResponse, co
 // NewGetStickTableDefault creates a GetStickTableDefault with default headers values
 func NewGetStickTableDefault(code int) *GetStickTableDefault {
 	return &GetStickTableDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -160,7 +147,7 @@ type GetStickTableDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -174,18 +161,10 @@ func (o *GetStickTableDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/runtime/stick_tables/{name}][%d] getStickTable default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *GetStickTableDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetStickTableDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

@@ -26,10 +26,11 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // GetACLReader is a Reader for the GetACL structure.
@@ -40,18 +41,21 @@ type GetACLReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetACLReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetACLOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewGetACLNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewGetACLDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -76,7 +80,7 @@ Successful operation
 type GetACLOK struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *GetACLOKBody
 }
@@ -85,18 +89,10 @@ func (o *GetACLOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/acls/{index}][%d] getAclOK  %+v", 200, o.Payload)
 }
 
-func (o *GetACLOK) GetPayload() *GetACLOKBody {
-	return o.Payload
-}
-
 func (o *GetACLOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(GetACLOKBody)
 
@@ -110,9 +106,7 @@ func (o *GetACLOK) readResponse(response runtime.ClientResponse, consumer runtim
 
 // NewGetACLNotFound creates a GetACLNotFound with default headers values
 func NewGetACLNotFound() *GetACLNotFound {
-	return &GetACLNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &GetACLNotFound{}
 }
 
 /*GetACLNotFound handles this case with default header values.
@@ -122,7 +116,7 @@ The specified resource was not found
 type GetACLNotFound struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -131,18 +125,10 @@ func (o *GetACLNotFound) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/acls/{index}][%d] getAclNotFound  %+v", 404, o.Payload)
 }
 
-func (o *GetACLNotFound) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetACLNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -157,8 +143,7 @@ func (o *GetACLNotFound) readResponse(response runtime.ClientResponse, consumer 
 // NewGetACLDefault creates a GetACLDefault with default headers values
 func NewGetACLDefault(code int) *GetACLDefault {
 	return &GetACLDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -171,7 +156,7 @@ type GetACLDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -185,18 +170,10 @@ func (o *GetACLDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/acls/{index}][%d] getAcl default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *GetACLDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetACLDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

@@ -22,11 +22,12 @@ package nameserver
 
 import (
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
+
+	strfmt "github.com/go-openapi/strfmt"
 )
 
 // New creates a new nameserver API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -38,25 +39,10 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-// ClientService is the interface for Client methods
-type ClientService interface {
-	CreateNameserver(params *CreateNameserverParams, authInfo runtime.ClientAuthInfoWriter) (*CreateNameserverCreated, *CreateNameserverAccepted, error)
-
-	DeleteNameserver(params *DeleteNameserverParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteNameserverAccepted, *DeleteNameserverNoContent, error)
-
-	GetNameserver(params *GetNameserverParams, authInfo runtime.ClientAuthInfoWriter) (*GetNameserverOK, error)
-
-	GetNameservers(params *GetNameserversParams, authInfo runtime.ClientAuthInfoWriter) (*GetNameserversOK, error)
-
-	ReplaceNameserver(params *ReplaceNameserverParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceNameserverOK, *ReplaceNameserverAccepted, error)
-
-	SetTransport(transport runtime.ClientTransport)
-}
-
 /*
-  CreateNameserver adds a nameserver
+CreateNameserver adds a nameserver
 
-  Adds a new nameserver to the resolvers section.
+Adds a new nameserver to the resolvers section.
 */
 func (a *Client) CreateNameserver(params *CreateNameserverParams, authInfo runtime.ClientAuthInfoWriter) (*CreateNameserverCreated, *CreateNameserverAccepted, error) {
 	// TODO: Validate the params before sending
@@ -86,15 +72,14 @@ func (a *Client) CreateNameserver(params *CreateNameserverParams, authInfo runti
 	case *CreateNameserverAccepted:
 		return nil, value, nil
 	}
-	// unexpected success response
-	unexpectedSuccess := result.(*CreateNameserverDefault)
-	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return nil, nil, nil
+
 }
 
 /*
-  DeleteNameserver deletes a nameserver
+DeleteNameserver deletes a nameserver
 
-  Deletes a nameserver from the resolvers section by it's name.
+Deletes a nameserver from the resolvers section by it's name.
 */
 func (a *Client) DeleteNameserver(params *DeleteNameserverParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteNameserverAccepted, *DeleteNameserverNoContent, error) {
 	// TODO: Validate the params before sending
@@ -124,15 +109,14 @@ func (a *Client) DeleteNameserver(params *DeleteNameserverParams, authInfo runti
 	case *DeleteNameserverNoContent:
 		return nil, value, nil
 	}
-	// unexpected success response
-	unexpectedSuccess := result.(*DeleteNameserverDefault)
-	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return nil, nil, nil
+
 }
 
 /*
-  GetNameserver returns a nameserver
+GetNameserver returns a nameserver
 
-  Returns one nameserver configuration by it's name.
+Returns one nameserver configuration by it's name.
 */
 func (a *Client) GetNameserver(params *GetNameserverParams, authInfo runtime.ClientAuthInfoWriter) (*GetNameserverOK, error) {
 	// TODO: Validate the params before sending
@@ -156,19 +140,14 @@ func (a *Client) GetNameserver(params *GetNameserverParams, authInfo runtime.Cli
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetNameserverOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetNameserverDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetNameserverOK), nil
+
 }
 
 /*
-  GetNameservers returns an array of nameservers
+GetNameservers returns an array of nameservers
 
-  Returns an array of all configured nameservers.
+Returns an array of all configured nameservers.
 */
 func (a *Client) GetNameservers(params *GetNameserversParams, authInfo runtime.ClientAuthInfoWriter) (*GetNameserversOK, error) {
 	// TODO: Validate the params before sending
@@ -192,19 +171,14 @@ func (a *Client) GetNameservers(params *GetNameserversParams, authInfo runtime.C
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetNameserversOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*GetNameserversDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*GetNameserversOK), nil
+
 }
 
 /*
-  ReplaceNameserver replaces a nameserver
+ReplaceNameserver replaces a nameserver
 
-  Replaces a nameserver configuration by it's name.
+Replaces a nameserver configuration by it's name.
 */
 func (a *Client) ReplaceNameserver(params *ReplaceNameserverParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceNameserverOK, *ReplaceNameserverAccepted, error) {
 	// TODO: Validate the params before sending
@@ -234,9 +208,8 @@ func (a *Client) ReplaceNameserver(params *ReplaceNameserverParams, authInfo run
 	case *ReplaceNameserverAccepted:
 		return nil, value, nil
 	}
-	// unexpected success response
-	unexpectedSuccess := result.(*ReplaceNameserverDefault)
-	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return nil, nil, nil
+
 }
 
 // SetTransport changes the transport on the client

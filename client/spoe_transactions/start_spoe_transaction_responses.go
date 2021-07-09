@@ -24,12 +24,12 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // StartSpoeTransactionReader is a Reader for the StartSpoeTransaction structure.
@@ -40,18 +40,21 @@ type StartSpoeTransactionReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *StartSpoeTransactionReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 201:
 		result := NewStartSpoeTransactionCreated()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 429:
 		result := NewStartSpoeTransactionTooManyRequests()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewStartSpoeTransactionDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -79,10 +82,6 @@ type StartSpoeTransactionCreated struct {
 
 func (o *StartSpoeTransactionCreated) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/spoe_transactions][%d] startSpoeTransactionCreated  %+v", 201, o.Payload)
-}
-
-func (o *StartSpoeTransactionCreated) GetPayload() *models.SpoeTransaction {
-	return o.Payload
 }
 
 func (o *StartSpoeTransactionCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -114,10 +113,6 @@ func (o *StartSpoeTransactionTooManyRequests) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/spoe_transactions][%d] startSpoeTransactionTooManyRequests  %+v", 429, o.Payload)
 }
 
-func (o *StartSpoeTransactionTooManyRequests) GetPayload() *StartSpoeTransactionTooManyRequestsBody {
-	return o.Payload
-}
-
 func (o *StartSpoeTransactionTooManyRequests) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(StartSpoeTransactionTooManyRequestsBody)
@@ -133,8 +128,7 @@ func (o *StartSpoeTransactionTooManyRequests) readResponse(response runtime.Clie
 // NewStartSpoeTransactionDefault creates a StartSpoeTransactionDefault with default headers values
 func NewStartSpoeTransactionDefault(code int) *StartSpoeTransactionDefault {
 	return &StartSpoeTransactionDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -147,7 +141,7 @@ type StartSpoeTransactionDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -161,18 +155,10 @@ func (o *StartSpoeTransactionDefault) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/spoe_transactions][%d] startSpoeTransaction default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *StartSpoeTransactionDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *StartSpoeTransactionDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

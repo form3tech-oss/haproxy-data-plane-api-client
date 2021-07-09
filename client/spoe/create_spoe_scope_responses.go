@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // CreateSpoeScopeReader is a Reader for the CreateSpoeScope structure.
@@ -40,24 +39,28 @@ type CreateSpoeScopeReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *CreateSpoeScopeReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 201:
 		result := NewCreateSpoeScopeCreated()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 400:
 		result := NewCreateSpoeScopeBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	case 409:
 		result := NewCreateSpoeScopeConflict()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewCreateSpoeScopeDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -87,10 +90,6 @@ func (o *CreateSpoeScopeCreated) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/spoe/spoe_scopes][%d] createSpoeScopeCreated  %+v", 201, o.Payload)
 }
 
-func (o *CreateSpoeScopeCreated) GetPayload() models.SpoeScope {
-	return o.Payload
-}
-
 func (o *CreateSpoeScopeCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response payload
@@ -103,9 +102,7 @@ func (o *CreateSpoeScopeCreated) readResponse(response runtime.ClientResponse, c
 
 // NewCreateSpoeScopeBadRequest creates a CreateSpoeScopeBadRequest with default headers values
 func NewCreateSpoeScopeBadRequest() *CreateSpoeScopeBadRequest {
-	return &CreateSpoeScopeBadRequest{
-		ConfigurationVersion: 0,
-	}
+	return &CreateSpoeScopeBadRequest{}
 }
 
 /*CreateSpoeScopeBadRequest handles this case with default header values.
@@ -115,7 +112,7 @@ Bad request
 type CreateSpoeScopeBadRequest struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -124,18 +121,10 @@ func (o *CreateSpoeScopeBadRequest) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/spoe/spoe_scopes][%d] createSpoeScopeBadRequest  %+v", 400, o.Payload)
 }
 
-func (o *CreateSpoeScopeBadRequest) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateSpoeScopeBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -149,9 +138,7 @@ func (o *CreateSpoeScopeBadRequest) readResponse(response runtime.ClientResponse
 
 // NewCreateSpoeScopeConflict creates a CreateSpoeScopeConflict with default headers values
 func NewCreateSpoeScopeConflict() *CreateSpoeScopeConflict {
-	return &CreateSpoeScopeConflict{
-		ConfigurationVersion: 0,
-	}
+	return &CreateSpoeScopeConflict{}
 }
 
 /*CreateSpoeScopeConflict handles this case with default header values.
@@ -161,7 +148,7 @@ The specified resource already exists
 type CreateSpoeScopeConflict struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -170,18 +157,10 @@ func (o *CreateSpoeScopeConflict) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/spoe/spoe_scopes][%d] createSpoeScopeConflict  %+v", 409, o.Payload)
 }
 
-func (o *CreateSpoeScopeConflict) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateSpoeScopeConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -196,8 +175,7 @@ func (o *CreateSpoeScopeConflict) readResponse(response runtime.ClientResponse, 
 // NewCreateSpoeScopeDefault creates a CreateSpoeScopeDefault with default headers values
 func NewCreateSpoeScopeDefault(code int) *CreateSpoeScopeDefault {
 	return &CreateSpoeScopeDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -210,7 +188,7 @@ type CreateSpoeScopeDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -224,18 +202,10 @@ func (o *CreateSpoeScopeDefault) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/spoe/spoe_scopes][%d] createSpoeScope default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *CreateSpoeScopeDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateSpoeScopeDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

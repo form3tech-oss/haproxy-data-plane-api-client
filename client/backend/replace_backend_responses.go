@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // ReplaceBackendReader is a Reader for the ReplaceBackend structure.
@@ -40,30 +39,35 @@ type ReplaceBackendReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *ReplaceBackendReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewReplaceBackendOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 202:
 		result := NewReplaceBackendAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 400:
 		result := NewReplaceBackendBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	case 404:
 		result := NewReplaceBackendNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewReplaceBackendDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -91,10 +95,6 @@ type ReplaceBackendOK struct {
 
 func (o *ReplaceBackendOK) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/backends/{name}][%d] replaceBackendOK  %+v", 200, o.Payload)
-}
-
-func (o *ReplaceBackendOK) GetPayload() *models.Backend {
-	return o.Payload
 }
 
 func (o *ReplaceBackendOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -130,10 +130,6 @@ func (o *ReplaceBackendAccepted) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/backends/{name}][%d] replaceBackendAccepted  %+v", 202, o.Payload)
 }
 
-func (o *ReplaceBackendAccepted) GetPayload() *models.Backend {
-	return o.Payload
-}
-
 func (o *ReplaceBackendAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Reload-ID
@@ -151,9 +147,7 @@ func (o *ReplaceBackendAccepted) readResponse(response runtime.ClientResponse, c
 
 // NewReplaceBackendBadRequest creates a ReplaceBackendBadRequest with default headers values
 func NewReplaceBackendBadRequest() *ReplaceBackendBadRequest {
-	return &ReplaceBackendBadRequest{
-		ConfigurationVersion: 0,
-	}
+	return &ReplaceBackendBadRequest{}
 }
 
 /*ReplaceBackendBadRequest handles this case with default header values.
@@ -163,7 +157,7 @@ Bad request
 type ReplaceBackendBadRequest struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -172,18 +166,10 @@ func (o *ReplaceBackendBadRequest) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/backends/{name}][%d] replaceBackendBadRequest  %+v", 400, o.Payload)
 }
 
-func (o *ReplaceBackendBadRequest) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *ReplaceBackendBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -197,9 +183,7 @@ func (o *ReplaceBackendBadRequest) readResponse(response runtime.ClientResponse,
 
 // NewReplaceBackendNotFound creates a ReplaceBackendNotFound with default headers values
 func NewReplaceBackendNotFound() *ReplaceBackendNotFound {
-	return &ReplaceBackendNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &ReplaceBackendNotFound{}
 }
 
 /*ReplaceBackendNotFound handles this case with default header values.
@@ -209,7 +193,7 @@ The specified resource was not found
 type ReplaceBackendNotFound struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -218,18 +202,10 @@ func (o *ReplaceBackendNotFound) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/backends/{name}][%d] replaceBackendNotFound  %+v", 404, o.Payload)
 }
 
-func (o *ReplaceBackendNotFound) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *ReplaceBackendNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -244,8 +220,7 @@ func (o *ReplaceBackendNotFound) readResponse(response runtime.ClientResponse, c
 // NewReplaceBackendDefault creates a ReplaceBackendDefault with default headers values
 func NewReplaceBackendDefault(code int) *ReplaceBackendDefault {
 	return &ReplaceBackendDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -258,7 +233,7 @@ type ReplaceBackendDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -272,18 +247,10 @@ func (o *ReplaceBackendDefault) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/backends/{name}][%d] replaceBackend default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *ReplaceBackendDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *ReplaceBackendDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

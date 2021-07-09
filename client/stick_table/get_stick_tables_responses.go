@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // GetStickTablesReader is a Reader for the GetStickTables structure.
@@ -40,12 +39,14 @@ type GetStickTablesReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetStickTablesReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetStickTablesOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	default:
 		result := NewGetStickTablesDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -75,10 +76,6 @@ func (o *GetStickTablesOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/runtime/stick_tables][%d] getStickTablesOK  %+v", 200, o.Payload)
 }
 
-func (o *GetStickTablesOK) GetPayload() models.StickTables {
-	return o.Payload
-}
-
 func (o *GetStickTablesOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response payload
@@ -92,8 +89,7 @@ func (o *GetStickTablesOK) readResponse(response runtime.ClientResponse, consume
 // NewGetStickTablesDefault creates a GetStickTablesDefault with default headers values
 func NewGetStickTablesDefault(code int) *GetStickTablesDefault {
 	return &GetStickTablesDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -106,7 +102,7 @@ type GetStickTablesDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -120,18 +116,10 @@ func (o *GetStickTablesDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/runtime/stick_tables][%d] getStickTables default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *GetStickTablesDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetStickTablesDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

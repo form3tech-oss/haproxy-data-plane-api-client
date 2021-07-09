@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // GetReloadReader is a Reader for the GetReload structure.
@@ -40,18 +39,21 @@ type GetReloadReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetReloadReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetReloadOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewGetReloadNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewGetReloadDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -81,10 +83,6 @@ func (o *GetReloadOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/reloads/{id}][%d] getReloadOK  %+v", 200, o.Payload)
 }
 
-func (o *GetReloadOK) GetPayload() *models.Reload {
-	return o.Payload
-}
-
 func (o *GetReloadOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.Reload)
@@ -99,9 +97,7 @@ func (o *GetReloadOK) readResponse(response runtime.ClientResponse, consumer run
 
 // NewGetReloadNotFound creates a GetReloadNotFound with default headers values
 func NewGetReloadNotFound() *GetReloadNotFound {
-	return &GetReloadNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &GetReloadNotFound{}
 }
 
 /*GetReloadNotFound handles this case with default header values.
@@ -111,7 +107,7 @@ The specified resource was not found
 type GetReloadNotFound struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -120,18 +116,10 @@ func (o *GetReloadNotFound) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/reloads/{id}][%d] getReloadNotFound  %+v", 404, o.Payload)
 }
 
-func (o *GetReloadNotFound) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetReloadNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -146,8 +134,7 @@ func (o *GetReloadNotFound) readResponse(response runtime.ClientResponse, consum
 // NewGetReloadDefault creates a GetReloadDefault with default headers values
 func NewGetReloadDefault(code int) *GetReloadDefault {
 	return &GetReloadDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -160,7 +147,7 @@ type GetReloadDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -174,18 +161,10 @@ func (o *GetReloadDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/reloads/{id}][%d] getReload default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *GetReloadDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetReloadDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

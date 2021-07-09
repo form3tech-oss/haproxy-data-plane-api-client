@@ -26,11 +26,12 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // GetSpoeScopesReader is a Reader for the GetSpoeScopes structure.
@@ -41,12 +42,14 @@ type GetSpoeScopesReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetSpoeScopesReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetSpoeScopesOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	default:
 		result := NewGetSpoeScopesDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -71,7 +74,7 @@ Successful operation
 type GetSpoeScopesOK struct {
 	/*Spoe configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *GetSpoeScopesOKBody
 }
@@ -80,18 +83,10 @@ func (o *GetSpoeScopesOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/spoe/spoe_scopes][%d] getSpoeScopesOK  %+v", 200, o.Payload)
 }
 
-func (o *GetSpoeScopesOK) GetPayload() *GetSpoeScopesOKBody {
-	return o.Payload
-}
-
 func (o *GetSpoeScopesOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(GetSpoeScopesOKBody)
 
@@ -106,8 +101,7 @@ func (o *GetSpoeScopesOK) readResponse(response runtime.ClientResponse, consumer
 // NewGetSpoeScopesDefault creates a GetSpoeScopesDefault with default headers values
 func NewGetSpoeScopesDefault(code int) *GetSpoeScopesDefault {
 	return &GetSpoeScopesDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -120,7 +114,7 @@ type GetSpoeScopesDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -134,18 +128,10 @@ func (o *GetSpoeScopesDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/spoe/spoe_scopes][%d] getSpoeScopes default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *GetSpoeScopesDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetSpoeScopesDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

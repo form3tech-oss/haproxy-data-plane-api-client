@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // ReplaceStorageMapFileReader is a Reader for the ReplaceStorageMapFile structure.
@@ -40,30 +39,35 @@ type ReplaceStorageMapFileReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *ReplaceStorageMapFileReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 202:
 		result := NewReplaceStorageMapFileAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 204:
 		result := NewReplaceStorageMapFileNoContent()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 400:
 		result := NewReplaceStorageMapFileBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	case 404:
 		result := NewReplaceStorageMapFileNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewReplaceStorageMapFileDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -126,9 +130,7 @@ func (o *ReplaceStorageMapFileNoContent) readResponse(response runtime.ClientRes
 
 // NewReplaceStorageMapFileBadRequest creates a ReplaceStorageMapFileBadRequest with default headers values
 func NewReplaceStorageMapFileBadRequest() *ReplaceStorageMapFileBadRequest {
-	return &ReplaceStorageMapFileBadRequest{
-		ConfigurationVersion: 0,
-	}
+	return &ReplaceStorageMapFileBadRequest{}
 }
 
 /*ReplaceStorageMapFileBadRequest handles this case with default header values.
@@ -138,7 +140,7 @@ Bad request
 type ReplaceStorageMapFileBadRequest struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -147,18 +149,10 @@ func (o *ReplaceStorageMapFileBadRequest) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/storage/maps/{name}][%d] replaceStorageMapFileBadRequest  %+v", 400, o.Payload)
 }
 
-func (o *ReplaceStorageMapFileBadRequest) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *ReplaceStorageMapFileBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -172,9 +166,7 @@ func (o *ReplaceStorageMapFileBadRequest) readResponse(response runtime.ClientRe
 
 // NewReplaceStorageMapFileNotFound creates a ReplaceStorageMapFileNotFound with default headers values
 func NewReplaceStorageMapFileNotFound() *ReplaceStorageMapFileNotFound {
-	return &ReplaceStorageMapFileNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &ReplaceStorageMapFileNotFound{}
 }
 
 /*ReplaceStorageMapFileNotFound handles this case with default header values.
@@ -184,7 +176,7 @@ The specified resource was not found
 type ReplaceStorageMapFileNotFound struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -193,18 +185,10 @@ func (o *ReplaceStorageMapFileNotFound) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/storage/maps/{name}][%d] replaceStorageMapFileNotFound  %+v", 404, o.Payload)
 }
 
-func (o *ReplaceStorageMapFileNotFound) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *ReplaceStorageMapFileNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -219,8 +203,7 @@ func (o *ReplaceStorageMapFileNotFound) readResponse(response runtime.ClientResp
 // NewReplaceStorageMapFileDefault creates a ReplaceStorageMapFileDefault with default headers values
 func NewReplaceStorageMapFileDefault(code int) *ReplaceStorageMapFileDefault {
 	return &ReplaceStorageMapFileDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -233,7 +216,7 @@ type ReplaceStorageMapFileDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -247,18 +230,10 @@ func (o *ReplaceStorageMapFileDefault) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/storage/maps/{name}][%d] replaceStorageMapFile default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *ReplaceStorageMapFileDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *ReplaceStorageMapFileDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // CreateSpoeReader is a Reader for the CreateSpoe structure.
@@ -40,24 +39,28 @@ type CreateSpoeReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *CreateSpoeReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 201:
 		result := NewCreateSpoeCreated()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 400:
 		result := NewCreateSpoeBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	case 409:
 		result := NewCreateSpoeConflict()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewCreateSpoeDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -87,10 +90,6 @@ func (o *CreateSpoeCreated) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/spoe/spoe_files][%d] createSpoeCreated  %+v", 201, o.Payload)
 }
 
-func (o *CreateSpoeCreated) GetPayload() string {
-	return o.Payload
-}
-
 func (o *CreateSpoeCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response payload
@@ -103,9 +102,7 @@ func (o *CreateSpoeCreated) readResponse(response runtime.ClientResponse, consum
 
 // NewCreateSpoeBadRequest creates a CreateSpoeBadRequest with default headers values
 func NewCreateSpoeBadRequest() *CreateSpoeBadRequest {
-	return &CreateSpoeBadRequest{
-		ConfigurationVersion: 0,
-	}
+	return &CreateSpoeBadRequest{}
 }
 
 /*CreateSpoeBadRequest handles this case with default header values.
@@ -115,7 +112,7 @@ Bad request
 type CreateSpoeBadRequest struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -124,18 +121,10 @@ func (o *CreateSpoeBadRequest) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/spoe/spoe_files][%d] createSpoeBadRequest  %+v", 400, o.Payload)
 }
 
-func (o *CreateSpoeBadRequest) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateSpoeBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -149,9 +138,7 @@ func (o *CreateSpoeBadRequest) readResponse(response runtime.ClientResponse, con
 
 // NewCreateSpoeConflict creates a CreateSpoeConflict with default headers values
 func NewCreateSpoeConflict() *CreateSpoeConflict {
-	return &CreateSpoeConflict{
-		ConfigurationVersion: 0,
-	}
+	return &CreateSpoeConflict{}
 }
 
 /*CreateSpoeConflict handles this case with default header values.
@@ -161,7 +148,7 @@ The specified resource already exists
 type CreateSpoeConflict struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -170,18 +157,10 @@ func (o *CreateSpoeConflict) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/spoe/spoe_files][%d] createSpoeConflict  %+v", 409, o.Payload)
 }
 
-func (o *CreateSpoeConflict) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateSpoeConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -196,8 +175,7 @@ func (o *CreateSpoeConflict) readResponse(response runtime.ClientResponse, consu
 // NewCreateSpoeDefault creates a CreateSpoeDefault with default headers values
 func NewCreateSpoeDefault(code int) *CreateSpoeDefault {
 	return &CreateSpoeDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -210,7 +188,7 @@ type CreateSpoeDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -224,18 +202,10 @@ func (o *CreateSpoeDefault) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/spoe/spoe_files][%d] createSpoe default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *CreateSpoeDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateSpoeDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

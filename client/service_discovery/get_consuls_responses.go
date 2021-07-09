@@ -26,11 +26,12 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // GetConsulsReader is a Reader for the GetConsuls structure.
@@ -41,12 +42,14 @@ type GetConsulsReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetConsulsReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetConsulsOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	default:
 		result := NewGetConsulsDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -76,10 +79,6 @@ func (o *GetConsulsOK) Error() string {
 	return fmt.Sprintf("[GET /service_discovery/consul][%d] getConsulsOK  %+v", 200, o.Payload)
 }
 
-func (o *GetConsulsOK) GetPayload() *GetConsulsOKBody {
-	return o.Payload
-}
-
 func (o *GetConsulsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(GetConsulsOKBody)
@@ -95,8 +94,7 @@ func (o *GetConsulsOK) readResponse(response runtime.ClientResponse, consumer ru
 // NewGetConsulsDefault creates a GetConsulsDefault with default headers values
 func NewGetConsulsDefault(code int) *GetConsulsDefault {
 	return &GetConsulsDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -109,7 +107,7 @@ type GetConsulsDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -123,18 +121,10 @@ func (o *GetConsulsDefault) Error() string {
 	return fmt.Sprintf("[GET /service_discovery/consul][%d] getConsuls default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *GetConsulsDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetConsulsDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

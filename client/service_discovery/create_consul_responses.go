@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // CreateConsulReader is a Reader for the CreateConsul structure.
@@ -40,24 +39,28 @@ type CreateConsulReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *CreateConsulReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 201:
 		result := NewCreateConsulCreated()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 400:
 		result := NewCreateConsulBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	case 409:
 		result := NewCreateConsulConflict()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewCreateConsulDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -87,10 +90,6 @@ func (o *CreateConsulCreated) Error() string {
 	return fmt.Sprintf("[POST /service_discovery/consul][%d] createConsulCreated  %+v", 201, o.Payload)
 }
 
-func (o *CreateConsulCreated) GetPayload() *models.Consul {
-	return o.Payload
-}
-
 func (o *CreateConsulCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.Consul)
@@ -105,9 +104,7 @@ func (o *CreateConsulCreated) readResponse(response runtime.ClientResponse, cons
 
 // NewCreateConsulBadRequest creates a CreateConsulBadRequest with default headers values
 func NewCreateConsulBadRequest() *CreateConsulBadRequest {
-	return &CreateConsulBadRequest{
-		ConfigurationVersion: 0,
-	}
+	return &CreateConsulBadRequest{}
 }
 
 /*CreateConsulBadRequest handles this case with default header values.
@@ -117,7 +114,7 @@ Bad request
 type CreateConsulBadRequest struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -126,18 +123,10 @@ func (o *CreateConsulBadRequest) Error() string {
 	return fmt.Sprintf("[POST /service_discovery/consul][%d] createConsulBadRequest  %+v", 400, o.Payload)
 }
 
-func (o *CreateConsulBadRequest) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateConsulBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -151,9 +140,7 @@ func (o *CreateConsulBadRequest) readResponse(response runtime.ClientResponse, c
 
 // NewCreateConsulConflict creates a CreateConsulConflict with default headers values
 func NewCreateConsulConflict() *CreateConsulConflict {
-	return &CreateConsulConflict{
-		ConfigurationVersion: 0,
-	}
+	return &CreateConsulConflict{}
 }
 
 /*CreateConsulConflict handles this case with default header values.
@@ -163,7 +150,7 @@ The specified resource already exists
 type CreateConsulConflict struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -172,18 +159,10 @@ func (o *CreateConsulConflict) Error() string {
 	return fmt.Sprintf("[POST /service_discovery/consul][%d] createConsulConflict  %+v", 409, o.Payload)
 }
 
-func (o *CreateConsulConflict) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateConsulConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -198,8 +177,7 @@ func (o *CreateConsulConflict) readResponse(response runtime.ClientResponse, con
 // NewCreateConsulDefault creates a CreateConsulDefault with default headers values
 func NewCreateConsulDefault(code int) *CreateConsulDefault {
 	return &CreateConsulDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -212,7 +190,7 @@ type CreateConsulDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -226,18 +204,10 @@ func (o *CreateConsulDefault) Error() string {
 	return fmt.Sprintf("[POST /service_discovery/consul][%d] createConsul default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *CreateConsulDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateConsulDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // CreatePeerReader is a Reader for the CreatePeer structure.
@@ -40,30 +39,35 @@ type CreatePeerReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *CreatePeerReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 201:
 		result := NewCreatePeerCreated()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 202:
 		result := NewCreatePeerAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 400:
 		result := NewCreatePeerBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	case 409:
 		result := NewCreatePeerConflict()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewCreatePeerDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -91,10 +95,6 @@ type CreatePeerCreated struct {
 
 func (o *CreatePeerCreated) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/peer_section][%d] createPeerCreated  %+v", 201, o.Payload)
-}
-
-func (o *CreatePeerCreated) GetPayload() *models.PeerSection {
-	return o.Payload
 }
 
 func (o *CreatePeerCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -130,10 +130,6 @@ func (o *CreatePeerAccepted) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/peer_section][%d] createPeerAccepted  %+v", 202, o.Payload)
 }
 
-func (o *CreatePeerAccepted) GetPayload() *models.PeerSection {
-	return o.Payload
-}
-
 func (o *CreatePeerAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Reload-ID
@@ -151,9 +147,7 @@ func (o *CreatePeerAccepted) readResponse(response runtime.ClientResponse, consu
 
 // NewCreatePeerBadRequest creates a CreatePeerBadRequest with default headers values
 func NewCreatePeerBadRequest() *CreatePeerBadRequest {
-	return &CreatePeerBadRequest{
-		ConfigurationVersion: 0,
-	}
+	return &CreatePeerBadRequest{}
 }
 
 /*CreatePeerBadRequest handles this case with default header values.
@@ -163,7 +157,7 @@ Bad request
 type CreatePeerBadRequest struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -172,18 +166,10 @@ func (o *CreatePeerBadRequest) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/peer_section][%d] createPeerBadRequest  %+v", 400, o.Payload)
 }
 
-func (o *CreatePeerBadRequest) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreatePeerBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -197,9 +183,7 @@ func (o *CreatePeerBadRequest) readResponse(response runtime.ClientResponse, con
 
 // NewCreatePeerConflict creates a CreatePeerConflict with default headers values
 func NewCreatePeerConflict() *CreatePeerConflict {
-	return &CreatePeerConflict{
-		ConfigurationVersion: 0,
-	}
+	return &CreatePeerConflict{}
 }
 
 /*CreatePeerConflict handles this case with default header values.
@@ -209,7 +193,7 @@ The specified resource already exists
 type CreatePeerConflict struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -218,18 +202,10 @@ func (o *CreatePeerConflict) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/peer_section][%d] createPeerConflict  %+v", 409, o.Payload)
 }
 
-func (o *CreatePeerConflict) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreatePeerConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -244,8 +220,7 @@ func (o *CreatePeerConflict) readResponse(response runtime.ClientResponse, consu
 // NewCreatePeerDefault creates a CreatePeerDefault with default headers values
 func NewCreatePeerDefault(code int) *CreatePeerDefault {
 	return &CreatePeerDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -258,7 +233,7 @@ type CreatePeerDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -272,18 +247,10 @@ func (o *CreatePeerDefault) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/peer_section][%d] createPeer default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *CreatePeerDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreatePeerDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

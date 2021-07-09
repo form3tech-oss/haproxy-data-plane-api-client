@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // CreateServerReader is a Reader for the CreateServer structure.
@@ -40,30 +39,35 @@ type CreateServerReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *CreateServerReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 201:
 		result := NewCreateServerCreated()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 202:
 		result := NewCreateServerAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 400:
 		result := NewCreateServerBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	case 409:
 		result := NewCreateServerConflict()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewCreateServerDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -91,10 +95,6 @@ type CreateServerCreated struct {
 
 func (o *CreateServerCreated) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/servers][%d] createServerCreated  %+v", 201, o.Payload)
-}
-
-func (o *CreateServerCreated) GetPayload() *models.Server {
-	return o.Payload
 }
 
 func (o *CreateServerCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -130,10 +130,6 @@ func (o *CreateServerAccepted) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/servers][%d] createServerAccepted  %+v", 202, o.Payload)
 }
 
-func (o *CreateServerAccepted) GetPayload() *models.Server {
-	return o.Payload
-}
-
 func (o *CreateServerAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Reload-ID
@@ -151,9 +147,7 @@ func (o *CreateServerAccepted) readResponse(response runtime.ClientResponse, con
 
 // NewCreateServerBadRequest creates a CreateServerBadRequest with default headers values
 func NewCreateServerBadRequest() *CreateServerBadRequest {
-	return &CreateServerBadRequest{
-		ConfigurationVersion: 0,
-	}
+	return &CreateServerBadRequest{}
 }
 
 /*CreateServerBadRequest handles this case with default header values.
@@ -163,7 +157,7 @@ Bad request
 type CreateServerBadRequest struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -172,18 +166,10 @@ func (o *CreateServerBadRequest) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/servers][%d] createServerBadRequest  %+v", 400, o.Payload)
 }
 
-func (o *CreateServerBadRequest) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateServerBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -197,9 +183,7 @@ func (o *CreateServerBadRequest) readResponse(response runtime.ClientResponse, c
 
 // NewCreateServerConflict creates a CreateServerConflict with default headers values
 func NewCreateServerConflict() *CreateServerConflict {
-	return &CreateServerConflict{
-		ConfigurationVersion: 0,
-	}
+	return &CreateServerConflict{}
 }
 
 /*CreateServerConflict handles this case with default header values.
@@ -209,7 +193,7 @@ The specified resource already exists
 type CreateServerConflict struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -218,18 +202,10 @@ func (o *CreateServerConflict) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/servers][%d] createServerConflict  %+v", 409, o.Payload)
 }
 
-func (o *CreateServerConflict) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateServerConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -244,8 +220,7 @@ func (o *CreateServerConflict) readResponse(response runtime.ClientResponse, con
 // NewCreateServerDefault creates a CreateServerDefault with default headers values
 func NewCreateServerDefault(code int) *CreateServerDefault {
 	return &CreateServerDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -258,7 +233,7 @@ type CreateServerDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -272,18 +247,10 @@ func (o *CreateServerDefault) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/servers][%d] createServer default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *CreateServerDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateServerDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

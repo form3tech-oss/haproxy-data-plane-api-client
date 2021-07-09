@@ -26,11 +26,12 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // GetAclsReader is a Reader for the GetAcls structure.
@@ -41,12 +42,14 @@ type GetAclsReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetAclsReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetAclsOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	default:
 		result := NewGetAclsDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -71,7 +74,7 @@ Successful operation
 type GetAclsOK struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *GetAclsOKBody
 }
@@ -80,18 +83,10 @@ func (o *GetAclsOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/acls][%d] getAclsOK  %+v", 200, o.Payload)
 }
 
-func (o *GetAclsOK) GetPayload() *GetAclsOKBody {
-	return o.Payload
-}
-
 func (o *GetAclsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(GetAclsOKBody)
 
@@ -106,8 +101,7 @@ func (o *GetAclsOK) readResponse(response runtime.ClientResponse, consumer runti
 // NewGetAclsDefault creates a GetAclsDefault with default headers values
 func NewGetAclsDefault(code int) *GetAclsDefault {
 	return &GetAclsDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -120,7 +114,7 @@ type GetAclsDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -134,18 +128,10 @@ func (o *GetAclsDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/acls][%d] getAcls default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *GetAclsDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetAclsDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

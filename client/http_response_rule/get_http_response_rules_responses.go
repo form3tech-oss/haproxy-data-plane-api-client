@@ -26,11 +26,12 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // GetHTTPResponseRulesReader is a Reader for the GetHTTPResponseRules structure.
@@ -41,12 +42,14 @@ type GetHTTPResponseRulesReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetHTTPResponseRulesReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetHTTPResponseRulesOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	default:
 		result := NewGetHTTPResponseRulesDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -71,7 +74,7 @@ Successful operation
 type GetHTTPResponseRulesOK struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *GetHTTPResponseRulesOKBody
 }
@@ -80,18 +83,10 @@ func (o *GetHTTPResponseRulesOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/http_response_rules][%d] getHttpResponseRulesOK  %+v", 200, o.Payload)
 }
 
-func (o *GetHTTPResponseRulesOK) GetPayload() *GetHTTPResponseRulesOKBody {
-	return o.Payload
-}
-
 func (o *GetHTTPResponseRulesOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(GetHTTPResponseRulesOKBody)
 
@@ -106,8 +101,7 @@ func (o *GetHTTPResponseRulesOK) readResponse(response runtime.ClientResponse, c
 // NewGetHTTPResponseRulesDefault creates a GetHTTPResponseRulesDefault with default headers values
 func NewGetHTTPResponseRulesDefault(code int) *GetHTTPResponseRulesDefault {
 	return &GetHTTPResponseRulesDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -120,7 +114,7 @@ type GetHTTPResponseRulesDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -134,18 +128,10 @@ func (o *GetHTTPResponseRulesDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/http_response_rules][%d] getHTTPResponseRules default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *GetHTTPResponseRulesDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetHTTPResponseRulesDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

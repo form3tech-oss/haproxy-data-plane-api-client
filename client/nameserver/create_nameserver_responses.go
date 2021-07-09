@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // CreateNameserverReader is a Reader for the CreateNameserver structure.
@@ -40,30 +39,35 @@ type CreateNameserverReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *CreateNameserverReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 201:
 		result := NewCreateNameserverCreated()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 202:
 		result := NewCreateNameserverAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 400:
 		result := NewCreateNameserverBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	case 409:
 		result := NewCreateNameserverConflict()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewCreateNameserverDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -91,10 +95,6 @@ type CreateNameserverCreated struct {
 
 func (o *CreateNameserverCreated) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/nameservers][%d] createNameserverCreated  %+v", 201, o.Payload)
-}
-
-func (o *CreateNameserverCreated) GetPayload() *models.Nameserver {
-	return o.Payload
 }
 
 func (o *CreateNameserverCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -130,10 +130,6 @@ func (o *CreateNameserverAccepted) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/nameservers][%d] createNameserverAccepted  %+v", 202, o.Payload)
 }
 
-func (o *CreateNameserverAccepted) GetPayload() *models.Nameserver {
-	return o.Payload
-}
-
 func (o *CreateNameserverAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Reload-ID
@@ -151,9 +147,7 @@ func (o *CreateNameserverAccepted) readResponse(response runtime.ClientResponse,
 
 // NewCreateNameserverBadRequest creates a CreateNameserverBadRequest with default headers values
 func NewCreateNameserverBadRequest() *CreateNameserverBadRequest {
-	return &CreateNameserverBadRequest{
-		ConfigurationVersion: 0,
-	}
+	return &CreateNameserverBadRequest{}
 }
 
 /*CreateNameserverBadRequest handles this case with default header values.
@@ -163,7 +157,7 @@ Bad request
 type CreateNameserverBadRequest struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -172,18 +166,10 @@ func (o *CreateNameserverBadRequest) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/nameservers][%d] createNameserverBadRequest  %+v", 400, o.Payload)
 }
 
-func (o *CreateNameserverBadRequest) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateNameserverBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -197,9 +183,7 @@ func (o *CreateNameserverBadRequest) readResponse(response runtime.ClientRespons
 
 // NewCreateNameserverConflict creates a CreateNameserverConflict with default headers values
 func NewCreateNameserverConflict() *CreateNameserverConflict {
-	return &CreateNameserverConflict{
-		ConfigurationVersion: 0,
-	}
+	return &CreateNameserverConflict{}
 }
 
 /*CreateNameserverConflict handles this case with default header values.
@@ -209,7 +193,7 @@ The specified resource already exists
 type CreateNameserverConflict struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -218,18 +202,10 @@ func (o *CreateNameserverConflict) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/nameservers][%d] createNameserverConflict  %+v", 409, o.Payload)
 }
 
-func (o *CreateNameserverConflict) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateNameserverConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -244,8 +220,7 @@ func (o *CreateNameserverConflict) readResponse(response runtime.ClientResponse,
 // NewCreateNameserverDefault creates a CreateNameserverDefault with default headers values
 func NewCreateNameserverDefault(code int) *CreateNameserverDefault {
 	return &CreateNameserverDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -258,7 +233,7 @@ type CreateNameserverDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -272,18 +247,10 @@ func (o *CreateNameserverDefault) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/nameservers][%d] createNameserver default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *CreateNameserverDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateNameserverDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

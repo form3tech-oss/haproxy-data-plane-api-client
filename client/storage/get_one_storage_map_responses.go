@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // GetOneStorageMapReader is a Reader for the GetOneStorageMap structure.
@@ -41,18 +40,21 @@ type GetOneStorageMapReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetOneStorageMapReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetOneStorageMapOK(o.writer)
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewGetOneStorageMapNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewGetOneStorageMapDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -84,10 +86,6 @@ func (o *GetOneStorageMapOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/storage/maps/{name}][%d] getOneStorageMapOK  %+v", 200, o.Payload)
 }
 
-func (o *GetOneStorageMapOK) GetPayload() io.Writer {
-	return o.Payload
-}
-
 func (o *GetOneStorageMapOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response payload
@@ -100,9 +98,7 @@ func (o *GetOneStorageMapOK) readResponse(response runtime.ClientResponse, consu
 
 // NewGetOneStorageMapNotFound creates a GetOneStorageMapNotFound with default headers values
 func NewGetOneStorageMapNotFound() *GetOneStorageMapNotFound {
-	return &GetOneStorageMapNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &GetOneStorageMapNotFound{}
 }
 
 /*GetOneStorageMapNotFound handles this case with default header values.
@@ -112,7 +108,7 @@ The specified resource was not found
 type GetOneStorageMapNotFound struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -121,18 +117,10 @@ func (o *GetOneStorageMapNotFound) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/storage/maps/{name}][%d] getOneStorageMapNotFound  %+v", 404, o.Payload)
 }
 
-func (o *GetOneStorageMapNotFound) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetOneStorageMapNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -147,8 +135,7 @@ func (o *GetOneStorageMapNotFound) readResponse(response runtime.ClientResponse,
 // NewGetOneStorageMapDefault creates a GetOneStorageMapDefault with default headers values
 func NewGetOneStorageMapDefault(code int) *GetOneStorageMapDefault {
 	return &GetOneStorageMapDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -161,7 +148,7 @@ type GetOneStorageMapDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -175,18 +162,10 @@ func (o *GetOneStorageMapDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/storage/maps/{name}][%d] getOneStorageMap default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *GetOneStorageMapDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetOneStorageMapDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // DeleteSpoeTransactionReader is a Reader for the DeleteSpoeTransaction structure.
@@ -40,18 +39,21 @@ type DeleteSpoeTransactionReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *DeleteSpoeTransactionReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 204:
 		result := NewDeleteSpoeTransactionNoContent()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewDeleteSpoeTransactionNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewDeleteSpoeTransactionDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -87,9 +89,7 @@ func (o *DeleteSpoeTransactionNoContent) readResponse(response runtime.ClientRes
 
 // NewDeleteSpoeTransactionNotFound creates a DeleteSpoeTransactionNotFound with default headers values
 func NewDeleteSpoeTransactionNotFound() *DeleteSpoeTransactionNotFound {
-	return &DeleteSpoeTransactionNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &DeleteSpoeTransactionNotFound{}
 }
 
 /*DeleteSpoeTransactionNotFound handles this case with default header values.
@@ -99,7 +99,7 @@ The specified resource was not found
 type DeleteSpoeTransactionNotFound struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -108,18 +108,10 @@ func (o *DeleteSpoeTransactionNotFound) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/spoe_transactions/{id}][%d] deleteSpoeTransactionNotFound  %+v", 404, o.Payload)
 }
 
-func (o *DeleteSpoeTransactionNotFound) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *DeleteSpoeTransactionNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -134,8 +126,7 @@ func (o *DeleteSpoeTransactionNotFound) readResponse(response runtime.ClientResp
 // NewDeleteSpoeTransactionDefault creates a DeleteSpoeTransactionDefault with default headers values
 func NewDeleteSpoeTransactionDefault(code int) *DeleteSpoeTransactionDefault {
 	return &DeleteSpoeTransactionDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -148,7 +139,7 @@ type DeleteSpoeTransactionDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -162,18 +153,10 @@ func (o *DeleteSpoeTransactionDefault) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/spoe_transactions/{id}][%d] deleteSpoeTransaction default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *DeleteSpoeTransactionDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *DeleteSpoeTransactionDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

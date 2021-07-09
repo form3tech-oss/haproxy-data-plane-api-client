@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // DeleteBindReader is a Reader for the DeleteBind structure.
@@ -40,24 +39,28 @@ type DeleteBindReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *DeleteBindReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 202:
 		result := NewDeleteBindAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 204:
 		result := NewDeleteBindNoContent()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewDeleteBindNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewDeleteBindDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -120,9 +123,7 @@ func (o *DeleteBindNoContent) readResponse(response runtime.ClientResponse, cons
 
 // NewDeleteBindNotFound creates a DeleteBindNotFound with default headers values
 func NewDeleteBindNotFound() *DeleteBindNotFound {
-	return &DeleteBindNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &DeleteBindNotFound{}
 }
 
 /*DeleteBindNotFound handles this case with default header values.
@@ -132,7 +133,7 @@ The specified resource was not found
 type DeleteBindNotFound struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -141,18 +142,10 @@ func (o *DeleteBindNotFound) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/configuration/binds/{name}][%d] deleteBindNotFound  %+v", 404, o.Payload)
 }
 
-func (o *DeleteBindNotFound) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *DeleteBindNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -167,8 +160,7 @@ func (o *DeleteBindNotFound) readResponse(response runtime.ClientResponse, consu
 // NewDeleteBindDefault creates a DeleteBindDefault with default headers values
 func NewDeleteBindDefault(code int) *DeleteBindDefault {
 	return &DeleteBindDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -181,7 +173,7 @@ type DeleteBindDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -195,18 +187,10 @@ func (o *DeleteBindDefault) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/configuration/binds/{name}][%d] deleteBind default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *DeleteBindDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *DeleteBindDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

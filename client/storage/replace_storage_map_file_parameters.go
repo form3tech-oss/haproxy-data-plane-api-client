@@ -28,8 +28,9 @@ import (
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
-	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
+
+	strfmt "github.com/go-openapi/strfmt"
 )
 
 // NewReplaceStorageMapFileParams creates a new ReplaceStorageMapFileParams object
@@ -37,9 +38,11 @@ import (
 func NewReplaceStorageMapFileParams() *ReplaceStorageMapFileParams {
 	var (
 		forceReloadDefault = bool(false)
+		skipReloadDefault  = bool(false)
 	)
 	return &ReplaceStorageMapFileParams{
 		ForceReload: &forceReloadDefault,
+		SkipReload:  &skipReloadDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -50,9 +53,11 @@ func NewReplaceStorageMapFileParams() *ReplaceStorageMapFileParams {
 func NewReplaceStorageMapFileParamsWithTimeout(timeout time.Duration) *ReplaceStorageMapFileParams {
 	var (
 		forceReloadDefault = bool(false)
+		skipReloadDefault  = bool(false)
 	)
 	return &ReplaceStorageMapFileParams{
 		ForceReload: &forceReloadDefault,
+		SkipReload:  &skipReloadDefault,
 
 		timeout: timeout,
 	}
@@ -63,9 +68,11 @@ func NewReplaceStorageMapFileParamsWithTimeout(timeout time.Duration) *ReplaceSt
 func NewReplaceStorageMapFileParamsWithContext(ctx context.Context) *ReplaceStorageMapFileParams {
 	var (
 		forceReloadDefault = bool(false)
+		skipReloadDefault  = bool(false)
 	)
 	return &ReplaceStorageMapFileParams{
 		ForceReload: &forceReloadDefault,
+		SkipReload:  &skipReloadDefault,
 
 		Context: ctx,
 	}
@@ -76,9 +83,11 @@ func NewReplaceStorageMapFileParamsWithContext(ctx context.Context) *ReplaceStor
 func NewReplaceStorageMapFileParamsWithHTTPClient(client *http.Client) *ReplaceStorageMapFileParams {
 	var (
 		forceReloadDefault = bool(false)
+		skipReloadDefault  = bool(false)
 	)
 	return &ReplaceStorageMapFileParams{
 		ForceReload: &forceReloadDefault,
+		SkipReload:  &skipReloadDefault,
 		HTTPClient:  client,
 	}
 }
@@ -100,6 +109,11 @@ type ReplaceStorageMapFileParams struct {
 
 	*/
 	Name string
+	/*SkipReload
+	  If set, no reload will be initiated after update
+
+	*/
+	SkipReload *bool
 
 	timeout    time.Duration
 	Context    context.Context
@@ -172,6 +186,17 @@ func (o *ReplaceStorageMapFileParams) SetName(name string) {
 	o.Name = name
 }
 
+// WithSkipReload adds the skipReload to the replace storage map file params
+func (o *ReplaceStorageMapFileParams) WithSkipReload(skipReload *bool) *ReplaceStorageMapFileParams {
+	o.SetSkipReload(skipReload)
+	return o
+}
+
+// SetSkipReload adds the skipReload to the replace storage map file params
+func (o *ReplaceStorageMapFileParams) SetSkipReload(skipReload *bool) {
+	o.SkipReload = skipReload
+}
+
 // WriteToRequest writes these params to a swagger request
 func (o *ReplaceStorageMapFileParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
@@ -203,6 +228,22 @@ func (o *ReplaceStorageMapFileParams) WriteToRequest(r runtime.ClientRequest, re
 	// path param name
 	if err := r.SetPathParam("name", o.Name); err != nil {
 		return err
+	}
+
+	if o.SkipReload != nil {
+
+		// query param skip_reload
+		var qrSkipReload bool
+		if o.SkipReload != nil {
+			qrSkipReload = *o.SkipReload
+		}
+		qSkipReload := swag.FormatBool(qrSkipReload)
+		if qSkipReload != "" {
+			if err := r.SetQueryParam("skip_reload", qSkipReload); err != nil {
+				return err
+			}
+		}
+
 	}
 
 	if len(res) > 0 {

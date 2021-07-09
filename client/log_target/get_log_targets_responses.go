@@ -26,11 +26,12 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // GetLogTargetsReader is a Reader for the GetLogTargets structure.
@@ -41,12 +42,14 @@ type GetLogTargetsReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetLogTargetsReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetLogTargetsOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	default:
 		result := NewGetLogTargetsDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -71,7 +74,7 @@ Successful operation
 type GetLogTargetsOK struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *GetLogTargetsOKBody
 }
@@ -80,18 +83,10 @@ func (o *GetLogTargetsOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/log_targets][%d] getLogTargetsOK  %+v", 200, o.Payload)
 }
 
-func (o *GetLogTargetsOK) GetPayload() *GetLogTargetsOKBody {
-	return o.Payload
-}
-
 func (o *GetLogTargetsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(GetLogTargetsOKBody)
 
@@ -106,8 +101,7 @@ func (o *GetLogTargetsOK) readResponse(response runtime.ClientResponse, consumer
 // NewGetLogTargetsDefault creates a GetLogTargetsDefault with default headers values
 func NewGetLogTargetsDefault(code int) *GetLogTargetsDefault {
 	return &GetLogTargetsDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -120,7 +114,7 @@ type GetLogTargetsDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -134,18 +128,10 @@ func (o *GetLogTargetsDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/log_targets][%d] getLogTargets default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *GetLogTargetsDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetLogTargetsDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

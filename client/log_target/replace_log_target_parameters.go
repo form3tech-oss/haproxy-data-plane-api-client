@@ -28,10 +28,11 @@ import (
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
-	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // NewReplaceLogTargetParams creates a new ReplaceLogTargetParams object
@@ -106,7 +107,7 @@ type ReplaceLogTargetParams struct {
 	  Parent name
 
 	*/
-	ParentName string
+	ParentName *string
 	/*ParentType
 	  Parent type
 
@@ -195,13 +196,13 @@ func (o *ReplaceLogTargetParams) SetIndex(index int64) {
 }
 
 // WithParentName adds the parentName to the replace log target params
-func (o *ReplaceLogTargetParams) WithParentName(parentName string) *ReplaceLogTargetParams {
+func (o *ReplaceLogTargetParams) WithParentName(parentName *string) *ReplaceLogTargetParams {
 	o.SetParentName(parentName)
 	return o
 }
 
 // SetParentName adds the parentName to the replace log target params
-func (o *ReplaceLogTargetParams) SetParentName(parentName string) {
+func (o *ReplaceLogTargetParams) SetParentName(parentName *string) {
 	o.ParentName = parentName
 }
 
@@ -273,13 +274,20 @@ func (o *ReplaceLogTargetParams) WriteToRequest(r runtime.ClientRequest, reg str
 		return err
 	}
 
-	// query param parent_name
-	qrParentName := o.ParentName
-	qParentName := qrParentName
-	if qParentName != "" {
-		if err := r.SetQueryParam("parent_name", qParentName); err != nil {
-			return err
+	if o.ParentName != nil {
+
+		// query param parent_name
+		var qrParentName string
+		if o.ParentName != nil {
+			qrParentName = *o.ParentName
 		}
+		qParentName := qrParentName
+		if qParentName != "" {
+			if err := r.SetQueryParam("parent_name", qParentName); err != nil {
+				return err
+			}
+		}
+
 	}
 
 	// query param parent_type

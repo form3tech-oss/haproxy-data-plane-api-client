@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // DeleteSpoeAgentReader is a Reader for the DeleteSpoeAgent structure.
@@ -40,18 +39,21 @@ type DeleteSpoeAgentReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *DeleteSpoeAgentReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 204:
 		result := NewDeleteSpoeAgentNoContent()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewDeleteSpoeAgentNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewDeleteSpoeAgentDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -87,9 +89,7 @@ func (o *DeleteSpoeAgentNoContent) readResponse(response runtime.ClientResponse,
 
 // NewDeleteSpoeAgentNotFound creates a DeleteSpoeAgentNotFound with default headers values
 func NewDeleteSpoeAgentNotFound() *DeleteSpoeAgentNotFound {
-	return &DeleteSpoeAgentNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &DeleteSpoeAgentNotFound{}
 }
 
 /*DeleteSpoeAgentNotFound handles this case with default header values.
@@ -99,7 +99,7 @@ The specified resource was not found
 type DeleteSpoeAgentNotFound struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -108,18 +108,10 @@ func (o *DeleteSpoeAgentNotFound) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/spoe/spoe_agents/{name}][%d] deleteSpoeAgentNotFound  %+v", 404, o.Payload)
 }
 
-func (o *DeleteSpoeAgentNotFound) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *DeleteSpoeAgentNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -134,8 +126,7 @@ func (o *DeleteSpoeAgentNotFound) readResponse(response runtime.ClientResponse, 
 // NewDeleteSpoeAgentDefault creates a DeleteSpoeAgentDefault with default headers values
 func NewDeleteSpoeAgentDefault(code int) *DeleteSpoeAgentDefault {
 	return &DeleteSpoeAgentDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -148,7 +139,7 @@ type DeleteSpoeAgentDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -162,18 +153,10 @@ func (o *DeleteSpoeAgentDefault) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/spoe/spoe_agents/{name}][%d] deleteSpoeAgent default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *DeleteSpoeAgentDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *DeleteSpoeAgentDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

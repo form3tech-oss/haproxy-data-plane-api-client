@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // ReplaceGlobalReader is a Reader for the ReplaceGlobal structure.
@@ -40,24 +39,28 @@ type ReplaceGlobalReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *ReplaceGlobalReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewReplaceGlobalOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 202:
 		result := NewReplaceGlobalAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 400:
 		result := NewReplaceGlobalBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewReplaceGlobalDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -85,10 +88,6 @@ type ReplaceGlobalOK struct {
 
 func (o *ReplaceGlobalOK) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/global][%d] replaceGlobalOK  %+v", 200, o.Payload)
-}
-
-func (o *ReplaceGlobalOK) GetPayload() *models.Global {
-	return o.Payload
 }
 
 func (o *ReplaceGlobalOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -124,10 +123,6 @@ func (o *ReplaceGlobalAccepted) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/global][%d] replaceGlobalAccepted  %+v", 202, o.Payload)
 }
 
-func (o *ReplaceGlobalAccepted) GetPayload() *models.Global {
-	return o.Payload
-}
-
 func (o *ReplaceGlobalAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Reload-ID
@@ -145,9 +140,7 @@ func (o *ReplaceGlobalAccepted) readResponse(response runtime.ClientResponse, co
 
 // NewReplaceGlobalBadRequest creates a ReplaceGlobalBadRequest with default headers values
 func NewReplaceGlobalBadRequest() *ReplaceGlobalBadRequest {
-	return &ReplaceGlobalBadRequest{
-		ConfigurationVersion: 0,
-	}
+	return &ReplaceGlobalBadRequest{}
 }
 
 /*ReplaceGlobalBadRequest handles this case with default header values.
@@ -157,7 +150,7 @@ Bad request
 type ReplaceGlobalBadRequest struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -166,18 +159,10 @@ func (o *ReplaceGlobalBadRequest) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/global][%d] replaceGlobalBadRequest  %+v", 400, o.Payload)
 }
 
-func (o *ReplaceGlobalBadRequest) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *ReplaceGlobalBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -192,8 +177,7 @@ func (o *ReplaceGlobalBadRequest) readResponse(response runtime.ClientResponse, 
 // NewReplaceGlobalDefault creates a ReplaceGlobalDefault with default headers values
 func NewReplaceGlobalDefault(code int) *ReplaceGlobalDefault {
 	return &ReplaceGlobalDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -206,7 +190,7 @@ type ReplaceGlobalDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -220,18 +204,10 @@ func (o *ReplaceGlobalDefault) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/global][%d] replaceGlobal default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *ReplaceGlobalDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *ReplaceGlobalDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

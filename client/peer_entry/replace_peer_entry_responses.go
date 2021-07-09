@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // ReplacePeerEntryReader is a Reader for the ReplacePeerEntry structure.
@@ -40,30 +39,35 @@ type ReplacePeerEntryReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *ReplacePeerEntryReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewReplacePeerEntryOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 202:
 		result := NewReplacePeerEntryAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 400:
 		result := NewReplacePeerEntryBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	case 404:
 		result := NewReplacePeerEntryNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewReplacePeerEntryDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -91,10 +95,6 @@ type ReplacePeerEntryOK struct {
 
 func (o *ReplacePeerEntryOK) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/peer_entries/{name}][%d] replacePeerEntryOK  %+v", 200, o.Payload)
-}
-
-func (o *ReplacePeerEntryOK) GetPayload() *models.PeerEntry {
-	return o.Payload
 }
 
 func (o *ReplacePeerEntryOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -130,10 +130,6 @@ func (o *ReplacePeerEntryAccepted) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/peer_entries/{name}][%d] replacePeerEntryAccepted  %+v", 202, o.Payload)
 }
 
-func (o *ReplacePeerEntryAccepted) GetPayload() *models.PeerEntry {
-	return o.Payload
-}
-
 func (o *ReplacePeerEntryAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Reload-ID
@@ -151,9 +147,7 @@ func (o *ReplacePeerEntryAccepted) readResponse(response runtime.ClientResponse,
 
 // NewReplacePeerEntryBadRequest creates a ReplacePeerEntryBadRequest with default headers values
 func NewReplacePeerEntryBadRequest() *ReplacePeerEntryBadRequest {
-	return &ReplacePeerEntryBadRequest{
-		ConfigurationVersion: 0,
-	}
+	return &ReplacePeerEntryBadRequest{}
 }
 
 /*ReplacePeerEntryBadRequest handles this case with default header values.
@@ -163,7 +157,7 @@ Bad request
 type ReplacePeerEntryBadRequest struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -172,18 +166,10 @@ func (o *ReplacePeerEntryBadRequest) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/peer_entries/{name}][%d] replacePeerEntryBadRequest  %+v", 400, o.Payload)
 }
 
-func (o *ReplacePeerEntryBadRequest) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *ReplacePeerEntryBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -197,9 +183,7 @@ func (o *ReplacePeerEntryBadRequest) readResponse(response runtime.ClientRespons
 
 // NewReplacePeerEntryNotFound creates a ReplacePeerEntryNotFound with default headers values
 func NewReplacePeerEntryNotFound() *ReplacePeerEntryNotFound {
-	return &ReplacePeerEntryNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &ReplacePeerEntryNotFound{}
 }
 
 /*ReplacePeerEntryNotFound handles this case with default header values.
@@ -209,7 +193,7 @@ The specified resource was not found
 type ReplacePeerEntryNotFound struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -218,18 +202,10 @@ func (o *ReplacePeerEntryNotFound) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/peer_entries/{name}][%d] replacePeerEntryNotFound  %+v", 404, o.Payload)
 }
 
-func (o *ReplacePeerEntryNotFound) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *ReplacePeerEntryNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -244,8 +220,7 @@ func (o *ReplacePeerEntryNotFound) readResponse(response runtime.ClientResponse,
 // NewReplacePeerEntryDefault creates a ReplacePeerEntryDefault with default headers values
 func NewReplacePeerEntryDefault(code int) *ReplacePeerEntryDefault {
 	return &ReplacePeerEntryDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -258,7 +233,7 @@ type ReplacePeerEntryDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -272,18 +247,10 @@ func (o *ReplacePeerEntryDefault) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/peer_entries/{name}][%d] replacePeerEntry default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *ReplacePeerEntryDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *ReplacePeerEntryDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

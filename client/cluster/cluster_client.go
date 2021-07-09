@@ -22,11 +22,12 @@ package cluster
 
 import (
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
+
+	strfmt "github.com/go-openapi/strfmt"
 )
 
 // New creates a new cluster API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -38,19 +39,10 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-// ClientService is the interface for Client methods
-type ClientService interface {
-	InitiateCertificateRefresh(params *InitiateCertificateRefreshParams, authInfo runtime.ClientAuthInfoWriter) (*InitiateCertificateRefreshOK, error)
-
-	PostCluster(params *PostClusterParams, authInfo runtime.ClientAuthInfoWriter) (*PostClusterOK, error)
-
-	SetTransport(transport runtime.ClientTransport)
-}
-
 /*
-  InitiateCertificateRefresh initiates a certificate refresh
+InitiateCertificateRefresh initiates a certificate refresh
 
-  Initiates a certificate refresh
+Initiates a certificate refresh
 */
 func (a *Client) InitiateCertificateRefresh(params *InitiateCertificateRefreshParams, authInfo runtime.ClientAuthInfoWriter) (*InitiateCertificateRefreshOK, error) {
 	// TODO: Validate the params before sending
@@ -74,19 +66,14 @@ func (a *Client) InitiateCertificateRefresh(params *InitiateCertificateRefreshPa
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*InitiateCertificateRefreshOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*InitiateCertificateRefreshDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*InitiateCertificateRefreshOK), nil
+
 }
 
 /*
-  PostCluster posts cluster settings
+PostCluster posts cluster settings
 
-  Post cluster settings
+Post cluster settings
 */
 func (a *Client) PostCluster(params *PostClusterParams, authInfo runtime.ClientAuthInfoWriter) (*PostClusterOK, error) {
 	// TODO: Validate the params before sending
@@ -110,13 +97,8 @@ func (a *Client) PostCluster(params *PostClusterParams, authInfo runtime.ClientA
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*PostClusterOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*PostClusterDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return result.(*PostClusterOK), nil
+
 }
 
 // SetTransport changes the transport on the client

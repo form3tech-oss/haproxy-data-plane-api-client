@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // CommitSpoeTransactionReader is a Reader for the CommitSpoeTransaction structure.
@@ -40,30 +39,35 @@ type CommitSpoeTransactionReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *CommitSpoeTransactionReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewCommitSpoeTransactionOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 202:
 		result := NewCommitSpoeTransactionAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 400:
 		result := NewCommitSpoeTransactionBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	case 404:
 		result := NewCommitSpoeTransactionNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewCommitSpoeTransactionDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -83,7 +87,7 @@ func NewCommitSpoeTransactionOK() *CommitSpoeTransactionOK {
 
 /*CommitSpoeTransactionOK handles this case with default header values.
 
-Transaction succesfully commited
+Transaction successfully committed
 */
 type CommitSpoeTransactionOK struct {
 	Payload *models.SpoeTransaction
@@ -91,10 +95,6 @@ type CommitSpoeTransactionOK struct {
 
 func (o *CommitSpoeTransactionOK) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/spoe_transactions/{id}][%d] commitSpoeTransactionOK  %+v", 200, o.Payload)
-}
-
-func (o *CommitSpoeTransactionOK) GetPayload() *models.SpoeTransaction {
-	return o.Payload
 }
 
 func (o *CommitSpoeTransactionOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -130,10 +130,6 @@ func (o *CommitSpoeTransactionAccepted) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/spoe_transactions/{id}][%d] commitSpoeTransactionAccepted  %+v", 202, o.Payload)
 }
 
-func (o *CommitSpoeTransactionAccepted) GetPayload() *models.SpoeTransaction {
-	return o.Payload
-}
-
 func (o *CommitSpoeTransactionAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Reload-ID
@@ -151,9 +147,7 @@ func (o *CommitSpoeTransactionAccepted) readResponse(response runtime.ClientResp
 
 // NewCommitSpoeTransactionBadRequest creates a CommitSpoeTransactionBadRequest with default headers values
 func NewCommitSpoeTransactionBadRequest() *CommitSpoeTransactionBadRequest {
-	return &CommitSpoeTransactionBadRequest{
-		ConfigurationVersion: 0,
-	}
+	return &CommitSpoeTransactionBadRequest{}
 }
 
 /*CommitSpoeTransactionBadRequest handles this case with default header values.
@@ -163,7 +157,7 @@ Bad request
 type CommitSpoeTransactionBadRequest struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -172,18 +166,10 @@ func (o *CommitSpoeTransactionBadRequest) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/spoe_transactions/{id}][%d] commitSpoeTransactionBadRequest  %+v", 400, o.Payload)
 }
 
-func (o *CommitSpoeTransactionBadRequest) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CommitSpoeTransactionBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -197,9 +183,7 @@ func (o *CommitSpoeTransactionBadRequest) readResponse(response runtime.ClientRe
 
 // NewCommitSpoeTransactionNotFound creates a CommitSpoeTransactionNotFound with default headers values
 func NewCommitSpoeTransactionNotFound() *CommitSpoeTransactionNotFound {
-	return &CommitSpoeTransactionNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &CommitSpoeTransactionNotFound{}
 }
 
 /*CommitSpoeTransactionNotFound handles this case with default header values.
@@ -209,7 +193,7 @@ The specified resource was not found
 type CommitSpoeTransactionNotFound struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -218,18 +202,10 @@ func (o *CommitSpoeTransactionNotFound) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/spoe_transactions/{id}][%d] commitSpoeTransactionNotFound  %+v", 404, o.Payload)
 }
 
-func (o *CommitSpoeTransactionNotFound) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CommitSpoeTransactionNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -244,8 +220,7 @@ func (o *CommitSpoeTransactionNotFound) readResponse(response runtime.ClientResp
 // NewCommitSpoeTransactionDefault creates a CommitSpoeTransactionDefault with default headers values
 func NewCommitSpoeTransactionDefault(code int) *CommitSpoeTransactionDefault {
 	return &CommitSpoeTransactionDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -258,7 +233,7 @@ type CommitSpoeTransactionDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -272,18 +247,10 @@ func (o *CommitSpoeTransactionDefault) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/spoe_transactions/{id}][%d] commitSpoeTransaction default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *CommitSpoeTransactionDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CommitSpoeTransactionDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

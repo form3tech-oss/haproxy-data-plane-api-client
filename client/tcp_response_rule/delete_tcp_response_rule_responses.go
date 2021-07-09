@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // DeleteTCPResponseRuleReader is a Reader for the DeleteTCPResponseRule structure.
@@ -40,24 +39,28 @@ type DeleteTCPResponseRuleReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *DeleteTCPResponseRuleReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 202:
 		result := NewDeleteTCPResponseRuleAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 204:
 		result := NewDeleteTCPResponseRuleNoContent()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewDeleteTCPResponseRuleNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewDeleteTCPResponseRuleDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -120,9 +123,7 @@ func (o *DeleteTCPResponseRuleNoContent) readResponse(response runtime.ClientRes
 
 // NewDeleteTCPResponseRuleNotFound creates a DeleteTCPResponseRuleNotFound with default headers values
 func NewDeleteTCPResponseRuleNotFound() *DeleteTCPResponseRuleNotFound {
-	return &DeleteTCPResponseRuleNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &DeleteTCPResponseRuleNotFound{}
 }
 
 /*DeleteTCPResponseRuleNotFound handles this case with default header values.
@@ -132,7 +133,7 @@ The specified resource was not found
 type DeleteTCPResponseRuleNotFound struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -141,18 +142,10 @@ func (o *DeleteTCPResponseRuleNotFound) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/configuration/tcp_response_rules/{index}][%d] deleteTcpResponseRuleNotFound  %+v", 404, o.Payload)
 }
 
-func (o *DeleteTCPResponseRuleNotFound) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *DeleteTCPResponseRuleNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -167,8 +160,7 @@ func (o *DeleteTCPResponseRuleNotFound) readResponse(response runtime.ClientResp
 // NewDeleteTCPResponseRuleDefault creates a DeleteTCPResponseRuleDefault with default headers values
 func NewDeleteTCPResponseRuleDefault(code int) *DeleteTCPResponseRuleDefault {
 	return &DeleteTCPResponseRuleDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -181,7 +173,7 @@ type DeleteTCPResponseRuleDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -195,18 +187,10 @@ func (o *DeleteTCPResponseRuleDefault) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/configuration/tcp_response_rules/{index}][%d] deleteTCPResponseRule default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *DeleteTCPResponseRuleDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *DeleteTCPResponseRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

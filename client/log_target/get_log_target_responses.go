@@ -26,10 +26,11 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // GetLogTargetReader is a Reader for the GetLogTarget structure.
@@ -40,18 +41,21 @@ type GetLogTargetReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetLogTargetReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetLogTargetOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewGetLogTargetNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewGetLogTargetDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -76,7 +80,7 @@ Successful operation
 type GetLogTargetOK struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *GetLogTargetOKBody
 }
@@ -85,18 +89,10 @@ func (o *GetLogTargetOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/log_targets/{index}][%d] getLogTargetOK  %+v", 200, o.Payload)
 }
 
-func (o *GetLogTargetOK) GetPayload() *GetLogTargetOKBody {
-	return o.Payload
-}
-
 func (o *GetLogTargetOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(GetLogTargetOKBody)
 
@@ -110,9 +106,7 @@ func (o *GetLogTargetOK) readResponse(response runtime.ClientResponse, consumer 
 
 // NewGetLogTargetNotFound creates a GetLogTargetNotFound with default headers values
 func NewGetLogTargetNotFound() *GetLogTargetNotFound {
-	return &GetLogTargetNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &GetLogTargetNotFound{}
 }
 
 /*GetLogTargetNotFound handles this case with default header values.
@@ -122,7 +116,7 @@ The specified resource was not found
 type GetLogTargetNotFound struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -131,18 +125,10 @@ func (o *GetLogTargetNotFound) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/log_targets/{index}][%d] getLogTargetNotFound  %+v", 404, o.Payload)
 }
 
-func (o *GetLogTargetNotFound) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetLogTargetNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -157,8 +143,7 @@ func (o *GetLogTargetNotFound) readResponse(response runtime.ClientResponse, con
 // NewGetLogTargetDefault creates a GetLogTargetDefault with default headers values
 func NewGetLogTargetDefault(code int) *GetLogTargetDefault {
 	return &GetLogTargetDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -171,7 +156,7 @@ type GetLogTargetDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -185,18 +170,10 @@ func (o *GetLogTargetDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/log_targets/{index}][%d] getLogTarget default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *GetLogTargetDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetLogTargetDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

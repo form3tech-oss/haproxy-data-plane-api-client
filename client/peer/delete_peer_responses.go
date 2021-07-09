@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // DeletePeerReader is a Reader for the DeletePeer structure.
@@ -40,24 +39,28 @@ type DeletePeerReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *DeletePeerReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 202:
 		result := NewDeletePeerAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 204:
 		result := NewDeletePeerNoContent()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewDeletePeerNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewDeletePeerDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -120,9 +123,7 @@ func (o *DeletePeerNoContent) readResponse(response runtime.ClientResponse, cons
 
 // NewDeletePeerNotFound creates a DeletePeerNotFound with default headers values
 func NewDeletePeerNotFound() *DeletePeerNotFound {
-	return &DeletePeerNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &DeletePeerNotFound{}
 }
 
 /*DeletePeerNotFound handles this case with default header values.
@@ -132,7 +133,7 @@ The specified resource was not found
 type DeletePeerNotFound struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -141,18 +142,10 @@ func (o *DeletePeerNotFound) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/configuration/peer_section/{name}][%d] deletePeerNotFound  %+v", 404, o.Payload)
 }
 
-func (o *DeletePeerNotFound) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *DeletePeerNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -167,8 +160,7 @@ func (o *DeletePeerNotFound) readResponse(response runtime.ClientResponse, consu
 // NewDeletePeerDefault creates a DeletePeerDefault with default headers values
 func NewDeletePeerDefault(code int) *DeletePeerDefault {
 	return &DeletePeerDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -181,7 +173,7 @@ type DeletePeerDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -195,18 +187,10 @@ func (o *DeletePeerDefault) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/configuration/peer_section/{name}][%d] deletePeer default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *DeletePeerDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *DeletePeerDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

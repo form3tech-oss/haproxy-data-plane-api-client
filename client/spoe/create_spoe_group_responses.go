@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // CreateSpoeGroupReader is a Reader for the CreateSpoeGroup structure.
@@ -40,24 +39,28 @@ type CreateSpoeGroupReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *CreateSpoeGroupReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 201:
 		result := NewCreateSpoeGroupCreated()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 400:
 		result := NewCreateSpoeGroupBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	case 409:
 		result := NewCreateSpoeGroupConflict()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewCreateSpoeGroupDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -87,10 +90,6 @@ func (o *CreateSpoeGroupCreated) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/spoe/spoe_groups][%d] createSpoeGroupCreated  %+v", 201, o.Payload)
 }
 
-func (o *CreateSpoeGroupCreated) GetPayload() *models.SpoeGroup {
-	return o.Payload
-}
-
 func (o *CreateSpoeGroupCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.SpoeGroup)
@@ -105,9 +104,7 @@ func (o *CreateSpoeGroupCreated) readResponse(response runtime.ClientResponse, c
 
 // NewCreateSpoeGroupBadRequest creates a CreateSpoeGroupBadRequest with default headers values
 func NewCreateSpoeGroupBadRequest() *CreateSpoeGroupBadRequest {
-	return &CreateSpoeGroupBadRequest{
-		ConfigurationVersion: 0,
-	}
+	return &CreateSpoeGroupBadRequest{}
 }
 
 /*CreateSpoeGroupBadRequest handles this case with default header values.
@@ -117,7 +114,7 @@ Bad request
 type CreateSpoeGroupBadRequest struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -126,18 +123,10 @@ func (o *CreateSpoeGroupBadRequest) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/spoe/spoe_groups][%d] createSpoeGroupBadRequest  %+v", 400, o.Payload)
 }
 
-func (o *CreateSpoeGroupBadRequest) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateSpoeGroupBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -151,9 +140,7 @@ func (o *CreateSpoeGroupBadRequest) readResponse(response runtime.ClientResponse
 
 // NewCreateSpoeGroupConflict creates a CreateSpoeGroupConflict with default headers values
 func NewCreateSpoeGroupConflict() *CreateSpoeGroupConflict {
-	return &CreateSpoeGroupConflict{
-		ConfigurationVersion: 0,
-	}
+	return &CreateSpoeGroupConflict{}
 }
 
 /*CreateSpoeGroupConflict handles this case with default header values.
@@ -163,7 +150,7 @@ The specified resource already exists
 type CreateSpoeGroupConflict struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -172,18 +159,10 @@ func (o *CreateSpoeGroupConflict) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/spoe/spoe_groups][%d] createSpoeGroupConflict  %+v", 409, o.Payload)
 }
 
-func (o *CreateSpoeGroupConflict) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateSpoeGroupConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -198,8 +177,7 @@ func (o *CreateSpoeGroupConflict) readResponse(response runtime.ClientResponse, 
 // NewCreateSpoeGroupDefault creates a CreateSpoeGroupDefault with default headers values
 func NewCreateSpoeGroupDefault(code int) *CreateSpoeGroupDefault {
 	return &CreateSpoeGroupDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -212,7 +190,7 @@ type CreateSpoeGroupDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -226,18 +204,10 @@ func (o *CreateSpoeGroupDefault) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/spoe/spoe_groups][%d] createSpoeGroup default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *CreateSpoeGroupDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CreateSpoeGroupDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

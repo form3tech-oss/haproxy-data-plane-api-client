@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // GetClusterReader is a Reader for the GetCluster structure.
@@ -40,12 +39,14 @@ type GetClusterReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetClusterReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetClusterOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	default:
 		result := NewGetClusterDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -75,10 +76,6 @@ func (o *GetClusterOK) Error() string {
 	return fmt.Sprintf("[GET /cluster][%d] getClusterOK  %+v", 200, o.Payload)
 }
 
-func (o *GetClusterOK) GetPayload() *models.ClusterSettings {
-	return o.Payload
-}
-
 func (o *GetClusterOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.ClusterSettings)
@@ -94,8 +91,7 @@ func (o *GetClusterOK) readResponse(response runtime.ClientResponse, consumer ru
 // NewGetClusterDefault creates a GetClusterDefault with default headers values
 func NewGetClusterDefault(code int) *GetClusterDefault {
 	return &GetClusterDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -108,7 +104,7 @@ type GetClusterDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -122,18 +118,10 @@ func (o *GetClusterDefault) Error() string {
 	return fmt.Sprintf("[GET /cluster][%d] getCluster default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *GetClusterDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetClusterDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

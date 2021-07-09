@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // CommitTransactionReader is a Reader for the CommitTransaction structure.
@@ -40,30 +39,42 @@ type CommitTransactionReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *CommitTransactionReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewCommitTransactionOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 202:
 		result := NewCommitTransactionAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 400:
 		result := NewCommitTransactionBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	case 404:
 		result := NewCommitTransactionNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
+	case 406:
+		result := NewCommitTransactionNotAcceptable()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
+
 	default:
 		result := NewCommitTransactionDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -83,7 +94,7 @@ func NewCommitTransactionOK() *CommitTransactionOK {
 
 /*CommitTransactionOK handles this case with default header values.
 
-Transaction succesfully commited
+Transaction successfully committed
 */
 type CommitTransactionOK struct {
 	Payload *models.Transaction
@@ -91,10 +102,6 @@ type CommitTransactionOK struct {
 
 func (o *CommitTransactionOK) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/transactions/{id}][%d] commitTransactionOK  %+v", 200, o.Payload)
-}
-
-func (o *CommitTransactionOK) GetPayload() *models.Transaction {
-	return o.Payload
 }
 
 func (o *CommitTransactionOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -130,10 +137,6 @@ func (o *CommitTransactionAccepted) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/transactions/{id}][%d] commitTransactionAccepted  %+v", 202, o.Payload)
 }
 
-func (o *CommitTransactionAccepted) GetPayload() *models.Transaction {
-	return o.Payload
-}
-
 func (o *CommitTransactionAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Reload-ID
@@ -151,9 +154,7 @@ func (o *CommitTransactionAccepted) readResponse(response runtime.ClientResponse
 
 // NewCommitTransactionBadRequest creates a CommitTransactionBadRequest with default headers values
 func NewCommitTransactionBadRequest() *CommitTransactionBadRequest {
-	return &CommitTransactionBadRequest{
-		ConfigurationVersion: 0,
-	}
+	return &CommitTransactionBadRequest{}
 }
 
 /*CommitTransactionBadRequest handles this case with default header values.
@@ -163,7 +164,7 @@ Bad request
 type CommitTransactionBadRequest struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -172,18 +173,10 @@ func (o *CommitTransactionBadRequest) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/transactions/{id}][%d] commitTransactionBadRequest  %+v", 400, o.Payload)
 }
 
-func (o *CommitTransactionBadRequest) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CommitTransactionBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -197,9 +190,7 @@ func (o *CommitTransactionBadRequest) readResponse(response runtime.ClientRespon
 
 // NewCommitTransactionNotFound creates a CommitTransactionNotFound with default headers values
 func NewCommitTransactionNotFound() *CommitTransactionNotFound {
-	return &CommitTransactionNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &CommitTransactionNotFound{}
 }
 
 /*CommitTransactionNotFound handles this case with default header values.
@@ -209,7 +200,7 @@ The specified resource was not found
 type CommitTransactionNotFound struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -218,18 +209,46 @@ func (o *CommitTransactionNotFound) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/transactions/{id}][%d] commitTransactionNotFound  %+v", 404, o.Payload)
 }
 
-func (o *CommitTransactionNotFound) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CommitTransactionNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
+
+	o.Payload = new(models.Error)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
 	}
-	o.ConfigurationVersion = configurationVersion
+
+	return nil
+}
+
+// NewCommitTransactionNotAcceptable creates a CommitTransactionNotAcceptable with default headers values
+func NewCommitTransactionNotAcceptable() *CommitTransactionNotAcceptable {
+	return &CommitTransactionNotAcceptable{}
+}
+
+/*CommitTransactionNotAcceptable handles this case with default header values.
+
+The specified resource cannot be handled
+*/
+type CommitTransactionNotAcceptable struct {
+	/*Configuration file version
+	 */
+	ConfigurationVersion string
+
+	Payload *models.Error
+}
+
+func (o *CommitTransactionNotAcceptable) Error() string {
+	return fmt.Sprintf("[PUT /services/haproxy/transactions/{id}][%d] commitTransactionNotAcceptable  %+v", 406, o.Payload)
+}
+
+func (o *CommitTransactionNotAcceptable) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	// response header Configuration-Version
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -244,8 +263,7 @@ func (o *CommitTransactionNotFound) readResponse(response runtime.ClientResponse
 // NewCommitTransactionDefault creates a CommitTransactionDefault with default headers values
 func NewCommitTransactionDefault(code int) *CommitTransactionDefault {
 	return &CommitTransactionDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -258,7 +276,7 @@ type CommitTransactionDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -272,18 +290,10 @@ func (o *CommitTransactionDefault) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/transactions/{id}][%d] commitTransaction default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *CommitTransactionDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *CommitTransactionDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 

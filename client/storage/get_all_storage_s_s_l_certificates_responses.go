@@ -24,12 +24,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	strfmt "github.com/go-openapi/strfmt"
+
+	"github.com/haproxytech/models/v2"
 )
 
 // GetAllStorageSSLCertificatesReader is a Reader for the GetAllStorageSSLCertificates structure.
@@ -40,18 +39,21 @@ type GetAllStorageSSLCertificatesReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetAllStorageSSLCertificatesReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+
 	case 200:
 		result := NewGetAllStorageSSLCertificatesOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+
 	case 404:
 		result := NewGetAllStorageSSLCertificatesNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
+
 	default:
 		result := NewGetAllStorageSSLCertificatesDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -81,10 +83,6 @@ func (o *GetAllStorageSSLCertificatesOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/storage/ssl_certificates][%d] getAllStorageSSLCertificatesOK  %+v", 200, o.Payload)
 }
 
-func (o *GetAllStorageSSLCertificatesOK) GetPayload() models.SslCertificates {
-	return o.Payload
-}
-
 func (o *GetAllStorageSSLCertificatesOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response payload
@@ -97,9 +95,7 @@ func (o *GetAllStorageSSLCertificatesOK) readResponse(response runtime.ClientRes
 
 // NewGetAllStorageSSLCertificatesNotFound creates a GetAllStorageSSLCertificatesNotFound with default headers values
 func NewGetAllStorageSSLCertificatesNotFound() *GetAllStorageSSLCertificatesNotFound {
-	return &GetAllStorageSSLCertificatesNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &GetAllStorageSSLCertificatesNotFound{}
 }
 
 /*GetAllStorageSSLCertificatesNotFound handles this case with default header values.
@@ -109,7 +105,7 @@ The specified resource was not found
 type GetAllStorageSSLCertificatesNotFound struct {
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -118,18 +114,10 @@ func (o *GetAllStorageSSLCertificatesNotFound) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/storage/ssl_certificates][%d] getAllStorageSSLCertificatesNotFound  %+v", 404, o.Payload)
 }
 
-func (o *GetAllStorageSSLCertificatesNotFound) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetAllStorageSSLCertificatesNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
@@ -144,8 +132,7 @@ func (o *GetAllStorageSSLCertificatesNotFound) readResponse(response runtime.Cli
 // NewGetAllStorageSSLCertificatesDefault creates a GetAllStorageSSLCertificatesDefault with default headers values
 func NewGetAllStorageSSLCertificatesDefault(code int) *GetAllStorageSSLCertificatesDefault {
 	return &GetAllStorageSSLCertificatesDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
@@ -158,7 +145,7 @@ type GetAllStorageSSLCertificatesDefault struct {
 
 	/*Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -172,18 +159,10 @@ func (o *GetAllStorageSSLCertificatesDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/storage/ssl_certificates][%d] getAllStorageSSLCertificates default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *GetAllStorageSSLCertificatesDefault) GetPayload() *models.Error {
-	return o.Payload
-}
-
 func (o *GetAllStorageSSLCertificatesDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
-	}
-	o.ConfigurationVersion = configurationVersion
+	o.ConfigurationVersion = response.GetHeader("Configuration-Version")
 
 	o.Payload = new(models.Error)
 
