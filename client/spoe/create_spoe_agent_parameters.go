@@ -32,7 +32,7 @@ import (
 
 	strfmt "github.com/go-openapi/strfmt"
 
-	"github.com/haproxytech/models/v2"
+	models "github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // NewCreateSpoeAgentParams creates a new CreateSpoeAgentParams object

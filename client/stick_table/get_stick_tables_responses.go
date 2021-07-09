@@ -28,7 +28,7 @@ import (
 
 	strfmt "github.com/go-openapi/strfmt"
 
-	"github.com/haproxytech/models/v2"
+	models "github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // GetStickTablesReader is a Reader for the GetStickTables structure.

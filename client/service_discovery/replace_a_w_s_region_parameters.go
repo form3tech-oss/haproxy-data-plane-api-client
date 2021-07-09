@@ -31,7 +31,7 @@ import (
 
 	strfmt "github.com/go-openapi/strfmt"
 
-	"github.com/haproxytech/client-native/v2/models"
+	models "github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // NewReplaceAWSRegionParams creates a new ReplaceAWSRegionParams object

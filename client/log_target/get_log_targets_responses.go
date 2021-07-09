@@ -31,7 +31,7 @@ import (
 
 	strfmt "github.com/go-openapi/strfmt"
 
-	"github.com/haproxytech/models/v2"
+	models "github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // GetLogTargetsReader is a Reader for the GetLogTargets structure.
