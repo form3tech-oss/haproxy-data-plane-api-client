@@ -32,69 +32,85 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewGetBackendSwitchingRuleParams creates a new GetBackendSwitchingRuleParams object
-// with the default values initialized.
+// NewGetBackendSwitchingRuleParams creates a new GetBackendSwitchingRuleParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetBackendSwitchingRuleParams() *GetBackendSwitchingRuleParams {
-	var ()
 	return &GetBackendSwitchingRuleParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewGetBackendSwitchingRuleParamsWithTimeout creates a new GetBackendSwitchingRuleParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewGetBackendSwitchingRuleParamsWithTimeout(timeout time.Duration) *GetBackendSwitchingRuleParams {
-	var ()
 	return &GetBackendSwitchingRuleParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewGetBackendSwitchingRuleParamsWithContext creates a new GetBackendSwitchingRuleParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewGetBackendSwitchingRuleParamsWithContext(ctx context.Context) *GetBackendSwitchingRuleParams {
-	var ()
 	return &GetBackendSwitchingRuleParams{
-
 		Context: ctx,
 	}
 }
 
 // NewGetBackendSwitchingRuleParamsWithHTTPClient creates a new GetBackendSwitchingRuleParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewGetBackendSwitchingRuleParamsWithHTTPClient(client *http.Client) *GetBackendSwitchingRuleParams {
-	var ()
 	return &GetBackendSwitchingRuleParams{
 		HTTPClient: client,
 	}
 }
 
-/*GetBackendSwitchingRuleParams contains all the parameters to send to the API endpoint
-for the get backend switching rule operation typically these are written to a http.Request
+/* GetBackendSwitchingRuleParams contains all the parameters to send to the API endpoint
+   for the get backend switching rule operation.
+
+   Typically these are written to a http.Request.
 */
 type GetBackendSwitchingRuleParams struct {
 
-	/*Frontend
-	  Frontend name
+	/* Frontend.
 
+	   Frontend name
 	*/
 	Frontend string
-	/*Index
-	  Switching Rule Index
 
+	/* Index.
+
+	   Switching Rule Index
 	*/
 	Index int64
-	/*TransactionID
-	  ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 
+	/* TransactionID.
+
+	   ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 	*/
 	TransactionID *string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the get backend switching rule params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetBackendSwitchingRuleParams) WithDefaults() *GetBackendSwitchingRuleParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the get backend switching rule params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetBackendSwitchingRuleParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the get backend switching rule params
@@ -175,6 +191,7 @@ func (o *GetBackendSwitchingRuleParams) WriteToRequest(r runtime.ClientRequest, 
 	qrFrontend := o.Frontend
 	qFrontend := qrFrontend
 	if qFrontend != "" {
+
 		if err := r.SetQueryParam("frontend", qFrontend); err != nil {
 			return err
 		}
@@ -189,16 +206,17 @@ func (o *GetBackendSwitchingRuleParams) WriteToRequest(r runtime.ClientRequest, 
 
 		// query param transaction_id
 		var qrTransactionID string
+
 		if o.TransactionID != nil {
 			qrTransactionID = *o.TransactionID
 		}
 		qTransactionID := qrTransactionID
 		if qTransactionID != "" {
+
 			if err := r.SetQueryParam("transaction_id", qTransactionID); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if len(res) > 0 {

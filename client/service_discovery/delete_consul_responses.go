@@ -24,12 +24,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // DeleteConsulReader is a Reader for the DeleteConsul structure.
@@ -69,7 +67,7 @@ func NewDeleteConsulNoContent() *DeleteConsulNoContent {
 	return &DeleteConsulNoContent{}
 }
 
-/*DeleteConsulNoContent handles this case with default header values.
+/* DeleteConsulNoContent describes a response with status code 204, with default header values.
 
 Consul server deleted
 */
@@ -87,19 +85,18 @@ func (o *DeleteConsulNoContent) readResponse(response runtime.ClientResponse, co
 
 // NewDeleteConsulNotFound creates a DeleteConsulNotFound with default headers values
 func NewDeleteConsulNotFound() *DeleteConsulNotFound {
-	return &DeleteConsulNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &DeleteConsulNotFound{}
 }
 
-/*DeleteConsulNotFound handles this case with default header values.
+/* DeleteConsulNotFound describes a response with status code 404, with default header values.
 
 The specified resource was not found
 */
 type DeleteConsulNotFound struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -107,19 +104,18 @@ type DeleteConsulNotFound struct {
 func (o *DeleteConsulNotFound) Error() string {
 	return fmt.Sprintf("[DELETE /service_discovery/consul/{id}][%d] deleteConsulNotFound  %+v", 404, o.Payload)
 }
-
 func (o *DeleteConsulNotFound) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *DeleteConsulNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -134,21 +130,20 @@ func (o *DeleteConsulNotFound) readResponse(response runtime.ClientResponse, con
 // NewDeleteConsulDefault creates a DeleteConsulDefault with default headers values
 func NewDeleteConsulDefault(code int) *DeleteConsulDefault {
 	return &DeleteConsulDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*DeleteConsulDefault handles this case with default header values.
+/* DeleteConsulDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type DeleteConsulDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -161,19 +156,18 @@ func (o *DeleteConsulDefault) Code() int {
 func (o *DeleteConsulDefault) Error() string {
 	return fmt.Sprintf("[DELETE /service_discovery/consul/{id}][%d] deleteConsul default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *DeleteConsulDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *DeleteConsulDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 

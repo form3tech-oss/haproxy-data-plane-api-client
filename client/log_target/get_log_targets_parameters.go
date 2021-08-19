@@ -31,69 +31,85 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// NewGetLogTargetsParams creates a new GetLogTargetsParams object
-// with the default values initialized.
+// NewGetLogTargetsParams creates a new GetLogTargetsParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetLogTargetsParams() *GetLogTargetsParams {
-	var ()
 	return &GetLogTargetsParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewGetLogTargetsParamsWithTimeout creates a new GetLogTargetsParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewGetLogTargetsParamsWithTimeout(timeout time.Duration) *GetLogTargetsParams {
-	var ()
 	return &GetLogTargetsParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewGetLogTargetsParamsWithContext creates a new GetLogTargetsParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewGetLogTargetsParamsWithContext(ctx context.Context) *GetLogTargetsParams {
-	var ()
 	return &GetLogTargetsParams{
-
 		Context: ctx,
 	}
 }
 
 // NewGetLogTargetsParamsWithHTTPClient creates a new GetLogTargetsParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewGetLogTargetsParamsWithHTTPClient(client *http.Client) *GetLogTargetsParams {
-	var ()
 	return &GetLogTargetsParams{
 		HTTPClient: client,
 	}
 }
 
-/*GetLogTargetsParams contains all the parameters to send to the API endpoint
-for the get log targets operation typically these are written to a http.Request
+/* GetLogTargetsParams contains all the parameters to send to the API endpoint
+   for the get log targets operation.
+
+   Typically these are written to a http.Request.
 */
 type GetLogTargetsParams struct {
 
-	/*ParentName
-	  Parent name
+	/* ParentName.
 
+	   Parent name
 	*/
-	ParentName string
-	/*ParentType
-	  Parent type
+	ParentName *string
 
+	/* ParentType.
+
+	   Parent type
 	*/
 	ParentType string
-	/*TransactionID
-	  ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 
+	/* TransactionID.
+
+	   ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 	*/
 	TransactionID *string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the get log targets params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetLogTargetsParams) WithDefaults() *GetLogTargetsParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the get log targets params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetLogTargetsParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the get log targets params
@@ -130,13 +146,13 @@ func (o *GetLogTargetsParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithParentName adds the parentName to the get log targets params
-func (o *GetLogTargetsParams) WithParentName(parentName string) *GetLogTargetsParams {
+func (o *GetLogTargetsParams) WithParentName(parentName *string) *GetLogTargetsParams {
 	o.SetParentName(parentName)
 	return o
 }
 
 // SetParentName adds the parentName to the get log targets params
-func (o *GetLogTargetsParams) SetParentName(parentName string) {
+func (o *GetLogTargetsParams) SetParentName(parentName *string) {
 	o.ParentName = parentName
 }
 
@@ -170,12 +186,20 @@ func (o *GetLogTargetsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt
 	}
 	var res []error
 
-	// query param parent_name
-	qrParentName := o.ParentName
-	qParentName := qrParentName
-	if qParentName != "" {
-		if err := r.SetQueryParam("parent_name", qParentName); err != nil {
-			return err
+	if o.ParentName != nil {
+
+		// query param parent_name
+		var qrParentName string
+
+		if o.ParentName != nil {
+			qrParentName = *o.ParentName
+		}
+		qParentName := qrParentName
+		if qParentName != "" {
+
+			if err := r.SetQueryParam("parent_name", qParentName); err != nil {
+				return err
+			}
 		}
 	}
 
@@ -183,6 +207,7 @@ func (o *GetLogTargetsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt
 	qrParentType := o.ParentType
 	qParentType := qrParentType
 	if qParentType != "" {
+
 		if err := r.SetQueryParam("parent_type", qParentType); err != nil {
 			return err
 		}
@@ -192,16 +217,17 @@ func (o *GetLogTargetsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt
 
 		// query param transaction_id
 		var qrTransactionID string
+
 		if o.TransactionID != nil {
 			qrTransactionID = *o.TransactionID
 		}
 		qTransactionID := qrTransactionID
 		if qTransactionID != "" {
+
 			if err := r.SetQueryParam("transaction_id", qTransactionID); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if len(res) > 0 {

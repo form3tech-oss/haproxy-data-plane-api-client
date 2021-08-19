@@ -31,64 +31,79 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// NewGetServerSwitchingRulesParams creates a new GetServerSwitchingRulesParams object
-// with the default values initialized.
+// NewGetServerSwitchingRulesParams creates a new GetServerSwitchingRulesParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetServerSwitchingRulesParams() *GetServerSwitchingRulesParams {
-	var ()
 	return &GetServerSwitchingRulesParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewGetServerSwitchingRulesParamsWithTimeout creates a new GetServerSwitchingRulesParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewGetServerSwitchingRulesParamsWithTimeout(timeout time.Duration) *GetServerSwitchingRulesParams {
-	var ()
 	return &GetServerSwitchingRulesParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewGetServerSwitchingRulesParamsWithContext creates a new GetServerSwitchingRulesParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewGetServerSwitchingRulesParamsWithContext(ctx context.Context) *GetServerSwitchingRulesParams {
-	var ()
 	return &GetServerSwitchingRulesParams{
-
 		Context: ctx,
 	}
 }
 
 // NewGetServerSwitchingRulesParamsWithHTTPClient creates a new GetServerSwitchingRulesParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewGetServerSwitchingRulesParamsWithHTTPClient(client *http.Client) *GetServerSwitchingRulesParams {
-	var ()
 	return &GetServerSwitchingRulesParams{
 		HTTPClient: client,
 	}
 }
 
-/*GetServerSwitchingRulesParams contains all the parameters to send to the API endpoint
-for the get server switching rules operation typically these are written to a http.Request
+/* GetServerSwitchingRulesParams contains all the parameters to send to the API endpoint
+   for the get server switching rules operation.
+
+   Typically these are written to a http.Request.
 */
 type GetServerSwitchingRulesParams struct {
 
-	/*Backend
-	  Backend name
+	/* Backend.
 
+	   Backend name
 	*/
 	Backend string
-	/*TransactionID
-	  ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 
+	/* TransactionID.
+
+	   ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 	*/
 	TransactionID *string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the get server switching rules params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetServerSwitchingRulesParams) WithDefaults() *GetServerSwitchingRulesParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the get server switching rules params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetServerSwitchingRulesParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the get server switching rules params
@@ -158,6 +173,7 @@ func (o *GetServerSwitchingRulesParams) WriteToRequest(r runtime.ClientRequest, 
 	qrBackend := o.Backend
 	qBackend := qrBackend
 	if qBackend != "" {
+
 		if err := r.SetQueryParam("backend", qBackend); err != nil {
 			return err
 		}
@@ -167,16 +183,17 @@ func (o *GetServerSwitchingRulesParams) WriteToRequest(r runtime.ClientRequest, 
 
 		// query param transaction_id
 		var qrTransactionID string
+
 		if o.TransactionID != nil {
 			qrTransactionID = *o.TransactionID
 		}
 		qTransactionID := qrTransactionID
 		if qTransactionID != "" {
+
 			if err := r.SetQueryParam("transaction_id", qTransactionID); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if len(res) > 0 {

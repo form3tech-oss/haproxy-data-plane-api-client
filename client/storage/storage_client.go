@@ -40,64 +40,71 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
+// ClientOption is the option for Client methods
+type ClientOption func(*runtime.ClientOperation)
+
 // ClientService is the interface for Client methods
 type ClientService interface {
-	CreateRuntimeMap(params *CreateRuntimeMapParams, authInfo runtime.ClientAuthInfoWriter) (*CreateRuntimeMapCreated, error)
+	CreateStorageMapFile(params *CreateStorageMapFileParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*CreateStorageMapFileCreated, error)
 
-	CreateStorageSSLCertificate(params *CreateStorageSSLCertificateParams, authInfo runtime.ClientAuthInfoWriter) (*CreateStorageSSLCertificateCreated, error)
+	CreateStorageSSLCertificate(params *CreateStorageSSLCertificateParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*CreateStorageSSLCertificateCreated, error)
 
-	DeleteStorageMap(params *DeleteStorageMapParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteStorageMapNoContent, error)
+	DeleteStorageMap(params *DeleteStorageMapParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*DeleteStorageMapNoContent, error)
 
-	DeleteStorageSSLCertificate(params *DeleteStorageSSLCertificateParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteStorageSSLCertificateNoContent, error)
+	DeleteStorageSSLCertificate(params *DeleteStorageSSLCertificateParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*DeleteStorageSSLCertificateAccepted, *DeleteStorageSSLCertificateNoContent, error)
 
-	GetAllStorageMapFiles(params *GetAllStorageMapFilesParams, authInfo runtime.ClientAuthInfoWriter) (*GetAllStorageMapFilesOK, error)
+	GetAllStorageMapFiles(params *GetAllStorageMapFilesParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetAllStorageMapFilesOK, error)
 
-	GetAllStorageSSLCertificates(params *GetAllStorageSSLCertificatesParams, authInfo runtime.ClientAuthInfoWriter) (*GetAllStorageSSLCertificatesOK, error)
+	GetAllStorageSSLCertificates(params *GetAllStorageSSLCertificatesParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetAllStorageSSLCertificatesOK, error)
 
-	GetOneStorageMap(params *GetOneStorageMapParams, authInfo runtime.ClientAuthInfoWriter, writer io.Writer) (*GetOneStorageMapOK, error)
+	GetOneStorageMap(params *GetOneStorageMapParams, authInfo runtime.ClientAuthInfoWriter, writer io.Writer, opts ...ClientOption) (*GetOneStorageMapOK, error)
 
-	GetOneStorageSSLCertificate(params *GetOneStorageSSLCertificateParams, authInfo runtime.ClientAuthInfoWriter) (*GetOneStorageSSLCertificateOK, error)
+	GetOneStorageSSLCertificate(params *GetOneStorageSSLCertificateParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetOneStorageSSLCertificateOK, error)
 
-	ReplaceStorageMapFile(params *ReplaceStorageMapFileParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceStorageMapFileAccepted, *ReplaceStorageMapFileNoContent, error)
+	ReplaceStorageMapFile(params *ReplaceStorageMapFileParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*ReplaceStorageMapFileAccepted, *ReplaceStorageMapFileNoContent, error)
 
-	ReplaceStorageSSLCertificate(params *ReplaceStorageSSLCertificateParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceStorageSSLCertificateAccepted, error)
+	ReplaceStorageSSLCertificate(params *ReplaceStorageSSLCertificateParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*ReplaceStorageSSLCertificateOK, *ReplaceStorageSSLCertificateAccepted, error)
 
 	SetTransport(transport runtime.ClientTransport)
 }
 
 /*
-  CreateRuntimeMap creates a managed runtime map file with its entries
+  CreateStorageMapFile creates a managed storage map file with its entries
 
-  Creates a managed runtime map file with its entries.
+  Creates a managed storage map file with its entries.
 */
-func (a *Client) CreateRuntimeMap(params *CreateRuntimeMapParams, authInfo runtime.ClientAuthInfoWriter) (*CreateRuntimeMapCreated, error) {
+func (a *Client) CreateStorageMapFile(params *CreateStorageMapFileParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*CreateStorageMapFileCreated, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewCreateRuntimeMapParams()
+		params = NewCreateStorageMapFileParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "createRuntimeMap",
+	op := &runtime.ClientOperation{
+		ID:                 "createStorageMapFile",
 		Method:             "POST",
 		PathPattern:        "/services/haproxy/storage/maps",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"multipart/form-data"},
 		Schemes:            []string{"http"},
 		Params:             params,
-		Reader:             &CreateRuntimeMapReader{formats: a.formats},
+		Reader:             &CreateStorageMapFileReader{formats: a.formats},
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*CreateRuntimeMapCreated)
+	success, ok := result.(*CreateStorageMapFileCreated)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*CreateRuntimeMapDefault)
+	unexpectedSuccess := result.(*CreateStorageMapFileDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
@@ -106,13 +113,12 @@ func (a *Client) CreateRuntimeMap(params *CreateRuntimeMapParams, authInfo runti
 
   Creates SSL certificate.
 */
-func (a *Client) CreateStorageSSLCertificate(params *CreateStorageSSLCertificateParams, authInfo runtime.ClientAuthInfoWriter) (*CreateStorageSSLCertificateCreated, error) {
+func (a *Client) CreateStorageSSLCertificate(params *CreateStorageSSLCertificateParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*CreateStorageSSLCertificateCreated, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewCreateStorageSSLCertificateParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "createStorageSSLCertificate",
 		Method:             "POST",
 		PathPattern:        "/services/haproxy/storage/ssl_certificates",
@@ -124,7 +130,12 @@ func (a *Client) CreateStorageSSLCertificate(params *CreateStorageSSLCertificate
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -142,13 +153,12 @@ func (a *Client) CreateStorageSSLCertificate(params *CreateStorageSSLCertificate
 
   Deletes a managed map file from disk.
 */
-func (a *Client) DeleteStorageMap(params *DeleteStorageMapParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteStorageMapNoContent, error) {
+func (a *Client) DeleteStorageMap(params *DeleteStorageMapParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*DeleteStorageMapNoContent, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewDeleteStorageMapParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "deleteStorageMap",
 		Method:             "DELETE",
 		PathPattern:        "/services/haproxy/storage/maps/{name}",
@@ -160,7 +170,12 @@ func (a *Client) DeleteStorageMap(params *DeleteStorageMapParams, authInfo runti
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -178,13 +193,12 @@ func (a *Client) DeleteStorageMap(params *DeleteStorageMapParams, authInfo runti
 
   Deletes SSL certificate from disk.
 */
-func (a *Client) DeleteStorageSSLCertificate(params *DeleteStorageSSLCertificateParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteStorageSSLCertificateNoContent, error) {
+func (a *Client) DeleteStorageSSLCertificate(params *DeleteStorageSSLCertificateParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*DeleteStorageSSLCertificateAccepted, *DeleteStorageSSLCertificateNoContent, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewDeleteStorageSSLCertificateParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "deleteStorageSSLCertificate",
 		Method:             "DELETE",
 		PathPattern:        "/services/haproxy/storage/ssl_certificates/{name}",
@@ -196,17 +210,24 @@ func (a *Client) DeleteStorageSSLCertificate(params *DeleteStorageSSLCertificate
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
-	if err != nil {
-		return nil, err
 	}
-	success, ok := result.(*DeleteStorageSSLCertificateNoContent)
-	if ok {
-		return success, nil
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, nil, err
+	}
+	switch value := result.(type) {
+	case *DeleteStorageSSLCertificateAccepted:
+		return value, nil, nil
+	case *DeleteStorageSSLCertificateNoContent:
+		return nil, value, nil
 	}
 	// unexpected success response
 	unexpectedSuccess := result.(*DeleteStorageSSLCertificateDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
@@ -214,13 +235,12 @@ func (a *Client) DeleteStorageSSLCertificate(params *DeleteStorageSSLCertificate
 
   Returns a list of all managed map files
 */
-func (a *Client) GetAllStorageMapFiles(params *GetAllStorageMapFilesParams, authInfo runtime.ClientAuthInfoWriter) (*GetAllStorageMapFilesOK, error) {
+func (a *Client) GetAllStorageMapFiles(params *GetAllStorageMapFilesParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetAllStorageMapFilesOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewGetAllStorageMapFilesParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "getAllStorageMapFiles",
 		Method:             "GET",
 		PathPattern:        "/services/haproxy/storage/maps",
@@ -232,7 +252,12 @@ func (a *Client) GetAllStorageMapFiles(params *GetAllStorageMapFilesParams, auth
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -250,13 +275,12 @@ func (a *Client) GetAllStorageMapFiles(params *GetAllStorageMapFilesParams, auth
 
   Returns all available SSL certificates on disk.
 */
-func (a *Client) GetAllStorageSSLCertificates(params *GetAllStorageSSLCertificatesParams, authInfo runtime.ClientAuthInfoWriter) (*GetAllStorageSSLCertificatesOK, error) {
+func (a *Client) GetAllStorageSSLCertificates(params *GetAllStorageSSLCertificatesParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetAllStorageSSLCertificatesOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewGetAllStorageSSLCertificatesParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "getAllStorageSSLCertificates",
 		Method:             "GET",
 		PathPattern:        "/services/haproxy/storage/ssl_certificates",
@@ -268,7 +292,12 @@ func (a *Client) GetAllStorageSSLCertificates(params *GetAllStorageSSLCertificat
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -286,13 +315,12 @@ func (a *Client) GetAllStorageSSLCertificates(params *GetAllStorageSSLCertificat
 
   Returns the contents of one managed map file from disk
 */
-func (a *Client) GetOneStorageMap(params *GetOneStorageMapParams, authInfo runtime.ClientAuthInfoWriter, writer io.Writer) (*GetOneStorageMapOK, error) {
+func (a *Client) GetOneStorageMap(params *GetOneStorageMapParams, authInfo runtime.ClientAuthInfoWriter, writer io.Writer, opts ...ClientOption) (*GetOneStorageMapOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewGetOneStorageMapParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "getOneStorageMap",
 		Method:             "GET",
 		PathPattern:        "/services/haproxy/storage/maps/{name}",
@@ -304,7 +332,12 @@ func (a *Client) GetOneStorageMap(params *GetOneStorageMapParams, authInfo runti
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -322,13 +355,12 @@ func (a *Client) GetOneStorageMap(params *GetOneStorageMapParams, authInfo runti
 
   Returns one SSL certificate from disk.
 */
-func (a *Client) GetOneStorageSSLCertificate(params *GetOneStorageSSLCertificateParams, authInfo runtime.ClientAuthInfoWriter) (*GetOneStorageSSLCertificateOK, error) {
+func (a *Client) GetOneStorageSSLCertificate(params *GetOneStorageSSLCertificateParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetOneStorageSSLCertificateOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewGetOneStorageSSLCertificateParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "getOneStorageSSLCertificate",
 		Method:             "GET",
 		PathPattern:        "/services/haproxy/storage/ssl_certificates/{name}",
@@ -340,7 +372,12 @@ func (a *Client) GetOneStorageSSLCertificate(params *GetOneStorageSSLCertificate
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -358,13 +395,12 @@ func (a *Client) GetOneStorageSSLCertificate(params *GetOneStorageSSLCertificate
 
   Replaces the contents of a managed map file on disk
 */
-func (a *Client) ReplaceStorageMapFile(params *ReplaceStorageMapFileParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceStorageMapFileAccepted, *ReplaceStorageMapFileNoContent, error) {
+func (a *Client) ReplaceStorageMapFile(params *ReplaceStorageMapFileParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*ReplaceStorageMapFileAccepted, *ReplaceStorageMapFileNoContent, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewReplaceStorageMapFileParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "replaceStorageMapFile",
 		Method:             "PUT",
 		PathPattern:        "/services/haproxy/storage/maps/{name}",
@@ -376,7 +412,12 @@ func (a *Client) ReplaceStorageMapFile(params *ReplaceStorageMapFileParams, auth
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -396,13 +437,12 @@ func (a *Client) ReplaceStorageMapFile(params *ReplaceStorageMapFileParams, auth
 
   Replaces SSL certificate on disk.
 */
-func (a *Client) ReplaceStorageSSLCertificate(params *ReplaceStorageSSLCertificateParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceStorageSSLCertificateAccepted, error) {
+func (a *Client) ReplaceStorageSSLCertificate(params *ReplaceStorageSSLCertificateParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*ReplaceStorageSSLCertificateOK, *ReplaceStorageSSLCertificateAccepted, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewReplaceStorageSSLCertificateParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "replaceStorageSSLCertificate",
 		Method:             "PUT",
 		PathPattern:        "/services/haproxy/storage/ssl_certificates/{name}",
@@ -414,17 +454,24 @@ func (a *Client) ReplaceStorageSSLCertificate(params *ReplaceStorageSSLCertifica
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
-	if err != nil {
-		return nil, err
 	}
-	success, ok := result.(*ReplaceStorageSSLCertificateAccepted)
-	if ok {
-		return success, nil
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, nil, err
+	}
+	switch value := result.(type) {
+	case *ReplaceStorageSSLCertificateOK:
+		return value, nil, nil
+	case *ReplaceStorageSSLCertificateAccepted:
+		return nil, value, nil
 	}
 	// unexpected success response
 	unexpectedSuccess := result.(*ReplaceStorageSSLCertificateDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	return nil, nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 // SetTransport changes the transport on the client

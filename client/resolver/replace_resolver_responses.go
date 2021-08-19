@@ -24,12 +24,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // ReplaceResolverReader is a Reader for the ReplaceResolver structure.
@@ -81,7 +79,7 @@ func NewReplaceResolverOK() *ReplaceResolverOK {
 	return &ReplaceResolverOK{}
 }
 
-/*ReplaceResolverOK handles this case with default header values.
+/* ReplaceResolverOK describes a response with status code 200, with default header values.
 
 Resolver replaced
 */
@@ -92,7 +90,6 @@ type ReplaceResolverOK struct {
 func (o *ReplaceResolverOK) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/resolvers/{name}][%d] replaceResolverOK  %+v", 200, o.Payload)
 }
-
 func (o *ReplaceResolverOK) GetPayload() *models.Resolver {
 	return o.Payload
 }
@@ -114,12 +111,13 @@ func NewReplaceResolverAccepted() *ReplaceResolverAccepted {
 	return &ReplaceResolverAccepted{}
 }
 
-/*ReplaceResolverAccepted handles this case with default header values.
+/* ReplaceResolverAccepted describes a response with status code 202, with default header values.
 
 Configuration change accepted and reload requested
 */
 type ReplaceResolverAccepted struct {
-	/*ID of the requested reload
+
+	/* ID of the requested reload
 	 */
 	ReloadID string
 
@@ -129,15 +127,18 @@ type ReplaceResolverAccepted struct {
 func (o *ReplaceResolverAccepted) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/resolvers/{name}][%d] replaceResolverAccepted  %+v", 202, o.Payload)
 }
-
 func (o *ReplaceResolverAccepted) GetPayload() *models.Resolver {
 	return o.Payload
 }
 
 func (o *ReplaceResolverAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Reload-ID
-	o.ReloadID = response.GetHeader("Reload-ID")
+	// hydrates response header Reload-ID
+	hdrReloadID := response.GetHeader("Reload-ID")
+
+	if hdrReloadID != "" {
+		o.ReloadID = hdrReloadID
+	}
 
 	o.Payload = new(models.Resolver)
 
@@ -151,19 +152,18 @@ func (o *ReplaceResolverAccepted) readResponse(response runtime.ClientResponse, 
 
 // NewReplaceResolverBadRequest creates a ReplaceResolverBadRequest with default headers values
 func NewReplaceResolverBadRequest() *ReplaceResolverBadRequest {
-	return &ReplaceResolverBadRequest{
-		ConfigurationVersion: 0,
-	}
+	return &ReplaceResolverBadRequest{}
 }
 
-/*ReplaceResolverBadRequest handles this case with default header values.
+/* ReplaceResolverBadRequest describes a response with status code 400, with default header values.
 
 Bad request
 */
 type ReplaceResolverBadRequest struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -171,19 +171,18 @@ type ReplaceResolverBadRequest struct {
 func (o *ReplaceResolverBadRequest) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/resolvers/{name}][%d] replaceResolverBadRequest  %+v", 400, o.Payload)
 }
-
 func (o *ReplaceResolverBadRequest) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *ReplaceResolverBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -197,19 +196,18 @@ func (o *ReplaceResolverBadRequest) readResponse(response runtime.ClientResponse
 
 // NewReplaceResolverNotFound creates a ReplaceResolverNotFound with default headers values
 func NewReplaceResolverNotFound() *ReplaceResolverNotFound {
-	return &ReplaceResolverNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &ReplaceResolverNotFound{}
 }
 
-/*ReplaceResolverNotFound handles this case with default header values.
+/* ReplaceResolverNotFound describes a response with status code 404, with default header values.
 
 The specified resource was not found
 */
 type ReplaceResolverNotFound struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -217,19 +215,18 @@ type ReplaceResolverNotFound struct {
 func (o *ReplaceResolverNotFound) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/resolvers/{name}][%d] replaceResolverNotFound  %+v", 404, o.Payload)
 }
-
 func (o *ReplaceResolverNotFound) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *ReplaceResolverNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -244,21 +241,20 @@ func (o *ReplaceResolverNotFound) readResponse(response runtime.ClientResponse, 
 // NewReplaceResolverDefault creates a ReplaceResolverDefault with default headers values
 func NewReplaceResolverDefault(code int) *ReplaceResolverDefault {
 	return &ReplaceResolverDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*ReplaceResolverDefault handles this case with default header values.
+/* ReplaceResolverDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type ReplaceResolverDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -271,19 +267,18 @@ func (o *ReplaceResolverDefault) Code() int {
 func (o *ReplaceResolverDefault) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/resolvers/{name}][%d] replaceResolver default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *ReplaceResolverDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *ReplaceResolverDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 

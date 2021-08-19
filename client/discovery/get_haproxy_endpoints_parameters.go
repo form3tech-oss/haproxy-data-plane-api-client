@@ -31,52 +31,66 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// NewGetHaproxyEndpointsParams creates a new GetHaproxyEndpointsParams object
-// with the default values initialized.
+// NewGetHaproxyEndpointsParams creates a new GetHaproxyEndpointsParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetHaproxyEndpointsParams() *GetHaproxyEndpointsParams {
-
 	return &GetHaproxyEndpointsParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewGetHaproxyEndpointsParamsWithTimeout creates a new GetHaproxyEndpointsParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewGetHaproxyEndpointsParamsWithTimeout(timeout time.Duration) *GetHaproxyEndpointsParams {
-
 	return &GetHaproxyEndpointsParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewGetHaproxyEndpointsParamsWithContext creates a new GetHaproxyEndpointsParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewGetHaproxyEndpointsParamsWithContext(ctx context.Context) *GetHaproxyEndpointsParams {
-
 	return &GetHaproxyEndpointsParams{
-
 		Context: ctx,
 	}
 }
 
 // NewGetHaproxyEndpointsParamsWithHTTPClient creates a new GetHaproxyEndpointsParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewGetHaproxyEndpointsParamsWithHTTPClient(client *http.Client) *GetHaproxyEndpointsParams {
-
 	return &GetHaproxyEndpointsParams{
 		HTTPClient: client,
 	}
 }
 
-/*GetHaproxyEndpointsParams contains all the parameters to send to the API endpoint
-for the get haproxy endpoints operation typically these are written to a http.Request
+/* GetHaproxyEndpointsParams contains all the parameters to send to the API endpoint
+   for the get haproxy endpoints operation.
+
+   Typically these are written to a http.Request.
 */
 type GetHaproxyEndpointsParams struct {
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the get haproxy endpoints params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetHaproxyEndpointsParams) WithDefaults() *GetHaproxyEndpointsParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the get haproxy endpoints params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetHaproxyEndpointsParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the get haproxy endpoints params

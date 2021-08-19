@@ -21,6 +21,7 @@ package stick_rule
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"fmt"
 	"io"
 
@@ -29,7 +30,7 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // GetStickRuleReader is a Reader for the GetStickRule structure.
@@ -69,14 +70,15 @@ func NewGetStickRuleOK() *GetStickRuleOK {
 	return &GetStickRuleOK{}
 }
 
-/*GetStickRuleOK handles this case with default header values.
+/* GetStickRuleOK describes a response with status code 200, with default header values.
 
 Successful operation
 */
 type GetStickRuleOK struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *GetStickRuleOKBody
 }
@@ -84,19 +86,18 @@ type GetStickRuleOK struct {
 func (o *GetStickRuleOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/stick_rules/{index}][%d] getStickRuleOK  %+v", 200, o.Payload)
 }
-
 func (o *GetStickRuleOK) GetPayload() *GetStickRuleOKBody {
 	return o.Payload
 }
 
 func (o *GetStickRuleOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(GetStickRuleOKBody)
 
@@ -110,19 +111,18 @@ func (o *GetStickRuleOK) readResponse(response runtime.ClientResponse, consumer 
 
 // NewGetStickRuleNotFound creates a GetStickRuleNotFound with default headers values
 func NewGetStickRuleNotFound() *GetStickRuleNotFound {
-	return &GetStickRuleNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &GetStickRuleNotFound{}
 }
 
-/*GetStickRuleNotFound handles this case with default header values.
+/* GetStickRuleNotFound describes a response with status code 404, with default header values.
 
 The specified resource was not found
 */
 type GetStickRuleNotFound struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -130,19 +130,18 @@ type GetStickRuleNotFound struct {
 func (o *GetStickRuleNotFound) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/stick_rules/{index}][%d] getStickRuleNotFound  %+v", 404, o.Payload)
 }
-
 func (o *GetStickRuleNotFound) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *GetStickRuleNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -157,21 +156,20 @@ func (o *GetStickRuleNotFound) readResponse(response runtime.ClientResponse, con
 // NewGetStickRuleDefault creates a GetStickRuleDefault with default headers values
 func NewGetStickRuleDefault(code int) *GetStickRuleDefault {
 	return &GetStickRuleDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*GetStickRuleDefault handles this case with default header values.
+/* GetStickRuleDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type GetStickRuleDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -184,19 +182,18 @@ func (o *GetStickRuleDefault) Code() int {
 func (o *GetStickRuleDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/stick_rules/{index}][%d] getStickRule default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *GetStickRuleDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *GetStickRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -235,13 +232,40 @@ func (o *GetStickRuleOKBody) Validate(formats strfmt.Registry) error {
 }
 
 func (o *GetStickRuleOKBody) validateData(formats strfmt.Registry) error {
-
 	if swag.IsZero(o.Data) { // not required
 		return nil
 	}
 
 	if o.Data != nil {
 		if err := o.Data.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("getStickRuleOK" + "." + "data")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// ContextValidate validate this get stick rule o k body based on the context it is used
+func (o *GetStickRuleOKBody) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.contextValidateData(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *GetStickRuleOKBody) contextValidateData(ctx context.Context, formats strfmt.Registry) error {
+
+	if o.Data != nil {
+		if err := o.Data.ContextValidate(ctx, formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("getStickRuleOK" + "." + "data")
 			}

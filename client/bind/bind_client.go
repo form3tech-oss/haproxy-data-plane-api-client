@@ -38,17 +38,20 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
+// ClientOption is the option for Client methods
+type ClientOption func(*runtime.ClientOperation)
+
 // ClientService is the interface for Client methods
 type ClientService interface {
-	CreateBind(params *CreateBindParams, authInfo runtime.ClientAuthInfoWriter) (*CreateBindCreated, *CreateBindAccepted, error)
+	CreateBind(params *CreateBindParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*CreateBindCreated, *CreateBindAccepted, error)
 
-	DeleteBind(params *DeleteBindParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteBindAccepted, *DeleteBindNoContent, error)
+	DeleteBind(params *DeleteBindParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*DeleteBindAccepted, *DeleteBindNoContent, error)
 
-	GetBind(params *GetBindParams, authInfo runtime.ClientAuthInfoWriter) (*GetBindOK, error)
+	GetBind(params *GetBindParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetBindOK, error)
 
-	GetBinds(params *GetBindsParams, authInfo runtime.ClientAuthInfoWriter) (*GetBindsOK, error)
+	GetBinds(params *GetBindsParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetBindsOK, error)
 
-	ReplaceBind(params *ReplaceBindParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceBindOK, *ReplaceBindAccepted, error)
+	ReplaceBind(params *ReplaceBindParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*ReplaceBindOK, *ReplaceBindAccepted, error)
 
 	SetTransport(transport runtime.ClientTransport)
 }
@@ -58,13 +61,12 @@ type ClientService interface {
 
   Adds a new bind in the specified frontend in the configuration file.
 */
-func (a *Client) CreateBind(params *CreateBindParams, authInfo runtime.ClientAuthInfoWriter) (*CreateBindCreated, *CreateBindAccepted, error) {
+func (a *Client) CreateBind(params *CreateBindParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*CreateBindCreated, *CreateBindAccepted, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewCreateBindParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "createBind",
 		Method:             "POST",
 		PathPattern:        "/services/haproxy/configuration/binds",
@@ -76,7 +78,12 @@ func (a *Client) CreateBind(params *CreateBindParams, authInfo runtime.ClientAut
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -96,13 +103,12 @@ func (a *Client) CreateBind(params *CreateBindParams, authInfo runtime.ClientAut
 
   Deletes a bind configuration by it's name in the specified frontend.
 */
-func (a *Client) DeleteBind(params *DeleteBindParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteBindAccepted, *DeleteBindNoContent, error) {
+func (a *Client) DeleteBind(params *DeleteBindParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*DeleteBindAccepted, *DeleteBindNoContent, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewDeleteBindParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "deleteBind",
 		Method:             "DELETE",
 		PathPattern:        "/services/haproxy/configuration/binds/{name}",
@@ -114,7 +120,12 @@ func (a *Client) DeleteBind(params *DeleteBindParams, authInfo runtime.ClientAut
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -134,13 +145,12 @@ func (a *Client) DeleteBind(params *DeleteBindParams, authInfo runtime.ClientAut
 
   Returns one bind configuration by it's name in the specified frontend.
 */
-func (a *Client) GetBind(params *GetBindParams, authInfo runtime.ClientAuthInfoWriter) (*GetBindOK, error) {
+func (a *Client) GetBind(params *GetBindParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetBindOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewGetBindParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "getBind",
 		Method:             "GET",
 		PathPattern:        "/services/haproxy/configuration/binds/{name}",
@@ -152,7 +162,12 @@ func (a *Client) GetBind(params *GetBindParams, authInfo runtime.ClientAuthInfoW
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -170,13 +185,12 @@ func (a *Client) GetBind(params *GetBindParams, authInfo runtime.ClientAuthInfoW
 
   Returns an array of all binds that are configured in specified frontend.
 */
-func (a *Client) GetBinds(params *GetBindsParams, authInfo runtime.ClientAuthInfoWriter) (*GetBindsOK, error) {
+func (a *Client) GetBinds(params *GetBindsParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetBindsOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewGetBindsParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "getBinds",
 		Method:             "GET",
 		PathPattern:        "/services/haproxy/configuration/binds",
@@ -188,7 +202,12 @@ func (a *Client) GetBinds(params *GetBindsParams, authInfo runtime.ClientAuthInf
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -206,13 +225,12 @@ func (a *Client) GetBinds(params *GetBindsParams, authInfo runtime.ClientAuthInf
 
   Replaces a bind configuration by it's name in the specified frontend.
 */
-func (a *Client) ReplaceBind(params *ReplaceBindParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceBindOK, *ReplaceBindAccepted, error) {
+func (a *Client) ReplaceBind(params *ReplaceBindParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*ReplaceBindOK, *ReplaceBindAccepted, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewReplaceBindParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "replaceBind",
 		Method:             "PUT",
 		PathPattern:        "/services/haproxy/configuration/binds/{name}",
@@ -224,7 +242,12 @@ func (a *Client) ReplaceBind(params *ReplaceBindParams, authInfo runtime.ClientA
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, nil, err
 	}

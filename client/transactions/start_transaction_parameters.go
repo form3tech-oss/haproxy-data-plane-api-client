@@ -32,59 +32,73 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewStartTransactionParams creates a new StartTransactionParams object
-// with the default values initialized.
+// NewStartTransactionParams creates a new StartTransactionParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewStartTransactionParams() *StartTransactionParams {
-	var ()
 	return &StartTransactionParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewStartTransactionParamsWithTimeout creates a new StartTransactionParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewStartTransactionParamsWithTimeout(timeout time.Duration) *StartTransactionParams {
-	var ()
 	return &StartTransactionParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewStartTransactionParamsWithContext creates a new StartTransactionParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewStartTransactionParamsWithContext(ctx context.Context) *StartTransactionParams {
-	var ()
 	return &StartTransactionParams{
-
 		Context: ctx,
 	}
 }
 
 // NewStartTransactionParamsWithHTTPClient creates a new StartTransactionParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewStartTransactionParamsWithHTTPClient(client *http.Client) *StartTransactionParams {
-	var ()
 	return &StartTransactionParams{
 		HTTPClient: client,
 	}
 }
 
-/*StartTransactionParams contains all the parameters to send to the API endpoint
-for the start transaction operation typically these are written to a http.Request
+/* StartTransactionParams contains all the parameters to send to the API endpoint
+   for the start transaction operation.
+
+   Typically these are written to a http.Request.
 */
 type StartTransactionParams struct {
 
-	/*Version
-	  Configuration version on which to work on
+	/* Version.
 
+	   Configuration version on which to work on
 	*/
 	Version int64
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the start transaction params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *StartTransactionParams) WithDefaults() *StartTransactionParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the start transaction params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *StartTransactionParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the start transaction params
@@ -143,6 +157,7 @@ func (o *StartTransactionParams) WriteToRequest(r runtime.ClientRequest, reg str
 	qrVersion := o.Version
 	qVersion := swag.FormatInt64(qrVersion)
 	if qVersion != "" {
+
 		if err := r.SetQueryParam("version", qVersion); err != nil {
 			return err
 		}

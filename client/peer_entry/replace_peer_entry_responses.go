@@ -24,12 +24,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // ReplacePeerEntryReader is a Reader for the ReplacePeerEntry structure.
@@ -81,7 +79,7 @@ func NewReplacePeerEntryOK() *ReplacePeerEntryOK {
 	return &ReplacePeerEntryOK{}
 }
 
-/*ReplacePeerEntryOK handles this case with default header values.
+/* ReplacePeerEntryOK describes a response with status code 200, with default header values.
 
 PeerEntry replaced
 */
@@ -92,7 +90,6 @@ type ReplacePeerEntryOK struct {
 func (o *ReplacePeerEntryOK) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/peer_entries/{name}][%d] replacePeerEntryOK  %+v", 200, o.Payload)
 }
-
 func (o *ReplacePeerEntryOK) GetPayload() *models.PeerEntry {
 	return o.Payload
 }
@@ -114,12 +111,13 @@ func NewReplacePeerEntryAccepted() *ReplacePeerEntryAccepted {
 	return &ReplacePeerEntryAccepted{}
 }
 
-/*ReplacePeerEntryAccepted handles this case with default header values.
+/* ReplacePeerEntryAccepted describes a response with status code 202, with default header values.
 
 Configuration change accepted and reload requested
 */
 type ReplacePeerEntryAccepted struct {
-	/*ID of the requested reload
+
+	/* ID of the requested reload
 	 */
 	ReloadID string
 
@@ -129,15 +127,18 @@ type ReplacePeerEntryAccepted struct {
 func (o *ReplacePeerEntryAccepted) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/peer_entries/{name}][%d] replacePeerEntryAccepted  %+v", 202, o.Payload)
 }
-
 func (o *ReplacePeerEntryAccepted) GetPayload() *models.PeerEntry {
 	return o.Payload
 }
 
 func (o *ReplacePeerEntryAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Reload-ID
-	o.ReloadID = response.GetHeader("Reload-ID")
+	// hydrates response header Reload-ID
+	hdrReloadID := response.GetHeader("Reload-ID")
+
+	if hdrReloadID != "" {
+		o.ReloadID = hdrReloadID
+	}
 
 	o.Payload = new(models.PeerEntry)
 
@@ -151,19 +152,18 @@ func (o *ReplacePeerEntryAccepted) readResponse(response runtime.ClientResponse,
 
 // NewReplacePeerEntryBadRequest creates a ReplacePeerEntryBadRequest with default headers values
 func NewReplacePeerEntryBadRequest() *ReplacePeerEntryBadRequest {
-	return &ReplacePeerEntryBadRequest{
-		ConfigurationVersion: 0,
-	}
+	return &ReplacePeerEntryBadRequest{}
 }
 
-/*ReplacePeerEntryBadRequest handles this case with default header values.
+/* ReplacePeerEntryBadRequest describes a response with status code 400, with default header values.
 
 Bad request
 */
 type ReplacePeerEntryBadRequest struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -171,19 +171,18 @@ type ReplacePeerEntryBadRequest struct {
 func (o *ReplacePeerEntryBadRequest) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/peer_entries/{name}][%d] replacePeerEntryBadRequest  %+v", 400, o.Payload)
 }
-
 func (o *ReplacePeerEntryBadRequest) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *ReplacePeerEntryBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -197,19 +196,18 @@ func (o *ReplacePeerEntryBadRequest) readResponse(response runtime.ClientRespons
 
 // NewReplacePeerEntryNotFound creates a ReplacePeerEntryNotFound with default headers values
 func NewReplacePeerEntryNotFound() *ReplacePeerEntryNotFound {
-	return &ReplacePeerEntryNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &ReplacePeerEntryNotFound{}
 }
 
-/*ReplacePeerEntryNotFound handles this case with default header values.
+/* ReplacePeerEntryNotFound describes a response with status code 404, with default header values.
 
 The specified resource was not found
 */
 type ReplacePeerEntryNotFound struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -217,19 +215,18 @@ type ReplacePeerEntryNotFound struct {
 func (o *ReplacePeerEntryNotFound) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/peer_entries/{name}][%d] replacePeerEntryNotFound  %+v", 404, o.Payload)
 }
-
 func (o *ReplacePeerEntryNotFound) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *ReplacePeerEntryNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -244,21 +241,20 @@ func (o *ReplacePeerEntryNotFound) readResponse(response runtime.ClientResponse,
 // NewReplacePeerEntryDefault creates a ReplacePeerEntryDefault with default headers values
 func NewReplacePeerEntryDefault(code int) *ReplacePeerEntryDefault {
 	return &ReplacePeerEntryDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*ReplacePeerEntryDefault handles this case with default header values.
+/* ReplacePeerEntryDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type ReplacePeerEntryDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -271,19 +267,18 @@ func (o *ReplacePeerEntryDefault) Code() int {
 func (o *ReplacePeerEntryDefault) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/peer_entries/{name}][%d] replacePeerEntry default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *ReplacePeerEntryDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *ReplacePeerEntryDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 

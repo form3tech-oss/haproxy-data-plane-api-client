@@ -24,12 +24,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // GetSpoeTransactionsReader is a Reader for the GetSpoeTransactions structure.
@@ -63,7 +61,7 @@ func NewGetSpoeTransactionsOK() *GetSpoeTransactionsOK {
 	return &GetSpoeTransactionsOK{}
 }
 
-/*GetSpoeTransactionsOK handles this case with default header values.
+/* GetSpoeTransactionsOK describes a response with status code 200, with default header values.
 
 Success
 */
@@ -74,7 +72,6 @@ type GetSpoeTransactionsOK struct {
 func (o *GetSpoeTransactionsOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/spoe_transactions][%d] getSpoeTransactionsOK  %+v", 200, o.Payload)
 }
-
 func (o *GetSpoeTransactionsOK) GetPayload() models.SpoeTransactions {
 	return o.Payload
 }
@@ -92,21 +89,20 @@ func (o *GetSpoeTransactionsOK) readResponse(response runtime.ClientResponse, co
 // NewGetSpoeTransactionsDefault creates a GetSpoeTransactionsDefault with default headers values
 func NewGetSpoeTransactionsDefault(code int) *GetSpoeTransactionsDefault {
 	return &GetSpoeTransactionsDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*GetSpoeTransactionsDefault handles this case with default header values.
+/* GetSpoeTransactionsDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type GetSpoeTransactionsDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -119,19 +115,18 @@ func (o *GetSpoeTransactionsDefault) Code() int {
 func (o *GetSpoeTransactionsDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/spoe_transactions][%d] getSpoeTransactions default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *GetSpoeTransactionsDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *GetSpoeTransactionsDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 

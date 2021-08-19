@@ -38,17 +38,20 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
+// ClientOption is the option for Client methods
+type ClientOption func(*runtime.ClientOperation)
+
 // ClientService is the interface for Client methods
 type ClientService interface {
-	CreateStickRule(params *CreateStickRuleParams, authInfo runtime.ClientAuthInfoWriter) (*CreateStickRuleCreated, *CreateStickRuleAccepted, error)
+	CreateStickRule(params *CreateStickRuleParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*CreateStickRuleCreated, *CreateStickRuleAccepted, error)
 
-	DeleteStickRule(params *DeleteStickRuleParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteStickRuleAccepted, *DeleteStickRuleNoContent, error)
+	DeleteStickRule(params *DeleteStickRuleParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*DeleteStickRuleAccepted, *DeleteStickRuleNoContent, error)
 
-	GetStickRule(params *GetStickRuleParams, authInfo runtime.ClientAuthInfoWriter) (*GetStickRuleOK, error)
+	GetStickRule(params *GetStickRuleParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetStickRuleOK, error)
 
-	GetStickRules(params *GetStickRulesParams, authInfo runtime.ClientAuthInfoWriter) (*GetStickRulesOK, error)
+	GetStickRules(params *GetStickRulesParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetStickRulesOK, error)
 
-	ReplaceStickRule(params *ReplaceStickRuleParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceStickRuleOK, *ReplaceStickRuleAccepted, error)
+	ReplaceStickRule(params *ReplaceStickRuleParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*ReplaceStickRuleOK, *ReplaceStickRuleAccepted, error)
 
 	SetTransport(transport runtime.ClientTransport)
 }
@@ -58,13 +61,12 @@ type ClientService interface {
 
   Adds a new Stick Rule of the specified type in the specified backend.
 */
-func (a *Client) CreateStickRule(params *CreateStickRuleParams, authInfo runtime.ClientAuthInfoWriter) (*CreateStickRuleCreated, *CreateStickRuleAccepted, error) {
+func (a *Client) CreateStickRule(params *CreateStickRuleParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*CreateStickRuleCreated, *CreateStickRuleAccepted, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewCreateStickRuleParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "createStickRule",
 		Method:             "POST",
 		PathPattern:        "/services/haproxy/configuration/stick_rules",
@@ -76,7 +78,12 @@ func (a *Client) CreateStickRule(params *CreateStickRuleParams, authInfo runtime
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -96,13 +103,12 @@ func (a *Client) CreateStickRule(params *CreateStickRuleParams, authInfo runtime
 
   Deletes a Stick Rule configuration by it's index from the specified backend.
 */
-func (a *Client) DeleteStickRule(params *DeleteStickRuleParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteStickRuleAccepted, *DeleteStickRuleNoContent, error) {
+func (a *Client) DeleteStickRule(params *DeleteStickRuleParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*DeleteStickRuleAccepted, *DeleteStickRuleNoContent, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewDeleteStickRuleParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "deleteStickRule",
 		Method:             "DELETE",
 		PathPattern:        "/services/haproxy/configuration/stick_rules/{index}",
@@ -114,7 +120,12 @@ func (a *Client) DeleteStickRule(params *DeleteStickRuleParams, authInfo runtime
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -134,13 +145,12 @@ func (a *Client) DeleteStickRule(params *DeleteStickRuleParams, authInfo runtime
 
   Returns one Stick Rule configuration by it's index in the specified backend.
 */
-func (a *Client) GetStickRule(params *GetStickRuleParams, authInfo runtime.ClientAuthInfoWriter) (*GetStickRuleOK, error) {
+func (a *Client) GetStickRule(params *GetStickRuleParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetStickRuleOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewGetStickRuleParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "getStickRule",
 		Method:             "GET",
 		PathPattern:        "/services/haproxy/configuration/stick_rules/{index}",
@@ -152,7 +162,12 @@ func (a *Client) GetStickRule(params *GetStickRuleParams, authInfo runtime.Clien
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -170,13 +185,12 @@ func (a *Client) GetStickRule(params *GetStickRuleParams, authInfo runtime.Clien
 
   Returns all Stick Rules that are configured in specified backend.
 */
-func (a *Client) GetStickRules(params *GetStickRulesParams, authInfo runtime.ClientAuthInfoWriter) (*GetStickRulesOK, error) {
+func (a *Client) GetStickRules(params *GetStickRulesParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetStickRulesOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewGetStickRulesParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "getStickRules",
 		Method:             "GET",
 		PathPattern:        "/services/haproxy/configuration/stick_rules",
@@ -188,7 +202,12 @@ func (a *Client) GetStickRules(params *GetStickRulesParams, authInfo runtime.Cli
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -206,13 +225,12 @@ func (a *Client) GetStickRules(params *GetStickRulesParams, authInfo runtime.Cli
 
   Replaces a Stick Rule configuration by it's index in the specified backend.
 */
-func (a *Client) ReplaceStickRule(params *ReplaceStickRuleParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceStickRuleOK, *ReplaceStickRuleAccepted, error) {
+func (a *Client) ReplaceStickRule(params *ReplaceStickRuleParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*ReplaceStickRuleOK, *ReplaceStickRuleAccepted, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewReplaceStickRuleParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "replaceStickRule",
 		Method:             "PUT",
 		PathPattern:        "/services/haproxy/configuration/stick_rules/{index}",
@@ -224,7 +242,12 @@ func (a *Client) ReplaceStickRule(params *ReplaceStickRuleParams, authInfo runti
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, nil, err
 	}

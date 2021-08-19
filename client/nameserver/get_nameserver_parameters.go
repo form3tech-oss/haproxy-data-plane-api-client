@@ -31,69 +31,85 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// NewGetNameserverParams creates a new GetNameserverParams object
-// with the default values initialized.
+// NewGetNameserverParams creates a new GetNameserverParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetNameserverParams() *GetNameserverParams {
-	var ()
 	return &GetNameserverParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewGetNameserverParamsWithTimeout creates a new GetNameserverParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewGetNameserverParamsWithTimeout(timeout time.Duration) *GetNameserverParams {
-	var ()
 	return &GetNameserverParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewGetNameserverParamsWithContext creates a new GetNameserverParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewGetNameserverParamsWithContext(ctx context.Context) *GetNameserverParams {
-	var ()
 	return &GetNameserverParams{
-
 		Context: ctx,
 	}
 }
 
 // NewGetNameserverParamsWithHTTPClient creates a new GetNameserverParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewGetNameserverParamsWithHTTPClient(client *http.Client) *GetNameserverParams {
-	var ()
 	return &GetNameserverParams{
 		HTTPClient: client,
 	}
 }
 
-/*GetNameserverParams contains all the parameters to send to the API endpoint
-for the get nameserver operation typically these are written to a http.Request
+/* GetNameserverParams contains all the parameters to send to the API endpoint
+   for the get nameserver operation.
+
+   Typically these are written to a http.Request.
 */
 type GetNameserverParams struct {
 
-	/*Name
-	  Nameserver name
+	/* Name.
 
+	   Nameserver name
 	*/
 	Name string
-	/*Resolver
-	  Parent resolver name
 
+	/* Resolver.
+
+	   Parent resolver name
 	*/
 	Resolver string
-	/*TransactionID
-	  ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 
+	/* TransactionID.
+
+	   ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 	*/
 	TransactionID *string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the get nameserver params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetNameserverParams) WithDefaults() *GetNameserverParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the get nameserver params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetNameserverParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the get nameserver params
@@ -179,6 +195,7 @@ func (o *GetNameserverParams) WriteToRequest(r runtime.ClientRequest, reg strfmt
 	qrResolver := o.Resolver
 	qResolver := qrResolver
 	if qResolver != "" {
+
 		if err := r.SetQueryParam("resolver", qResolver); err != nil {
 			return err
 		}
@@ -188,16 +205,17 @@ func (o *GetNameserverParams) WriteToRequest(r runtime.ClientRequest, reg strfmt
 
 		// query param transaction_id
 		var qrTransactionID string
+
 		if o.TransactionID != nil {
 			qrTransactionID = *o.TransactionID
 		}
 		qTransactionID := qrTransactionID
 		if qTransactionID != "" {
+
 			if err := r.SetQueryParam("transaction_id", qTransactionID); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if len(res) > 0 {

@@ -32,64 +32,79 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewStartSpoeTransactionParams creates a new StartSpoeTransactionParams object
-// with the default values initialized.
+// NewStartSpoeTransactionParams creates a new StartSpoeTransactionParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewStartSpoeTransactionParams() *StartSpoeTransactionParams {
-	var ()
 	return &StartSpoeTransactionParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewStartSpoeTransactionParamsWithTimeout creates a new StartSpoeTransactionParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewStartSpoeTransactionParamsWithTimeout(timeout time.Duration) *StartSpoeTransactionParams {
-	var ()
 	return &StartSpoeTransactionParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewStartSpoeTransactionParamsWithContext creates a new StartSpoeTransactionParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewStartSpoeTransactionParamsWithContext(ctx context.Context) *StartSpoeTransactionParams {
-	var ()
 	return &StartSpoeTransactionParams{
-
 		Context: ctx,
 	}
 }
 
 // NewStartSpoeTransactionParamsWithHTTPClient creates a new StartSpoeTransactionParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewStartSpoeTransactionParamsWithHTTPClient(client *http.Client) *StartSpoeTransactionParams {
-	var ()
 	return &StartSpoeTransactionParams{
 		HTTPClient: client,
 	}
 }
 
-/*StartSpoeTransactionParams contains all the parameters to send to the API endpoint
-for the start spoe transaction operation typically these are written to a http.Request
+/* StartSpoeTransactionParams contains all the parameters to send to the API endpoint
+   for the start spoe transaction operation.
+
+   Typically these are written to a http.Request.
 */
 type StartSpoeTransactionParams struct {
 
-	/*Spoe
-	  Spoe file name
+	/* Spoe.
 
+	   Spoe file name
 	*/
 	Spoe string
-	/*Version
-	  Configuration version on which to work on
 
+	/* Version.
+
+	   Configuration version on which to work on
 	*/
 	Version int64
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the start spoe transaction params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *StartSpoeTransactionParams) WithDefaults() *StartSpoeTransactionParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the start spoe transaction params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *StartSpoeTransactionParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the start spoe transaction params
@@ -159,6 +174,7 @@ func (o *StartSpoeTransactionParams) WriteToRequest(r runtime.ClientRequest, reg
 	qrSpoe := o.Spoe
 	qSpoe := qrSpoe
 	if qSpoe != "" {
+
 		if err := r.SetQueryParam("spoe", qSpoe); err != nil {
 			return err
 		}
@@ -168,6 +184,7 @@ func (o *StartSpoeTransactionParams) WriteToRequest(r runtime.ClientRequest, reg
 	qrVersion := o.Version
 	qVersion := swag.FormatInt64(qrVersion)
 	if qVersion != "" {
+
 		if err := r.SetQueryParam("version", qVersion); err != nil {
 			return err
 		}

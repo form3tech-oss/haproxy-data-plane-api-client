@@ -31,69 +31,85 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// NewGetServerParams creates a new GetServerParams object
-// with the default values initialized.
+// NewGetServerParams creates a new GetServerParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetServerParams() *GetServerParams {
-	var ()
 	return &GetServerParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewGetServerParamsWithTimeout creates a new GetServerParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewGetServerParamsWithTimeout(timeout time.Duration) *GetServerParams {
-	var ()
 	return &GetServerParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewGetServerParamsWithContext creates a new GetServerParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewGetServerParamsWithContext(ctx context.Context) *GetServerParams {
-	var ()
 	return &GetServerParams{
-
 		Context: ctx,
 	}
 }
 
 // NewGetServerParamsWithHTTPClient creates a new GetServerParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewGetServerParamsWithHTTPClient(client *http.Client) *GetServerParams {
-	var ()
 	return &GetServerParams{
 		HTTPClient: client,
 	}
 }
 
-/*GetServerParams contains all the parameters to send to the API endpoint
-for the get server operation typically these are written to a http.Request
+/* GetServerParams contains all the parameters to send to the API endpoint
+   for the get server operation.
+
+   Typically these are written to a http.Request.
 */
 type GetServerParams struct {
 
-	/*Backend
-	  Parent backend name
+	/* Backend.
 
+	   Parent backend name
 	*/
 	Backend string
-	/*Name
-	  Server name
 
+	/* Name.
+
+	   Server name
 	*/
 	Name string
-	/*TransactionID
-	  ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 
+	/* TransactionID.
+
+	   ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 	*/
 	TransactionID *string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the get server params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetServerParams) WithDefaults() *GetServerParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the get server params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetServerParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the get server params
@@ -174,6 +190,7 @@ func (o *GetServerParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Reg
 	qrBackend := o.Backend
 	qBackend := qrBackend
 	if qBackend != "" {
+
 		if err := r.SetQueryParam("backend", qBackend); err != nil {
 			return err
 		}
@@ -188,16 +205,17 @@ func (o *GetServerParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Reg
 
 		// query param transaction_id
 		var qrTransactionID string
+
 		if o.TransactionID != nil {
 			qrTransactionID = *o.TransactionID
 		}
 		qTransactionID := qrTransactionID
 		if qTransactionID != "" {
+
 			if err := r.SetQueryParam("transaction_id", qTransactionID); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if len(res) > 0 {

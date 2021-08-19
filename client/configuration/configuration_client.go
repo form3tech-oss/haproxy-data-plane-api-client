@@ -38,13 +38,16 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
+// ClientOption is the option for Client methods
+type ClientOption func(*runtime.ClientOperation)
+
 // ClientService is the interface for Client methods
 type ClientService interface {
-	GetConfigurationVersion(params *GetConfigurationVersionParams, authInfo runtime.ClientAuthInfoWriter) (*GetConfigurationVersionOK, error)
+	GetConfigurationVersion(params *GetConfigurationVersionParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetConfigurationVersionOK, error)
 
-	GetHAProxyConfiguration(params *GetHAProxyConfigurationParams, authInfo runtime.ClientAuthInfoWriter) (*GetHAProxyConfigurationOK, error)
+	GetHAProxyConfiguration(params *GetHAProxyConfigurationParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetHAProxyConfigurationOK, error)
 
-	PostHAProxyConfiguration(params *PostHAProxyConfigurationParams, authInfo runtime.ClientAuthInfoWriter) (*PostHAProxyConfigurationCreated, *PostHAProxyConfigurationAccepted, error)
+	PostHAProxyConfiguration(params *PostHAProxyConfigurationParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*PostHAProxyConfigurationCreated, *PostHAProxyConfigurationAccepted, error)
 
 	SetTransport(transport runtime.ClientTransport)
 }
@@ -54,13 +57,12 @@ type ClientService interface {
 
   Returns configuration version.
 */
-func (a *Client) GetConfigurationVersion(params *GetConfigurationVersionParams, authInfo runtime.ClientAuthInfoWriter) (*GetConfigurationVersionOK, error) {
+func (a *Client) GetConfigurationVersion(params *GetConfigurationVersionParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetConfigurationVersionOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewGetConfigurationVersionParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "getConfigurationVersion",
 		Method:             "GET",
 		PathPattern:        "/services/haproxy/configuration/version",
@@ -72,7 +74,12 @@ func (a *Client) GetConfigurationVersion(params *GetConfigurationVersionParams, 
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -90,13 +97,12 @@ func (a *Client) GetConfigurationVersion(params *GetConfigurationVersionParams, 
 
   Returns HAProxy configuration file in plain text
 */
-func (a *Client) GetHAProxyConfiguration(params *GetHAProxyConfigurationParams, authInfo runtime.ClientAuthInfoWriter) (*GetHAProxyConfigurationOK, error) {
+func (a *Client) GetHAProxyConfiguration(params *GetHAProxyConfigurationParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetHAProxyConfigurationOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewGetHAProxyConfigurationParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "getHAProxyConfiguration",
 		Method:             "GET",
 		PathPattern:        "/services/haproxy/configuration/raw",
@@ -108,7 +114,12 @@ func (a *Client) GetHAProxyConfiguration(params *GetHAProxyConfigurationParams, 
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -126,13 +137,12 @@ func (a *Client) GetHAProxyConfiguration(params *GetHAProxyConfigurationParams, 
 
   Push a new haproxy configuration file in plain text
 */
-func (a *Client) PostHAProxyConfiguration(params *PostHAProxyConfigurationParams, authInfo runtime.ClientAuthInfoWriter) (*PostHAProxyConfigurationCreated, *PostHAProxyConfigurationAccepted, error) {
+func (a *Client) PostHAProxyConfiguration(params *PostHAProxyConfigurationParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*PostHAProxyConfigurationCreated, *PostHAProxyConfigurationAccepted, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewPostHAProxyConfigurationParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "postHAProxyConfiguration",
 		Method:             "POST",
 		PathPattern:        "/services/haproxy/configuration/raw",
@@ -144,7 +154,12 @@ func (a *Client) PostHAProxyConfiguration(params *PostHAProxyConfigurationParams
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, nil, err
 	}

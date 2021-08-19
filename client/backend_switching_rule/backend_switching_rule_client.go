@@ -38,17 +38,20 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
+// ClientOption is the option for Client methods
+type ClientOption func(*runtime.ClientOperation)
+
 // ClientService is the interface for Client methods
 type ClientService interface {
-	CreateBackendSwitchingRule(params *CreateBackendSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter) (*CreateBackendSwitchingRuleCreated, *CreateBackendSwitchingRuleAccepted, error)
+	CreateBackendSwitchingRule(params *CreateBackendSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*CreateBackendSwitchingRuleCreated, *CreateBackendSwitchingRuleAccepted, error)
 
-	DeleteBackendSwitchingRule(params *DeleteBackendSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteBackendSwitchingRuleAccepted, *DeleteBackendSwitchingRuleNoContent, error)
+	DeleteBackendSwitchingRule(params *DeleteBackendSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*DeleteBackendSwitchingRuleAccepted, *DeleteBackendSwitchingRuleNoContent, error)
 
-	GetBackendSwitchingRule(params *GetBackendSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter) (*GetBackendSwitchingRuleOK, error)
+	GetBackendSwitchingRule(params *GetBackendSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetBackendSwitchingRuleOK, error)
 
-	GetBackendSwitchingRules(params *GetBackendSwitchingRulesParams, authInfo runtime.ClientAuthInfoWriter) (*GetBackendSwitchingRulesOK, error)
+	GetBackendSwitchingRules(params *GetBackendSwitchingRulesParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetBackendSwitchingRulesOK, error)
 
-	ReplaceBackendSwitchingRule(params *ReplaceBackendSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceBackendSwitchingRuleOK, *ReplaceBackendSwitchingRuleAccepted, error)
+	ReplaceBackendSwitchingRule(params *ReplaceBackendSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*ReplaceBackendSwitchingRuleOK, *ReplaceBackendSwitchingRuleAccepted, error)
 
 	SetTransport(transport runtime.ClientTransport)
 }
@@ -58,13 +61,12 @@ type ClientService interface {
 
   Adds a new Backend Switching Rule of the specified type in the specified frontend.
 */
-func (a *Client) CreateBackendSwitchingRule(params *CreateBackendSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter) (*CreateBackendSwitchingRuleCreated, *CreateBackendSwitchingRuleAccepted, error) {
+func (a *Client) CreateBackendSwitchingRule(params *CreateBackendSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*CreateBackendSwitchingRuleCreated, *CreateBackendSwitchingRuleAccepted, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewCreateBackendSwitchingRuleParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "createBackendSwitchingRule",
 		Method:             "POST",
 		PathPattern:        "/services/haproxy/configuration/backend_switching_rules",
@@ -76,7 +78,12 @@ func (a *Client) CreateBackendSwitchingRule(params *CreateBackendSwitchingRulePa
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -96,13 +103,12 @@ func (a *Client) CreateBackendSwitchingRule(params *CreateBackendSwitchingRulePa
 
   Deletes a Backend Switching Rule configuration by it's index from the specified frontend.
 */
-func (a *Client) DeleteBackendSwitchingRule(params *DeleteBackendSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteBackendSwitchingRuleAccepted, *DeleteBackendSwitchingRuleNoContent, error) {
+func (a *Client) DeleteBackendSwitchingRule(params *DeleteBackendSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*DeleteBackendSwitchingRuleAccepted, *DeleteBackendSwitchingRuleNoContent, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewDeleteBackendSwitchingRuleParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "deleteBackendSwitchingRule",
 		Method:             "DELETE",
 		PathPattern:        "/services/haproxy/configuration/backend_switching_rules/{index}",
@@ -114,7 +120,12 @@ func (a *Client) DeleteBackendSwitchingRule(params *DeleteBackendSwitchingRulePa
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -134,13 +145,12 @@ func (a *Client) DeleteBackendSwitchingRule(params *DeleteBackendSwitchingRulePa
 
   Returns one Backend Switching Rule configuration by it's index in the specified frontend.
 */
-func (a *Client) GetBackendSwitchingRule(params *GetBackendSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter) (*GetBackendSwitchingRuleOK, error) {
+func (a *Client) GetBackendSwitchingRule(params *GetBackendSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetBackendSwitchingRuleOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewGetBackendSwitchingRuleParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "getBackendSwitchingRule",
 		Method:             "GET",
 		PathPattern:        "/services/haproxy/configuration/backend_switching_rules/{index}",
@@ -152,7 +162,12 @@ func (a *Client) GetBackendSwitchingRule(params *GetBackendSwitchingRuleParams, 
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -170,13 +185,12 @@ func (a *Client) GetBackendSwitchingRule(params *GetBackendSwitchingRuleParams, 
 
   Returns all Backend Switching Rules that are configured in specified frontend.
 */
-func (a *Client) GetBackendSwitchingRules(params *GetBackendSwitchingRulesParams, authInfo runtime.ClientAuthInfoWriter) (*GetBackendSwitchingRulesOK, error) {
+func (a *Client) GetBackendSwitchingRules(params *GetBackendSwitchingRulesParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetBackendSwitchingRulesOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewGetBackendSwitchingRulesParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "getBackendSwitchingRules",
 		Method:             "GET",
 		PathPattern:        "/services/haproxy/configuration/backend_switching_rules",
@@ -188,7 +202,12 @@ func (a *Client) GetBackendSwitchingRules(params *GetBackendSwitchingRulesParams
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -206,13 +225,12 @@ func (a *Client) GetBackendSwitchingRules(params *GetBackendSwitchingRulesParams
 
   Replaces a Backend Switching Rule configuration by it's index in the specified frontend.
 */
-func (a *Client) ReplaceBackendSwitchingRule(params *ReplaceBackendSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceBackendSwitchingRuleOK, *ReplaceBackendSwitchingRuleAccepted, error) {
+func (a *Client) ReplaceBackendSwitchingRule(params *ReplaceBackendSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*ReplaceBackendSwitchingRuleOK, *ReplaceBackendSwitchingRuleAccepted, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewReplaceBackendSwitchingRuleParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "replaceBackendSwitchingRule",
 		Method:             "PUT",
 		PathPattern:        "/services/haproxy/configuration/backend_switching_rules/{index}",
@@ -224,7 +242,12 @@ func (a *Client) ReplaceBackendSwitchingRule(params *ReplaceBackendSwitchingRule
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, nil, err
 	}

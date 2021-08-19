@@ -21,6 +21,7 @@ package bind
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"fmt"
 	"io"
 
@@ -30,7 +31,7 @@ import (
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // GetBindsReader is a Reader for the GetBinds structure.
@@ -64,14 +65,15 @@ func NewGetBindsOK() *GetBindsOK {
 	return &GetBindsOK{}
 }
 
-/*GetBindsOK handles this case with default header values.
+/* GetBindsOK describes a response with status code 200, with default header values.
 
 Successful operation
 */
 type GetBindsOK struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *GetBindsOKBody
 }
@@ -79,19 +81,18 @@ type GetBindsOK struct {
 func (o *GetBindsOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/binds][%d] getBindsOK  %+v", 200, o.Payload)
 }
-
 func (o *GetBindsOK) GetPayload() *GetBindsOKBody {
 	return o.Payload
 }
 
 func (o *GetBindsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(GetBindsOKBody)
 
@@ -106,21 +107,20 @@ func (o *GetBindsOK) readResponse(response runtime.ClientResponse, consumer runt
 // NewGetBindsDefault creates a GetBindsDefault with default headers values
 func NewGetBindsDefault(code int) *GetBindsDefault {
 	return &GetBindsDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*GetBindsDefault handles this case with default header values.
+/* GetBindsDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type GetBindsDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -133,19 +133,18 @@ func (o *GetBindsDefault) Code() int {
 func (o *GetBindsDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/binds][%d] getBinds default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *GetBindsDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *GetBindsDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -191,6 +190,32 @@ func (o *GetBindsOKBody) validateData(formats strfmt.Registry) error {
 	}
 
 	if err := o.Data.Validate(formats); err != nil {
+		if ve, ok := err.(*errors.Validation); ok {
+			return ve.ValidateName("getBindsOK" + "." + "data")
+		}
+		return err
+	}
+
+	return nil
+}
+
+// ContextValidate validate this get binds o k body based on the context it is used
+func (o *GetBindsOKBody) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.contextValidateData(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *GetBindsOKBody) contextValidateData(ctx context.Context, formats strfmt.Registry) error {
+
+	if err := o.Data.ContextValidate(ctx, formats); err != nil {
 		if ve, ok := err.(*errors.Validation); ok {
 			return ve.ValidateName("getBindsOK" + "." + "data")
 		}

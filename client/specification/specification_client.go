@@ -38,9 +38,12 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
+// ClientOption is the option for Client methods
+type ClientOption func(*runtime.ClientOperation)
+
 // ClientService is the interface for Client methods
 type ClientService interface {
-	GetSpecification(params *GetSpecificationParams, authInfo runtime.ClientAuthInfoWriter) (*GetSpecificationOK, error)
+	GetSpecification(params *GetSpecificationParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetSpecificationOK, error)
 
 	SetTransport(transport runtime.ClientTransport)
 }
@@ -50,13 +53,12 @@ type ClientService interface {
 
   Return Data Plane API OpenAPI specification
 */
-func (a *Client) GetSpecification(params *GetSpecificationParams, authInfo runtime.ClientAuthInfoWriter) (*GetSpecificationOK, error) {
+func (a *Client) GetSpecification(params *GetSpecificationParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetSpecificationOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewGetSpecificationParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "getSpecification",
 		Method:             "GET",
 		PathPattern:        "/specification",
@@ -68,7 +70,12 @@ func (a *Client) GetSpecification(params *GetSpecificationParams, authInfo runti
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}

@@ -31,64 +31,79 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// NewGetPeerEntriesParams creates a new GetPeerEntriesParams object
-// with the default values initialized.
+// NewGetPeerEntriesParams creates a new GetPeerEntriesParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetPeerEntriesParams() *GetPeerEntriesParams {
-	var ()
 	return &GetPeerEntriesParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewGetPeerEntriesParamsWithTimeout creates a new GetPeerEntriesParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewGetPeerEntriesParamsWithTimeout(timeout time.Duration) *GetPeerEntriesParams {
-	var ()
 	return &GetPeerEntriesParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewGetPeerEntriesParamsWithContext creates a new GetPeerEntriesParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewGetPeerEntriesParamsWithContext(ctx context.Context) *GetPeerEntriesParams {
-	var ()
 	return &GetPeerEntriesParams{
-
 		Context: ctx,
 	}
 }
 
 // NewGetPeerEntriesParamsWithHTTPClient creates a new GetPeerEntriesParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewGetPeerEntriesParamsWithHTTPClient(client *http.Client) *GetPeerEntriesParams {
-	var ()
 	return &GetPeerEntriesParams{
 		HTTPClient: client,
 	}
 }
 
-/*GetPeerEntriesParams contains all the parameters to send to the API endpoint
-for the get peer entries operation typically these are written to a http.Request
+/* GetPeerEntriesParams contains all the parameters to send to the API endpoint
+   for the get peer entries operation.
+
+   Typically these are written to a http.Request.
 */
 type GetPeerEntriesParams struct {
 
-	/*PeerSection
-	  Parent peer section name
+	/* PeerSection.
 
+	   Parent peer section name
 	*/
 	PeerSection string
-	/*TransactionID
-	  ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 
+	/* TransactionID.
+
+	   ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 	*/
 	TransactionID *string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the get peer entries params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetPeerEntriesParams) WithDefaults() *GetPeerEntriesParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the get peer entries params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetPeerEntriesParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the get peer entries params
@@ -158,6 +173,7 @@ func (o *GetPeerEntriesParams) WriteToRequest(r runtime.ClientRequest, reg strfm
 	qrPeerSection := o.PeerSection
 	qPeerSection := qrPeerSection
 	if qPeerSection != "" {
+
 		if err := r.SetQueryParam("peer_section", qPeerSection); err != nil {
 			return err
 		}
@@ -167,16 +183,17 @@ func (o *GetPeerEntriesParams) WriteToRequest(r runtime.ClientRequest, reg strfm
 
 		// query param transaction_id
 		var qrTransactionID string
+
 		if o.TransactionID != nil {
 			qrTransactionID = *o.TransactionID
 		}
 		qTransactionID := qrTransactionID
 		if qTransactionID != "" {
+
 			if err := r.SetQueryParam("transaction_id", qTransactionID); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if len(res) > 0 {

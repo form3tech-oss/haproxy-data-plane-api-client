@@ -32,64 +32,79 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewGetStickTableParams creates a new GetStickTableParams object
-// with the default values initialized.
+// NewGetStickTableParams creates a new GetStickTableParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetStickTableParams() *GetStickTableParams {
-	var ()
 	return &GetStickTableParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewGetStickTableParamsWithTimeout creates a new GetStickTableParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewGetStickTableParamsWithTimeout(timeout time.Duration) *GetStickTableParams {
-	var ()
 	return &GetStickTableParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewGetStickTableParamsWithContext creates a new GetStickTableParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewGetStickTableParamsWithContext(ctx context.Context) *GetStickTableParams {
-	var ()
 	return &GetStickTableParams{
-
 		Context: ctx,
 	}
 }
 
 // NewGetStickTableParamsWithHTTPClient creates a new GetStickTableParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewGetStickTableParamsWithHTTPClient(client *http.Client) *GetStickTableParams {
-	var ()
 	return &GetStickTableParams{
 		HTTPClient: client,
 	}
 }
 
-/*GetStickTableParams contains all the parameters to send to the API endpoint
-for the get stick table operation typically these are written to a http.Request
+/* GetStickTableParams contains all the parameters to send to the API endpoint
+   for the get stick table operation.
+
+   Typically these are written to a http.Request.
 */
 type GetStickTableParams struct {
 
-	/*Name
-	  Stick table name
+	/* Name.
 
+	   Stick table name
 	*/
 	Name string
-	/*Process
-	  Process number if master-worker mode, if not only first process is returned
 
+	/* Process.
+
+	   Process number if master-worker mode, if not only first process is returned
 	*/
 	Process int64
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the get stick table params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetStickTableParams) WithDefaults() *GetStickTableParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the get stick table params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetStickTableParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the get stick table params
@@ -164,6 +179,7 @@ func (o *GetStickTableParams) WriteToRequest(r runtime.ClientRequest, reg strfmt
 	qrProcess := o.Process
 	qProcess := swag.FormatInt64(qrProcess)
 	if qProcess != "" {
+
 		if err := r.SetQueryParam("process", qProcess); err != nil {
 			return err
 		}

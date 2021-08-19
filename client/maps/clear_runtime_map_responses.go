@@ -24,12 +24,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // ClearRuntimeMapReader is a Reader for the ClearRuntimeMap structure.
@@ -69,7 +67,7 @@ func NewClearRuntimeMapNoContent() *ClearRuntimeMapNoContent {
 	return &ClearRuntimeMapNoContent{}
 }
 
-/*ClearRuntimeMapNoContent handles this case with default header values.
+/* ClearRuntimeMapNoContent describes a response with status code 204, with default header values.
 
 All map entries deleted
 */
@@ -87,19 +85,18 @@ func (o *ClearRuntimeMapNoContent) readResponse(response runtime.ClientResponse,
 
 // NewClearRuntimeMapNotFound creates a ClearRuntimeMapNotFound with default headers values
 func NewClearRuntimeMapNotFound() *ClearRuntimeMapNotFound {
-	return &ClearRuntimeMapNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &ClearRuntimeMapNotFound{}
 }
 
-/*ClearRuntimeMapNotFound handles this case with default header values.
+/* ClearRuntimeMapNotFound describes a response with status code 404, with default header values.
 
 The specified resource was not found
 */
 type ClearRuntimeMapNotFound struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -107,19 +104,18 @@ type ClearRuntimeMapNotFound struct {
 func (o *ClearRuntimeMapNotFound) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/runtime/maps/{name}][%d] clearRuntimeMapNotFound  %+v", 404, o.Payload)
 }
-
 func (o *ClearRuntimeMapNotFound) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *ClearRuntimeMapNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -134,21 +130,20 @@ func (o *ClearRuntimeMapNotFound) readResponse(response runtime.ClientResponse, 
 // NewClearRuntimeMapDefault creates a ClearRuntimeMapDefault with default headers values
 func NewClearRuntimeMapDefault(code int) *ClearRuntimeMapDefault {
 	return &ClearRuntimeMapDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*ClearRuntimeMapDefault handles this case with default header values.
+/* ClearRuntimeMapDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type ClearRuntimeMapDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -161,19 +156,18 @@ func (o *ClearRuntimeMapDefault) Code() int {
 func (o *ClearRuntimeMapDefault) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/runtime/maps/{name}][%d] clearRuntimeMap default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *ClearRuntimeMapDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *ClearRuntimeMapDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 

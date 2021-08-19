@@ -24,12 +24,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // ReplaceNameserverReader is a Reader for the ReplaceNameserver structure.
@@ -81,7 +79,7 @@ func NewReplaceNameserverOK() *ReplaceNameserverOK {
 	return &ReplaceNameserverOK{}
 }
 
-/*ReplaceNameserverOK handles this case with default header values.
+/* ReplaceNameserverOK describes a response with status code 200, with default header values.
 
 Nameserver replaced
 */
@@ -92,7 +90,6 @@ type ReplaceNameserverOK struct {
 func (o *ReplaceNameserverOK) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/nameservers/{name}][%d] replaceNameserverOK  %+v", 200, o.Payload)
 }
-
 func (o *ReplaceNameserverOK) GetPayload() *models.Nameserver {
 	return o.Payload
 }
@@ -114,12 +111,13 @@ func NewReplaceNameserverAccepted() *ReplaceNameserverAccepted {
 	return &ReplaceNameserverAccepted{}
 }
 
-/*ReplaceNameserverAccepted handles this case with default header values.
+/* ReplaceNameserverAccepted describes a response with status code 202, with default header values.
 
 Configuration change accepted and reload requested
 */
 type ReplaceNameserverAccepted struct {
-	/*ID of the requested reload
+
+	/* ID of the requested reload
 	 */
 	ReloadID string
 
@@ -129,15 +127,18 @@ type ReplaceNameserverAccepted struct {
 func (o *ReplaceNameserverAccepted) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/nameservers/{name}][%d] replaceNameserverAccepted  %+v", 202, o.Payload)
 }
-
 func (o *ReplaceNameserverAccepted) GetPayload() *models.Nameserver {
 	return o.Payload
 }
 
 func (o *ReplaceNameserverAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Reload-ID
-	o.ReloadID = response.GetHeader("Reload-ID")
+	// hydrates response header Reload-ID
+	hdrReloadID := response.GetHeader("Reload-ID")
+
+	if hdrReloadID != "" {
+		o.ReloadID = hdrReloadID
+	}
 
 	o.Payload = new(models.Nameserver)
 
@@ -151,19 +152,18 @@ func (o *ReplaceNameserverAccepted) readResponse(response runtime.ClientResponse
 
 // NewReplaceNameserverBadRequest creates a ReplaceNameserverBadRequest with default headers values
 func NewReplaceNameserverBadRequest() *ReplaceNameserverBadRequest {
-	return &ReplaceNameserverBadRequest{
-		ConfigurationVersion: 0,
-	}
+	return &ReplaceNameserverBadRequest{}
 }
 
-/*ReplaceNameserverBadRequest handles this case with default header values.
+/* ReplaceNameserverBadRequest describes a response with status code 400, with default header values.
 
 Bad request
 */
 type ReplaceNameserverBadRequest struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -171,19 +171,18 @@ type ReplaceNameserverBadRequest struct {
 func (o *ReplaceNameserverBadRequest) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/nameservers/{name}][%d] replaceNameserverBadRequest  %+v", 400, o.Payload)
 }
-
 func (o *ReplaceNameserverBadRequest) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *ReplaceNameserverBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -197,19 +196,18 @@ func (o *ReplaceNameserverBadRequest) readResponse(response runtime.ClientRespon
 
 // NewReplaceNameserverNotFound creates a ReplaceNameserverNotFound with default headers values
 func NewReplaceNameserverNotFound() *ReplaceNameserverNotFound {
-	return &ReplaceNameserverNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &ReplaceNameserverNotFound{}
 }
 
-/*ReplaceNameserverNotFound handles this case with default header values.
+/* ReplaceNameserverNotFound describes a response with status code 404, with default header values.
 
 The specified resource was not found
 */
 type ReplaceNameserverNotFound struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -217,19 +215,18 @@ type ReplaceNameserverNotFound struct {
 func (o *ReplaceNameserverNotFound) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/nameservers/{name}][%d] replaceNameserverNotFound  %+v", 404, o.Payload)
 }
-
 func (o *ReplaceNameserverNotFound) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *ReplaceNameserverNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -244,21 +241,20 @@ func (o *ReplaceNameserverNotFound) readResponse(response runtime.ClientResponse
 // NewReplaceNameserverDefault creates a ReplaceNameserverDefault with default headers values
 func NewReplaceNameserverDefault(code int) *ReplaceNameserverDefault {
 	return &ReplaceNameserverDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*ReplaceNameserverDefault handles this case with default header values.
+/* ReplaceNameserverDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type ReplaceNameserverDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -271,19 +267,18 @@ func (o *ReplaceNameserverDefault) Code() int {
 func (o *ReplaceNameserverDefault) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/nameservers/{name}][%d] replaceNameserver default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *ReplaceNameserverDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *ReplaceNameserverDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 

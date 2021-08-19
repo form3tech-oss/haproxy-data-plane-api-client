@@ -31,81 +31,96 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
-// NewAddMapEntryParams creates a new AddMapEntryParams object
-// with the default values initialized.
+// NewAddMapEntryParams creates a new AddMapEntryParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewAddMapEntryParams() *AddMapEntryParams {
-	var (
-		forceSyncDefault = bool(false)
-	)
 	return &AddMapEntryParams{
-		ForceSync: &forceSyncDefault,
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewAddMapEntryParamsWithTimeout creates a new AddMapEntryParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewAddMapEntryParamsWithTimeout(timeout time.Duration) *AddMapEntryParams {
-	var (
-		forceSyncDefault = bool(false)
-	)
 	return &AddMapEntryParams{
-		ForceSync: &forceSyncDefault,
-
 		timeout: timeout,
 	}
 }
 
 // NewAddMapEntryParamsWithContext creates a new AddMapEntryParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewAddMapEntryParamsWithContext(ctx context.Context) *AddMapEntryParams {
-	var (
-		forceSyncDefault = bool(false)
-	)
 	return &AddMapEntryParams{
-		ForceSync: &forceSyncDefault,
-
 		Context: ctx,
 	}
 }
 
 // NewAddMapEntryParamsWithHTTPClient creates a new AddMapEntryParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewAddMapEntryParamsWithHTTPClient(client *http.Client) *AddMapEntryParams {
-	var (
-		forceSyncDefault = bool(false)
-	)
 	return &AddMapEntryParams{
-		ForceSync:  &forceSyncDefault,
 		HTTPClient: client,
 	}
 }
 
-/*AddMapEntryParams contains all the parameters to send to the API endpoint
-for the add map entry operation typically these are written to a http.Request
+/* AddMapEntryParams contains all the parameters to send to the API endpoint
+   for the add map entry operation.
+
+   Typically these are written to a http.Request.
 */
 type AddMapEntryParams struct {
 
-	/*Data*/
+	// Data.
 	Data *models.MapEntry
-	/*ForceSync
-	  If true, immediately syncs changes to disk
 
+	/* ForceSync.
+
+	   If true, immediately syncs changes to disk
 	*/
 	ForceSync *bool
-	/*Map
-	  Mapfile attribute storage_name
 
+	/* Map.
+
+	   Mapfile attribute storage_name
 	*/
 	Map string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the add map entry params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *AddMapEntryParams) WithDefaults() *AddMapEntryParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the add map entry params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *AddMapEntryParams) SetDefaults() {
+	var (
+		forceSyncDefault = bool(false)
+	)
+
+	val := AddMapEntryParams{
+		ForceSync: &forceSyncDefault,
+	}
+
+	val.timeout = o.timeout
+	val.Context = o.Context
+	val.HTTPClient = o.HTTPClient
+	*o = val
 }
 
 // WithTimeout adds the timeout to the add map entry params
@@ -181,7 +196,6 @@ func (o *AddMapEntryParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.R
 		return err
 	}
 	var res []error
-
 	if o.Data != nil {
 		if err := r.SetBodyParam(o.Data); err != nil {
 			return err
@@ -192,22 +206,24 @@ func (o *AddMapEntryParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.R
 
 		// query param force_sync
 		var qrForceSync bool
+
 		if o.ForceSync != nil {
 			qrForceSync = *o.ForceSync
 		}
 		qForceSync := swag.FormatBool(qrForceSync)
 		if qForceSync != "" {
+
 			if err := r.SetQueryParam("force_sync", qForceSync); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	// query param map
 	qrMap := o.Map
 	qMap := qrMap
 	if qMap != "" {
+
 		if err := r.SetQueryParam("map", qMap); err != nil {
 			return err
 		}

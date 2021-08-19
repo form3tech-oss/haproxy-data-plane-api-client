@@ -31,52 +31,66 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// NewGetSpecificationParams creates a new GetSpecificationParams object
-// with the default values initialized.
+// NewGetSpecificationParams creates a new GetSpecificationParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetSpecificationParams() *GetSpecificationParams {
-
 	return &GetSpecificationParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewGetSpecificationParamsWithTimeout creates a new GetSpecificationParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewGetSpecificationParamsWithTimeout(timeout time.Duration) *GetSpecificationParams {
-
 	return &GetSpecificationParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewGetSpecificationParamsWithContext creates a new GetSpecificationParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewGetSpecificationParamsWithContext(ctx context.Context) *GetSpecificationParams {
-
 	return &GetSpecificationParams{
-
 		Context: ctx,
 	}
 }
 
 // NewGetSpecificationParamsWithHTTPClient creates a new GetSpecificationParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewGetSpecificationParamsWithHTTPClient(client *http.Client) *GetSpecificationParams {
-
 	return &GetSpecificationParams{
 		HTTPClient: client,
 	}
 }
 
-/*GetSpecificationParams contains all the parameters to send to the API endpoint
-for the get specification operation typically these are written to a http.Request
+/* GetSpecificationParams contains all the parameters to send to the API endpoint
+   for the get specification operation.
+
+   Typically these are written to a http.Request.
 */
 type GetSpecificationParams struct {
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the get specification params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetSpecificationParams) WithDefaults() *GetSpecificationParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the get specification params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetSpecificationParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the get specification params

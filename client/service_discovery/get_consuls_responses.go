@@ -21,6 +21,7 @@ package service_discovery
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"fmt"
 	"io"
 
@@ -30,7 +31,7 @@ import (
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // GetConsulsReader is a Reader for the GetConsuls structure.
@@ -64,7 +65,7 @@ func NewGetConsulsOK() *GetConsulsOK {
 	return &GetConsulsOK{}
 }
 
-/*GetConsulsOK handles this case with default header values.
+/* GetConsulsOK describes a response with status code 200, with default header values.
 
 Successful operation
 */
@@ -75,7 +76,6 @@ type GetConsulsOK struct {
 func (o *GetConsulsOK) Error() string {
 	return fmt.Sprintf("[GET /service_discovery/consul][%d] getConsulsOK  %+v", 200, o.Payload)
 }
-
 func (o *GetConsulsOK) GetPayload() *GetConsulsOKBody {
 	return o.Payload
 }
@@ -95,21 +95,20 @@ func (o *GetConsulsOK) readResponse(response runtime.ClientResponse, consumer ru
 // NewGetConsulsDefault creates a GetConsulsDefault with default headers values
 func NewGetConsulsDefault(code int) *GetConsulsDefault {
 	return &GetConsulsDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*GetConsulsDefault handles this case with default header values.
+/* GetConsulsDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type GetConsulsDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -122,19 +121,18 @@ func (o *GetConsulsDefault) Code() int {
 func (o *GetConsulsDefault) Error() string {
 	return fmt.Sprintf("[GET /service_discovery/consul][%d] getConsuls default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *GetConsulsDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *GetConsulsDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -177,6 +175,32 @@ func (o *GetConsulsOKBody) validateData(formats strfmt.Registry) error {
 	}
 
 	if err := o.Data.Validate(formats); err != nil {
+		if ve, ok := err.(*errors.Validation); ok {
+			return ve.ValidateName("getConsulsOK" + "." + "data")
+		}
+		return err
+	}
+
+	return nil
+}
+
+// ContextValidate validate this get consuls o k body based on the context it is used
+func (o *GetConsulsOKBody) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.contextValidateData(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *GetConsulsOKBody) contextValidateData(ctx context.Context, formats strfmt.Registry) error {
+
+	if err := o.Data.ContextValidate(ctx, formats); err != nil {
 		if ve, ok := err.(*errors.Validation); ok {
 			return ve.ValidateName("getConsulsOK" + "." + "data")
 		}

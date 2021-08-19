@@ -31,69 +31,85 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// NewGetTCPRequestRulesParams creates a new GetTCPRequestRulesParams object
-// with the default values initialized.
+// NewGetTCPRequestRulesParams creates a new GetTCPRequestRulesParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetTCPRequestRulesParams() *GetTCPRequestRulesParams {
-	var ()
 	return &GetTCPRequestRulesParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewGetTCPRequestRulesParamsWithTimeout creates a new GetTCPRequestRulesParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewGetTCPRequestRulesParamsWithTimeout(timeout time.Duration) *GetTCPRequestRulesParams {
-	var ()
 	return &GetTCPRequestRulesParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewGetTCPRequestRulesParamsWithContext creates a new GetTCPRequestRulesParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewGetTCPRequestRulesParamsWithContext(ctx context.Context) *GetTCPRequestRulesParams {
-	var ()
 	return &GetTCPRequestRulesParams{
-
 		Context: ctx,
 	}
 }
 
 // NewGetTCPRequestRulesParamsWithHTTPClient creates a new GetTCPRequestRulesParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewGetTCPRequestRulesParamsWithHTTPClient(client *http.Client) *GetTCPRequestRulesParams {
-	var ()
 	return &GetTCPRequestRulesParams{
 		HTTPClient: client,
 	}
 }
 
-/*GetTCPRequestRulesParams contains all the parameters to send to the API endpoint
-for the get TCP request rules operation typically these are written to a http.Request
+/* GetTCPRequestRulesParams contains all the parameters to send to the API endpoint
+   for the get TCP request rules operation.
+
+   Typically these are written to a http.Request.
 */
 type GetTCPRequestRulesParams struct {
 
-	/*ParentName
-	  Parent name
+	/* ParentName.
 
+	   Parent name
 	*/
 	ParentName string
-	/*ParentType
-	  Parent type
 
+	/* ParentType.
+
+	   Parent type
 	*/
 	ParentType string
-	/*TransactionID
-	  ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 
+	/* TransactionID.
+
+	   ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 	*/
 	TransactionID *string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the get TCP request rules params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetTCPRequestRulesParams) WithDefaults() *GetTCPRequestRulesParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the get TCP request rules params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetTCPRequestRulesParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the get TCP request rules params
@@ -174,6 +190,7 @@ func (o *GetTCPRequestRulesParams) WriteToRequest(r runtime.ClientRequest, reg s
 	qrParentName := o.ParentName
 	qParentName := qrParentName
 	if qParentName != "" {
+
 		if err := r.SetQueryParam("parent_name", qParentName); err != nil {
 			return err
 		}
@@ -183,6 +200,7 @@ func (o *GetTCPRequestRulesParams) WriteToRequest(r runtime.ClientRequest, reg s
 	qrParentType := o.ParentType
 	qParentType := qrParentType
 	if qParentType != "" {
+
 		if err := r.SetQueryParam("parent_type", qParentType); err != nil {
 			return err
 		}
@@ -192,16 +210,17 @@ func (o *GetTCPRequestRulesParams) WriteToRequest(r runtime.ClientRequest, reg s
 
 		// query param transaction_id
 		var qrTransactionID string
+
 		if o.TransactionID != nil {
 			qrTransactionID = *o.TransactionID
 		}
 		qTransactionID := qrTransactionID
 		if qTransactionID != "" {
+
 			if err := r.SetQueryParam("transaction_id", qTransactionID); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if len(res) > 0 {

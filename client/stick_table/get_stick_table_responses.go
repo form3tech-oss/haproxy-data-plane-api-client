@@ -24,12 +24,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // GetStickTableReader is a Reader for the GetStickTable structure.
@@ -69,7 +67,7 @@ func NewGetStickTableOK() *GetStickTableOK {
 	return &GetStickTableOK{}
 }
 
-/*GetStickTableOK handles this case with default header values.
+/* GetStickTableOK describes a response with status code 200, with default header values.
 
 Successful operation
 */
@@ -80,7 +78,6 @@ type GetStickTableOK struct {
 func (o *GetStickTableOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/runtime/stick_tables/{name}][%d] getStickTableOK  %+v", 200, o.Payload)
 }
-
 func (o *GetStickTableOK) GetPayload() *models.StickTable {
 	return o.Payload
 }
@@ -99,19 +96,18 @@ func (o *GetStickTableOK) readResponse(response runtime.ClientResponse, consumer
 
 // NewGetStickTableNotFound creates a GetStickTableNotFound with default headers values
 func NewGetStickTableNotFound() *GetStickTableNotFound {
-	return &GetStickTableNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &GetStickTableNotFound{}
 }
 
-/*GetStickTableNotFound handles this case with default header values.
+/* GetStickTableNotFound describes a response with status code 404, with default header values.
 
 The specified resource was not found
 */
 type GetStickTableNotFound struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -119,19 +115,18 @@ type GetStickTableNotFound struct {
 func (o *GetStickTableNotFound) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/runtime/stick_tables/{name}][%d] getStickTableNotFound  %+v", 404, o.Payload)
 }
-
 func (o *GetStickTableNotFound) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *GetStickTableNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -146,21 +141,20 @@ func (o *GetStickTableNotFound) readResponse(response runtime.ClientResponse, co
 // NewGetStickTableDefault creates a GetStickTableDefault with default headers values
 func NewGetStickTableDefault(code int) *GetStickTableDefault {
 	return &GetStickTableDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*GetStickTableDefault handles this case with default header values.
+/* GetStickTableDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type GetStickTableDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -173,19 +167,18 @@ func (o *GetStickTableDefault) Code() int {
 func (o *GetStickTableDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/runtime/stick_tables/{name}][%d] getStickTable default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *GetStickTableDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *GetStickTableDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 

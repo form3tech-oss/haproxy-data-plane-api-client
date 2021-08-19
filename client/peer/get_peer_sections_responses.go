@@ -21,6 +21,7 @@ package peer
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"fmt"
 	"io"
 
@@ -30,7 +31,7 @@ import (
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // GetPeerSectionsReader is a Reader for the GetPeerSections structure.
@@ -64,14 +65,15 @@ func NewGetPeerSectionsOK() *GetPeerSectionsOK {
 	return &GetPeerSectionsOK{}
 }
 
-/*GetPeerSectionsOK handles this case with default header values.
+/* GetPeerSectionsOK describes a response with status code 200, with default header values.
 
 Successful operation
 */
 type GetPeerSectionsOK struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *GetPeerSectionsOKBody
 }
@@ -79,19 +81,18 @@ type GetPeerSectionsOK struct {
 func (o *GetPeerSectionsOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/peer_section][%d] getPeerSectionsOK  %+v", 200, o.Payload)
 }
-
 func (o *GetPeerSectionsOK) GetPayload() *GetPeerSectionsOKBody {
 	return o.Payload
 }
 
 func (o *GetPeerSectionsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(GetPeerSectionsOKBody)
 
@@ -106,21 +107,20 @@ func (o *GetPeerSectionsOK) readResponse(response runtime.ClientResponse, consum
 // NewGetPeerSectionsDefault creates a GetPeerSectionsDefault with default headers values
 func NewGetPeerSectionsDefault(code int) *GetPeerSectionsDefault {
 	return &GetPeerSectionsDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*GetPeerSectionsDefault handles this case with default header values.
+/* GetPeerSectionsDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type GetPeerSectionsDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -133,19 +133,18 @@ func (o *GetPeerSectionsDefault) Code() int {
 func (o *GetPeerSectionsDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/peer_section][%d] getPeerSections default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *GetPeerSectionsDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *GetPeerSectionsDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -191,6 +190,32 @@ func (o *GetPeerSectionsOKBody) validateData(formats strfmt.Registry) error {
 	}
 
 	if err := o.Data.Validate(formats); err != nil {
+		if ve, ok := err.(*errors.Validation); ok {
+			return ve.ValidateName("getPeerSectionsOK" + "." + "data")
+		}
+		return err
+	}
+
+	return nil
+}
+
+// ContextValidate validate this get peer sections o k body based on the context it is used
+func (o *GetPeerSectionsOKBody) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.contextValidateData(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *GetPeerSectionsOKBody) contextValidateData(ctx context.Context, formats strfmt.Registry) error {
+
+	if err := o.Data.ContextValidate(ctx, formats); err != nil {
 		if ve, ok := err.(*errors.Validation); ok {
 			return ve.ValidateName("getPeerSectionsOK" + "." + "data")
 		}

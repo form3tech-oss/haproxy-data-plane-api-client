@@ -31,74 +31,91 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// NewGetSpoeAgentParams creates a new GetSpoeAgentParams object
-// with the default values initialized.
+// NewGetSpoeAgentParams creates a new GetSpoeAgentParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetSpoeAgentParams() *GetSpoeAgentParams {
-	var ()
 	return &GetSpoeAgentParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewGetSpoeAgentParamsWithTimeout creates a new GetSpoeAgentParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewGetSpoeAgentParamsWithTimeout(timeout time.Duration) *GetSpoeAgentParams {
-	var ()
 	return &GetSpoeAgentParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewGetSpoeAgentParamsWithContext creates a new GetSpoeAgentParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewGetSpoeAgentParamsWithContext(ctx context.Context) *GetSpoeAgentParams {
-	var ()
 	return &GetSpoeAgentParams{
-
 		Context: ctx,
 	}
 }
 
 // NewGetSpoeAgentParamsWithHTTPClient creates a new GetSpoeAgentParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewGetSpoeAgentParamsWithHTTPClient(client *http.Client) *GetSpoeAgentParams {
-	var ()
 	return &GetSpoeAgentParams{
 		HTTPClient: client,
 	}
 }
 
-/*GetSpoeAgentParams contains all the parameters to send to the API endpoint
-for the get spoe agent operation typically these are written to a http.Request
+/* GetSpoeAgentParams contains all the parameters to send to the API endpoint
+   for the get spoe agent operation.
+
+   Typically these are written to a http.Request.
 */
 type GetSpoeAgentParams struct {
 
-	/*Name
-	  Spoe agent name
+	/* Name.
 
+	   Spoe agent name
 	*/
 	Name string
-	/*Scope
-	  Spoe scope
 
+	/* Scope.
+
+	   Spoe scope
 	*/
 	Scope string
-	/*Spoe
-	  Spoe file name
 
+	/* Spoe.
+
+	   Spoe file name
 	*/
 	Spoe string
-	/*TransactionID
-	  ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 
+	/* TransactionID.
+
+	   ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 	*/
 	TransactionID *string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the get spoe agent params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetSpoeAgentParams) WithDefaults() *GetSpoeAgentParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the get spoe agent params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetSpoeAgentParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the get spoe agent params
@@ -195,6 +212,7 @@ func (o *GetSpoeAgentParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.
 	qrScope := o.Scope
 	qScope := qrScope
 	if qScope != "" {
+
 		if err := r.SetQueryParam("scope", qScope); err != nil {
 			return err
 		}
@@ -204,6 +222,7 @@ func (o *GetSpoeAgentParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.
 	qrSpoe := o.Spoe
 	qSpoe := qrSpoe
 	if qSpoe != "" {
+
 		if err := r.SetQueryParam("spoe", qSpoe); err != nil {
 			return err
 		}
@@ -213,16 +232,17 @@ func (o *GetSpoeAgentParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.
 
 		// query param transaction_id
 		var qrTransactionID string
+
 		if o.TransactionID != nil {
 			qrTransactionID = *o.TransactionID
 		}
 		qTransactionID := qrTransactionID
 		if qTransactionID != "" {
+
 			if err := r.SetQueryParam("transaction_id", qTransactionID); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if len(res) > 0 {

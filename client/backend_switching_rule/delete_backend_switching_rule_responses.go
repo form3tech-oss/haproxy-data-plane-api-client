@@ -24,12 +24,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // DeleteBackendSwitchingRuleReader is a Reader for the DeleteBackendSwitchingRule structure.
@@ -75,12 +73,13 @@ func NewDeleteBackendSwitchingRuleAccepted() *DeleteBackendSwitchingRuleAccepted
 	return &DeleteBackendSwitchingRuleAccepted{}
 }
 
-/*DeleteBackendSwitchingRuleAccepted handles this case with default header values.
+/* DeleteBackendSwitchingRuleAccepted describes a response with status code 202, with default header values.
 
 Configuration change accepted and reload requested
 */
 type DeleteBackendSwitchingRuleAccepted struct {
-	/*ID of the requested reload
+
+	/* ID of the requested reload
 	 */
 	ReloadID string
 }
@@ -91,8 +90,12 @@ func (o *DeleteBackendSwitchingRuleAccepted) Error() string {
 
 func (o *DeleteBackendSwitchingRuleAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Reload-ID
-	o.ReloadID = response.GetHeader("Reload-ID")
+	// hydrates response header Reload-ID
+	hdrReloadID := response.GetHeader("Reload-ID")
+
+	if hdrReloadID != "" {
+		o.ReloadID = hdrReloadID
+	}
 
 	return nil
 }
@@ -102,7 +105,7 @@ func NewDeleteBackendSwitchingRuleNoContent() *DeleteBackendSwitchingRuleNoConte
 	return &DeleteBackendSwitchingRuleNoContent{}
 }
 
-/*DeleteBackendSwitchingRuleNoContent handles this case with default header values.
+/* DeleteBackendSwitchingRuleNoContent describes a response with status code 204, with default header values.
 
 Backend Switching Rule deleted
 */
@@ -120,19 +123,18 @@ func (o *DeleteBackendSwitchingRuleNoContent) readResponse(response runtime.Clie
 
 // NewDeleteBackendSwitchingRuleNotFound creates a DeleteBackendSwitchingRuleNotFound with default headers values
 func NewDeleteBackendSwitchingRuleNotFound() *DeleteBackendSwitchingRuleNotFound {
-	return &DeleteBackendSwitchingRuleNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &DeleteBackendSwitchingRuleNotFound{}
 }
 
-/*DeleteBackendSwitchingRuleNotFound handles this case with default header values.
+/* DeleteBackendSwitchingRuleNotFound describes a response with status code 404, with default header values.
 
 The specified resource was not found
 */
 type DeleteBackendSwitchingRuleNotFound struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -140,19 +142,18 @@ type DeleteBackendSwitchingRuleNotFound struct {
 func (o *DeleteBackendSwitchingRuleNotFound) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/configuration/backend_switching_rules/{index}][%d] deleteBackendSwitchingRuleNotFound  %+v", 404, o.Payload)
 }
-
 func (o *DeleteBackendSwitchingRuleNotFound) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *DeleteBackendSwitchingRuleNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -167,21 +168,20 @@ func (o *DeleteBackendSwitchingRuleNotFound) readResponse(response runtime.Clien
 // NewDeleteBackendSwitchingRuleDefault creates a DeleteBackendSwitchingRuleDefault with default headers values
 func NewDeleteBackendSwitchingRuleDefault(code int) *DeleteBackendSwitchingRuleDefault {
 	return &DeleteBackendSwitchingRuleDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*DeleteBackendSwitchingRuleDefault handles this case with default header values.
+/* DeleteBackendSwitchingRuleDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type DeleteBackendSwitchingRuleDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -194,19 +194,18 @@ func (o *DeleteBackendSwitchingRuleDefault) Code() int {
 func (o *DeleteBackendSwitchingRuleDefault) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/configuration/backend_switching_rules/{index}][%d] deleteBackendSwitchingRule default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *DeleteBackendSwitchingRuleDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *DeleteBackendSwitchingRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 

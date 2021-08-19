@@ -31,69 +31,85 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// NewGetSpoeScopeParams creates a new GetSpoeScopeParams object
-// with the default values initialized.
+// NewGetSpoeScopeParams creates a new GetSpoeScopeParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetSpoeScopeParams() *GetSpoeScopeParams {
-	var ()
 	return &GetSpoeScopeParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewGetSpoeScopeParamsWithTimeout creates a new GetSpoeScopeParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewGetSpoeScopeParamsWithTimeout(timeout time.Duration) *GetSpoeScopeParams {
-	var ()
 	return &GetSpoeScopeParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewGetSpoeScopeParamsWithContext creates a new GetSpoeScopeParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewGetSpoeScopeParamsWithContext(ctx context.Context) *GetSpoeScopeParams {
-	var ()
 	return &GetSpoeScopeParams{
-
 		Context: ctx,
 	}
 }
 
 // NewGetSpoeScopeParamsWithHTTPClient creates a new GetSpoeScopeParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewGetSpoeScopeParamsWithHTTPClient(client *http.Client) *GetSpoeScopeParams {
-	var ()
 	return &GetSpoeScopeParams{
 		HTTPClient: client,
 	}
 }
 
-/*GetSpoeScopeParams contains all the parameters to send to the API endpoint
-for the get spoe scope operation typically these are written to a http.Request
+/* GetSpoeScopeParams contains all the parameters to send to the API endpoint
+   for the get spoe scope operation.
+
+   Typically these are written to a http.Request.
 */
 type GetSpoeScopeParams struct {
 
-	/*Name
-	  Spoe scope
+	/* Name.
 
+	   Spoe scope
 	*/
 	Name string
-	/*Spoe
-	  Spoe file name
 
+	/* Spoe.
+
+	   Spoe file name
 	*/
 	Spoe string
-	/*TransactionID
-	  ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 
+	/* TransactionID.
+
+	   ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 	*/
 	TransactionID *string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the get spoe scope params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetSpoeScopeParams) WithDefaults() *GetSpoeScopeParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the get spoe scope params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetSpoeScopeParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the get spoe scope params
@@ -179,6 +195,7 @@ func (o *GetSpoeScopeParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.
 	qrSpoe := o.Spoe
 	qSpoe := qrSpoe
 	if qSpoe != "" {
+
 		if err := r.SetQueryParam("spoe", qSpoe); err != nil {
 			return err
 		}
@@ -188,16 +205,17 @@ func (o *GetSpoeScopeParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.
 
 		// query param transaction_id
 		var qrTransactionID string
+
 		if o.TransactionID != nil {
 			qrTransactionID = *o.TransactionID
 		}
 		qTransactionID := qrTransactionID
 		if qTransactionID != "" {
+
 			if err := r.SetQueryParam("transaction_id", qTransactionID); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if len(res) > 0 {

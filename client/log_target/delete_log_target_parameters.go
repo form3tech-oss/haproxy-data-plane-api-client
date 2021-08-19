@@ -32,96 +32,114 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewDeleteLogTargetParams creates a new DeleteLogTargetParams object
-// with the default values initialized.
+// NewDeleteLogTargetParams creates a new DeleteLogTargetParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewDeleteLogTargetParams() *DeleteLogTargetParams {
-	var (
-		forceReloadDefault = bool(false)
-	)
 	return &DeleteLogTargetParams{
-		ForceReload: &forceReloadDefault,
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewDeleteLogTargetParamsWithTimeout creates a new DeleteLogTargetParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewDeleteLogTargetParamsWithTimeout(timeout time.Duration) *DeleteLogTargetParams {
-	var (
-		forceReloadDefault = bool(false)
-	)
 	return &DeleteLogTargetParams{
-		ForceReload: &forceReloadDefault,
-
 		timeout: timeout,
 	}
 }
 
 // NewDeleteLogTargetParamsWithContext creates a new DeleteLogTargetParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewDeleteLogTargetParamsWithContext(ctx context.Context) *DeleteLogTargetParams {
-	var (
-		forceReloadDefault = bool(false)
-	)
 	return &DeleteLogTargetParams{
-		ForceReload: &forceReloadDefault,
-
 		Context: ctx,
 	}
 }
 
 // NewDeleteLogTargetParamsWithHTTPClient creates a new DeleteLogTargetParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewDeleteLogTargetParamsWithHTTPClient(client *http.Client) *DeleteLogTargetParams {
-	var (
-		forceReloadDefault = bool(false)
-	)
 	return &DeleteLogTargetParams{
-		ForceReload: &forceReloadDefault,
-		HTTPClient:  client,
+		HTTPClient: client,
 	}
 }
 
-/*DeleteLogTargetParams contains all the parameters to send to the API endpoint
-for the delete log target operation typically these are written to a http.Request
+/* DeleteLogTargetParams contains all the parameters to send to the API endpoint
+   for the delete log target operation.
+
+   Typically these are written to a http.Request.
 */
 type DeleteLogTargetParams struct {
 
-	/*ForceReload
-	  If set, do a force reload, do not wait for the configured reload-delay. Cannot be used when transaction is specified, as changes in transaction are not applied directly to configuration.
+	/* ForceReload.
 
+	   If set, do a force reload, do not wait for the configured reload-delay. Cannot be used when transaction is specified, as changes in transaction are not applied directly to configuration.
 	*/
 	ForceReload *bool
-	/*Index
-	  Log Target Index
 
+	/* Index.
+
+	   Log Target Index
 	*/
 	Index int64
-	/*ParentName
-	  Parent name
 
+	/* ParentName.
+
+	   Parent name
 	*/
-	ParentName string
-	/*ParentType
-	  Parent type
+	ParentName *string
 
+	/* ParentType.
+
+	   Parent type
 	*/
 	ParentType string
-	/*TransactionID
-	  ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 
+	/* TransactionID.
+
+	   ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 	*/
 	TransactionID *string
-	/*Version
-	  Version used for checking configuration version. Cannot be used when transaction is specified, transaction has it's own version.
 
+	/* Version.
+
+	   Version used for checking configuration version. Cannot be used when transaction is specified, transaction has it's own version.
 	*/
 	Version *int64
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the delete log target params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *DeleteLogTargetParams) WithDefaults() *DeleteLogTargetParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the delete log target params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *DeleteLogTargetParams) SetDefaults() {
+	var (
+		forceReloadDefault = bool(false)
+	)
+
+	val := DeleteLogTargetParams{
+		ForceReload: &forceReloadDefault,
+	}
+
+	val.timeout = o.timeout
+	val.Context = o.Context
+	val.HTTPClient = o.HTTPClient
+	*o = val
 }
 
 // WithTimeout adds the timeout to the delete log target params
@@ -180,13 +198,13 @@ func (o *DeleteLogTargetParams) SetIndex(index int64) {
 }
 
 // WithParentName adds the parentName to the delete log target params
-func (o *DeleteLogTargetParams) WithParentName(parentName string) *DeleteLogTargetParams {
+func (o *DeleteLogTargetParams) WithParentName(parentName *string) *DeleteLogTargetParams {
 	o.SetParentName(parentName)
 	return o
 }
 
 // SetParentName adds the parentName to the delete log target params
-func (o *DeleteLogTargetParams) SetParentName(parentName string) {
+func (o *DeleteLogTargetParams) SetParentName(parentName *string) {
 	o.ParentName = parentName
 }
 
@@ -235,16 +253,17 @@ func (o *DeleteLogTargetParams) WriteToRequest(r runtime.ClientRequest, reg strf
 
 		// query param force_reload
 		var qrForceReload bool
+
 		if o.ForceReload != nil {
 			qrForceReload = *o.ForceReload
 		}
 		qForceReload := swag.FormatBool(qrForceReload)
 		if qForceReload != "" {
+
 			if err := r.SetQueryParam("force_reload", qForceReload); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	// path param index
@@ -252,12 +271,20 @@ func (o *DeleteLogTargetParams) WriteToRequest(r runtime.ClientRequest, reg strf
 		return err
 	}
 
-	// query param parent_name
-	qrParentName := o.ParentName
-	qParentName := qrParentName
-	if qParentName != "" {
-		if err := r.SetQueryParam("parent_name", qParentName); err != nil {
-			return err
+	if o.ParentName != nil {
+
+		// query param parent_name
+		var qrParentName string
+
+		if o.ParentName != nil {
+			qrParentName = *o.ParentName
+		}
+		qParentName := qrParentName
+		if qParentName != "" {
+
+			if err := r.SetQueryParam("parent_name", qParentName); err != nil {
+				return err
+			}
 		}
 	}
 
@@ -265,6 +292,7 @@ func (o *DeleteLogTargetParams) WriteToRequest(r runtime.ClientRequest, reg strf
 	qrParentType := o.ParentType
 	qParentType := qrParentType
 	if qParentType != "" {
+
 		if err := r.SetQueryParam("parent_type", qParentType); err != nil {
 			return err
 		}
@@ -274,32 +302,34 @@ func (o *DeleteLogTargetParams) WriteToRequest(r runtime.ClientRequest, reg strf
 
 		// query param transaction_id
 		var qrTransactionID string
+
 		if o.TransactionID != nil {
 			qrTransactionID = *o.TransactionID
 		}
 		qTransactionID := qrTransactionID
 		if qTransactionID != "" {
+
 			if err := r.SetQueryParam("transaction_id", qTransactionID); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if o.Version != nil {
 
 		// query param version
 		var qrVersion int64
+
 		if o.Version != nil {
 			qrVersion = *o.Version
 		}
 		qVersion := swag.FormatInt64(qrVersion)
 		if qVersion != "" {
+
 			if err := r.SetQueryParam("version", qVersion); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if len(res) > 0 {

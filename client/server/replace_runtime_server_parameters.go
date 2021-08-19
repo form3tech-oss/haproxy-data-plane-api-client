@@ -30,69 +30,85 @@ import (
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
-// NewReplaceRuntimeServerParams creates a new ReplaceRuntimeServerParams object
-// with the default values initialized.
+// NewReplaceRuntimeServerParams creates a new ReplaceRuntimeServerParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewReplaceRuntimeServerParams() *ReplaceRuntimeServerParams {
-	var ()
 	return &ReplaceRuntimeServerParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewReplaceRuntimeServerParamsWithTimeout creates a new ReplaceRuntimeServerParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewReplaceRuntimeServerParamsWithTimeout(timeout time.Duration) *ReplaceRuntimeServerParams {
-	var ()
 	return &ReplaceRuntimeServerParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewReplaceRuntimeServerParamsWithContext creates a new ReplaceRuntimeServerParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewReplaceRuntimeServerParamsWithContext(ctx context.Context) *ReplaceRuntimeServerParams {
-	var ()
 	return &ReplaceRuntimeServerParams{
-
 		Context: ctx,
 	}
 }
 
 // NewReplaceRuntimeServerParamsWithHTTPClient creates a new ReplaceRuntimeServerParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewReplaceRuntimeServerParamsWithHTTPClient(client *http.Client) *ReplaceRuntimeServerParams {
-	var ()
 	return &ReplaceRuntimeServerParams{
 		HTTPClient: client,
 	}
 }
 
-/*ReplaceRuntimeServerParams contains all the parameters to send to the API endpoint
-for the replace runtime server operation typically these are written to a http.Request
+/* ReplaceRuntimeServerParams contains all the parameters to send to the API endpoint
+   for the replace runtime server operation.
+
+   Typically these are written to a http.Request.
 */
 type ReplaceRuntimeServerParams struct {
 
-	/*Backend
-	  Parent backend name
+	/* Backend.
 
+	   Parent backend name
 	*/
 	Backend string
-	/*Data*/
-	Data *models.RuntimeServer
-	/*Name
-	  Server name
 
+	// Data.
+	Data *models.RuntimeServer
+
+	/* Name.
+
+	   Server name
 	*/
 	Name string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the replace runtime server params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *ReplaceRuntimeServerParams) WithDefaults() *ReplaceRuntimeServerParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the replace runtime server params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *ReplaceRuntimeServerParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the replace runtime server params
@@ -173,11 +189,11 @@ func (o *ReplaceRuntimeServerParams) WriteToRequest(r runtime.ClientRequest, reg
 	qrBackend := o.Backend
 	qBackend := qrBackend
 	if qBackend != "" {
+
 		if err := r.SetQueryParam("backend", qBackend); err != nil {
 			return err
 		}
 	}
-
 	if o.Data != nil {
 		if err := r.SetBodyParam(o.Data); err != nil {
 			return err

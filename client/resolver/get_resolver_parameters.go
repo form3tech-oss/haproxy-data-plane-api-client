@@ -31,64 +31,79 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// NewGetResolverParams creates a new GetResolverParams object
-// with the default values initialized.
+// NewGetResolverParams creates a new GetResolverParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetResolverParams() *GetResolverParams {
-	var ()
 	return &GetResolverParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewGetResolverParamsWithTimeout creates a new GetResolverParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewGetResolverParamsWithTimeout(timeout time.Duration) *GetResolverParams {
-	var ()
 	return &GetResolverParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewGetResolverParamsWithContext creates a new GetResolverParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewGetResolverParamsWithContext(ctx context.Context) *GetResolverParams {
-	var ()
 	return &GetResolverParams{
-
 		Context: ctx,
 	}
 }
 
 // NewGetResolverParamsWithHTTPClient creates a new GetResolverParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewGetResolverParamsWithHTTPClient(client *http.Client) *GetResolverParams {
-	var ()
 	return &GetResolverParams{
 		HTTPClient: client,
 	}
 }
 
-/*GetResolverParams contains all the parameters to send to the API endpoint
-for the get resolver operation typically these are written to a http.Request
+/* GetResolverParams contains all the parameters to send to the API endpoint
+   for the get resolver operation.
+
+   Typically these are written to a http.Request.
 */
 type GetResolverParams struct {
 
-	/*Name
-	  Resolver name
+	/* Name.
 
+	   Resolver name
 	*/
 	Name string
-	/*TransactionID
-	  ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 
+	/* TransactionID.
+
+	   ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 	*/
 	TransactionID *string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the get resolver params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetResolverParams) WithDefaults() *GetResolverParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the get resolver params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetResolverParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the get resolver params
@@ -163,16 +178,17 @@ func (o *GetResolverParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.R
 
 		// query param transaction_id
 		var qrTransactionID string
+
 		if o.TransactionID != nil {
 			qrTransactionID = *o.TransactionID
 		}
 		qTransactionID := qrTransactionID
 		if qTransactionID != "" {
+
 			if err := r.SetQueryParam("transaction_id", qTransactionID); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if len(res) > 0 {

@@ -31,69 +31,85 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// NewGetStatsParams creates a new GetStatsParams object
-// with the default values initialized.
+// NewGetStatsParams creates a new GetStatsParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetStatsParams() *GetStatsParams {
-	var ()
 	return &GetStatsParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewGetStatsParamsWithTimeout creates a new GetStatsParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewGetStatsParamsWithTimeout(timeout time.Duration) *GetStatsParams {
-	var ()
 	return &GetStatsParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewGetStatsParamsWithContext creates a new GetStatsParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewGetStatsParamsWithContext(ctx context.Context) *GetStatsParams {
-	var ()
 	return &GetStatsParams{
-
 		Context: ctx,
 	}
 }
 
 // NewGetStatsParamsWithHTTPClient creates a new GetStatsParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewGetStatsParamsWithHTTPClient(client *http.Client) *GetStatsParams {
-	var ()
 	return &GetStatsParams{
 		HTTPClient: client,
 	}
 }
 
-/*GetStatsParams contains all the parameters to send to the API endpoint
-for the get stats operation typically these are written to a http.Request
+/* GetStatsParams contains all the parameters to send to the API endpoint
+   for the get stats operation.
+
+   Typically these are written to a http.Request.
 */
 type GetStatsParams struct {
 
-	/*Name
-	  Object name to get stats for
+	/* Name.
 
+	   Object name to get stats for
 	*/
 	Name *string
-	/*Parent
-	  Object parent name to get stats for, in case the object is a server
 
+	/* Parent.
+
+	   Object parent name to get stats for, in case the object is a server
 	*/
 	Parent *string
-	/*Type
-	  Object type to get stats for (one of frontend, backend, server)
 
+	/* Type.
+
+	   Object type to get stats for (one of frontend, backend, server)
 	*/
 	Type *string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the get stats params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetStatsParams) WithDefaults() *GetStatsParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the get stats params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetStatsParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the get stats params
@@ -174,48 +190,51 @@ func (o *GetStatsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Regi
 
 		// query param name
 		var qrName string
+
 		if o.Name != nil {
 			qrName = *o.Name
 		}
 		qName := qrName
 		if qName != "" {
+
 			if err := r.SetQueryParam("name", qName); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if o.Parent != nil {
 
 		// query param parent
 		var qrParent string
+
 		if o.Parent != nil {
 			qrParent = *o.Parent
 		}
 		qParent := qrParent
 		if qParent != "" {
+
 			if err := r.SetQueryParam("parent", qParent); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if o.Type != nil {
 
 		// query param type
 		var qrType string
+
 		if o.Type != nil {
 			qrType = *o.Type
 		}
 		qType := qrType
 		if qType != "" {
+
 			if err := r.SetQueryParam("type", qType); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if len(res) > 0 {

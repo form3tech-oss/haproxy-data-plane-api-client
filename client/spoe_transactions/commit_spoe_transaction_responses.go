@@ -24,12 +24,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // CommitSpoeTransactionReader is a Reader for the CommitSpoeTransaction structure.
@@ -81,9 +79,9 @@ func NewCommitSpoeTransactionOK() *CommitSpoeTransactionOK {
 	return &CommitSpoeTransactionOK{}
 }
 
-/*CommitSpoeTransactionOK handles this case with default header values.
+/* CommitSpoeTransactionOK describes a response with status code 200, with default header values.
 
-Transaction succesfully commited
+Transaction successfully committed
 */
 type CommitSpoeTransactionOK struct {
 	Payload *models.SpoeTransaction
@@ -92,7 +90,6 @@ type CommitSpoeTransactionOK struct {
 func (o *CommitSpoeTransactionOK) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/spoe_transactions/{id}][%d] commitSpoeTransactionOK  %+v", 200, o.Payload)
 }
-
 func (o *CommitSpoeTransactionOK) GetPayload() *models.SpoeTransaction {
 	return o.Payload
 }
@@ -114,12 +111,13 @@ func NewCommitSpoeTransactionAccepted() *CommitSpoeTransactionAccepted {
 	return &CommitSpoeTransactionAccepted{}
 }
 
-/*CommitSpoeTransactionAccepted handles this case with default header values.
+/* CommitSpoeTransactionAccepted describes a response with status code 202, with default header values.
 
 Configuration change accepted and reload requested
 */
 type CommitSpoeTransactionAccepted struct {
-	/*ID of the requested reload
+
+	/* ID of the requested reload
 	 */
 	ReloadID string
 
@@ -129,15 +127,18 @@ type CommitSpoeTransactionAccepted struct {
 func (o *CommitSpoeTransactionAccepted) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/spoe_transactions/{id}][%d] commitSpoeTransactionAccepted  %+v", 202, o.Payload)
 }
-
 func (o *CommitSpoeTransactionAccepted) GetPayload() *models.SpoeTransaction {
 	return o.Payload
 }
 
 func (o *CommitSpoeTransactionAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Reload-ID
-	o.ReloadID = response.GetHeader("Reload-ID")
+	// hydrates response header Reload-ID
+	hdrReloadID := response.GetHeader("Reload-ID")
+
+	if hdrReloadID != "" {
+		o.ReloadID = hdrReloadID
+	}
 
 	o.Payload = new(models.SpoeTransaction)
 
@@ -151,19 +152,18 @@ func (o *CommitSpoeTransactionAccepted) readResponse(response runtime.ClientResp
 
 // NewCommitSpoeTransactionBadRequest creates a CommitSpoeTransactionBadRequest with default headers values
 func NewCommitSpoeTransactionBadRequest() *CommitSpoeTransactionBadRequest {
-	return &CommitSpoeTransactionBadRequest{
-		ConfigurationVersion: 0,
-	}
+	return &CommitSpoeTransactionBadRequest{}
 }
 
-/*CommitSpoeTransactionBadRequest handles this case with default header values.
+/* CommitSpoeTransactionBadRequest describes a response with status code 400, with default header values.
 
 Bad request
 */
 type CommitSpoeTransactionBadRequest struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -171,19 +171,18 @@ type CommitSpoeTransactionBadRequest struct {
 func (o *CommitSpoeTransactionBadRequest) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/spoe_transactions/{id}][%d] commitSpoeTransactionBadRequest  %+v", 400, o.Payload)
 }
-
 func (o *CommitSpoeTransactionBadRequest) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *CommitSpoeTransactionBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -197,19 +196,18 @@ func (o *CommitSpoeTransactionBadRequest) readResponse(response runtime.ClientRe
 
 // NewCommitSpoeTransactionNotFound creates a CommitSpoeTransactionNotFound with default headers values
 func NewCommitSpoeTransactionNotFound() *CommitSpoeTransactionNotFound {
-	return &CommitSpoeTransactionNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &CommitSpoeTransactionNotFound{}
 }
 
-/*CommitSpoeTransactionNotFound handles this case with default header values.
+/* CommitSpoeTransactionNotFound describes a response with status code 404, with default header values.
 
 The specified resource was not found
 */
 type CommitSpoeTransactionNotFound struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -217,19 +215,18 @@ type CommitSpoeTransactionNotFound struct {
 func (o *CommitSpoeTransactionNotFound) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/spoe_transactions/{id}][%d] commitSpoeTransactionNotFound  %+v", 404, o.Payload)
 }
-
 func (o *CommitSpoeTransactionNotFound) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *CommitSpoeTransactionNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -244,21 +241,20 @@ func (o *CommitSpoeTransactionNotFound) readResponse(response runtime.ClientResp
 // NewCommitSpoeTransactionDefault creates a CommitSpoeTransactionDefault with default headers values
 func NewCommitSpoeTransactionDefault(code int) *CommitSpoeTransactionDefault {
 	return &CommitSpoeTransactionDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*CommitSpoeTransactionDefault handles this case with default header values.
+/* CommitSpoeTransactionDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type CommitSpoeTransactionDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -271,19 +267,18 @@ func (o *CommitSpoeTransactionDefault) Code() int {
 func (o *CommitSpoeTransactionDefault) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/spoe_transactions/{id}][%d] commitSpoeTransaction default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *CommitSpoeTransactionDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *CommitSpoeTransactionDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 

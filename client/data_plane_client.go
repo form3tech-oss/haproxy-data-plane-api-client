@@ -26,6 +26,7 @@ import (
 	"github.com/go-openapi/strfmt"
 
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/acl"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/acl_runtime"
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/backend"
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/backend_switching_rule"
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/bind"
@@ -46,8 +47,9 @@ import (
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/peer_entry"
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/reloads"
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/resolver"
-	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/server"
+	serverops "github.com/form3tech-oss/haproxy-data-plane-api-client/client/server"
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/server_switching_rule"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/server_template"
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/service_discovery"
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/sites"
 	"github.com/form3tech-oss/haproxy-data-plane-api-client/client/specification"
@@ -106,6 +108,7 @@ func New(transport runtime.ClientTransport, formats strfmt.Registry) *DataPlane 
 	cli := new(DataPlane)
 	cli.Transport = transport
 	cli.ACL = acl.New(transport, formats)
+	cli.ACLRuntime = acl_runtime.New(transport, formats)
 	cli.Backend = backend.New(transport, formats)
 	cli.BackendSwitchingRule = backend_switching_rule.New(transport, formats)
 	cli.Bind = bind.New(transport, formats)
@@ -126,8 +129,9 @@ func New(transport runtime.ClientTransport, formats strfmt.Registry) *DataPlane 
 	cli.PeerEntry = peer_entry.New(transport, formats)
 	cli.Reloads = reloads.New(transport, formats)
 	cli.Resolver = resolver.New(transport, formats)
-	cli.Server = server.New(transport, formats)
+	cli.Server = serverops.New(transport, formats)
 	cli.ServerSwitchingRule = server_switching_rule.New(transport, formats)
+	cli.ServerTemplate = server_template.New(transport, formats)
 	cli.ServiceDiscovery = service_discovery.New(transport, formats)
 	cli.Sites = sites.New(transport, formats)
 	cli.Specification = specification.New(transport, formats)
@@ -187,6 +191,8 @@ func (cfg *TransportConfig) WithSchemes(schemes []string) *TransportConfig {
 type DataPlane struct {
 	ACL acl.ClientService
 
+	ACLRuntime acl_runtime.ClientService
+
 	Backend backend.ClientService
 
 	BackendSwitchingRule backend_switching_rule.ClientService
@@ -227,9 +233,11 @@ type DataPlane struct {
 
 	Resolver resolver.ClientService
 
-	Server server.ClientService
+	Server serverops.ClientService
 
 	ServerSwitchingRule server_switching_rule.ClientService
+
+	ServerTemplate server_template.ClientService
 
 	ServiceDiscovery service_discovery.ClientService
 
@@ -264,6 +272,7 @@ type DataPlane struct {
 func (c *DataPlane) SetTransport(transport runtime.ClientTransport) {
 	c.Transport = transport
 	c.ACL.SetTransport(transport)
+	c.ACLRuntime.SetTransport(transport)
 	c.Backend.SetTransport(transport)
 	c.BackendSwitchingRule.SetTransport(transport)
 	c.Bind.SetTransport(transport)
@@ -286,6 +295,7 @@ func (c *DataPlane) SetTransport(transport runtime.ClientTransport) {
 	c.Resolver.SetTransport(transport)
 	c.Server.SetTransport(transport)
 	c.ServerSwitchingRule.SetTransport(transport)
+	c.ServerTemplate.SetTransport(transport)
 	c.ServiceDiscovery.SetTransport(transport)
 	c.Sites.SetTransport(transport)
 	c.Specification.SetTransport(transport)

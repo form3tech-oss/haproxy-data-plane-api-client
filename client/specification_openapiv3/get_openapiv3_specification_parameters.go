@@ -31,52 +31,66 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// NewGetOpenapiv3SpecificationParams creates a new GetOpenapiv3SpecificationParams object
-// with the default values initialized.
+// NewGetOpenapiv3SpecificationParams creates a new GetOpenapiv3SpecificationParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetOpenapiv3SpecificationParams() *GetOpenapiv3SpecificationParams {
-
 	return &GetOpenapiv3SpecificationParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewGetOpenapiv3SpecificationParamsWithTimeout creates a new GetOpenapiv3SpecificationParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewGetOpenapiv3SpecificationParamsWithTimeout(timeout time.Duration) *GetOpenapiv3SpecificationParams {
-
 	return &GetOpenapiv3SpecificationParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewGetOpenapiv3SpecificationParamsWithContext creates a new GetOpenapiv3SpecificationParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewGetOpenapiv3SpecificationParamsWithContext(ctx context.Context) *GetOpenapiv3SpecificationParams {
-
 	return &GetOpenapiv3SpecificationParams{
-
 		Context: ctx,
 	}
 }
 
 // NewGetOpenapiv3SpecificationParamsWithHTTPClient creates a new GetOpenapiv3SpecificationParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewGetOpenapiv3SpecificationParamsWithHTTPClient(client *http.Client) *GetOpenapiv3SpecificationParams {
-
 	return &GetOpenapiv3SpecificationParams{
 		HTTPClient: client,
 	}
 }
 
-/*GetOpenapiv3SpecificationParams contains all the parameters to send to the API endpoint
-for the get openapiv3 specification operation typically these are written to a http.Request
+/* GetOpenapiv3SpecificationParams contains all the parameters to send to the API endpoint
+   for the get openapiv3 specification operation.
+
+   Typically these are written to a http.Request.
 */
 type GetOpenapiv3SpecificationParams struct {
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the get openapiv3 specification params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetOpenapiv3SpecificationParams) WithDefaults() *GetOpenapiv3SpecificationParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the get openapiv3 specification params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetOpenapiv3SpecificationParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the get openapiv3 specification params

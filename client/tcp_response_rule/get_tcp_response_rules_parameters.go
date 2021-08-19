@@ -31,64 +31,79 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// NewGetTCPResponseRulesParams creates a new GetTCPResponseRulesParams object
-// with the default values initialized.
+// NewGetTCPResponseRulesParams creates a new GetTCPResponseRulesParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetTCPResponseRulesParams() *GetTCPResponseRulesParams {
-	var ()
 	return &GetTCPResponseRulesParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewGetTCPResponseRulesParamsWithTimeout creates a new GetTCPResponseRulesParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewGetTCPResponseRulesParamsWithTimeout(timeout time.Duration) *GetTCPResponseRulesParams {
-	var ()
 	return &GetTCPResponseRulesParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewGetTCPResponseRulesParamsWithContext creates a new GetTCPResponseRulesParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewGetTCPResponseRulesParamsWithContext(ctx context.Context) *GetTCPResponseRulesParams {
-	var ()
 	return &GetTCPResponseRulesParams{
-
 		Context: ctx,
 	}
 }
 
 // NewGetTCPResponseRulesParamsWithHTTPClient creates a new GetTCPResponseRulesParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewGetTCPResponseRulesParamsWithHTTPClient(client *http.Client) *GetTCPResponseRulesParams {
-	var ()
 	return &GetTCPResponseRulesParams{
 		HTTPClient: client,
 	}
 }
 
-/*GetTCPResponseRulesParams contains all the parameters to send to the API endpoint
-for the get TCP response rules operation typically these are written to a http.Request
+/* GetTCPResponseRulesParams contains all the parameters to send to the API endpoint
+   for the get TCP response rules operation.
+
+   Typically these are written to a http.Request.
 */
 type GetTCPResponseRulesParams struct {
 
-	/*Backend
-	  Parent backend name
+	/* Backend.
 
+	   Parent backend name
 	*/
 	Backend string
-	/*TransactionID
-	  ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 
+	/* TransactionID.
+
+	   ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 	*/
 	TransactionID *string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the get TCP response rules params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetTCPResponseRulesParams) WithDefaults() *GetTCPResponseRulesParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the get TCP response rules params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetTCPResponseRulesParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the get TCP response rules params
@@ -158,6 +173,7 @@ func (o *GetTCPResponseRulesParams) WriteToRequest(r runtime.ClientRequest, reg 
 	qrBackend := o.Backend
 	qBackend := qrBackend
 	if qBackend != "" {
+
 		if err := r.SetQueryParam("backend", qBackend); err != nil {
 			return err
 		}
@@ -167,16 +183,17 @@ func (o *GetTCPResponseRulesParams) WriteToRequest(r runtime.ClientRequest, reg 
 
 		// query param transaction_id
 		var qrTransactionID string
+
 		if o.TransactionID != nil {
 			qrTransactionID = *o.TransactionID
 		}
 		qTransactionID := qrTransactionID
 		if qTransactionID != "" {
+
 			if err := r.SetQueryParam("transaction_id", qTransactionID); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if len(res) > 0 {

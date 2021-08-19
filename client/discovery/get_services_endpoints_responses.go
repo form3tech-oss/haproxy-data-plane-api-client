@@ -24,12 +24,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // GetServicesEndpointsReader is a Reader for the GetServicesEndpoints structure.
@@ -63,7 +61,7 @@ func NewGetServicesEndpointsOK() *GetServicesEndpointsOK {
 	return &GetServicesEndpointsOK{}
 }
 
-/*GetServicesEndpointsOK handles this case with default header values.
+/* GetServicesEndpointsOK describes a response with status code 200, with default header values.
 
 Success
 */
@@ -74,7 +72,6 @@ type GetServicesEndpointsOK struct {
 func (o *GetServicesEndpointsOK) Error() string {
 	return fmt.Sprintf("[GET /services][%d] getServicesEndpointsOK  %+v", 200, o.Payload)
 }
-
 func (o *GetServicesEndpointsOK) GetPayload() models.Endpoints {
 	return o.Payload
 }
@@ -92,21 +89,20 @@ func (o *GetServicesEndpointsOK) readResponse(response runtime.ClientResponse, c
 // NewGetServicesEndpointsDefault creates a GetServicesEndpointsDefault with default headers values
 func NewGetServicesEndpointsDefault(code int) *GetServicesEndpointsDefault {
 	return &GetServicesEndpointsDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*GetServicesEndpointsDefault handles this case with default header values.
+/* GetServicesEndpointsDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type GetServicesEndpointsDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -119,19 +115,18 @@ func (o *GetServicesEndpointsDefault) Code() int {
 func (o *GetServicesEndpointsDefault) Error() string {
 	return fmt.Sprintf("[GET /services][%d] getServicesEndpoints default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *GetServicesEndpointsDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *GetServicesEndpointsDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 

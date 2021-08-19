@@ -24,12 +24,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // CreateTCPResponseRuleReader is a Reader for the CreateTCPResponseRule structure.
@@ -81,7 +79,7 @@ func NewCreateTCPResponseRuleCreated() *CreateTCPResponseRuleCreated {
 	return &CreateTCPResponseRuleCreated{}
 }
 
-/*CreateTCPResponseRuleCreated handles this case with default header values.
+/* CreateTCPResponseRuleCreated describes a response with status code 201, with default header values.
 
 TCP Response Rule created
 */
@@ -92,7 +90,6 @@ type CreateTCPResponseRuleCreated struct {
 func (o *CreateTCPResponseRuleCreated) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/tcp_response_rules][%d] createTcpResponseRuleCreated  %+v", 201, o.Payload)
 }
-
 func (o *CreateTCPResponseRuleCreated) GetPayload() *models.TCPResponseRule {
 	return o.Payload
 }
@@ -114,12 +111,13 @@ func NewCreateTCPResponseRuleAccepted() *CreateTCPResponseRuleAccepted {
 	return &CreateTCPResponseRuleAccepted{}
 }
 
-/*CreateTCPResponseRuleAccepted handles this case with default header values.
+/* CreateTCPResponseRuleAccepted describes a response with status code 202, with default header values.
 
 Configuration change accepted and reload requested
 */
 type CreateTCPResponseRuleAccepted struct {
-	/*ID of the requested reload
+
+	/* ID of the requested reload
 	 */
 	ReloadID string
 
@@ -129,15 +127,18 @@ type CreateTCPResponseRuleAccepted struct {
 func (o *CreateTCPResponseRuleAccepted) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/tcp_response_rules][%d] createTcpResponseRuleAccepted  %+v", 202, o.Payload)
 }
-
 func (o *CreateTCPResponseRuleAccepted) GetPayload() *models.TCPResponseRule {
 	return o.Payload
 }
 
 func (o *CreateTCPResponseRuleAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Reload-ID
-	o.ReloadID = response.GetHeader("Reload-ID")
+	// hydrates response header Reload-ID
+	hdrReloadID := response.GetHeader("Reload-ID")
+
+	if hdrReloadID != "" {
+		o.ReloadID = hdrReloadID
+	}
 
 	o.Payload = new(models.TCPResponseRule)
 
@@ -151,19 +152,18 @@ func (o *CreateTCPResponseRuleAccepted) readResponse(response runtime.ClientResp
 
 // NewCreateTCPResponseRuleBadRequest creates a CreateTCPResponseRuleBadRequest with default headers values
 func NewCreateTCPResponseRuleBadRequest() *CreateTCPResponseRuleBadRequest {
-	return &CreateTCPResponseRuleBadRequest{
-		ConfigurationVersion: 0,
-	}
+	return &CreateTCPResponseRuleBadRequest{}
 }
 
-/*CreateTCPResponseRuleBadRequest handles this case with default header values.
+/* CreateTCPResponseRuleBadRequest describes a response with status code 400, with default header values.
 
 Bad request
 */
 type CreateTCPResponseRuleBadRequest struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -171,19 +171,18 @@ type CreateTCPResponseRuleBadRequest struct {
 func (o *CreateTCPResponseRuleBadRequest) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/tcp_response_rules][%d] createTcpResponseRuleBadRequest  %+v", 400, o.Payload)
 }
-
 func (o *CreateTCPResponseRuleBadRequest) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *CreateTCPResponseRuleBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -197,19 +196,18 @@ func (o *CreateTCPResponseRuleBadRequest) readResponse(response runtime.ClientRe
 
 // NewCreateTCPResponseRuleConflict creates a CreateTCPResponseRuleConflict with default headers values
 func NewCreateTCPResponseRuleConflict() *CreateTCPResponseRuleConflict {
-	return &CreateTCPResponseRuleConflict{
-		ConfigurationVersion: 0,
-	}
+	return &CreateTCPResponseRuleConflict{}
 }
 
-/*CreateTCPResponseRuleConflict handles this case with default header values.
+/* CreateTCPResponseRuleConflict describes a response with status code 409, with default header values.
 
 The specified resource already exists
 */
 type CreateTCPResponseRuleConflict struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -217,19 +215,18 @@ type CreateTCPResponseRuleConflict struct {
 func (o *CreateTCPResponseRuleConflict) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/tcp_response_rules][%d] createTcpResponseRuleConflict  %+v", 409, o.Payload)
 }
-
 func (o *CreateTCPResponseRuleConflict) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *CreateTCPResponseRuleConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -244,21 +241,20 @@ func (o *CreateTCPResponseRuleConflict) readResponse(response runtime.ClientResp
 // NewCreateTCPResponseRuleDefault creates a CreateTCPResponseRuleDefault with default headers values
 func NewCreateTCPResponseRuleDefault(code int) *CreateTCPResponseRuleDefault {
 	return &CreateTCPResponseRuleDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*CreateTCPResponseRuleDefault handles this case with default header values.
+/* CreateTCPResponseRuleDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type CreateTCPResponseRuleDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -271,19 +267,18 @@ func (o *CreateTCPResponseRuleDefault) Code() int {
 func (o *CreateTCPResponseRuleDefault) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/configuration/tcp_response_rules][%d] createTCPResponseRule default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *CreateTCPResponseRuleDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *CreateTCPResponseRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 

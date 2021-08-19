@@ -31,69 +31,97 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
-// NewPostClusterParams creates a new PostClusterParams object
-// with the default values initialized.
+// NewPostClusterParams creates a new PostClusterParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewPostClusterParams() *PostClusterParams {
-	var ()
 	return &PostClusterParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewPostClusterParamsWithTimeout creates a new PostClusterParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewPostClusterParamsWithTimeout(timeout time.Duration) *PostClusterParams {
-	var ()
 	return &PostClusterParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewPostClusterParamsWithContext creates a new PostClusterParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewPostClusterParamsWithContext(ctx context.Context) *PostClusterParams {
-	var ()
 	return &PostClusterParams{
-
 		Context: ctx,
 	}
 }
 
 // NewPostClusterParamsWithHTTPClient creates a new PostClusterParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewPostClusterParamsWithHTTPClient(client *http.Client) *PostClusterParams {
-	var ()
 	return &PostClusterParams{
 		HTTPClient: client,
 	}
 }
 
-/*PostClusterParams contains all the parameters to send to the API endpoint
-for the post cluster operation typically these are written to a http.Request
+/* PostClusterParams contains all the parameters to send to the API endpoint
+   for the post cluster operation.
+
+   Typically these are written to a http.Request.
 */
 type PostClusterParams struct {
 
-	/*Configuration
-	  In case of moving to single mode do we keep or clean configuration
+	/* AdvertisedAddress.
 
+	   Force the advertised address when joining a cluster
+	*/
+	AdvertisedAddress *string
+
+	/* AdvertisedPort.
+
+	   Force the advertised port when joining a cluster
+	*/
+	AdvertisedPort *int64
+
+	/* Configuration.
+
+	   In case of moving to single mode do we keep or clean configuration
 	*/
 	Configuration *string
-	/*Data*/
-	Data *models.ClusterSettings
-	/*Version
-	  Version used for checking configuration version. Cannot be used when transaction is specified, transaction has it's own version.
 
+	// Data.
+	Data *models.ClusterSettings
+
+	/* Version.
+
+	   Version used for checking configuration version. Cannot be used when transaction is specified, transaction has it's own version.
 	*/
 	Version *int64
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the post cluster params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *PostClusterParams) WithDefaults() *PostClusterParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the post cluster params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *PostClusterParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the post cluster params
@@ -127,6 +155,28 @@ func (o *PostClusterParams) WithHTTPClient(client *http.Client) *PostClusterPara
 // SetHTTPClient adds the HTTPClient to the post cluster params
 func (o *PostClusterParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
+}
+
+// WithAdvertisedAddress adds the advertisedAddress to the post cluster params
+func (o *PostClusterParams) WithAdvertisedAddress(advertisedAddress *string) *PostClusterParams {
+	o.SetAdvertisedAddress(advertisedAddress)
+	return o
+}
+
+// SetAdvertisedAddress adds the advertisedAddress to the post cluster params
+func (o *PostClusterParams) SetAdvertisedAddress(advertisedAddress *string) {
+	o.AdvertisedAddress = advertisedAddress
+}
+
+// WithAdvertisedPort adds the advertisedPort to the post cluster params
+func (o *PostClusterParams) WithAdvertisedPort(advertisedPort *int64) *PostClusterParams {
+	o.SetAdvertisedPort(advertisedPort)
+	return o
+}
+
+// SetAdvertisedPort adds the advertisedPort to the post cluster params
+func (o *PostClusterParams) SetAdvertisedPort(advertisedPort *int64) {
+	o.AdvertisedPort = advertisedPort
 }
 
 // WithConfiguration adds the configuration to the post cluster params
@@ -170,22 +220,56 @@ func (o *PostClusterParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.R
 	}
 	var res []error
 
+	if o.AdvertisedAddress != nil {
+
+		// query param advertised_address
+		var qrAdvertisedAddress string
+
+		if o.AdvertisedAddress != nil {
+			qrAdvertisedAddress = *o.AdvertisedAddress
+		}
+		qAdvertisedAddress := qrAdvertisedAddress
+		if qAdvertisedAddress != "" {
+
+			if err := r.SetQueryParam("advertised_address", qAdvertisedAddress); err != nil {
+				return err
+			}
+		}
+	}
+
+	if o.AdvertisedPort != nil {
+
+		// query param advertised_port
+		var qrAdvertisedPort int64
+
+		if o.AdvertisedPort != nil {
+			qrAdvertisedPort = *o.AdvertisedPort
+		}
+		qAdvertisedPort := swag.FormatInt64(qrAdvertisedPort)
+		if qAdvertisedPort != "" {
+
+			if err := r.SetQueryParam("advertised_port", qAdvertisedPort); err != nil {
+				return err
+			}
+		}
+	}
+
 	if o.Configuration != nil {
 
 		// query param configuration
 		var qrConfiguration string
+
 		if o.Configuration != nil {
 			qrConfiguration = *o.Configuration
 		}
 		qConfiguration := qrConfiguration
 		if qConfiguration != "" {
+
 			if err := r.SetQueryParam("configuration", qConfiguration); err != nil {
 				return err
 			}
 		}
-
 	}
-
 	if o.Data != nil {
 		if err := r.SetBodyParam(o.Data); err != nil {
 			return err
@@ -196,16 +280,17 @@ func (o *PostClusterParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.R
 
 		// query param version
 		var qrVersion int64
+
 		if o.Version != nil {
 			qrVersion = *o.Version
 		}
 		qVersion := swag.FormatInt64(qrVersion)
 		if qVersion != "" {
+
 			if err := r.SetQueryParam("version", qVersion); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if len(res) > 0 {

@@ -21,6 +21,7 @@ package filter
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"fmt"
 	"io"
 
@@ -29,7 +30,7 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // GetFilterReader is a Reader for the GetFilter structure.
@@ -69,14 +70,15 @@ func NewGetFilterOK() *GetFilterOK {
 	return &GetFilterOK{}
 }
 
-/*GetFilterOK handles this case with default header values.
+/* GetFilterOK describes a response with status code 200, with default header values.
 
 Successful operation
 */
 type GetFilterOK struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *GetFilterOKBody
 }
@@ -84,19 +86,18 @@ type GetFilterOK struct {
 func (o *GetFilterOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/filters/{index}][%d] getFilterOK  %+v", 200, o.Payload)
 }
-
 func (o *GetFilterOK) GetPayload() *GetFilterOKBody {
 	return o.Payload
 }
 
 func (o *GetFilterOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(GetFilterOKBody)
 
@@ -110,19 +111,18 @@ func (o *GetFilterOK) readResponse(response runtime.ClientResponse, consumer run
 
 // NewGetFilterNotFound creates a GetFilterNotFound with default headers values
 func NewGetFilterNotFound() *GetFilterNotFound {
-	return &GetFilterNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &GetFilterNotFound{}
 }
 
-/*GetFilterNotFound handles this case with default header values.
+/* GetFilterNotFound describes a response with status code 404, with default header values.
 
 The specified resource was not found
 */
 type GetFilterNotFound struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -130,19 +130,18 @@ type GetFilterNotFound struct {
 func (o *GetFilterNotFound) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/filters/{index}][%d] getFilterNotFound  %+v", 404, o.Payload)
 }
-
 func (o *GetFilterNotFound) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *GetFilterNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -157,21 +156,20 @@ func (o *GetFilterNotFound) readResponse(response runtime.ClientResponse, consum
 // NewGetFilterDefault creates a GetFilterDefault with default headers values
 func NewGetFilterDefault(code int) *GetFilterDefault {
 	return &GetFilterDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*GetFilterDefault handles this case with default header values.
+/* GetFilterDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type GetFilterDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -184,19 +182,18 @@ func (o *GetFilterDefault) Code() int {
 func (o *GetFilterDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/filters/{index}][%d] getFilter default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *GetFilterDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *GetFilterDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -235,13 +232,40 @@ func (o *GetFilterOKBody) Validate(formats strfmt.Registry) error {
 }
 
 func (o *GetFilterOKBody) validateData(formats strfmt.Registry) error {
-
 	if swag.IsZero(o.Data) { // not required
 		return nil
 	}
 
 	if o.Data != nil {
 		if err := o.Data.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("getFilterOK" + "." + "data")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// ContextValidate validate this get filter o k body based on the context it is used
+func (o *GetFilterOKBody) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.contextValidateData(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *GetFilterOKBody) contextValidateData(ctx context.Context, formats strfmt.Registry) error {
+
+	if o.Data != nil {
+		if err := o.Data.ContextValidate(ctx, formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("getFilterOK" + "." + "data")
 			}

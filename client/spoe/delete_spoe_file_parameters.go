@@ -31,59 +31,73 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// NewDeleteSpoeFileParams creates a new DeleteSpoeFileParams object
-// with the default values initialized.
+// NewDeleteSpoeFileParams creates a new DeleteSpoeFileParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewDeleteSpoeFileParams() *DeleteSpoeFileParams {
-	var ()
 	return &DeleteSpoeFileParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewDeleteSpoeFileParamsWithTimeout creates a new DeleteSpoeFileParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewDeleteSpoeFileParamsWithTimeout(timeout time.Duration) *DeleteSpoeFileParams {
-	var ()
 	return &DeleteSpoeFileParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewDeleteSpoeFileParamsWithContext creates a new DeleteSpoeFileParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewDeleteSpoeFileParamsWithContext(ctx context.Context) *DeleteSpoeFileParams {
-	var ()
 	return &DeleteSpoeFileParams{
-
 		Context: ctx,
 	}
 }
 
 // NewDeleteSpoeFileParamsWithHTTPClient creates a new DeleteSpoeFileParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewDeleteSpoeFileParamsWithHTTPClient(client *http.Client) *DeleteSpoeFileParams {
-	var ()
 	return &DeleteSpoeFileParams{
 		HTTPClient: client,
 	}
 }
 
-/*DeleteSpoeFileParams contains all the parameters to send to the API endpoint
-for the delete spoe file operation typically these are written to a http.Request
+/* DeleteSpoeFileParams contains all the parameters to send to the API endpoint
+   for the delete spoe file operation.
+
+   Typically these are written to a http.Request.
 */
 type DeleteSpoeFileParams struct {
 
-	/*Name
-	  SPOE file name
+	/* Name.
 
+	   SPOE file name
 	*/
 	Name string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the delete spoe file params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *DeleteSpoeFileParams) WithDefaults() *DeleteSpoeFileParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the delete spoe file params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *DeleteSpoeFileParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the delete spoe file params

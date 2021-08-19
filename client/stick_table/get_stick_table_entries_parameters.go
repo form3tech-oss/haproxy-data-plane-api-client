@@ -32,84 +32,103 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewGetStickTableEntriesParams creates a new GetStickTableEntriesParams object
-// with the default values initialized.
+// NewGetStickTableEntriesParams creates a new GetStickTableEntriesParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetStickTableEntriesParams() *GetStickTableEntriesParams {
-	var ()
 	return &GetStickTableEntriesParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewGetStickTableEntriesParamsWithTimeout creates a new GetStickTableEntriesParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewGetStickTableEntriesParamsWithTimeout(timeout time.Duration) *GetStickTableEntriesParams {
-	var ()
 	return &GetStickTableEntriesParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewGetStickTableEntriesParamsWithContext creates a new GetStickTableEntriesParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewGetStickTableEntriesParamsWithContext(ctx context.Context) *GetStickTableEntriesParams {
-	var ()
 	return &GetStickTableEntriesParams{
-
 		Context: ctx,
 	}
 }
 
 // NewGetStickTableEntriesParamsWithHTTPClient creates a new GetStickTableEntriesParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewGetStickTableEntriesParamsWithHTTPClient(client *http.Client) *GetStickTableEntriesParams {
-	var ()
 	return &GetStickTableEntriesParams{
 		HTTPClient: client,
 	}
 }
 
-/*GetStickTableEntriesParams contains all the parameters to send to the API endpoint
-for the get stick table entries operation typically these are written to a http.Request
+/* GetStickTableEntriesParams contains all the parameters to send to the API endpoint
+   for the get stick table entries operation.
+
+   Typically these are written to a http.Request.
 */
 type GetStickTableEntriesParams struct {
 
-	/*Count
-	  Max number of entries to be returned for pagination
+	/* Count.
 
+	   Max number of entries to be returned for pagination
 	*/
 	Count *int64
-	/*Filter
-	  A list of filters in format data.<type> <operator> <value> separated by comma
 
+	/* Filter.
+
+	   A list of filters in format data.<type> <operator> <value> separated by comma
 	*/
 	Filter *string
-	/*Key
-	  Key which we want the entries for
 
+	/* Key.
+
+	   Key which we want the entries for
 	*/
 	Key *string
-	/*Offset
-	  Offset which indicates how many items we skip in pagination
 
+	/* Offset.
+
+	   Offset which indicates how many items we skip in pagination
 	*/
 	Offset *int64
-	/*Process
-	  Process number if master-worker mode, if not only first process is returned
 
+	/* Process.
+
+	   Process number if master-worker mode, if not only first process is returned
 	*/
 	Process int64
-	/*StickTable
-	  Stick table name
 
+	/* StickTable.
+
+	   Stick table name
 	*/
 	StickTable string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the get stick table entries params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetStickTableEntriesParams) WithDefaults() *GetStickTableEntriesParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the get stick table entries params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetStickTableEntriesParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the get stick table entries params
@@ -223,70 +242,75 @@ func (o *GetStickTableEntriesParams) WriteToRequest(r runtime.ClientRequest, reg
 
 		// query param count
 		var qrCount int64
+
 		if o.Count != nil {
 			qrCount = *o.Count
 		}
 		qCount := swag.FormatInt64(qrCount)
 		if qCount != "" {
+
 			if err := r.SetQueryParam("count", qCount); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if o.Filter != nil {
 
 		// query param filter
 		var qrFilter string
+
 		if o.Filter != nil {
 			qrFilter = *o.Filter
 		}
 		qFilter := qrFilter
 		if qFilter != "" {
+
 			if err := r.SetQueryParam("filter", qFilter); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if o.Key != nil {
 
 		// query param key
 		var qrKey string
+
 		if o.Key != nil {
 			qrKey = *o.Key
 		}
 		qKey := qrKey
 		if qKey != "" {
+
 			if err := r.SetQueryParam("key", qKey); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if o.Offset != nil {
 
 		// query param offset
 		var qrOffset int64
+
 		if o.Offset != nil {
 			qrOffset = *o.Offset
 		}
 		qOffset := swag.FormatInt64(qrOffset)
 		if qOffset != "" {
+
 			if err := r.SetQueryParam("offset", qOffset); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	// query param process
 	qrProcess := o.Process
 	qProcess := swag.FormatInt64(qrProcess)
 	if qProcess != "" {
+
 		if err := r.SetQueryParam("process", qProcess); err != nil {
 			return err
 		}
@@ -296,6 +320,7 @@ func (o *GetStickTableEntriesParams) WriteToRequest(r runtime.ClientRequest, reg
 	qrStickTable := o.StickTable
 	qStickTable := qrStickTable
 	if qStickTable != "" {
+
 		if err := r.SetQueryParam("stick_table", qStickTable); err != nil {
 			return err
 		}

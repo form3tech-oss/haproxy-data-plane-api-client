@@ -24,12 +24,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // GetConfigurationEndpointsReader is a Reader for the GetConfigurationEndpoints structure.
@@ -63,7 +61,7 @@ func NewGetConfigurationEndpointsOK() *GetConfigurationEndpointsOK {
 	return &GetConfigurationEndpointsOK{}
 }
 
-/*GetConfigurationEndpointsOK handles this case with default header values.
+/* GetConfigurationEndpointsOK describes a response with status code 200, with default header values.
 
 Success
 */
@@ -74,7 +72,6 @@ type GetConfigurationEndpointsOK struct {
 func (o *GetConfigurationEndpointsOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration][%d] getConfigurationEndpointsOK  %+v", 200, o.Payload)
 }
-
 func (o *GetConfigurationEndpointsOK) GetPayload() models.Endpoints {
 	return o.Payload
 }
@@ -92,21 +89,20 @@ func (o *GetConfigurationEndpointsOK) readResponse(response runtime.ClientRespon
 // NewGetConfigurationEndpointsDefault creates a GetConfigurationEndpointsDefault with default headers values
 func NewGetConfigurationEndpointsDefault(code int) *GetConfigurationEndpointsDefault {
 	return &GetConfigurationEndpointsDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*GetConfigurationEndpointsDefault handles this case with default header values.
+/* GetConfigurationEndpointsDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type GetConfigurationEndpointsDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -119,19 +115,18 @@ func (o *GetConfigurationEndpointsDefault) Code() int {
 func (o *GetConfigurationEndpointsDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration][%d] getConfigurationEndpoints default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *GetConfigurationEndpointsDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *GetConfigurationEndpointsDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 

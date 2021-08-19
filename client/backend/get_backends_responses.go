@@ -21,6 +21,7 @@ package backend
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"fmt"
 	"io"
 
@@ -30,7 +31,7 @@ import (
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // GetBackendsReader is a Reader for the GetBackends structure.
@@ -64,14 +65,15 @@ func NewGetBackendsOK() *GetBackendsOK {
 	return &GetBackendsOK{}
 }
 
-/*GetBackendsOK handles this case with default header values.
+/* GetBackendsOK describes a response with status code 200, with default header values.
 
 Successful operation
 */
 type GetBackendsOK struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *GetBackendsOKBody
 }
@@ -79,19 +81,18 @@ type GetBackendsOK struct {
 func (o *GetBackendsOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/backends][%d] getBackendsOK  %+v", 200, o.Payload)
 }
-
 func (o *GetBackendsOK) GetPayload() *GetBackendsOKBody {
 	return o.Payload
 }
 
 func (o *GetBackendsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(GetBackendsOKBody)
 
@@ -106,21 +107,20 @@ func (o *GetBackendsOK) readResponse(response runtime.ClientResponse, consumer r
 // NewGetBackendsDefault creates a GetBackendsDefault with default headers values
 func NewGetBackendsDefault(code int) *GetBackendsDefault {
 	return &GetBackendsDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*GetBackendsDefault handles this case with default header values.
+/* GetBackendsDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type GetBackendsDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -133,19 +133,18 @@ func (o *GetBackendsDefault) Code() int {
 func (o *GetBackendsDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/backends][%d] getBackends default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *GetBackendsDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *GetBackendsDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -191,6 +190,32 @@ func (o *GetBackendsOKBody) validateData(formats strfmt.Registry) error {
 	}
 
 	if err := o.Data.Validate(formats); err != nil {
+		if ve, ok := err.(*errors.Validation); ok {
+			return ve.ValidateName("getBackendsOK" + "." + "data")
+		}
+		return err
+	}
+
+	return nil
+}
+
+// ContextValidate validate this get backends o k body based on the context it is used
+func (o *GetBackendsOKBody) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.contextValidateData(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *GetBackendsOKBody) contextValidateData(ctx context.Context, formats strfmt.Registry) error {
+
+	if err := o.Data.ContextValidate(ctx, formats); err != nil {
 		if ve, ok := err.(*errors.Validation); ok {
 			return ve.ValidateName("getBackendsOK" + "." + "data")
 		}

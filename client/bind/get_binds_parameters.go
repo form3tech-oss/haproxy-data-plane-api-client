@@ -31,64 +31,79 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// NewGetBindsParams creates a new GetBindsParams object
-// with the default values initialized.
+// NewGetBindsParams creates a new GetBindsParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetBindsParams() *GetBindsParams {
-	var ()
 	return &GetBindsParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewGetBindsParamsWithTimeout creates a new GetBindsParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewGetBindsParamsWithTimeout(timeout time.Duration) *GetBindsParams {
-	var ()
 	return &GetBindsParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewGetBindsParamsWithContext creates a new GetBindsParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewGetBindsParamsWithContext(ctx context.Context) *GetBindsParams {
-	var ()
 	return &GetBindsParams{
-
 		Context: ctx,
 	}
 }
 
 // NewGetBindsParamsWithHTTPClient creates a new GetBindsParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewGetBindsParamsWithHTTPClient(client *http.Client) *GetBindsParams {
-	var ()
 	return &GetBindsParams{
 		HTTPClient: client,
 	}
 }
 
-/*GetBindsParams contains all the parameters to send to the API endpoint
-for the get binds operation typically these are written to a http.Request
+/* GetBindsParams contains all the parameters to send to the API endpoint
+   for the get binds operation.
+
+   Typically these are written to a http.Request.
 */
 type GetBindsParams struct {
 
-	/*Frontend
-	  Parent frontend name
+	/* Frontend.
 
+	   Parent frontend name
 	*/
 	Frontend string
-	/*TransactionID
-	  ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 
+	/* TransactionID.
+
+	   ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 	*/
 	TransactionID *string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the get binds params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetBindsParams) WithDefaults() *GetBindsParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the get binds params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetBindsParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the get binds params
@@ -158,6 +173,7 @@ func (o *GetBindsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Regi
 	qrFrontend := o.Frontend
 	qFrontend := qrFrontend
 	if qFrontend != "" {
+
 		if err := r.SetQueryParam("frontend", qFrontend); err != nil {
 			return err
 		}
@@ -167,16 +183,17 @@ func (o *GetBindsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Regi
 
 		// query param transaction_id
 		var qrTransactionID string
+
 		if o.TransactionID != nil {
 			qrTransactionID = *o.TransactionID
 		}
 		qTransactionID := qrTransactionID
 		if qTransactionID != "" {
+
 			if err := r.SetQueryParam("transaction_id", qTransactionID); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if len(res) > 0 {

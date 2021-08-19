@@ -32,83 +32,99 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewReplaceRuntimeMapEntryParams creates a new ReplaceRuntimeMapEntryParams object
-// with the default values initialized.
+// NewReplaceRuntimeMapEntryParams creates a new ReplaceRuntimeMapEntryParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewReplaceRuntimeMapEntryParams() *ReplaceRuntimeMapEntryParams {
-	var (
-		forceSyncDefault = bool(false)
-	)
 	return &ReplaceRuntimeMapEntryParams{
-		ForceSync: &forceSyncDefault,
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewReplaceRuntimeMapEntryParamsWithTimeout creates a new ReplaceRuntimeMapEntryParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewReplaceRuntimeMapEntryParamsWithTimeout(timeout time.Duration) *ReplaceRuntimeMapEntryParams {
-	var (
-		forceSyncDefault = bool(false)
-	)
 	return &ReplaceRuntimeMapEntryParams{
-		ForceSync: &forceSyncDefault,
-
 		timeout: timeout,
 	}
 }
 
 // NewReplaceRuntimeMapEntryParamsWithContext creates a new ReplaceRuntimeMapEntryParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewReplaceRuntimeMapEntryParamsWithContext(ctx context.Context) *ReplaceRuntimeMapEntryParams {
-	var (
-		forceSyncDefault = bool(false)
-	)
 	return &ReplaceRuntimeMapEntryParams{
-		ForceSync: &forceSyncDefault,
-
 		Context: ctx,
 	}
 }
 
 // NewReplaceRuntimeMapEntryParamsWithHTTPClient creates a new ReplaceRuntimeMapEntryParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewReplaceRuntimeMapEntryParamsWithHTTPClient(client *http.Client) *ReplaceRuntimeMapEntryParams {
-	var (
-		forceSyncDefault = bool(false)
-	)
 	return &ReplaceRuntimeMapEntryParams{
-		ForceSync:  &forceSyncDefault,
 		HTTPClient: client,
 	}
 }
 
-/*ReplaceRuntimeMapEntryParams contains all the parameters to send to the API endpoint
-for the replace runtime map entry operation typically these are written to a http.Request
+/* ReplaceRuntimeMapEntryParams contains all the parameters to send to the API endpoint
+   for the replace runtime map entry operation.
+
+   Typically these are written to a http.Request.
 */
 type ReplaceRuntimeMapEntryParams struct {
 
-	/*Data*/
+	// Data.
 	Data ReplaceRuntimeMapEntryBody
-	/*ForceSync
-	  If true, immediately syncs changes to disk
 
+	/* ForceSync.
+
+	   If true, immediately syncs changes to disk
 	*/
 	ForceSync *bool
-	/*ID
-	  Map id
 
+	/* ID.
+
+	   Map id
 	*/
 	ID string
-	/*Map
-	  Mapfile attribute storage_name
 
+	/* Map.
+
+	   Mapfile attribute storage_name
 	*/
 	Map string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the replace runtime map entry params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *ReplaceRuntimeMapEntryParams) WithDefaults() *ReplaceRuntimeMapEntryParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the replace runtime map entry params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *ReplaceRuntimeMapEntryParams) SetDefaults() {
+	var (
+		forceSyncDefault = bool(false)
+	)
+
+	val := ReplaceRuntimeMapEntryParams{
+		ForceSync: &forceSyncDefault,
+	}
+
+	val.timeout = o.timeout
+	val.Context = o.Context
+	val.HTTPClient = o.HTTPClient
+	*o = val
 }
 
 // WithTimeout adds the timeout to the replace runtime map entry params
@@ -195,7 +211,6 @@ func (o *ReplaceRuntimeMapEntryParams) WriteToRequest(r runtime.ClientRequest, r
 		return err
 	}
 	var res []error
-
 	if err := r.SetBodyParam(o.Data); err != nil {
 		return err
 	}
@@ -204,16 +219,17 @@ func (o *ReplaceRuntimeMapEntryParams) WriteToRequest(r runtime.ClientRequest, r
 
 		// query param force_sync
 		var qrForceSync bool
+
 		if o.ForceSync != nil {
 			qrForceSync = *o.ForceSync
 		}
 		qForceSync := swag.FormatBool(qrForceSync)
 		if qForceSync != "" {
+
 			if err := r.SetQueryParam("force_sync", qForceSync); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	// path param id
@@ -225,6 +241,7 @@ func (o *ReplaceRuntimeMapEntryParams) WriteToRequest(r runtime.ClientRequest, r
 	qrMap := o.Map
 	qMap := qrMap
 	if qMap != "" {
+
 		if err := r.SetQueryParam("map", qMap); err != nil {
 			return err
 		}

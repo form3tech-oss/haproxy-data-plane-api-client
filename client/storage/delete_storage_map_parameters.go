@@ -31,59 +31,73 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// NewDeleteStorageMapParams creates a new DeleteStorageMapParams object
-// with the default values initialized.
+// NewDeleteStorageMapParams creates a new DeleteStorageMapParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewDeleteStorageMapParams() *DeleteStorageMapParams {
-	var ()
 	return &DeleteStorageMapParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewDeleteStorageMapParamsWithTimeout creates a new DeleteStorageMapParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewDeleteStorageMapParamsWithTimeout(timeout time.Duration) *DeleteStorageMapParams {
-	var ()
 	return &DeleteStorageMapParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewDeleteStorageMapParamsWithContext creates a new DeleteStorageMapParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewDeleteStorageMapParamsWithContext(ctx context.Context) *DeleteStorageMapParams {
-	var ()
 	return &DeleteStorageMapParams{
-
 		Context: ctx,
 	}
 }
 
 // NewDeleteStorageMapParamsWithHTTPClient creates a new DeleteStorageMapParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewDeleteStorageMapParamsWithHTTPClient(client *http.Client) *DeleteStorageMapParams {
-	var ()
 	return &DeleteStorageMapParams{
 		HTTPClient: client,
 	}
 }
 
-/*DeleteStorageMapParams contains all the parameters to send to the API endpoint
-for the delete storage map operation typically these are written to a http.Request
+/* DeleteStorageMapParams contains all the parameters to send to the API endpoint
+   for the delete storage map operation.
+
+   Typically these are written to a http.Request.
 */
 type DeleteStorageMapParams struct {
 
-	/*Name
-	  Map file storage_name
+	/* Name.
 
+	   Map file storage_name
 	*/
 	Name string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the delete storage map params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *DeleteStorageMapParams) WithDefaults() *DeleteStorageMapParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the delete storage map params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *DeleteStorageMapParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the delete storage map params

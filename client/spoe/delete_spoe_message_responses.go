@@ -24,12 +24,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // DeleteSpoeMessageReader is a Reader for the DeleteSpoeMessage structure.
@@ -69,7 +67,7 @@ func NewDeleteSpoeMessageNoContent() *DeleteSpoeMessageNoContent {
 	return &DeleteSpoeMessageNoContent{}
 }
 
-/*DeleteSpoeMessageNoContent handles this case with default header values.
+/* DeleteSpoeMessageNoContent describes a response with status code 204, with default header values.
 
 Spoe message deleted
 */
@@ -87,19 +85,18 @@ func (o *DeleteSpoeMessageNoContent) readResponse(response runtime.ClientRespons
 
 // NewDeleteSpoeMessageNotFound creates a DeleteSpoeMessageNotFound with default headers values
 func NewDeleteSpoeMessageNotFound() *DeleteSpoeMessageNotFound {
-	return &DeleteSpoeMessageNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &DeleteSpoeMessageNotFound{}
 }
 
-/*DeleteSpoeMessageNotFound handles this case with default header values.
+/* DeleteSpoeMessageNotFound describes a response with status code 404, with default header values.
 
 The specified resource was not found
 */
 type DeleteSpoeMessageNotFound struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -107,19 +104,18 @@ type DeleteSpoeMessageNotFound struct {
 func (o *DeleteSpoeMessageNotFound) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/spoe/spoe_messages/{name}][%d] deleteSpoeMessageNotFound  %+v", 404, o.Payload)
 }
-
 func (o *DeleteSpoeMessageNotFound) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *DeleteSpoeMessageNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -134,21 +130,20 @@ func (o *DeleteSpoeMessageNotFound) readResponse(response runtime.ClientResponse
 // NewDeleteSpoeMessageDefault creates a DeleteSpoeMessageDefault with default headers values
 func NewDeleteSpoeMessageDefault(code int) *DeleteSpoeMessageDefault {
 	return &DeleteSpoeMessageDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*DeleteSpoeMessageDefault handles this case with default header values.
+/* DeleteSpoeMessageDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type DeleteSpoeMessageDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -161,19 +156,18 @@ func (o *DeleteSpoeMessageDefault) Code() int {
 func (o *DeleteSpoeMessageDefault) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/spoe/spoe_messages/{name}][%d] deleteSpoeMessage default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *DeleteSpoeMessageDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *DeleteSpoeMessageDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 

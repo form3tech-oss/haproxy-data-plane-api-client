@@ -30,64 +30,79 @@ import (
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
-// NewReplaceConsulParams creates a new ReplaceConsulParams object
-// with the default values initialized.
+// NewReplaceConsulParams creates a new ReplaceConsulParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewReplaceConsulParams() *ReplaceConsulParams {
-	var ()
 	return &ReplaceConsulParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewReplaceConsulParamsWithTimeout creates a new ReplaceConsulParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewReplaceConsulParamsWithTimeout(timeout time.Duration) *ReplaceConsulParams {
-	var ()
 	return &ReplaceConsulParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewReplaceConsulParamsWithContext creates a new ReplaceConsulParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewReplaceConsulParamsWithContext(ctx context.Context) *ReplaceConsulParams {
-	var ()
 	return &ReplaceConsulParams{
-
 		Context: ctx,
 	}
 }
 
 // NewReplaceConsulParamsWithHTTPClient creates a new ReplaceConsulParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewReplaceConsulParamsWithHTTPClient(client *http.Client) *ReplaceConsulParams {
-	var ()
 	return &ReplaceConsulParams{
 		HTTPClient: client,
 	}
 }
 
-/*ReplaceConsulParams contains all the parameters to send to the API endpoint
-for the replace consul operation typically these are written to a http.Request
+/* ReplaceConsulParams contains all the parameters to send to the API endpoint
+   for the replace consul operation.
+
+   Typically these are written to a http.Request.
 */
 type ReplaceConsulParams struct {
 
-	/*Data*/
+	// Data.
 	Data *models.Consul
-	/*ID
-	  Consul Index
 
+	/* ID.
+
+	   Consul Index
 	*/
 	ID string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the replace consul params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *ReplaceConsulParams) WithDefaults() *ReplaceConsulParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the replace consul params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *ReplaceConsulParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the replace consul params
@@ -152,7 +167,6 @@ func (o *ReplaceConsulParams) WriteToRequest(r runtime.ClientRequest, reg strfmt
 		return err
 	}
 	var res []error
-
 	if o.Data != nil {
 		if err := r.SetBodyParam(o.Data); err != nil {
 			return err

@@ -31,64 +31,79 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// NewGetFrontendParams creates a new GetFrontendParams object
-// with the default values initialized.
+// NewGetFrontendParams creates a new GetFrontendParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetFrontendParams() *GetFrontendParams {
-	var ()
 	return &GetFrontendParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewGetFrontendParamsWithTimeout creates a new GetFrontendParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewGetFrontendParamsWithTimeout(timeout time.Duration) *GetFrontendParams {
-	var ()
 	return &GetFrontendParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewGetFrontendParamsWithContext creates a new GetFrontendParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewGetFrontendParamsWithContext(ctx context.Context) *GetFrontendParams {
-	var ()
 	return &GetFrontendParams{
-
 		Context: ctx,
 	}
 }
 
 // NewGetFrontendParamsWithHTTPClient creates a new GetFrontendParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewGetFrontendParamsWithHTTPClient(client *http.Client) *GetFrontendParams {
-	var ()
 	return &GetFrontendParams{
 		HTTPClient: client,
 	}
 }
 
-/*GetFrontendParams contains all the parameters to send to the API endpoint
-for the get frontend operation typically these are written to a http.Request
+/* GetFrontendParams contains all the parameters to send to the API endpoint
+   for the get frontend operation.
+
+   Typically these are written to a http.Request.
 */
 type GetFrontendParams struct {
 
-	/*Name
-	  Frontend name
+	/* Name.
 
+	   Frontend name
 	*/
 	Name string
-	/*TransactionID
-	  ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 
+	/* TransactionID.
+
+	   ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 	*/
 	TransactionID *string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the get frontend params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetFrontendParams) WithDefaults() *GetFrontendParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the get frontend params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetFrontendParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the get frontend params
@@ -163,16 +178,17 @@ func (o *GetFrontendParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.R
 
 		// query param transaction_id
 		var qrTransactionID string
+
 		if o.TransactionID != nil {
 			qrTransactionID = *o.TransactionID
 		}
 		qTransactionID := qrTransactionID
 		if qTransactionID != "" {
+
 			if err := r.SetQueryParam("transaction_id", qTransactionID); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if len(res) > 0 {

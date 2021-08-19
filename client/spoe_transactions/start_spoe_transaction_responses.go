@@ -21,15 +21,15 @@ package spoe_transactions
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // StartSpoeTransactionReader is a Reader for the StartSpoeTransaction structure.
@@ -69,7 +69,7 @@ func NewStartSpoeTransactionCreated() *StartSpoeTransactionCreated {
 	return &StartSpoeTransactionCreated{}
 }
 
-/*StartSpoeTransactionCreated handles this case with default header values.
+/* StartSpoeTransactionCreated describes a response with status code 201, with default header values.
 
 Transaction started
 */
@@ -80,7 +80,6 @@ type StartSpoeTransactionCreated struct {
 func (o *StartSpoeTransactionCreated) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/spoe_transactions][%d] startSpoeTransactionCreated  %+v", 201, o.Payload)
 }
-
 func (o *StartSpoeTransactionCreated) GetPayload() *models.SpoeTransaction {
 	return o.Payload
 }
@@ -102,7 +101,7 @@ func NewStartSpoeTransactionTooManyRequests() *StartSpoeTransactionTooManyReques
 	return &StartSpoeTransactionTooManyRequests{}
 }
 
-/*StartSpoeTransactionTooManyRequests handles this case with default header values.
+/* StartSpoeTransactionTooManyRequests describes a response with status code 429, with default header values.
 
 Too many open transactions
 */
@@ -113,7 +112,6 @@ type StartSpoeTransactionTooManyRequests struct {
 func (o *StartSpoeTransactionTooManyRequests) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/spoe_transactions][%d] startSpoeTransactionTooManyRequests  %+v", 429, o.Payload)
 }
-
 func (o *StartSpoeTransactionTooManyRequests) GetPayload() *StartSpoeTransactionTooManyRequestsBody {
 	return o.Payload
 }
@@ -133,21 +131,20 @@ func (o *StartSpoeTransactionTooManyRequests) readResponse(response runtime.Clie
 // NewStartSpoeTransactionDefault creates a StartSpoeTransactionDefault with default headers values
 func NewStartSpoeTransactionDefault(code int) *StartSpoeTransactionDefault {
 	return &StartSpoeTransactionDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*StartSpoeTransactionDefault handles this case with default header values.
+/* StartSpoeTransactionDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type StartSpoeTransactionDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -160,19 +157,18 @@ func (o *StartSpoeTransactionDefault) Code() int {
 func (o *StartSpoeTransactionDefault) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/spoe_transactions][%d] startSpoeTransaction default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *StartSpoeTransactionDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *StartSpoeTransactionDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -185,6 +181,7 @@ func (o *StartSpoeTransactionDefault) readResponse(response runtime.ClientRespon
 }
 
 /*StartSpoeTransactionTooManyRequestsBody start spoe transaction too many requests body
+// Example: {"code":429,"message":"cannot start a new transaction, reached the maximum amount of 20 active transactions available"}
 swagger:model StartSpoeTransactionTooManyRequestsBody
 */
 type StartSpoeTransactionTooManyRequestsBody struct {
@@ -198,6 +195,11 @@ type StartSpoeTransactionTooManyRequestsBody struct {
 
 // Validate validates this start spoe transaction too many requests body
 func (o *StartSpoeTransactionTooManyRequestsBody) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// ContextValidate validates this start spoe transaction too many requests body based on context it is used
+func (o *StartSpoeTransactionTooManyRequestsBody) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

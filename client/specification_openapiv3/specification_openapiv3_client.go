@@ -38,9 +38,12 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
+// ClientOption is the option for Client methods
+type ClientOption func(*runtime.ClientOperation)
+
 // ClientService is the interface for Client methods
 type ClientService interface {
-	GetOpenapiv3Specification(params *GetOpenapiv3SpecificationParams, authInfo runtime.ClientAuthInfoWriter) (*GetOpenapiv3SpecificationOK, error)
+	GetOpenapiv3Specification(params *GetOpenapiv3SpecificationParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetOpenapiv3SpecificationOK, error)
 
 	SetTransport(transport runtime.ClientTransport)
 }
@@ -50,13 +53,12 @@ type ClientService interface {
 
   Return Data Plane API OpenAPI v3 specification
 */
-func (a *Client) GetOpenapiv3Specification(params *GetOpenapiv3SpecificationParams, authInfo runtime.ClientAuthInfoWriter) (*GetOpenapiv3SpecificationOK, error) {
+func (a *Client) GetOpenapiv3Specification(params *GetOpenapiv3SpecificationParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetOpenapiv3SpecificationOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewGetOpenapiv3SpecificationParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "getOpenapiv3Specification",
 		Method:             "GET",
 		PathPattern:        "/specification_openapiv3",
@@ -68,7 +70,12 @@ func (a *Client) GetOpenapiv3Specification(params *GetOpenapiv3SpecificationPara
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}

@@ -24,12 +24,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // DeleteNameserverReader is a Reader for the DeleteNameserver structure.
@@ -75,12 +73,13 @@ func NewDeleteNameserverAccepted() *DeleteNameserverAccepted {
 	return &DeleteNameserverAccepted{}
 }
 
-/*DeleteNameserverAccepted handles this case with default header values.
+/* DeleteNameserverAccepted describes a response with status code 202, with default header values.
 
 Configuration change accepted and reload requested
 */
 type DeleteNameserverAccepted struct {
-	/*ID of the requested reload
+
+	/* ID of the requested reload
 	 */
 	ReloadID string
 }
@@ -91,8 +90,12 @@ func (o *DeleteNameserverAccepted) Error() string {
 
 func (o *DeleteNameserverAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Reload-ID
-	o.ReloadID = response.GetHeader("Reload-ID")
+	// hydrates response header Reload-ID
+	hdrReloadID := response.GetHeader("Reload-ID")
+
+	if hdrReloadID != "" {
+		o.ReloadID = hdrReloadID
+	}
 
 	return nil
 }
@@ -102,7 +105,7 @@ func NewDeleteNameserverNoContent() *DeleteNameserverNoContent {
 	return &DeleteNameserverNoContent{}
 }
 
-/*DeleteNameserverNoContent handles this case with default header values.
+/* DeleteNameserverNoContent describes a response with status code 204, with default header values.
 
 Nameserver deleted
 */
@@ -120,19 +123,18 @@ func (o *DeleteNameserverNoContent) readResponse(response runtime.ClientResponse
 
 // NewDeleteNameserverNotFound creates a DeleteNameserverNotFound with default headers values
 func NewDeleteNameserverNotFound() *DeleteNameserverNotFound {
-	return &DeleteNameserverNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &DeleteNameserverNotFound{}
 }
 
-/*DeleteNameserverNotFound handles this case with default header values.
+/* DeleteNameserverNotFound describes a response with status code 404, with default header values.
 
 The specified resource was not found
 */
 type DeleteNameserverNotFound struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -140,19 +142,18 @@ type DeleteNameserverNotFound struct {
 func (o *DeleteNameserverNotFound) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/configuration/nameservers/{name}][%d] deleteNameserverNotFound  %+v", 404, o.Payload)
 }
-
 func (o *DeleteNameserverNotFound) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *DeleteNameserverNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -167,21 +168,20 @@ func (o *DeleteNameserverNotFound) readResponse(response runtime.ClientResponse,
 // NewDeleteNameserverDefault creates a DeleteNameserverDefault with default headers values
 func NewDeleteNameserverDefault(code int) *DeleteNameserverDefault {
 	return &DeleteNameserverDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*DeleteNameserverDefault handles this case with default header values.
+/* DeleteNameserverDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type DeleteNameserverDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -194,19 +194,18 @@ func (o *DeleteNameserverDefault) Code() int {
 func (o *DeleteNameserverDefault) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/configuration/nameservers/{name}][%d] deleteNameserver default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *DeleteNameserverDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *DeleteNameserverDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 

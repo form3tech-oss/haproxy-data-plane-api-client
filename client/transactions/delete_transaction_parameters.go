@@ -31,59 +31,73 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// NewDeleteTransactionParams creates a new DeleteTransactionParams object
-// with the default values initialized.
+// NewDeleteTransactionParams creates a new DeleteTransactionParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewDeleteTransactionParams() *DeleteTransactionParams {
-	var ()
 	return &DeleteTransactionParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewDeleteTransactionParamsWithTimeout creates a new DeleteTransactionParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewDeleteTransactionParamsWithTimeout(timeout time.Duration) *DeleteTransactionParams {
-	var ()
 	return &DeleteTransactionParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewDeleteTransactionParamsWithContext creates a new DeleteTransactionParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewDeleteTransactionParamsWithContext(ctx context.Context) *DeleteTransactionParams {
-	var ()
 	return &DeleteTransactionParams{
-
 		Context: ctx,
 	}
 }
 
 // NewDeleteTransactionParamsWithHTTPClient creates a new DeleteTransactionParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewDeleteTransactionParamsWithHTTPClient(client *http.Client) *DeleteTransactionParams {
-	var ()
 	return &DeleteTransactionParams{
 		HTTPClient: client,
 	}
 }
 
-/*DeleteTransactionParams contains all the parameters to send to the API endpoint
-for the delete transaction operation typically these are written to a http.Request
+/* DeleteTransactionParams contains all the parameters to send to the API endpoint
+   for the delete transaction operation.
+
+   Typically these are written to a http.Request.
 */
 type DeleteTransactionParams struct {
 
-	/*ID
-	  Transaction id
+	/* ID.
 
+	   Transaction id
 	*/
 	ID string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the delete transaction params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *DeleteTransactionParams) WithDefaults() *DeleteTransactionParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the delete transaction params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *DeleteTransactionParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the delete transaction params

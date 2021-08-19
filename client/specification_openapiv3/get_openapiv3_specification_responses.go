@@ -24,12 +24,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // GetOpenapiv3SpecificationReader is a Reader for the GetOpenapiv3Specification structure.
@@ -63,7 +61,7 @@ func NewGetOpenapiv3SpecificationOK() *GetOpenapiv3SpecificationOK {
 	return &GetOpenapiv3SpecificationOK{}
 }
 
-/*GetOpenapiv3SpecificationOK handles this case with default header values.
+/* GetOpenapiv3SpecificationOK describes a response with status code 200, with default header values.
 
 Success
 */
@@ -74,7 +72,6 @@ type GetOpenapiv3SpecificationOK struct {
 func (o *GetOpenapiv3SpecificationOK) Error() string {
 	return fmt.Sprintf("[GET /specification_openapiv3][%d] getOpenapiv3SpecificationOK  %+v", 200, o.Payload)
 }
-
 func (o *GetOpenapiv3SpecificationOK) GetPayload() interface{} {
 	return o.Payload
 }
@@ -92,21 +89,20 @@ func (o *GetOpenapiv3SpecificationOK) readResponse(response runtime.ClientRespon
 // NewGetOpenapiv3SpecificationDefault creates a GetOpenapiv3SpecificationDefault with default headers values
 func NewGetOpenapiv3SpecificationDefault(code int) *GetOpenapiv3SpecificationDefault {
 	return &GetOpenapiv3SpecificationDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*GetOpenapiv3SpecificationDefault handles this case with default header values.
+/* GetOpenapiv3SpecificationDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type GetOpenapiv3SpecificationDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -119,19 +115,18 @@ func (o *GetOpenapiv3SpecificationDefault) Code() int {
 func (o *GetOpenapiv3SpecificationDefault) Error() string {
 	return fmt.Sprintf("[GET /specification_openapiv3][%d] getOpenapiv3Specification default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *GetOpenapiv3SpecificationDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *GetOpenapiv3SpecificationDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 

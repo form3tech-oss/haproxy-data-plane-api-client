@@ -32,81 +32,96 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewClearRuntimeMapParams creates a new ClearRuntimeMapParams object
-// with the default values initialized.
+// NewClearRuntimeMapParams creates a new ClearRuntimeMapParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewClearRuntimeMapParams() *ClearRuntimeMapParams {
-	var (
-		forceSyncDefault = bool(false)
-	)
 	return &ClearRuntimeMapParams{
-		ForceSync: &forceSyncDefault,
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewClearRuntimeMapParamsWithTimeout creates a new ClearRuntimeMapParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewClearRuntimeMapParamsWithTimeout(timeout time.Duration) *ClearRuntimeMapParams {
-	var (
-		forceSyncDefault = bool(false)
-	)
 	return &ClearRuntimeMapParams{
-		ForceSync: &forceSyncDefault,
-
 		timeout: timeout,
 	}
 }
 
 // NewClearRuntimeMapParamsWithContext creates a new ClearRuntimeMapParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewClearRuntimeMapParamsWithContext(ctx context.Context) *ClearRuntimeMapParams {
-	var (
-		forceSyncDefault = bool(false)
-	)
 	return &ClearRuntimeMapParams{
-		ForceSync: &forceSyncDefault,
-
 		Context: ctx,
 	}
 }
 
 // NewClearRuntimeMapParamsWithHTTPClient creates a new ClearRuntimeMapParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewClearRuntimeMapParamsWithHTTPClient(client *http.Client) *ClearRuntimeMapParams {
-	var (
-		forceSyncDefault = bool(false)
-	)
 	return &ClearRuntimeMapParams{
-		ForceSync:  &forceSyncDefault,
 		HTTPClient: client,
 	}
 }
 
-/*ClearRuntimeMapParams contains all the parameters to send to the API endpoint
-for the clear runtime map operation typically these are written to a http.Request
+/* ClearRuntimeMapParams contains all the parameters to send to the API endpoint
+   for the clear runtime map operation.
+
+   Typically these are written to a http.Request.
 */
 type ClearRuntimeMapParams struct {
 
-	/*ForceDelete
-	  If true, deletes file from disk
+	/* ForceDelete.
 
+	   If true, deletes file from disk
 	*/
 	ForceDelete *bool
-	/*ForceSync
-	  If true, immediately syncs changes to disk
 
+	/* ForceSync.
+
+	   If true, immediately syncs changes to disk
 	*/
 	ForceSync *bool
-	/*Name
-	  Map file name
 
+	/* Name.
+
+	   Map file name
 	*/
 	Name string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the clear runtime map params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *ClearRuntimeMapParams) WithDefaults() *ClearRuntimeMapParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the clear runtime map params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *ClearRuntimeMapParams) SetDefaults() {
+	var (
+		forceSyncDefault = bool(false)
+	)
+
+	val := ClearRuntimeMapParams{
+		ForceSync: &forceSyncDefault,
+	}
+
+	val.timeout = o.timeout
+	val.Context = o.Context
+	val.HTTPClient = o.HTTPClient
+	*o = val
 }
 
 // WithTimeout adds the timeout to the clear runtime map params
@@ -187,32 +202,34 @@ func (o *ClearRuntimeMapParams) WriteToRequest(r runtime.ClientRequest, reg strf
 
 		// query param forceDelete
 		var qrForceDelete bool
+
 		if o.ForceDelete != nil {
 			qrForceDelete = *o.ForceDelete
 		}
 		qForceDelete := swag.FormatBool(qrForceDelete)
 		if qForceDelete != "" {
+
 			if err := r.SetQueryParam("forceDelete", qForceDelete); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if o.ForceSync != nil {
 
 		// query param force_sync
 		var qrForceSync bool
+
 		if o.ForceSync != nil {
 			qrForceSync = *o.ForceSync
 		}
 		qForceSync := swag.FormatBool(qrForceSync)
 		if qForceSync != "" {
+
 			if err := r.SetQueryParam("force_sync", qForceSync); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	// path param name

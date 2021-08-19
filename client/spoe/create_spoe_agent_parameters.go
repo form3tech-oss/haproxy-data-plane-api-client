@@ -31,79 +31,97 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
-// NewCreateSpoeAgentParams creates a new CreateSpoeAgentParams object
-// with the default values initialized.
+// NewCreateSpoeAgentParams creates a new CreateSpoeAgentParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewCreateSpoeAgentParams() *CreateSpoeAgentParams {
-	var ()
 	return &CreateSpoeAgentParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewCreateSpoeAgentParamsWithTimeout creates a new CreateSpoeAgentParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewCreateSpoeAgentParamsWithTimeout(timeout time.Duration) *CreateSpoeAgentParams {
-	var ()
 	return &CreateSpoeAgentParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewCreateSpoeAgentParamsWithContext creates a new CreateSpoeAgentParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewCreateSpoeAgentParamsWithContext(ctx context.Context) *CreateSpoeAgentParams {
-	var ()
 	return &CreateSpoeAgentParams{
-
 		Context: ctx,
 	}
 }
 
 // NewCreateSpoeAgentParamsWithHTTPClient creates a new CreateSpoeAgentParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewCreateSpoeAgentParamsWithHTTPClient(client *http.Client) *CreateSpoeAgentParams {
-	var ()
 	return &CreateSpoeAgentParams{
 		HTTPClient: client,
 	}
 }
 
-/*CreateSpoeAgentParams contains all the parameters to send to the API endpoint
-for the create spoe agent operation typically these are written to a http.Request
+/* CreateSpoeAgentParams contains all the parameters to send to the API endpoint
+   for the create spoe agent operation.
+
+   Typically these are written to a http.Request.
 */
 type CreateSpoeAgentParams struct {
 
-	/*Data*/
+	// Data.
 	Data *models.SpoeAgent
-	/*Scope
-	  Spoe scope
 
+	/* Scope.
+
+	   Spoe scope
 	*/
 	Scope string
-	/*Spoe
-	  Spoe file name
 
+	/* Spoe.
+
+	   Spoe file name
 	*/
 	Spoe string
-	/*TransactionID
-	  ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 
+	/* TransactionID.
+
+	   ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 	*/
 	TransactionID *string
-	/*Version
-	  Version used for checking configuration version. Cannot be used when transaction is specified, transaction has it's own version.
 
+	/* Version.
+
+	   Version used for checking configuration version. Cannot be used when transaction is specified, transaction has it's own version.
 	*/
 	Version *int64
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the create spoe agent params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *CreateSpoeAgentParams) WithDefaults() *CreateSpoeAgentParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the create spoe agent params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *CreateSpoeAgentParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the create spoe agent params
@@ -201,7 +219,6 @@ func (o *CreateSpoeAgentParams) WriteToRequest(r runtime.ClientRequest, reg strf
 		return err
 	}
 	var res []error
-
 	if o.Data != nil {
 		if err := r.SetBodyParam(o.Data); err != nil {
 			return err
@@ -212,6 +229,7 @@ func (o *CreateSpoeAgentParams) WriteToRequest(r runtime.ClientRequest, reg strf
 	qrScope := o.Scope
 	qScope := qrScope
 	if qScope != "" {
+
 		if err := r.SetQueryParam("scope", qScope); err != nil {
 			return err
 		}
@@ -221,6 +239,7 @@ func (o *CreateSpoeAgentParams) WriteToRequest(r runtime.ClientRequest, reg strf
 	qrSpoe := o.Spoe
 	qSpoe := qrSpoe
 	if qSpoe != "" {
+
 		if err := r.SetQueryParam("spoe", qSpoe); err != nil {
 			return err
 		}
@@ -230,32 +249,34 @@ func (o *CreateSpoeAgentParams) WriteToRequest(r runtime.ClientRequest, reg strf
 
 		// query param transaction_id
 		var qrTransactionID string
+
 		if o.TransactionID != nil {
 			qrTransactionID = *o.TransactionID
 		}
 		qTransactionID := qrTransactionID
 		if qTransactionID != "" {
+
 			if err := r.SetQueryParam("transaction_id", qTransactionID); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if o.Version != nil {
 
 		// query param version
 		var qrVersion int64
+
 		if o.Version != nil {
 			qrVersion = *o.Version
 		}
 		qVersion := swag.FormatInt64(qrVersion)
 		if qVersion != "" {
+
 			if err := r.SetQueryParam("version", qVersion); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if len(res) > 0 {

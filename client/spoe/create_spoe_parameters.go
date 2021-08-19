@@ -31,59 +31,73 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// NewCreateSpoeParams creates a new CreateSpoeParams object
-// with the default values initialized.
+// NewCreateSpoeParams creates a new CreateSpoeParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewCreateSpoeParams() *CreateSpoeParams {
-	var ()
 	return &CreateSpoeParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewCreateSpoeParamsWithTimeout creates a new CreateSpoeParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewCreateSpoeParamsWithTimeout(timeout time.Duration) *CreateSpoeParams {
-	var ()
 	return &CreateSpoeParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewCreateSpoeParamsWithContext creates a new CreateSpoeParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewCreateSpoeParamsWithContext(ctx context.Context) *CreateSpoeParams {
-	var ()
 	return &CreateSpoeParams{
-
 		Context: ctx,
 	}
 }
 
 // NewCreateSpoeParamsWithHTTPClient creates a new CreateSpoeParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewCreateSpoeParamsWithHTTPClient(client *http.Client) *CreateSpoeParams {
-	var ()
 	return &CreateSpoeParams{
 		HTTPClient: client,
 	}
 }
 
-/*CreateSpoeParams contains all the parameters to send to the API endpoint
-for the create spoe operation typically these are written to a http.Request
+/* CreateSpoeParams contains all the parameters to send to the API endpoint
+   for the create spoe operation.
+
+   Typically these are written to a http.Request.
 */
 type CreateSpoeParams struct {
 
-	/*FileUpload
-	  The spoe file to upload
+	/* FileUpload.
 
+	   The spoe file to upload
 	*/
 	FileUpload runtime.NamedReadCloser
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the create spoe params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *CreateSpoeParams) WithDefaults() *CreateSpoeParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the create spoe params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *CreateSpoeParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the create spoe params
@@ -141,14 +155,11 @@ func (o *CreateSpoeParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Re
 	if o.FileUpload != nil {
 
 		if o.FileUpload != nil {
-
 			// form file param file_upload
 			if err := r.SetFileParam("file_upload", o.FileUpload); err != nil {
 				return err
 			}
-
 		}
-
 	}
 
 	if len(res) > 0 {

@@ -24,12 +24,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // DeleteBackendReader is a Reader for the DeleteBackend structure.
@@ -75,12 +73,13 @@ func NewDeleteBackendAccepted() *DeleteBackendAccepted {
 	return &DeleteBackendAccepted{}
 }
 
-/*DeleteBackendAccepted handles this case with default header values.
+/* DeleteBackendAccepted describes a response with status code 202, with default header values.
 
 Configuration change accepted and reload requested
 */
 type DeleteBackendAccepted struct {
-	/*ID of the requested reload
+
+	/* ID of the requested reload
 	 */
 	ReloadID string
 }
@@ -91,8 +90,12 @@ func (o *DeleteBackendAccepted) Error() string {
 
 func (o *DeleteBackendAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Reload-ID
-	o.ReloadID = response.GetHeader("Reload-ID")
+	// hydrates response header Reload-ID
+	hdrReloadID := response.GetHeader("Reload-ID")
+
+	if hdrReloadID != "" {
+		o.ReloadID = hdrReloadID
+	}
 
 	return nil
 }
@@ -102,7 +105,7 @@ func NewDeleteBackendNoContent() *DeleteBackendNoContent {
 	return &DeleteBackendNoContent{}
 }
 
-/*DeleteBackendNoContent handles this case with default header values.
+/* DeleteBackendNoContent describes a response with status code 204, with default header values.
 
 Backend deleted
 */
@@ -120,19 +123,18 @@ func (o *DeleteBackendNoContent) readResponse(response runtime.ClientResponse, c
 
 // NewDeleteBackendNotFound creates a DeleteBackendNotFound with default headers values
 func NewDeleteBackendNotFound() *DeleteBackendNotFound {
-	return &DeleteBackendNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &DeleteBackendNotFound{}
 }
 
-/*DeleteBackendNotFound handles this case with default header values.
+/* DeleteBackendNotFound describes a response with status code 404, with default header values.
 
 The specified resource was not found
 */
 type DeleteBackendNotFound struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -140,19 +142,18 @@ type DeleteBackendNotFound struct {
 func (o *DeleteBackendNotFound) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/configuration/backends/{name}][%d] deleteBackendNotFound  %+v", 404, o.Payload)
 }
-
 func (o *DeleteBackendNotFound) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *DeleteBackendNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -167,21 +168,20 @@ func (o *DeleteBackendNotFound) readResponse(response runtime.ClientResponse, co
 // NewDeleteBackendDefault creates a DeleteBackendDefault with default headers values
 func NewDeleteBackendDefault(code int) *DeleteBackendDefault {
 	return &DeleteBackendDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*DeleteBackendDefault handles this case with default header values.
+/* DeleteBackendDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type DeleteBackendDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -194,19 +194,18 @@ func (o *DeleteBackendDefault) Code() int {
 func (o *DeleteBackendDefault) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/configuration/backends/{name}][%d] deleteBackend default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *DeleteBackendDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *DeleteBackendDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 

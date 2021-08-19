@@ -24,12 +24,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // GetInfoReader is a Reader for the GetInfo structure.
@@ -63,7 +61,7 @@ func NewGetInfoOK() *GetInfoOK {
 	return &GetInfoOK{}
 }
 
-/*GetInfoOK handles this case with default header values.
+/* GetInfoOK describes a response with status code 200, with default header values.
 
 Success
 */
@@ -74,7 +72,6 @@ type GetInfoOK struct {
 func (o *GetInfoOK) Error() string {
 	return fmt.Sprintf("[GET /info][%d] getInfoOK  %+v", 200, o.Payload)
 }
-
 func (o *GetInfoOK) GetPayload() *models.Info {
 	return o.Payload
 }
@@ -94,21 +91,20 @@ func (o *GetInfoOK) readResponse(response runtime.ClientResponse, consumer runti
 // NewGetInfoDefault creates a GetInfoDefault with default headers values
 func NewGetInfoDefault(code int) *GetInfoDefault {
 	return &GetInfoDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*GetInfoDefault handles this case with default header values.
+/* GetInfoDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type GetInfoDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -121,19 +117,18 @@ func (o *GetInfoDefault) Code() int {
 func (o *GetInfoDefault) Error() string {
 	return fmt.Sprintf("[GET /info][%d] getInfo default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *GetInfoDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *GetInfoDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 

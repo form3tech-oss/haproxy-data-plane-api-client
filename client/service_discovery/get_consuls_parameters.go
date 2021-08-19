@@ -31,52 +31,66 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// NewGetConsulsParams creates a new GetConsulsParams object
-// with the default values initialized.
+// NewGetConsulsParams creates a new GetConsulsParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetConsulsParams() *GetConsulsParams {
-
 	return &GetConsulsParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewGetConsulsParamsWithTimeout creates a new GetConsulsParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewGetConsulsParamsWithTimeout(timeout time.Duration) *GetConsulsParams {
-
 	return &GetConsulsParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewGetConsulsParamsWithContext creates a new GetConsulsParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewGetConsulsParamsWithContext(ctx context.Context) *GetConsulsParams {
-
 	return &GetConsulsParams{
-
 		Context: ctx,
 	}
 }
 
 // NewGetConsulsParamsWithHTTPClient creates a new GetConsulsParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewGetConsulsParamsWithHTTPClient(client *http.Client) *GetConsulsParams {
-
 	return &GetConsulsParams{
 		HTTPClient: client,
 	}
 }
 
-/*GetConsulsParams contains all the parameters to send to the API endpoint
-for the get consuls operation typically these are written to a http.Request
+/* GetConsulsParams contains all the parameters to send to the API endpoint
+   for the get consuls operation.
+
+   Typically these are written to a http.Request.
 */
 type GetConsulsParams struct {
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the get consuls params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetConsulsParams) WithDefaults() *GetConsulsParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the get consuls params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetConsulsParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the get consuls params

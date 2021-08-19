@@ -24,12 +24,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // GetOneStorageMapReader is a Reader for the GetOneStorageMap structure.
@@ -68,11 +66,12 @@ func (o *GetOneStorageMapReader) ReadResponse(response runtime.ClientResponse, c
 // NewGetOneStorageMapOK creates a GetOneStorageMapOK with default headers values
 func NewGetOneStorageMapOK(writer io.Writer) *GetOneStorageMapOK {
 	return &GetOneStorageMapOK{
+
 		Payload: writer,
 	}
 }
 
-/*GetOneStorageMapOK handles this case with default header values.
+/* GetOneStorageMapOK describes a response with status code 200, with default header values.
 
 Successful operation
 */
@@ -83,7 +82,6 @@ type GetOneStorageMapOK struct {
 func (o *GetOneStorageMapOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/storage/maps/{name}][%d] getOneStorageMapOK  %+v", 200, o.Payload)
 }
-
 func (o *GetOneStorageMapOK) GetPayload() io.Writer {
 	return o.Payload
 }
@@ -100,19 +98,18 @@ func (o *GetOneStorageMapOK) readResponse(response runtime.ClientResponse, consu
 
 // NewGetOneStorageMapNotFound creates a GetOneStorageMapNotFound with default headers values
 func NewGetOneStorageMapNotFound() *GetOneStorageMapNotFound {
-	return &GetOneStorageMapNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &GetOneStorageMapNotFound{}
 }
 
-/*GetOneStorageMapNotFound handles this case with default header values.
+/* GetOneStorageMapNotFound describes a response with status code 404, with default header values.
 
 The specified resource was not found
 */
 type GetOneStorageMapNotFound struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -120,19 +117,18 @@ type GetOneStorageMapNotFound struct {
 func (o *GetOneStorageMapNotFound) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/storage/maps/{name}][%d] getOneStorageMapNotFound  %+v", 404, o.Payload)
 }
-
 func (o *GetOneStorageMapNotFound) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *GetOneStorageMapNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -147,21 +143,20 @@ func (o *GetOneStorageMapNotFound) readResponse(response runtime.ClientResponse,
 // NewGetOneStorageMapDefault creates a GetOneStorageMapDefault with default headers values
 func NewGetOneStorageMapDefault(code int) *GetOneStorageMapDefault {
 	return &GetOneStorageMapDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*GetOneStorageMapDefault handles this case with default header values.
+/* GetOneStorageMapDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type GetOneStorageMapDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -174,19 +169,18 @@ func (o *GetOneStorageMapDefault) Code() int {
 func (o *GetOneStorageMapDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/storage/maps/{name}][%d] getOneStorageMap default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *GetOneStorageMapDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *GetOneStorageMapDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 

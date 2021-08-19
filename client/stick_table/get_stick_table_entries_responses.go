@@ -24,12 +24,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // GetStickTableEntriesReader is a Reader for the GetStickTableEntries structure.
@@ -63,7 +61,7 @@ func NewGetStickTableEntriesOK() *GetStickTableEntriesOK {
 	return &GetStickTableEntriesOK{}
 }
 
-/*GetStickTableEntriesOK handles this case with default header values.
+/* GetStickTableEntriesOK describes a response with status code 200, with default header values.
 
 Successful operation
 */
@@ -74,7 +72,6 @@ type GetStickTableEntriesOK struct {
 func (o *GetStickTableEntriesOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/runtime/stick_table_entries][%d] getStickTableEntriesOK  %+v", 200, o.Payload)
 }
-
 func (o *GetStickTableEntriesOK) GetPayload() models.StickTableEntries {
 	return o.Payload
 }
@@ -92,21 +89,20 @@ func (o *GetStickTableEntriesOK) readResponse(response runtime.ClientResponse, c
 // NewGetStickTableEntriesDefault creates a GetStickTableEntriesDefault with default headers values
 func NewGetStickTableEntriesDefault(code int) *GetStickTableEntriesDefault {
 	return &GetStickTableEntriesDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*GetStickTableEntriesDefault handles this case with default header values.
+/* GetStickTableEntriesDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type GetStickTableEntriesDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -119,19 +115,18 @@ func (o *GetStickTableEntriesDefault) Code() int {
 func (o *GetStickTableEntriesDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/runtime/stick_table_entries][%d] getStickTableEntries default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *GetStickTableEntriesDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *GetStickTableEntriesDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 

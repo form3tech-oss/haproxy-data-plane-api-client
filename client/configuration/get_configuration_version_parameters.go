@@ -31,59 +31,73 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// NewGetConfigurationVersionParams creates a new GetConfigurationVersionParams object
-// with the default values initialized.
+// NewGetConfigurationVersionParams creates a new GetConfigurationVersionParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetConfigurationVersionParams() *GetConfigurationVersionParams {
-	var ()
 	return &GetConfigurationVersionParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewGetConfigurationVersionParamsWithTimeout creates a new GetConfigurationVersionParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewGetConfigurationVersionParamsWithTimeout(timeout time.Duration) *GetConfigurationVersionParams {
-	var ()
 	return &GetConfigurationVersionParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewGetConfigurationVersionParamsWithContext creates a new GetConfigurationVersionParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewGetConfigurationVersionParamsWithContext(ctx context.Context) *GetConfigurationVersionParams {
-	var ()
 	return &GetConfigurationVersionParams{
-
 		Context: ctx,
 	}
 }
 
 // NewGetConfigurationVersionParamsWithHTTPClient creates a new GetConfigurationVersionParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewGetConfigurationVersionParamsWithHTTPClient(client *http.Client) *GetConfigurationVersionParams {
-	var ()
 	return &GetConfigurationVersionParams{
 		HTTPClient: client,
 	}
 }
 
-/*GetConfigurationVersionParams contains all the parameters to send to the API endpoint
-for the get configuration version operation typically these are written to a http.Request
+/* GetConfigurationVersionParams contains all the parameters to send to the API endpoint
+   for the get configuration version operation.
+
+   Typically these are written to a http.Request.
 */
 type GetConfigurationVersionParams struct {
 
-	/*TransactionID
-	  ID of the transaction where we want to add the operation. Cannot be used when version is specified.
+	/* TransactionID.
 
+	   ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 	*/
 	TransactionID *string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the get configuration version params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetConfigurationVersionParams) WithDefaults() *GetConfigurationVersionParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the get configuration version params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetConfigurationVersionParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the get configuration version params
@@ -142,16 +156,17 @@ func (o *GetConfigurationVersionParams) WriteToRequest(r runtime.ClientRequest, 
 
 		// query param transaction_id
 		var qrTransactionID string
+
 		if o.TransactionID != nil {
 			qrTransactionID = *o.TransactionID
 		}
 		qTransactionID := qrTransactionID
 		if qTransactionID != "" {
+
 			if err := r.SetQueryParam("transaction_id", qTransactionID); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if len(res) > 0 {

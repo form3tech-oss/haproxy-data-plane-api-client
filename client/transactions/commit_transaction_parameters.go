@@ -32,76 +32,90 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewCommitTransactionParams creates a new CommitTransactionParams object
-// with the default values initialized.
+// NewCommitTransactionParams creates a new CommitTransactionParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewCommitTransactionParams() *CommitTransactionParams {
-	var (
-		forceReloadDefault = bool(false)
-	)
 	return &CommitTransactionParams{
-		ForceReload: &forceReloadDefault,
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewCommitTransactionParamsWithTimeout creates a new CommitTransactionParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewCommitTransactionParamsWithTimeout(timeout time.Duration) *CommitTransactionParams {
-	var (
-		forceReloadDefault = bool(false)
-	)
 	return &CommitTransactionParams{
-		ForceReload: &forceReloadDefault,
-
 		timeout: timeout,
 	}
 }
 
 // NewCommitTransactionParamsWithContext creates a new CommitTransactionParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewCommitTransactionParamsWithContext(ctx context.Context) *CommitTransactionParams {
-	var (
-		forceReloadDefault = bool(false)
-	)
 	return &CommitTransactionParams{
-		ForceReload: &forceReloadDefault,
-
 		Context: ctx,
 	}
 }
 
 // NewCommitTransactionParamsWithHTTPClient creates a new CommitTransactionParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewCommitTransactionParamsWithHTTPClient(client *http.Client) *CommitTransactionParams {
-	var (
-		forceReloadDefault = bool(false)
-	)
 	return &CommitTransactionParams{
-		ForceReload: &forceReloadDefault,
-		HTTPClient:  client,
+		HTTPClient: client,
 	}
 }
 
-/*CommitTransactionParams contains all the parameters to send to the API endpoint
-for the commit transaction operation typically these are written to a http.Request
+/* CommitTransactionParams contains all the parameters to send to the API endpoint
+   for the commit transaction operation.
+
+   Typically these are written to a http.Request.
 */
 type CommitTransactionParams struct {
 
-	/*ForceReload
-	  If set, do a force reload, do not wait for the configured reload-delay. Cannot be used when transaction is specified, as changes in transaction are not applied directly to configuration.
+	/* ForceReload.
 
+	   If set, do a force reload, do not wait for the configured reload-delay. Cannot be used when transaction is specified, as changes in transaction are not applied directly to configuration.
 	*/
 	ForceReload *bool
-	/*ID
-	  Transaction id
 
+	/* ID.
+
+	   Transaction id
 	*/
 	ID string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the commit transaction params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *CommitTransactionParams) WithDefaults() *CommitTransactionParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the commit transaction params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *CommitTransactionParams) SetDefaults() {
+	var (
+		forceReloadDefault = bool(false)
+	)
+
+	val := CommitTransactionParams{
+		ForceReload: &forceReloadDefault,
+	}
+
+	val.timeout = o.timeout
+	val.Context = o.Context
+	val.HTTPClient = o.HTTPClient
+	*o = val
 }
 
 // WithTimeout adds the timeout to the commit transaction params
@@ -171,16 +185,17 @@ func (o *CommitTransactionParams) WriteToRequest(r runtime.ClientRequest, reg st
 
 		// query param force_reload
 		var qrForceReload bool
+
 		if o.ForceReload != nil {
 			qrForceReload = *o.ForceReload
 		}
 		qForceReload := swag.FormatBool(qrForceReload)
 		if qForceReload != "" {
+
 			if err := r.SetQueryParam("force_reload", qForceReload); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	// path param id

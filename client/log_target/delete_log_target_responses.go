@@ -24,12 +24,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // DeleteLogTargetReader is a Reader for the DeleteLogTarget structure.
@@ -75,12 +73,13 @@ func NewDeleteLogTargetAccepted() *DeleteLogTargetAccepted {
 	return &DeleteLogTargetAccepted{}
 }
 
-/*DeleteLogTargetAccepted handles this case with default header values.
+/* DeleteLogTargetAccepted describes a response with status code 202, with default header values.
 
 Configuration change accepted and reload requested
 */
 type DeleteLogTargetAccepted struct {
-	/*ID of the requested reload
+
+	/* ID of the requested reload
 	 */
 	ReloadID string
 }
@@ -91,8 +90,12 @@ func (o *DeleteLogTargetAccepted) Error() string {
 
 func (o *DeleteLogTargetAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Reload-ID
-	o.ReloadID = response.GetHeader("Reload-ID")
+	// hydrates response header Reload-ID
+	hdrReloadID := response.GetHeader("Reload-ID")
+
+	if hdrReloadID != "" {
+		o.ReloadID = hdrReloadID
+	}
 
 	return nil
 }
@@ -102,7 +105,7 @@ func NewDeleteLogTargetNoContent() *DeleteLogTargetNoContent {
 	return &DeleteLogTargetNoContent{}
 }
 
-/*DeleteLogTargetNoContent handles this case with default header values.
+/* DeleteLogTargetNoContent describes a response with status code 204, with default header values.
 
 Log Target deleted
 */
@@ -120,19 +123,18 @@ func (o *DeleteLogTargetNoContent) readResponse(response runtime.ClientResponse,
 
 // NewDeleteLogTargetNotFound creates a DeleteLogTargetNotFound with default headers values
 func NewDeleteLogTargetNotFound() *DeleteLogTargetNotFound {
-	return &DeleteLogTargetNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &DeleteLogTargetNotFound{}
 }
 
-/*DeleteLogTargetNotFound handles this case with default header values.
+/* DeleteLogTargetNotFound describes a response with status code 404, with default header values.
 
 The specified resource was not found
 */
 type DeleteLogTargetNotFound struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -140,19 +142,18 @@ type DeleteLogTargetNotFound struct {
 func (o *DeleteLogTargetNotFound) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/configuration/log_targets/{index}][%d] deleteLogTargetNotFound  %+v", 404, o.Payload)
 }
-
 func (o *DeleteLogTargetNotFound) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *DeleteLogTargetNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -167,21 +168,20 @@ func (o *DeleteLogTargetNotFound) readResponse(response runtime.ClientResponse, 
 // NewDeleteLogTargetDefault creates a DeleteLogTargetDefault with default headers values
 func NewDeleteLogTargetDefault(code int) *DeleteLogTargetDefault {
 	return &DeleteLogTargetDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*DeleteLogTargetDefault handles this case with default header values.
+/* DeleteLogTargetDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type DeleteLogTargetDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -194,19 +194,18 @@ func (o *DeleteLogTargetDefault) Code() int {
 func (o *DeleteLogTargetDefault) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/configuration/log_targets/{index}][%d] deleteLogTarget default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *DeleteLogTargetDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *DeleteLogTargetDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 

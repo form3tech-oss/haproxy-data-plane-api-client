@@ -24,12 +24,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // DeleteHTTPRequestRuleReader is a Reader for the DeleteHTTPRequestRule structure.
@@ -75,12 +73,13 @@ func NewDeleteHTTPRequestRuleAccepted() *DeleteHTTPRequestRuleAccepted {
 	return &DeleteHTTPRequestRuleAccepted{}
 }
 
-/*DeleteHTTPRequestRuleAccepted handles this case with default header values.
+/* DeleteHTTPRequestRuleAccepted describes a response with status code 202, with default header values.
 
 Configuration change accepted and reload requested
 */
 type DeleteHTTPRequestRuleAccepted struct {
-	/*ID of the requested reload
+
+	/* ID of the requested reload
 	 */
 	ReloadID string
 }
@@ -91,8 +90,12 @@ func (o *DeleteHTTPRequestRuleAccepted) Error() string {
 
 func (o *DeleteHTTPRequestRuleAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Reload-ID
-	o.ReloadID = response.GetHeader("Reload-ID")
+	// hydrates response header Reload-ID
+	hdrReloadID := response.GetHeader("Reload-ID")
+
+	if hdrReloadID != "" {
+		o.ReloadID = hdrReloadID
+	}
 
 	return nil
 }
@@ -102,7 +105,7 @@ func NewDeleteHTTPRequestRuleNoContent() *DeleteHTTPRequestRuleNoContent {
 	return &DeleteHTTPRequestRuleNoContent{}
 }
 
-/*DeleteHTTPRequestRuleNoContent handles this case with default header values.
+/* DeleteHTTPRequestRuleNoContent describes a response with status code 204, with default header values.
 
 HTTP Request Rule deleted
 */
@@ -120,19 +123,18 @@ func (o *DeleteHTTPRequestRuleNoContent) readResponse(response runtime.ClientRes
 
 // NewDeleteHTTPRequestRuleNotFound creates a DeleteHTTPRequestRuleNotFound with default headers values
 func NewDeleteHTTPRequestRuleNotFound() *DeleteHTTPRequestRuleNotFound {
-	return &DeleteHTTPRequestRuleNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &DeleteHTTPRequestRuleNotFound{}
 }
 
-/*DeleteHTTPRequestRuleNotFound handles this case with default header values.
+/* DeleteHTTPRequestRuleNotFound describes a response with status code 404, with default header values.
 
 The specified resource was not found
 */
 type DeleteHTTPRequestRuleNotFound struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -140,19 +142,18 @@ type DeleteHTTPRequestRuleNotFound struct {
 func (o *DeleteHTTPRequestRuleNotFound) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/configuration/http_request_rules/{index}][%d] deleteHttpRequestRuleNotFound  %+v", 404, o.Payload)
 }
-
 func (o *DeleteHTTPRequestRuleNotFound) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *DeleteHTTPRequestRuleNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -167,21 +168,20 @@ func (o *DeleteHTTPRequestRuleNotFound) readResponse(response runtime.ClientResp
 // NewDeleteHTTPRequestRuleDefault creates a DeleteHTTPRequestRuleDefault with default headers values
 func NewDeleteHTTPRequestRuleDefault(code int) *DeleteHTTPRequestRuleDefault {
 	return &DeleteHTTPRequestRuleDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*DeleteHTTPRequestRuleDefault handles this case with default header values.
+/* DeleteHTTPRequestRuleDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type DeleteHTTPRequestRuleDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -194,19 +194,18 @@ func (o *DeleteHTTPRequestRuleDefault) Code() int {
 func (o *DeleteHTTPRequestRuleDefault) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/configuration/http_request_rules/{index}][%d] deleteHTTPRequestRule default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *DeleteHTTPRequestRuleDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *DeleteHTTPRequestRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 

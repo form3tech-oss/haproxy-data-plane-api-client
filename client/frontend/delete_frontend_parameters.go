@@ -32,86 +32,102 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewDeleteFrontendParams creates a new DeleteFrontendParams object
-// with the default values initialized.
+// NewDeleteFrontendParams creates a new DeleteFrontendParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewDeleteFrontendParams() *DeleteFrontendParams {
-	var (
-		forceReloadDefault = bool(false)
-	)
 	return &DeleteFrontendParams{
-		ForceReload: &forceReloadDefault,
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewDeleteFrontendParamsWithTimeout creates a new DeleteFrontendParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewDeleteFrontendParamsWithTimeout(timeout time.Duration) *DeleteFrontendParams {
-	var (
-		forceReloadDefault = bool(false)
-	)
 	return &DeleteFrontendParams{
-		ForceReload: &forceReloadDefault,
-
 		timeout: timeout,
 	}
 }
 
 // NewDeleteFrontendParamsWithContext creates a new DeleteFrontendParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewDeleteFrontendParamsWithContext(ctx context.Context) *DeleteFrontendParams {
-	var (
-		forceReloadDefault = bool(false)
-	)
 	return &DeleteFrontendParams{
-		ForceReload: &forceReloadDefault,
-
 		Context: ctx,
 	}
 }
 
 // NewDeleteFrontendParamsWithHTTPClient creates a new DeleteFrontendParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewDeleteFrontendParamsWithHTTPClient(client *http.Client) *DeleteFrontendParams {
-	var (
-		forceReloadDefault = bool(false)
-	)
 	return &DeleteFrontendParams{
-		ForceReload: &forceReloadDefault,
-		HTTPClient:  client,
+		HTTPClient: client,
 	}
 }
 
-/*DeleteFrontendParams contains all the parameters to send to the API endpoint
-for the delete frontend operation typically these are written to a http.Request
+/* DeleteFrontendParams contains all the parameters to send to the API endpoint
+   for the delete frontend operation.
+
+   Typically these are written to a http.Request.
 */
 type DeleteFrontendParams struct {
 
-	/*ForceReload
-	  If set, do a force reload, do not wait for the configured reload-delay. Cannot be used when transaction is specified, as changes in transaction are not applied directly to configuration.
+	/* ForceReload.
 
+	   If set, do a force reload, do not wait for the configured reload-delay. Cannot be used when transaction is specified, as changes in transaction are not applied directly to configuration.
 	*/
 	ForceReload *bool
-	/*Name
-	  Frontend name
 
+	/* Name.
+
+	   Frontend name
 	*/
 	Name string
-	/*TransactionID
-	  ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 
+	/* TransactionID.
+
+	   ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 	*/
 	TransactionID *string
-	/*Version
-	  Version used for checking configuration version. Cannot be used when transaction is specified, transaction has it's own version.
 
+	/* Version.
+
+	   Version used for checking configuration version. Cannot be used when transaction is specified, transaction has it's own version.
 	*/
 	Version *int64
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the delete frontend params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *DeleteFrontendParams) WithDefaults() *DeleteFrontendParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the delete frontend params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *DeleteFrontendParams) SetDefaults() {
+	var (
+		forceReloadDefault = bool(false)
+	)
+
+	val := DeleteFrontendParams{
+		ForceReload: &forceReloadDefault,
+	}
+
+	val.timeout = o.timeout
+	val.Context = o.Context
+	val.HTTPClient = o.HTTPClient
+	*o = val
 }
 
 // WithTimeout adds the timeout to the delete frontend params
@@ -203,16 +219,17 @@ func (o *DeleteFrontendParams) WriteToRequest(r runtime.ClientRequest, reg strfm
 
 		// query param force_reload
 		var qrForceReload bool
+
 		if o.ForceReload != nil {
 			qrForceReload = *o.ForceReload
 		}
 		qForceReload := swag.FormatBool(qrForceReload)
 		if qForceReload != "" {
+
 			if err := r.SetQueryParam("force_reload", qForceReload); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	// path param name
@@ -224,32 +241,34 @@ func (o *DeleteFrontendParams) WriteToRequest(r runtime.ClientRequest, reg strfm
 
 		// query param transaction_id
 		var qrTransactionID string
+
 		if o.TransactionID != nil {
 			qrTransactionID = *o.TransactionID
 		}
 		qTransactionID := qrTransactionID
 		if qTransactionID != "" {
+
 			if err := r.SetQueryParam("transaction_id", qTransactionID); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if o.Version != nil {
 
 		// query param version
 		var qrVersion int64
+
 		if o.Version != nil {
 			qrVersion = *o.Version
 		}
 		qVersion := swag.FormatInt64(qrVersion)
 		if qVersion != "" {
+
 			if err := r.SetQueryParam("version", qVersion); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if len(res) > 0 {

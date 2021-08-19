@@ -38,17 +38,20 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
+// ClientOption is the option for Client methods
+type ClientOption func(*runtime.ClientOperation)
+
 // ClientService is the interface for Client methods
 type ClientService interface {
-	CreateServerSwitchingRule(params *CreateServerSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter) (*CreateServerSwitchingRuleCreated, *CreateServerSwitchingRuleAccepted, error)
+	CreateServerSwitchingRule(params *CreateServerSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*CreateServerSwitchingRuleCreated, *CreateServerSwitchingRuleAccepted, error)
 
-	DeleteServerSwitchingRule(params *DeleteServerSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteServerSwitchingRuleAccepted, *DeleteServerSwitchingRuleNoContent, error)
+	DeleteServerSwitchingRule(params *DeleteServerSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*DeleteServerSwitchingRuleAccepted, *DeleteServerSwitchingRuleNoContent, error)
 
-	GetServerSwitchingRule(params *GetServerSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter) (*GetServerSwitchingRuleOK, error)
+	GetServerSwitchingRule(params *GetServerSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetServerSwitchingRuleOK, error)
 
-	GetServerSwitchingRules(params *GetServerSwitchingRulesParams, authInfo runtime.ClientAuthInfoWriter) (*GetServerSwitchingRulesOK, error)
+	GetServerSwitchingRules(params *GetServerSwitchingRulesParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetServerSwitchingRulesOK, error)
 
-	ReplaceServerSwitchingRule(params *ReplaceServerSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceServerSwitchingRuleOK, *ReplaceServerSwitchingRuleAccepted, error)
+	ReplaceServerSwitchingRule(params *ReplaceServerSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*ReplaceServerSwitchingRuleOK, *ReplaceServerSwitchingRuleAccepted, error)
 
 	SetTransport(transport runtime.ClientTransport)
 }
@@ -58,13 +61,12 @@ type ClientService interface {
 
   Adds a new Server Switching Rule of the specified type in the specified backend.
 */
-func (a *Client) CreateServerSwitchingRule(params *CreateServerSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter) (*CreateServerSwitchingRuleCreated, *CreateServerSwitchingRuleAccepted, error) {
+func (a *Client) CreateServerSwitchingRule(params *CreateServerSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*CreateServerSwitchingRuleCreated, *CreateServerSwitchingRuleAccepted, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewCreateServerSwitchingRuleParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "createServerSwitchingRule",
 		Method:             "POST",
 		PathPattern:        "/services/haproxy/configuration/server_switching_rules",
@@ -76,7 +78,12 @@ func (a *Client) CreateServerSwitchingRule(params *CreateServerSwitchingRulePara
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -96,13 +103,12 @@ func (a *Client) CreateServerSwitchingRule(params *CreateServerSwitchingRulePara
 
   Deletes a Server Switching Rule configuration by it's index from the specified backend.
 */
-func (a *Client) DeleteServerSwitchingRule(params *DeleteServerSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteServerSwitchingRuleAccepted, *DeleteServerSwitchingRuleNoContent, error) {
+func (a *Client) DeleteServerSwitchingRule(params *DeleteServerSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*DeleteServerSwitchingRuleAccepted, *DeleteServerSwitchingRuleNoContent, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewDeleteServerSwitchingRuleParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "deleteServerSwitchingRule",
 		Method:             "DELETE",
 		PathPattern:        "/services/haproxy/configuration/server_switching_rules/{index}",
@@ -114,7 +120,12 @@ func (a *Client) DeleteServerSwitchingRule(params *DeleteServerSwitchingRulePara
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -134,13 +145,12 @@ func (a *Client) DeleteServerSwitchingRule(params *DeleteServerSwitchingRulePara
 
   Returns one Server Switching Rule configuration by it's index in the specified backend.
 */
-func (a *Client) GetServerSwitchingRule(params *GetServerSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter) (*GetServerSwitchingRuleOK, error) {
+func (a *Client) GetServerSwitchingRule(params *GetServerSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetServerSwitchingRuleOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewGetServerSwitchingRuleParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "getServerSwitchingRule",
 		Method:             "GET",
 		PathPattern:        "/services/haproxy/configuration/server_switching_rules/{index}",
@@ -152,7 +162,12 @@ func (a *Client) GetServerSwitchingRule(params *GetServerSwitchingRuleParams, au
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -170,13 +185,12 @@ func (a *Client) GetServerSwitchingRule(params *GetServerSwitchingRuleParams, au
 
   Returns all Backend Switching Rules that are configured in specified backend.
 */
-func (a *Client) GetServerSwitchingRules(params *GetServerSwitchingRulesParams, authInfo runtime.ClientAuthInfoWriter) (*GetServerSwitchingRulesOK, error) {
+func (a *Client) GetServerSwitchingRules(params *GetServerSwitchingRulesParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetServerSwitchingRulesOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewGetServerSwitchingRulesParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "getServerSwitchingRules",
 		Method:             "GET",
 		PathPattern:        "/services/haproxy/configuration/server_switching_rules",
@@ -188,7 +202,12 @@ func (a *Client) GetServerSwitchingRules(params *GetServerSwitchingRulesParams, 
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -206,13 +225,12 @@ func (a *Client) GetServerSwitchingRules(params *GetServerSwitchingRulesParams, 
 
   Replaces a Server Switching Rule configuration by it's index in the specified backend.
 */
-func (a *Client) ReplaceServerSwitchingRule(params *ReplaceServerSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceServerSwitchingRuleOK, *ReplaceServerSwitchingRuleAccepted, error) {
+func (a *Client) ReplaceServerSwitchingRule(params *ReplaceServerSwitchingRuleParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*ReplaceServerSwitchingRuleOK, *ReplaceServerSwitchingRuleAccepted, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewReplaceServerSwitchingRuleParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "replaceServerSwitchingRule",
 		Method:             "PUT",
 		PathPattern:        "/services/haproxy/configuration/server_switching_rules/{index}",
@@ -224,7 +242,12 @@ func (a *Client) ReplaceServerSwitchingRule(params *ReplaceServerSwitchingRulePa
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, nil, err
 	}

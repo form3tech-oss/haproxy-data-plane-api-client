@@ -21,6 +21,7 @@ package spoe
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"fmt"
 	"io"
 
@@ -30,7 +31,7 @@ import (
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // GetSpoeMessageReader is a Reader for the GetSpoeMessage structure.
@@ -70,14 +71,15 @@ func NewGetSpoeMessageOK() *GetSpoeMessageOK {
 	return &GetSpoeMessageOK{}
 }
 
-/*GetSpoeMessageOK handles this case with default header values.
+/* GetSpoeMessageOK describes a response with status code 200, with default header values.
 
 Successful operation
 */
 type GetSpoeMessageOK struct {
-	/*Spoe configuration file version
+
+	/* Spoe configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *GetSpoeMessageOKBody
 }
@@ -85,19 +87,18 @@ type GetSpoeMessageOK struct {
 func (o *GetSpoeMessageOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/spoe/spoe_messages/{name}][%d] getSpoeMessageOK  %+v", 200, o.Payload)
 }
-
 func (o *GetSpoeMessageOK) GetPayload() *GetSpoeMessageOKBody {
 	return o.Payload
 }
 
 func (o *GetSpoeMessageOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(GetSpoeMessageOKBody)
 
@@ -111,19 +112,18 @@ func (o *GetSpoeMessageOK) readResponse(response runtime.ClientResponse, consume
 
 // NewGetSpoeMessageNotFound creates a GetSpoeMessageNotFound with default headers values
 func NewGetSpoeMessageNotFound() *GetSpoeMessageNotFound {
-	return &GetSpoeMessageNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &GetSpoeMessageNotFound{}
 }
 
-/*GetSpoeMessageNotFound handles this case with default header values.
+/* GetSpoeMessageNotFound describes a response with status code 404, with default header values.
 
 The specified resource was not found
 */
 type GetSpoeMessageNotFound struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -131,19 +131,18 @@ type GetSpoeMessageNotFound struct {
 func (o *GetSpoeMessageNotFound) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/spoe/spoe_messages/{name}][%d] getSpoeMessageNotFound  %+v", 404, o.Payload)
 }
-
 func (o *GetSpoeMessageNotFound) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *GetSpoeMessageNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -158,21 +157,20 @@ func (o *GetSpoeMessageNotFound) readResponse(response runtime.ClientResponse, c
 // NewGetSpoeMessageDefault creates a GetSpoeMessageDefault with default headers values
 func NewGetSpoeMessageDefault(code int) *GetSpoeMessageDefault {
 	return &GetSpoeMessageDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*GetSpoeMessageDefault handles this case with default header values.
+/* GetSpoeMessageDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type GetSpoeMessageDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -185,19 +183,18 @@ func (o *GetSpoeMessageDefault) Code() int {
 func (o *GetSpoeMessageDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/spoe/spoe_messages/{name}][%d] getSpoeMessage default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *GetSpoeMessageDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *GetSpoeMessageDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -244,6 +241,34 @@ func (o *GetSpoeMessageOKBody) validateData(formats strfmt.Registry) error {
 
 	if o.Data != nil {
 		if err := o.Data.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("getSpoeMessageOK" + "." + "data")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// ContextValidate validate this get spoe message o k body based on the context it is used
+func (o *GetSpoeMessageOKBody) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.contextValidateData(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *GetSpoeMessageOKBody) contextValidateData(ctx context.Context, formats strfmt.Registry) error {
+
+	if o.Data != nil {
+		if err := o.Data.ContextValidate(ctx, formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("getSpoeMessageOK" + "." + "data")
 			}

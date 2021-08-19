@@ -31,84 +31,103 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
-// NewReplaceSpoeMessageParams creates a new ReplaceSpoeMessageParams object
-// with the default values initialized.
+// NewReplaceSpoeMessageParams creates a new ReplaceSpoeMessageParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewReplaceSpoeMessageParams() *ReplaceSpoeMessageParams {
-	var ()
 	return &ReplaceSpoeMessageParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewReplaceSpoeMessageParamsWithTimeout creates a new ReplaceSpoeMessageParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewReplaceSpoeMessageParamsWithTimeout(timeout time.Duration) *ReplaceSpoeMessageParams {
-	var ()
 	return &ReplaceSpoeMessageParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewReplaceSpoeMessageParamsWithContext creates a new ReplaceSpoeMessageParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewReplaceSpoeMessageParamsWithContext(ctx context.Context) *ReplaceSpoeMessageParams {
-	var ()
 	return &ReplaceSpoeMessageParams{
-
 		Context: ctx,
 	}
 }
 
 // NewReplaceSpoeMessageParamsWithHTTPClient creates a new ReplaceSpoeMessageParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewReplaceSpoeMessageParamsWithHTTPClient(client *http.Client) *ReplaceSpoeMessageParams {
-	var ()
 	return &ReplaceSpoeMessageParams{
 		HTTPClient: client,
 	}
 }
 
-/*ReplaceSpoeMessageParams contains all the parameters to send to the API endpoint
-for the replace spoe message operation typically these are written to a http.Request
+/* ReplaceSpoeMessageParams contains all the parameters to send to the API endpoint
+   for the replace spoe message operation.
+
+   Typically these are written to a http.Request.
 */
 type ReplaceSpoeMessageParams struct {
 
-	/*Data*/
+	// Data.
 	Data *models.SpoeMessage
-	/*Name
-	  Spoe message name
 
+	/* Name.
+
+	   Spoe message name
 	*/
 	Name string
-	/*Scope
-	  Spoe scope
 
+	/* Scope.
+
+	   Spoe scope
 	*/
 	Scope string
-	/*Spoe
-	  Spoe file name
 
+	/* Spoe.
+
+	   Spoe file name
 	*/
 	Spoe string
-	/*TransactionID
-	  ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 
+	/* TransactionID.
+
+	   ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 	*/
 	TransactionID *string
-	/*Version
-	  Version used for checking configuration version. Cannot be used when transaction is specified, transaction has it's own version.
 
+	/* Version.
+
+	   Version used for checking configuration version. Cannot be used when transaction is specified, transaction has it's own version.
 	*/
 	Version *int64
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the replace spoe message params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *ReplaceSpoeMessageParams) WithDefaults() *ReplaceSpoeMessageParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the replace spoe message params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *ReplaceSpoeMessageParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the replace spoe message params
@@ -217,7 +236,6 @@ func (o *ReplaceSpoeMessageParams) WriteToRequest(r runtime.ClientRequest, reg s
 		return err
 	}
 	var res []error
-
 	if o.Data != nil {
 		if err := r.SetBodyParam(o.Data); err != nil {
 			return err
@@ -233,6 +251,7 @@ func (o *ReplaceSpoeMessageParams) WriteToRequest(r runtime.ClientRequest, reg s
 	qrScope := o.Scope
 	qScope := qrScope
 	if qScope != "" {
+
 		if err := r.SetQueryParam("scope", qScope); err != nil {
 			return err
 		}
@@ -242,6 +261,7 @@ func (o *ReplaceSpoeMessageParams) WriteToRequest(r runtime.ClientRequest, reg s
 	qrSpoe := o.Spoe
 	qSpoe := qrSpoe
 	if qSpoe != "" {
+
 		if err := r.SetQueryParam("spoe", qSpoe); err != nil {
 			return err
 		}
@@ -251,32 +271,34 @@ func (o *ReplaceSpoeMessageParams) WriteToRequest(r runtime.ClientRequest, reg s
 
 		// query param transaction_id
 		var qrTransactionID string
+
 		if o.TransactionID != nil {
 			qrTransactionID = *o.TransactionID
 		}
 		qTransactionID := qrTransactionID
 		if qTransactionID != "" {
+
 			if err := r.SetQueryParam("transaction_id", qTransactionID); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if o.Version != nil {
 
 		// query param version
 		var qrVersion int64
+
 		if o.Version != nil {
 			qrVersion = *o.Version
 		}
 		qVersion := swag.FormatInt64(qrVersion)
 		if qVersion != "" {
+
 			if err := r.SetQueryParam("version", qVersion); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if len(res) > 0 {

@@ -32,78 +32,102 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewReplaceStorageMapFileParams creates a new ReplaceStorageMapFileParams object
-// with the default values initialized.
+// NewReplaceStorageMapFileParams creates a new ReplaceStorageMapFileParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewReplaceStorageMapFileParams() *ReplaceStorageMapFileParams {
-	var (
-		forceReloadDefault = bool(false)
-	)
 	return &ReplaceStorageMapFileParams{
-		ForceReload: &forceReloadDefault,
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewReplaceStorageMapFileParamsWithTimeout creates a new ReplaceStorageMapFileParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewReplaceStorageMapFileParamsWithTimeout(timeout time.Duration) *ReplaceStorageMapFileParams {
-	var (
-		forceReloadDefault = bool(false)
-	)
 	return &ReplaceStorageMapFileParams{
-		ForceReload: &forceReloadDefault,
-
 		timeout: timeout,
 	}
 }
 
 // NewReplaceStorageMapFileParamsWithContext creates a new ReplaceStorageMapFileParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewReplaceStorageMapFileParamsWithContext(ctx context.Context) *ReplaceStorageMapFileParams {
-	var (
-		forceReloadDefault = bool(false)
-	)
 	return &ReplaceStorageMapFileParams{
-		ForceReload: &forceReloadDefault,
-
 		Context: ctx,
 	}
 }
 
 // NewReplaceStorageMapFileParamsWithHTTPClient creates a new ReplaceStorageMapFileParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewReplaceStorageMapFileParamsWithHTTPClient(client *http.Client) *ReplaceStorageMapFileParams {
-	var (
-		forceReloadDefault = bool(false)
-	)
 	return &ReplaceStorageMapFileParams{
-		ForceReload: &forceReloadDefault,
-		HTTPClient:  client,
+		HTTPClient: client,
 	}
 }
 
-/*ReplaceStorageMapFileParams contains all the parameters to send to the API endpoint
-for the replace storage map file operation typically these are written to a http.Request
+/* ReplaceStorageMapFileParams contains all the parameters to send to the API endpoint
+   for the replace storage map file operation.
+
+   Typically these are written to a http.Request.
 */
 type ReplaceStorageMapFileParams struct {
 
-	/*Data*/
+	// Data.
 	Data string
-	/*ForceReload
-	  If set, do a force reload, do not wait for the configured reload-delay. Cannot be used when transaction is specified, as changes in transaction are not applied directly to configuration.
 
+	/* ForceReload.
+
+	   If set, do a force reload, do not wait for the configured reload-delay. Cannot be used when transaction is specified, as changes in transaction are not applied directly to configuration.
 	*/
 	ForceReload *bool
-	/*Name
-	  Map file storage_name
 
+	/* Name.
+
+	   Map file storage_name
 	*/
 	Name string
+
+	/* SkipReload.
+
+	   If set, no reload will be initiated after update
+	*/
+	SkipReload *bool
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the replace storage map file params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *ReplaceStorageMapFileParams) WithDefaults() *ReplaceStorageMapFileParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the replace storage map file params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *ReplaceStorageMapFileParams) SetDefaults() {
+	var (
+		forceReloadDefault = bool(false)
+
+		skipReloadDefault = bool(false)
+	)
+
+	val := ReplaceStorageMapFileParams{
+		ForceReload: &forceReloadDefault,
+		SkipReload:  &skipReloadDefault,
+	}
+
+	val.timeout = o.timeout
+	val.Context = o.Context
+	val.HTTPClient = o.HTTPClient
+	*o = val
 }
 
 // WithTimeout adds the timeout to the replace storage map file params
@@ -172,6 +196,17 @@ func (o *ReplaceStorageMapFileParams) SetName(name string) {
 	o.Name = name
 }
 
+// WithSkipReload adds the skipReload to the replace storage map file params
+func (o *ReplaceStorageMapFileParams) WithSkipReload(skipReload *bool) *ReplaceStorageMapFileParams {
+	o.SetSkipReload(skipReload)
+	return o
+}
+
+// SetSkipReload adds the skipReload to the replace storage map file params
+func (o *ReplaceStorageMapFileParams) SetSkipReload(skipReload *bool) {
+	o.SkipReload = skipReload
+}
+
 // WriteToRequest writes these params to a swagger request
 func (o *ReplaceStorageMapFileParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
@@ -179,7 +214,6 @@ func (o *ReplaceStorageMapFileParams) WriteToRequest(r runtime.ClientRequest, re
 		return err
 	}
 	var res []error
-
 	if err := r.SetBodyParam(o.Data); err != nil {
 		return err
 	}
@@ -188,21 +222,39 @@ func (o *ReplaceStorageMapFileParams) WriteToRequest(r runtime.ClientRequest, re
 
 		// query param force_reload
 		var qrForceReload bool
+
 		if o.ForceReload != nil {
 			qrForceReload = *o.ForceReload
 		}
 		qForceReload := swag.FormatBool(qrForceReload)
 		if qForceReload != "" {
+
 			if err := r.SetQueryParam("force_reload", qForceReload); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	// path param name
 	if err := r.SetPathParam("name", o.Name); err != nil {
 		return err
+	}
+
+	if o.SkipReload != nil {
+
+		// query param skip_reload
+		var qrSkipReload bool
+
+		if o.SkipReload != nil {
+			qrSkipReload = *o.SkipReload
+		}
+		qSkipReload := swag.FormatBool(qrSkipReload)
+		if qSkipReload != "" {
+
+			if err := r.SetQueryParam("skip_reload", qSkipReload); err != nil {
+				return err
+			}
+		}
 	}
 
 	if len(res) > 0 {

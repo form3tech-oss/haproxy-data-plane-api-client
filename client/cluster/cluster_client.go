@@ -38,11 +38,14 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
+// ClientOption is the option for Client methods
+type ClientOption func(*runtime.ClientOperation)
+
 // ClientService is the interface for Client methods
 type ClientService interface {
-	InitiateCertificateRefresh(params *InitiateCertificateRefreshParams, authInfo runtime.ClientAuthInfoWriter) (*InitiateCertificateRefreshOK, error)
+	InitiateCertificateRefresh(params *InitiateCertificateRefreshParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*InitiateCertificateRefreshOK, error)
 
-	PostCluster(params *PostClusterParams, authInfo runtime.ClientAuthInfoWriter) (*PostClusterOK, error)
+	PostCluster(params *PostClusterParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*PostClusterOK, error)
 
 	SetTransport(transport runtime.ClientTransport)
 }
@@ -52,13 +55,12 @@ type ClientService interface {
 
   Initiates a certificate refresh
 */
-func (a *Client) InitiateCertificateRefresh(params *InitiateCertificateRefreshParams, authInfo runtime.ClientAuthInfoWriter) (*InitiateCertificateRefreshOK, error) {
+func (a *Client) InitiateCertificateRefresh(params *InitiateCertificateRefreshParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*InitiateCertificateRefreshOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewInitiateCertificateRefreshParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "initiateCertificateRefresh",
 		Method:             "POST",
 		PathPattern:        "/cluster/certificate",
@@ -70,7 +72,12 @@ func (a *Client) InitiateCertificateRefresh(params *InitiateCertificateRefreshPa
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -88,13 +95,12 @@ func (a *Client) InitiateCertificateRefresh(params *InitiateCertificateRefreshPa
 
   Post cluster settings
 */
-func (a *Client) PostCluster(params *PostClusterParams, authInfo runtime.ClientAuthInfoWriter) (*PostClusterOK, error) {
+func (a *Client) PostCluster(params *PostClusterParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*PostClusterOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewPostClusterParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "postCluster",
 		Method:             "POST",
 		PathPattern:        "/cluster",
@@ -106,7 +112,12 @@ func (a *Client) PostCluster(params *PostClusterParams, authInfo runtime.ClientA
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}

@@ -31,59 +31,73 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// NewGetSitesParams creates a new GetSitesParams object
-// with the default values initialized.
+// NewGetSitesParams creates a new GetSitesParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetSitesParams() *GetSitesParams {
-	var ()
 	return &GetSitesParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewGetSitesParamsWithTimeout creates a new GetSitesParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewGetSitesParamsWithTimeout(timeout time.Duration) *GetSitesParams {
-	var ()
 	return &GetSitesParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewGetSitesParamsWithContext creates a new GetSitesParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewGetSitesParamsWithContext(ctx context.Context) *GetSitesParams {
-	var ()
 	return &GetSitesParams{
-
 		Context: ctx,
 	}
 }
 
 // NewGetSitesParamsWithHTTPClient creates a new GetSitesParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewGetSitesParamsWithHTTPClient(client *http.Client) *GetSitesParams {
-	var ()
 	return &GetSitesParams{
 		HTTPClient: client,
 	}
 }
 
-/*GetSitesParams contains all the parameters to send to the API endpoint
-for the get sites operation typically these are written to a http.Request
+/* GetSitesParams contains all the parameters to send to the API endpoint
+   for the get sites operation.
+
+   Typically these are written to a http.Request.
 */
 type GetSitesParams struct {
 
-	/*TransactionID
-	  ID of the transaction where we want to add the operation. Cannot be used when version is specified.
+	/* TransactionID.
 
+	   ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 	*/
 	TransactionID *string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the get sites params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetSitesParams) WithDefaults() *GetSitesParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the get sites params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetSitesParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the get sites params
@@ -142,16 +156,17 @@ func (o *GetSitesParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Regi
 
 		// query param transaction_id
 		var qrTransactionID string
+
 		if o.TransactionID != nil {
 			qrTransactionID = *o.TransactionID
 		}
 		qTransactionID := qrTransactionID
 		if qTransactionID != "" {
+
 			if err := r.SetQueryParam("transaction_id", qTransactionID); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if len(res) > 0 {

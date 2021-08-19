@@ -38,21 +38,28 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
+// ClientOption is the option for Client methods
+type ClientOption func(*runtime.ClientOperation)
+
 // ClientService is the interface for Client methods
 type ClientService interface {
-	GetAPIEndpoints(params *GetAPIEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetAPIEndpointsOK, error)
+	GetAPIEndpoints(params *GetAPIEndpointsParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetAPIEndpointsOK, error)
 
-	GetCluster(params *GetClusterParams, authInfo runtime.ClientAuthInfoWriter) (*GetClusterOK, error)
+	GetCluster(params *GetClusterParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetClusterOK, error)
 
-	GetConfigurationEndpoints(params *GetConfigurationEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetConfigurationEndpointsOK, error)
+	GetConfigurationEndpoints(params *GetConfigurationEndpointsParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetConfigurationEndpointsOK, error)
 
-	GetHaproxyEndpoints(params *GetHaproxyEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetHaproxyEndpointsOK, error)
+	GetHaproxyEndpoints(params *GetHaproxyEndpointsParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetHaproxyEndpointsOK, error)
 
-	GetRuntimeEndpoints(params *GetRuntimeEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetRuntimeEndpointsOK, error)
+	GetRuntimeEndpoints(params *GetRuntimeEndpointsParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetRuntimeEndpointsOK, error)
 
-	GetServicesEndpoints(params *GetServicesEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetServicesEndpointsOK, error)
+	GetServicesEndpoints(params *GetServicesEndpointsParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetServicesEndpointsOK, error)
 
-	GetStatsEndpoints(params *GetStatsEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetStatsEndpointsOK, error)
+	GetSpoeEndpoints(params *GetSpoeEndpointsParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetSpoeEndpointsOK, error)
+
+	GetStatsEndpoints(params *GetStatsEndpointsParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetStatsEndpointsOK, error)
+
+	GetStorageEndpoints(params *GetStorageEndpointsParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetStorageEndpointsOK, error)
 
 	SetTransport(transport runtime.ClientTransport)
 }
@@ -62,13 +69,12 @@ type ClientService interface {
 
   Returns a list of root endpoints.
 */
-func (a *Client) GetAPIEndpoints(params *GetAPIEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetAPIEndpointsOK, error) {
+func (a *Client) GetAPIEndpoints(params *GetAPIEndpointsParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetAPIEndpointsOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewGetAPIEndpointsParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "getAPIEndpoints",
 		Method:             "GET",
 		PathPattern:        "/",
@@ -80,7 +86,12 @@ func (a *Client) GetAPIEndpoints(params *GetAPIEndpointsParams, authInfo runtime
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -98,13 +109,12 @@ func (a *Client) GetAPIEndpoints(params *GetAPIEndpointsParams, authInfo runtime
 
   Returns cluster data
 */
-func (a *Client) GetCluster(params *GetClusterParams, authInfo runtime.ClientAuthInfoWriter) (*GetClusterOK, error) {
+func (a *Client) GetCluster(params *GetClusterParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetClusterOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewGetClusterParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "getCluster",
 		Method:             "GET",
 		PathPattern:        "/cluster",
@@ -116,7 +126,12 @@ func (a *Client) GetCluster(params *GetClusterParams, authInfo runtime.ClientAut
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -134,13 +149,12 @@ func (a *Client) GetCluster(params *GetClusterParams, authInfo runtime.ClientAut
 
   Returns a list of endpoints to be used for advanced configuration of HAProxy objects.
 */
-func (a *Client) GetConfigurationEndpoints(params *GetConfigurationEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetConfigurationEndpointsOK, error) {
+func (a *Client) GetConfigurationEndpoints(params *GetConfigurationEndpointsParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetConfigurationEndpointsOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewGetConfigurationEndpointsParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "getConfigurationEndpoints",
 		Method:             "GET",
 		PathPattern:        "/services/haproxy/configuration",
@@ -152,7 +166,12 @@ func (a *Client) GetConfigurationEndpoints(params *GetConfigurationEndpointsPara
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -170,13 +189,12 @@ func (a *Client) GetConfigurationEndpoints(params *GetConfigurationEndpointsPara
 
   Returns a list of HAProxy related endpoints.
 */
-func (a *Client) GetHaproxyEndpoints(params *GetHaproxyEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetHaproxyEndpointsOK, error) {
+func (a *Client) GetHaproxyEndpoints(params *GetHaproxyEndpointsParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetHaproxyEndpointsOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewGetHaproxyEndpointsParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "getHaproxyEndpoints",
 		Method:             "GET",
 		PathPattern:        "/services/haproxy",
@@ -188,7 +206,12 @@ func (a *Client) GetHaproxyEndpoints(params *GetHaproxyEndpointsParams, authInfo
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -206,13 +229,12 @@ func (a *Client) GetHaproxyEndpoints(params *GetHaproxyEndpointsParams, authInfo
 
   Returns a list of endpoints to be used for advanced runtime settings of HAProxy objects.
 */
-func (a *Client) GetRuntimeEndpoints(params *GetRuntimeEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetRuntimeEndpointsOK, error) {
+func (a *Client) GetRuntimeEndpoints(params *GetRuntimeEndpointsParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetRuntimeEndpointsOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewGetRuntimeEndpointsParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "getRuntimeEndpoints",
 		Method:             "GET",
 		PathPattern:        "/services/haproxy/runtime",
@@ -224,7 +246,12 @@ func (a *Client) GetRuntimeEndpoints(params *GetRuntimeEndpointsParams, authInfo
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -242,13 +269,12 @@ func (a *Client) GetRuntimeEndpoints(params *GetRuntimeEndpointsParams, authInfo
 
   Returns a list of API managed services endpoints.
 */
-func (a *Client) GetServicesEndpoints(params *GetServicesEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetServicesEndpointsOK, error) {
+func (a *Client) GetServicesEndpoints(params *GetServicesEndpointsParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetServicesEndpointsOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewGetServicesEndpointsParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "getServicesEndpoints",
 		Method:             "GET",
 		PathPattern:        "/services",
@@ -260,7 +286,12 @@ func (a *Client) GetServicesEndpoints(params *GetServicesEndpointsParams, authIn
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -274,17 +305,56 @@ func (a *Client) GetServicesEndpoints(params *GetServicesEndpointsParams, authIn
 }
 
 /*
+  GetSpoeEndpoints returns list of h a proxy s p o e endpoints
+
+  Returns a list of endpoints to be used for SPOE settings of HAProxy.
+*/
+func (a *Client) GetSpoeEndpoints(params *GetSpoeEndpointsParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetSpoeEndpointsOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetSpoeEndpointsParams()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "getSpoeEndpoints",
+		Method:             "GET",
+		PathPattern:        "/services/haproxy/spoe",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &GetSpoeEndpointsReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*GetSpoeEndpointsOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetSpoeEndpointsDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+}
+
+/*
   GetStatsEndpoints returns list of h a proxy stats endpoints
 
   Returns a list of HAProxy stats endpoints.
 */
-func (a *Client) GetStatsEndpoints(params *GetStatsEndpointsParams, authInfo runtime.ClientAuthInfoWriter) (*GetStatsEndpointsOK, error) {
+func (a *Client) GetStatsEndpoints(params *GetStatsEndpointsParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetStatsEndpointsOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewGetStatsEndpointsParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "getStatsEndpoints",
 		Method:             "GET",
 		PathPattern:        "/services/haproxy/stats",
@@ -296,7 +366,12 @@ func (a *Client) GetStatsEndpoints(params *GetStatsEndpointsParams, authInfo run
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -306,6 +381,46 @@ func (a *Client) GetStatsEndpoints(params *GetStatsEndpointsParams, authInfo run
 	}
 	// unexpected success response
 	unexpectedSuccess := result.(*GetStatsEndpointsDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+}
+
+/*
+  GetStorageEndpoints returns list of h a proxy storage endpoints
+
+  Returns a list of endpoints that use HAProxy storage for persistency, e.g. maps, ssl certificates...
+*/
+func (a *Client) GetStorageEndpoints(params *GetStorageEndpointsParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetStorageEndpointsOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetStorageEndpointsParams()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "getStorageEndpoints",
+		Method:             "GET",
+		PathPattern:        "/services/haproxy/storage",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &GetStorageEndpointsReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*GetStorageEndpointsOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetStorageEndpointsDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 

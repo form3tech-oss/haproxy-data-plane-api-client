@@ -38,11 +38,14 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
+// ClientOption is the option for Client methods
+type ClientOption func(*runtime.ClientOperation)
+
 // ClientService is the interface for Client methods
 type ClientService interface {
-	GetGlobal(params *GetGlobalParams, authInfo runtime.ClientAuthInfoWriter) (*GetGlobalOK, error)
+	GetGlobal(params *GetGlobalParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetGlobalOK, error)
 
-	ReplaceGlobal(params *ReplaceGlobalParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceGlobalOK, *ReplaceGlobalAccepted, error)
+	ReplaceGlobal(params *ReplaceGlobalParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*ReplaceGlobalOK, *ReplaceGlobalAccepted, error)
 
 	SetTransport(transport runtime.ClientTransport)
 }
@@ -52,13 +55,12 @@ type ClientService interface {
 
   Returns global part of configuration.
 */
-func (a *Client) GetGlobal(params *GetGlobalParams, authInfo runtime.ClientAuthInfoWriter) (*GetGlobalOK, error) {
+func (a *Client) GetGlobal(params *GetGlobalParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetGlobalOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewGetGlobalParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "getGlobal",
 		Method:             "GET",
 		PathPattern:        "/services/haproxy/configuration/global",
@@ -70,7 +72,12 @@ func (a *Client) GetGlobal(params *GetGlobalParams, authInfo runtime.ClientAuthI
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -88,13 +95,12 @@ func (a *Client) GetGlobal(params *GetGlobalParams, authInfo runtime.ClientAuthI
 
   Replace global part of config
 */
-func (a *Client) ReplaceGlobal(params *ReplaceGlobalParams, authInfo runtime.ClientAuthInfoWriter) (*ReplaceGlobalOK, *ReplaceGlobalAccepted, error) {
+func (a *Client) ReplaceGlobal(params *ReplaceGlobalParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*ReplaceGlobalOK, *ReplaceGlobalAccepted, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewReplaceGlobalParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "replaceGlobal",
 		Method:             "PUT",
 		PathPattern:        "/services/haproxy/configuration/global",
@@ -106,7 +112,12 @@ func (a *Client) ReplaceGlobal(params *ReplaceGlobalParams, authInfo runtime.Cli
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, nil, err
 	}

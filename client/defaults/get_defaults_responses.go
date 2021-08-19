@@ -21,6 +21,7 @@ package defaults
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"fmt"
 	"io"
 
@@ -29,7 +30,7 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // GetDefaultsReader is a Reader for the GetDefaults structure.
@@ -63,14 +64,15 @@ func NewGetDefaultsOK() *GetDefaultsOK {
 	return &GetDefaultsOK{}
 }
 
-/*GetDefaultsOK handles this case with default header values.
+/* GetDefaultsOK describes a response with status code 200, with default header values.
 
 Successful operation
 */
 type GetDefaultsOK struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *GetDefaultsOKBody
 }
@@ -78,19 +80,18 @@ type GetDefaultsOK struct {
 func (o *GetDefaultsOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/defaults][%d] getDefaultsOK  %+v", 200, o.Payload)
 }
-
 func (o *GetDefaultsOK) GetPayload() *GetDefaultsOKBody {
 	return o.Payload
 }
 
 func (o *GetDefaultsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(GetDefaultsOKBody)
 
@@ -105,21 +106,20 @@ func (o *GetDefaultsOK) readResponse(response runtime.ClientResponse, consumer r
 // NewGetDefaultsDefault creates a GetDefaultsDefault with default headers values
 func NewGetDefaultsDefault(code int) *GetDefaultsDefault {
 	return &GetDefaultsDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*GetDefaultsDefault handles this case with default header values.
+/* GetDefaultsDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type GetDefaultsDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -132,19 +132,18 @@ func (o *GetDefaultsDefault) Code() int {
 func (o *GetDefaultsDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/configuration/defaults][%d] getDefaults default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *GetDefaultsDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *GetDefaultsDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -183,13 +182,40 @@ func (o *GetDefaultsOKBody) Validate(formats strfmt.Registry) error {
 }
 
 func (o *GetDefaultsOKBody) validateData(formats strfmt.Registry) error {
-
 	if swag.IsZero(o.Data) { // not required
 		return nil
 	}
 
 	if o.Data != nil {
 		if err := o.Data.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("getDefaultsOK" + "." + "data")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// ContextValidate validate this get defaults o k body based on the context it is used
+func (o *GetDefaultsOKBody) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.contextValidateData(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *GetDefaultsOKBody) contextValidateData(ctx context.Context, formats strfmt.Registry) error {
+
+	if o.Data != nil {
+		if err := o.Data.ContextValidate(ctx, formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("getDefaultsOK" + "." + "data")
 			}

@@ -32,79 +32,97 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewDeleteSpoeAgentParams creates a new DeleteSpoeAgentParams object
-// with the default values initialized.
+// NewDeleteSpoeAgentParams creates a new DeleteSpoeAgentParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewDeleteSpoeAgentParams() *DeleteSpoeAgentParams {
-	var ()
 	return &DeleteSpoeAgentParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewDeleteSpoeAgentParamsWithTimeout creates a new DeleteSpoeAgentParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewDeleteSpoeAgentParamsWithTimeout(timeout time.Duration) *DeleteSpoeAgentParams {
-	var ()
 	return &DeleteSpoeAgentParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewDeleteSpoeAgentParamsWithContext creates a new DeleteSpoeAgentParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewDeleteSpoeAgentParamsWithContext(ctx context.Context) *DeleteSpoeAgentParams {
-	var ()
 	return &DeleteSpoeAgentParams{
-
 		Context: ctx,
 	}
 }
 
 // NewDeleteSpoeAgentParamsWithHTTPClient creates a new DeleteSpoeAgentParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewDeleteSpoeAgentParamsWithHTTPClient(client *http.Client) *DeleteSpoeAgentParams {
-	var ()
 	return &DeleteSpoeAgentParams{
 		HTTPClient: client,
 	}
 }
 
-/*DeleteSpoeAgentParams contains all the parameters to send to the API endpoint
-for the delete spoe agent operation typically these are written to a http.Request
+/* DeleteSpoeAgentParams contains all the parameters to send to the API endpoint
+   for the delete spoe agent operation.
+
+   Typically these are written to a http.Request.
 */
 type DeleteSpoeAgentParams struct {
 
-	/*Name
-	  Spoe agent name
+	/* Name.
 
+	   Spoe agent name
 	*/
 	Name string
-	/*Scope
-	  Spoe scope
 
+	/* Scope.
+
+	   Spoe scope
 	*/
 	Scope string
-	/*Spoe
-	  Spoe file name
 
+	/* Spoe.
+
+	   Spoe file name
 	*/
 	Spoe string
-	/*TransactionID
-	  ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 
+	/* TransactionID.
+
+	   ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 	*/
 	TransactionID *string
-	/*Version
-	  Version used for checking configuration version. Cannot be used when transaction is specified, transaction has it's own version.
 
+	/* Version.
+
+	   Version used for checking configuration version. Cannot be used when transaction is specified, transaction has it's own version.
 	*/
 	Version *int64
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the delete spoe agent params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *DeleteSpoeAgentParams) WithDefaults() *DeleteSpoeAgentParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the delete spoe agent params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *DeleteSpoeAgentParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the delete spoe agent params
@@ -212,6 +230,7 @@ func (o *DeleteSpoeAgentParams) WriteToRequest(r runtime.ClientRequest, reg strf
 	qrScope := o.Scope
 	qScope := qrScope
 	if qScope != "" {
+
 		if err := r.SetQueryParam("scope", qScope); err != nil {
 			return err
 		}
@@ -221,6 +240,7 @@ func (o *DeleteSpoeAgentParams) WriteToRequest(r runtime.ClientRequest, reg strf
 	qrSpoe := o.Spoe
 	qSpoe := qrSpoe
 	if qSpoe != "" {
+
 		if err := r.SetQueryParam("spoe", qSpoe); err != nil {
 			return err
 		}
@@ -230,32 +250,34 @@ func (o *DeleteSpoeAgentParams) WriteToRequest(r runtime.ClientRequest, reg strf
 
 		// query param transaction_id
 		var qrTransactionID string
+
 		if o.TransactionID != nil {
 			qrTransactionID = *o.TransactionID
 		}
 		qTransactionID := qrTransactionID
 		if qTransactionID != "" {
+
 			if err := r.SetQueryParam("transaction_id", qTransactionID); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if o.Version != nil {
 
 		// query param version
 		var qrVersion int64
+
 		if o.Version != nil {
 			qrVersion = *o.Version
 		}
 		qVersion := swag.FormatInt64(qrVersion)
 		if qVersion != "" {
+
 			if err := r.SetQueryParam("version", qVersion); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if len(res) > 0 {

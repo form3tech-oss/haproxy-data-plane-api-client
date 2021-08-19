@@ -24,12 +24,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // PostClusterReader is a Reader for the PostCluster structure.
@@ -69,7 +67,7 @@ func NewPostClusterOK() *PostClusterOK {
 	return &PostClusterOK{}
 }
 
-/*PostClusterOK handles this case with default header values.
+/* PostClusterOK describes a response with status code 200, with default header values.
 
 Cluster settings changed
 */
@@ -80,7 +78,6 @@ type PostClusterOK struct {
 func (o *PostClusterOK) Error() string {
 	return fmt.Sprintf("[POST /cluster][%d] postClusterOK  %+v", 200, o.Payload)
 }
-
 func (o *PostClusterOK) GetPayload() *models.ClusterSettings {
 	return o.Payload
 }
@@ -99,19 +96,18 @@ func (o *PostClusterOK) readResponse(response runtime.ClientResponse, consumer r
 
 // NewPostClusterBadRequest creates a PostClusterBadRequest with default headers values
 func NewPostClusterBadRequest() *PostClusterBadRequest {
-	return &PostClusterBadRequest{
-		ConfigurationVersion: 0,
-	}
+	return &PostClusterBadRequest{}
 }
 
-/*PostClusterBadRequest handles this case with default header values.
+/* PostClusterBadRequest describes a response with status code 400, with default header values.
 
 Bad request
 */
 type PostClusterBadRequest struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -119,19 +115,18 @@ type PostClusterBadRequest struct {
 func (o *PostClusterBadRequest) Error() string {
 	return fmt.Sprintf("[POST /cluster][%d] postClusterBadRequest  %+v", 400, o.Payload)
 }
-
 func (o *PostClusterBadRequest) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *PostClusterBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -146,21 +141,20 @@ func (o *PostClusterBadRequest) readResponse(response runtime.ClientResponse, co
 // NewPostClusterDefault creates a PostClusterDefault with default headers values
 func NewPostClusterDefault(code int) *PostClusterDefault {
 	return &PostClusterDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*PostClusterDefault handles this case with default header values.
+/* PostClusterDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type PostClusterDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -173,19 +167,18 @@ func (o *PostClusterDefault) Code() int {
 func (o *PostClusterDefault) Error() string {
 	return fmt.Sprintf("[POST /cluster][%d] postCluster default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *PostClusterDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *PostClusterDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 

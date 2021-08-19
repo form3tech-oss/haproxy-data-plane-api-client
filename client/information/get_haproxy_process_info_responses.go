@@ -24,12 +24,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // GetHaproxyProcessInfoReader is a Reader for the GetHaproxyProcessInfo structure.
@@ -63,7 +61,7 @@ func NewGetHaproxyProcessInfoOK() *GetHaproxyProcessInfoOK {
 	return &GetHaproxyProcessInfoOK{}
 }
 
-/*GetHaproxyProcessInfoOK handles this case with default header values.
+/* GetHaproxyProcessInfoOK describes a response with status code 200, with default header values.
 
 Success
 */
@@ -74,7 +72,6 @@ type GetHaproxyProcessInfoOK struct {
 func (o *GetHaproxyProcessInfoOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/runtime/info][%d] getHaproxyProcessInfoOK  %+v", 200, o.Payload)
 }
-
 func (o *GetHaproxyProcessInfoOK) GetPayload() models.ProcessInfos {
 	return o.Payload
 }
@@ -92,21 +89,20 @@ func (o *GetHaproxyProcessInfoOK) readResponse(response runtime.ClientResponse, 
 // NewGetHaproxyProcessInfoDefault creates a GetHaproxyProcessInfoDefault with default headers values
 func NewGetHaproxyProcessInfoDefault(code int) *GetHaproxyProcessInfoDefault {
 	return &GetHaproxyProcessInfoDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*GetHaproxyProcessInfoDefault handles this case with default header values.
+/* GetHaproxyProcessInfoDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type GetHaproxyProcessInfoDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -119,19 +115,18 @@ func (o *GetHaproxyProcessInfoDefault) Code() int {
 func (o *GetHaproxyProcessInfoDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/runtime/info][%d] getHaproxyProcessInfo default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *GetHaproxyProcessInfoDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *GetHaproxyProcessInfoDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 

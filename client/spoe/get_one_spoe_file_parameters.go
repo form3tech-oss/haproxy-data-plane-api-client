@@ -31,59 +31,73 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// NewGetOneSpoeFileParams creates a new GetOneSpoeFileParams object
-// with the default values initialized.
+// NewGetOneSpoeFileParams creates a new GetOneSpoeFileParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetOneSpoeFileParams() *GetOneSpoeFileParams {
-	var ()
 	return &GetOneSpoeFileParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewGetOneSpoeFileParamsWithTimeout creates a new GetOneSpoeFileParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewGetOneSpoeFileParamsWithTimeout(timeout time.Duration) *GetOneSpoeFileParams {
-	var ()
 	return &GetOneSpoeFileParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewGetOneSpoeFileParamsWithContext creates a new GetOneSpoeFileParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewGetOneSpoeFileParamsWithContext(ctx context.Context) *GetOneSpoeFileParams {
-	var ()
 	return &GetOneSpoeFileParams{
-
 		Context: ctx,
 	}
 }
 
 // NewGetOneSpoeFileParamsWithHTTPClient creates a new GetOneSpoeFileParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewGetOneSpoeFileParamsWithHTTPClient(client *http.Client) *GetOneSpoeFileParams {
-	var ()
 	return &GetOneSpoeFileParams{
 		HTTPClient: client,
 	}
 }
 
-/*GetOneSpoeFileParams contains all the parameters to send to the API endpoint
-for the get one spoe file operation typically these are written to a http.Request
+/* GetOneSpoeFileParams contains all the parameters to send to the API endpoint
+   for the get one spoe file operation.
+
+   Typically these are written to a http.Request.
 */
 type GetOneSpoeFileParams struct {
 
-	/*Name
-	  SPOE file name
+	/* Name.
 
+	   SPOE file name
 	*/
 	Name string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the get one spoe file params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetOneSpoeFileParams) WithDefaults() *GetOneSpoeFileParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the get one spoe file params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetOneSpoeFileParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the get one spoe file params

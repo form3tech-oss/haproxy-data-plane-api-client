@@ -24,12 +24,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // ReplaceFilterReader is a Reader for the ReplaceFilter structure.
@@ -81,7 +79,7 @@ func NewReplaceFilterOK() *ReplaceFilterOK {
 	return &ReplaceFilterOK{}
 }
 
-/*ReplaceFilterOK handles this case with default header values.
+/* ReplaceFilterOK describes a response with status code 200, with default header values.
 
 Filter replaced
 */
@@ -92,7 +90,6 @@ type ReplaceFilterOK struct {
 func (o *ReplaceFilterOK) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/filters/{index}][%d] replaceFilterOK  %+v", 200, o.Payload)
 }
-
 func (o *ReplaceFilterOK) GetPayload() *models.Filter {
 	return o.Payload
 }
@@ -114,12 +111,13 @@ func NewReplaceFilterAccepted() *ReplaceFilterAccepted {
 	return &ReplaceFilterAccepted{}
 }
 
-/*ReplaceFilterAccepted handles this case with default header values.
+/* ReplaceFilterAccepted describes a response with status code 202, with default header values.
 
 Configuration change accepted and reload requested
 */
 type ReplaceFilterAccepted struct {
-	/*ID of the requested reload
+
+	/* ID of the requested reload
 	 */
 	ReloadID string
 
@@ -129,15 +127,18 @@ type ReplaceFilterAccepted struct {
 func (o *ReplaceFilterAccepted) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/filters/{index}][%d] replaceFilterAccepted  %+v", 202, o.Payload)
 }
-
 func (o *ReplaceFilterAccepted) GetPayload() *models.Filter {
 	return o.Payload
 }
 
 func (o *ReplaceFilterAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Reload-ID
-	o.ReloadID = response.GetHeader("Reload-ID")
+	// hydrates response header Reload-ID
+	hdrReloadID := response.GetHeader("Reload-ID")
+
+	if hdrReloadID != "" {
+		o.ReloadID = hdrReloadID
+	}
 
 	o.Payload = new(models.Filter)
 
@@ -151,19 +152,18 @@ func (o *ReplaceFilterAccepted) readResponse(response runtime.ClientResponse, co
 
 // NewReplaceFilterBadRequest creates a ReplaceFilterBadRequest with default headers values
 func NewReplaceFilterBadRequest() *ReplaceFilterBadRequest {
-	return &ReplaceFilterBadRequest{
-		ConfigurationVersion: 0,
-	}
+	return &ReplaceFilterBadRequest{}
 }
 
-/*ReplaceFilterBadRequest handles this case with default header values.
+/* ReplaceFilterBadRequest describes a response with status code 400, with default header values.
 
 Bad request
 */
 type ReplaceFilterBadRequest struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -171,19 +171,18 @@ type ReplaceFilterBadRequest struct {
 func (o *ReplaceFilterBadRequest) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/filters/{index}][%d] replaceFilterBadRequest  %+v", 400, o.Payload)
 }
-
 func (o *ReplaceFilterBadRequest) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *ReplaceFilterBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -197,19 +196,18 @@ func (o *ReplaceFilterBadRequest) readResponse(response runtime.ClientResponse, 
 
 // NewReplaceFilterNotFound creates a ReplaceFilterNotFound with default headers values
 func NewReplaceFilterNotFound() *ReplaceFilterNotFound {
-	return &ReplaceFilterNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &ReplaceFilterNotFound{}
 }
 
-/*ReplaceFilterNotFound handles this case with default header values.
+/* ReplaceFilterNotFound describes a response with status code 404, with default header values.
 
 The specified resource was not found
 */
 type ReplaceFilterNotFound struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -217,19 +215,18 @@ type ReplaceFilterNotFound struct {
 func (o *ReplaceFilterNotFound) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/filters/{index}][%d] replaceFilterNotFound  %+v", 404, o.Payload)
 }
-
 func (o *ReplaceFilterNotFound) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *ReplaceFilterNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -244,21 +241,20 @@ func (o *ReplaceFilterNotFound) readResponse(response runtime.ClientResponse, co
 // NewReplaceFilterDefault creates a ReplaceFilterDefault with default headers values
 func NewReplaceFilterDefault(code int) *ReplaceFilterDefault {
 	return &ReplaceFilterDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*ReplaceFilterDefault handles this case with default header values.
+/* ReplaceFilterDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type ReplaceFilterDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -271,19 +267,18 @@ func (o *ReplaceFilterDefault) Code() int {
 func (o *ReplaceFilterDefault) Error() string {
 	return fmt.Sprintf("[PUT /services/haproxy/configuration/filters/{index}][%d] replaceFilter default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *ReplaceFilterDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *ReplaceFilterDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 

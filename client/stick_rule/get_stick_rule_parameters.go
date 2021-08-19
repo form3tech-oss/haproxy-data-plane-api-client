@@ -32,69 +32,85 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewGetStickRuleParams creates a new GetStickRuleParams object
-// with the default values initialized.
+// NewGetStickRuleParams creates a new GetStickRuleParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetStickRuleParams() *GetStickRuleParams {
-	var ()
 	return &GetStickRuleParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewGetStickRuleParamsWithTimeout creates a new GetStickRuleParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewGetStickRuleParamsWithTimeout(timeout time.Duration) *GetStickRuleParams {
-	var ()
 	return &GetStickRuleParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewGetStickRuleParamsWithContext creates a new GetStickRuleParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewGetStickRuleParamsWithContext(ctx context.Context) *GetStickRuleParams {
-	var ()
 	return &GetStickRuleParams{
-
 		Context: ctx,
 	}
 }
 
 // NewGetStickRuleParamsWithHTTPClient creates a new GetStickRuleParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewGetStickRuleParamsWithHTTPClient(client *http.Client) *GetStickRuleParams {
-	var ()
 	return &GetStickRuleParams{
 		HTTPClient: client,
 	}
 }
 
-/*GetStickRuleParams contains all the parameters to send to the API endpoint
-for the get stick rule operation typically these are written to a http.Request
+/* GetStickRuleParams contains all the parameters to send to the API endpoint
+   for the get stick rule operation.
+
+   Typically these are written to a http.Request.
 */
 type GetStickRuleParams struct {
 
-	/*Backend
-	  Backend name
+	/* Backend.
 
+	   Backend name
 	*/
 	Backend string
-	/*Index
-	  Stick Rule Index
 
+	/* Index.
+
+	   Stick Rule Index
 	*/
 	Index int64
-	/*TransactionID
-	  ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 
+	/* TransactionID.
+
+	   ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 	*/
 	TransactionID *string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the get stick rule params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetStickRuleParams) WithDefaults() *GetStickRuleParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the get stick rule params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetStickRuleParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the get stick rule params
@@ -175,6 +191,7 @@ func (o *GetStickRuleParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.
 	qrBackend := o.Backend
 	qBackend := qrBackend
 	if qBackend != "" {
+
 		if err := r.SetQueryParam("backend", qBackend); err != nil {
 			return err
 		}
@@ -189,16 +206,17 @@ func (o *GetStickRuleParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.
 
 		// query param transaction_id
 		var qrTransactionID string
+
 		if o.TransactionID != nil {
 			qrTransactionID = *o.TransactionID
 		}
 		qTransactionID := qrTransactionID
 		if qTransactionID != "" {
+
 			if err := r.SetQueryParam("transaction_id", qTransactionID); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if len(res) > 0 {

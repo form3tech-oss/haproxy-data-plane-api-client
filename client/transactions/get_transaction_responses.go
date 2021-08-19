@@ -24,12 +24,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // GetTransactionReader is a Reader for the GetTransaction structure.
@@ -69,7 +67,7 @@ func NewGetTransactionOK() *GetTransactionOK {
 	return &GetTransactionOK{}
 }
 
-/*GetTransactionOK handles this case with default header values.
+/* GetTransactionOK describes a response with status code 200, with default header values.
 
 Successful operation
 */
@@ -80,7 +78,6 @@ type GetTransactionOK struct {
 func (o *GetTransactionOK) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/transactions/{id}][%d] getTransactionOK  %+v", 200, o.Payload)
 }
-
 func (o *GetTransactionOK) GetPayload() *models.Transaction {
 	return o.Payload
 }
@@ -99,19 +96,18 @@ func (o *GetTransactionOK) readResponse(response runtime.ClientResponse, consume
 
 // NewGetTransactionNotFound creates a GetTransactionNotFound with default headers values
 func NewGetTransactionNotFound() *GetTransactionNotFound {
-	return &GetTransactionNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &GetTransactionNotFound{}
 }
 
-/*GetTransactionNotFound handles this case with default header values.
+/* GetTransactionNotFound describes a response with status code 404, with default header values.
 
 The specified resource was not found
 */
 type GetTransactionNotFound struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -119,19 +115,18 @@ type GetTransactionNotFound struct {
 func (o *GetTransactionNotFound) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/transactions/{id}][%d] getTransactionNotFound  %+v", 404, o.Payload)
 }
-
 func (o *GetTransactionNotFound) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *GetTransactionNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -146,21 +141,20 @@ func (o *GetTransactionNotFound) readResponse(response runtime.ClientResponse, c
 // NewGetTransactionDefault creates a GetTransactionDefault with default headers values
 func NewGetTransactionDefault(code int) *GetTransactionDefault {
 	return &GetTransactionDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*GetTransactionDefault handles this case with default header values.
+/* GetTransactionDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type GetTransactionDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -173,19 +167,18 @@ func (o *GetTransactionDefault) Code() int {
 func (o *GetTransactionDefault) Error() string {
 	return fmt.Sprintf("[GET /services/haproxy/transactions/{id}][%d] getTransaction default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *GetTransactionDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *GetTransactionDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 

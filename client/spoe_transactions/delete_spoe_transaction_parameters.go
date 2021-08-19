@@ -31,64 +31,79 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// NewDeleteSpoeTransactionParams creates a new DeleteSpoeTransactionParams object
-// with the default values initialized.
+// NewDeleteSpoeTransactionParams creates a new DeleteSpoeTransactionParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewDeleteSpoeTransactionParams() *DeleteSpoeTransactionParams {
-	var ()
 	return &DeleteSpoeTransactionParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewDeleteSpoeTransactionParamsWithTimeout creates a new DeleteSpoeTransactionParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewDeleteSpoeTransactionParamsWithTimeout(timeout time.Duration) *DeleteSpoeTransactionParams {
-	var ()
 	return &DeleteSpoeTransactionParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewDeleteSpoeTransactionParamsWithContext creates a new DeleteSpoeTransactionParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewDeleteSpoeTransactionParamsWithContext(ctx context.Context) *DeleteSpoeTransactionParams {
-	var ()
 	return &DeleteSpoeTransactionParams{
-
 		Context: ctx,
 	}
 }
 
 // NewDeleteSpoeTransactionParamsWithHTTPClient creates a new DeleteSpoeTransactionParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewDeleteSpoeTransactionParamsWithHTTPClient(client *http.Client) *DeleteSpoeTransactionParams {
-	var ()
 	return &DeleteSpoeTransactionParams{
 		HTTPClient: client,
 	}
 }
 
-/*DeleteSpoeTransactionParams contains all the parameters to send to the API endpoint
-for the delete spoe transaction operation typically these are written to a http.Request
+/* DeleteSpoeTransactionParams contains all the parameters to send to the API endpoint
+   for the delete spoe transaction operation.
+
+   Typically these are written to a http.Request.
 */
 type DeleteSpoeTransactionParams struct {
 
-	/*ID
-	  Transaction id
+	/* ID.
 
+	   Transaction id
 	*/
 	ID string
-	/*Spoe
-	  Spoe file name
 
+	/* Spoe.
+
+	   Spoe file name
 	*/
 	Spoe string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the delete spoe transaction params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *DeleteSpoeTransactionParams) WithDefaults() *DeleteSpoeTransactionParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the delete spoe transaction params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *DeleteSpoeTransactionParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the delete spoe transaction params
@@ -163,6 +178,7 @@ func (o *DeleteSpoeTransactionParams) WriteToRequest(r runtime.ClientRequest, re
 	qrSpoe := o.Spoe
 	qSpoe := qrSpoe
 	if qSpoe != "" {
+
 		if err := r.SetQueryParam("spoe", qSpoe); err != nil {
 			return err
 		}

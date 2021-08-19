@@ -24,12 +24,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // ReplaceConsulReader is a Reader for the ReplaceConsul structure.
@@ -75,7 +73,7 @@ func NewReplaceConsulOK() *ReplaceConsulOK {
 	return &ReplaceConsulOK{}
 }
 
-/*ReplaceConsulOK handles this case with default header values.
+/* ReplaceConsulOK describes a response with status code 200, with default header values.
 
 Consul server replaced
 */
@@ -86,7 +84,6 @@ type ReplaceConsulOK struct {
 func (o *ReplaceConsulOK) Error() string {
 	return fmt.Sprintf("[PUT /service_discovery/consul/{id}][%d] replaceConsulOK  %+v", 200, o.Payload)
 }
-
 func (o *ReplaceConsulOK) GetPayload() *models.Consul {
 	return o.Payload
 }
@@ -105,19 +102,18 @@ func (o *ReplaceConsulOK) readResponse(response runtime.ClientResponse, consumer
 
 // NewReplaceConsulBadRequest creates a ReplaceConsulBadRequest with default headers values
 func NewReplaceConsulBadRequest() *ReplaceConsulBadRequest {
-	return &ReplaceConsulBadRequest{
-		ConfigurationVersion: 0,
-	}
+	return &ReplaceConsulBadRequest{}
 }
 
-/*ReplaceConsulBadRequest handles this case with default header values.
+/* ReplaceConsulBadRequest describes a response with status code 400, with default header values.
 
 Bad request
 */
 type ReplaceConsulBadRequest struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -125,19 +121,18 @@ type ReplaceConsulBadRequest struct {
 func (o *ReplaceConsulBadRequest) Error() string {
 	return fmt.Sprintf("[PUT /service_discovery/consul/{id}][%d] replaceConsulBadRequest  %+v", 400, o.Payload)
 }
-
 func (o *ReplaceConsulBadRequest) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *ReplaceConsulBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -151,19 +146,18 @@ func (o *ReplaceConsulBadRequest) readResponse(response runtime.ClientResponse, 
 
 // NewReplaceConsulNotFound creates a ReplaceConsulNotFound with default headers values
 func NewReplaceConsulNotFound() *ReplaceConsulNotFound {
-	return &ReplaceConsulNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &ReplaceConsulNotFound{}
 }
 
-/*ReplaceConsulNotFound handles this case with default header values.
+/* ReplaceConsulNotFound describes a response with status code 404, with default header values.
 
 The specified resource was not found
 */
 type ReplaceConsulNotFound struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -171,19 +165,18 @@ type ReplaceConsulNotFound struct {
 func (o *ReplaceConsulNotFound) Error() string {
 	return fmt.Sprintf("[PUT /service_discovery/consul/{id}][%d] replaceConsulNotFound  %+v", 404, o.Payload)
 }
-
 func (o *ReplaceConsulNotFound) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *ReplaceConsulNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -198,21 +191,20 @@ func (o *ReplaceConsulNotFound) readResponse(response runtime.ClientResponse, co
 // NewReplaceConsulDefault creates a ReplaceConsulDefault with default headers values
 func NewReplaceConsulDefault(code int) *ReplaceConsulDefault {
 	return &ReplaceConsulDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*ReplaceConsulDefault handles this case with default header values.
+/* ReplaceConsulDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type ReplaceConsulDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -225,19 +217,18 @@ func (o *ReplaceConsulDefault) Code() int {
 func (o *ReplaceConsulDefault) Error() string {
 	return fmt.Sprintf("[PUT /service_discovery/consul/{id}][%d] replaceConsul default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *ReplaceConsulDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *ReplaceConsulDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 

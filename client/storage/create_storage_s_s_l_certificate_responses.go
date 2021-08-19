@@ -24,12 +24,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // CreateStorageSSLCertificateReader is a Reader for the CreateStorageSSLCertificate structure.
@@ -75,7 +73,7 @@ func NewCreateStorageSSLCertificateCreated() *CreateStorageSSLCertificateCreated
 	return &CreateStorageSSLCertificateCreated{}
 }
 
-/*CreateStorageSSLCertificateCreated handles this case with default header values.
+/* CreateStorageSSLCertificateCreated describes a response with status code 201, with default header values.
 
 SSL certificate created
 */
@@ -86,7 +84,6 @@ type CreateStorageSSLCertificateCreated struct {
 func (o *CreateStorageSSLCertificateCreated) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/storage/ssl_certificates][%d] createStorageSSLCertificateCreated  %+v", 201, o.Payload)
 }
-
 func (o *CreateStorageSSLCertificateCreated) GetPayload() *models.SslCertificate {
 	return o.Payload
 }
@@ -105,19 +102,18 @@ func (o *CreateStorageSSLCertificateCreated) readResponse(response runtime.Clien
 
 // NewCreateStorageSSLCertificateBadRequest creates a CreateStorageSSLCertificateBadRequest with default headers values
 func NewCreateStorageSSLCertificateBadRequest() *CreateStorageSSLCertificateBadRequest {
-	return &CreateStorageSSLCertificateBadRequest{
-		ConfigurationVersion: 0,
-	}
+	return &CreateStorageSSLCertificateBadRequest{}
 }
 
-/*CreateStorageSSLCertificateBadRequest handles this case with default header values.
+/* CreateStorageSSLCertificateBadRequest describes a response with status code 400, with default header values.
 
 Bad request
 */
 type CreateStorageSSLCertificateBadRequest struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -125,19 +121,18 @@ type CreateStorageSSLCertificateBadRequest struct {
 func (o *CreateStorageSSLCertificateBadRequest) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/storage/ssl_certificates][%d] createStorageSSLCertificateBadRequest  %+v", 400, o.Payload)
 }
-
 func (o *CreateStorageSSLCertificateBadRequest) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *CreateStorageSSLCertificateBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -151,19 +146,18 @@ func (o *CreateStorageSSLCertificateBadRequest) readResponse(response runtime.Cl
 
 // NewCreateStorageSSLCertificateConflict creates a CreateStorageSSLCertificateConflict with default headers values
 func NewCreateStorageSSLCertificateConflict() *CreateStorageSSLCertificateConflict {
-	return &CreateStorageSSLCertificateConflict{
-		ConfigurationVersion: 0,
-	}
+	return &CreateStorageSSLCertificateConflict{}
 }
 
-/*CreateStorageSSLCertificateConflict handles this case with default header values.
+/* CreateStorageSSLCertificateConflict describes a response with status code 409, with default header values.
 
 The specified resource already exists
 */
 type CreateStorageSSLCertificateConflict struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -171,19 +165,18 @@ type CreateStorageSSLCertificateConflict struct {
 func (o *CreateStorageSSLCertificateConflict) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/storage/ssl_certificates][%d] createStorageSSLCertificateConflict  %+v", 409, o.Payload)
 }
-
 func (o *CreateStorageSSLCertificateConflict) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *CreateStorageSSLCertificateConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -198,21 +191,20 @@ func (o *CreateStorageSSLCertificateConflict) readResponse(response runtime.Clie
 // NewCreateStorageSSLCertificateDefault creates a CreateStorageSSLCertificateDefault with default headers values
 func NewCreateStorageSSLCertificateDefault(code int) *CreateStorageSSLCertificateDefault {
 	return &CreateStorageSSLCertificateDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*CreateStorageSSLCertificateDefault handles this case with default header values.
+/* CreateStorageSSLCertificateDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type CreateStorageSSLCertificateDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -225,19 +217,18 @@ func (o *CreateStorageSSLCertificateDefault) Code() int {
 func (o *CreateStorageSSLCertificateDefault) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/storage/ssl_certificates][%d] createStorageSSLCertificate default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *CreateStorageSSLCertificateDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *CreateStorageSSLCertificateDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 

@@ -31,52 +31,66 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// NewInitiateCertificateRefreshParams creates a new InitiateCertificateRefreshParams object
-// with the default values initialized.
+// NewInitiateCertificateRefreshParams creates a new InitiateCertificateRefreshParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewInitiateCertificateRefreshParams() *InitiateCertificateRefreshParams {
-
 	return &InitiateCertificateRefreshParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewInitiateCertificateRefreshParamsWithTimeout creates a new InitiateCertificateRefreshParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewInitiateCertificateRefreshParamsWithTimeout(timeout time.Duration) *InitiateCertificateRefreshParams {
-
 	return &InitiateCertificateRefreshParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewInitiateCertificateRefreshParamsWithContext creates a new InitiateCertificateRefreshParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewInitiateCertificateRefreshParamsWithContext(ctx context.Context) *InitiateCertificateRefreshParams {
-
 	return &InitiateCertificateRefreshParams{
-
 		Context: ctx,
 	}
 }
 
 // NewInitiateCertificateRefreshParamsWithHTTPClient creates a new InitiateCertificateRefreshParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewInitiateCertificateRefreshParamsWithHTTPClient(client *http.Client) *InitiateCertificateRefreshParams {
-
 	return &InitiateCertificateRefreshParams{
 		HTTPClient: client,
 	}
 }
 
-/*InitiateCertificateRefreshParams contains all the parameters to send to the API endpoint
-for the initiate certificate refresh operation typically these are written to a http.Request
+/* InitiateCertificateRefreshParams contains all the parameters to send to the API endpoint
+   for the initiate certificate refresh operation.
+
+   Typically these are written to a http.Request.
 */
 type InitiateCertificateRefreshParams struct {
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the initiate certificate refresh params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *InitiateCertificateRefreshParams) WithDefaults() *InitiateCertificateRefreshParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the initiate certificate refresh params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *InitiateCertificateRefreshParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the initiate certificate refresh params

@@ -24,12 +24,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // CreateSpoeReader is a Reader for the CreateSpoe structure.
@@ -75,7 +73,7 @@ func NewCreateSpoeCreated() *CreateSpoeCreated {
 	return &CreateSpoeCreated{}
 }
 
-/*CreateSpoeCreated handles this case with default header values.
+/* CreateSpoeCreated describes a response with status code 201, with default header values.
 
 SPOE file created with its entries
 */
@@ -86,7 +84,6 @@ type CreateSpoeCreated struct {
 func (o *CreateSpoeCreated) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/spoe/spoe_files][%d] createSpoeCreated  %+v", 201, o.Payload)
 }
-
 func (o *CreateSpoeCreated) GetPayload() string {
 	return o.Payload
 }
@@ -103,19 +100,18 @@ func (o *CreateSpoeCreated) readResponse(response runtime.ClientResponse, consum
 
 // NewCreateSpoeBadRequest creates a CreateSpoeBadRequest with default headers values
 func NewCreateSpoeBadRequest() *CreateSpoeBadRequest {
-	return &CreateSpoeBadRequest{
-		ConfigurationVersion: 0,
-	}
+	return &CreateSpoeBadRequest{}
 }
 
-/*CreateSpoeBadRequest handles this case with default header values.
+/* CreateSpoeBadRequest describes a response with status code 400, with default header values.
 
 Bad request
 */
 type CreateSpoeBadRequest struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -123,19 +119,18 @@ type CreateSpoeBadRequest struct {
 func (o *CreateSpoeBadRequest) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/spoe/spoe_files][%d] createSpoeBadRequest  %+v", 400, o.Payload)
 }
-
 func (o *CreateSpoeBadRequest) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *CreateSpoeBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -149,19 +144,18 @@ func (o *CreateSpoeBadRequest) readResponse(response runtime.ClientResponse, con
 
 // NewCreateSpoeConflict creates a CreateSpoeConflict with default headers values
 func NewCreateSpoeConflict() *CreateSpoeConflict {
-	return &CreateSpoeConflict{
-		ConfigurationVersion: 0,
-	}
+	return &CreateSpoeConflict{}
 }
 
-/*CreateSpoeConflict handles this case with default header values.
+/* CreateSpoeConflict describes a response with status code 409, with default header values.
 
 The specified resource already exists
 */
 type CreateSpoeConflict struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -169,19 +163,18 @@ type CreateSpoeConflict struct {
 func (o *CreateSpoeConflict) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/spoe/spoe_files][%d] createSpoeConflict  %+v", 409, o.Payload)
 }
-
 func (o *CreateSpoeConflict) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *CreateSpoeConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -196,21 +189,20 @@ func (o *CreateSpoeConflict) readResponse(response runtime.ClientResponse, consu
 // NewCreateSpoeDefault creates a CreateSpoeDefault with default headers values
 func NewCreateSpoeDefault(code int) *CreateSpoeDefault {
 	return &CreateSpoeDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*CreateSpoeDefault handles this case with default header values.
+/* CreateSpoeDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type CreateSpoeDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -223,19 +215,18 @@ func (o *CreateSpoeDefault) Code() int {
 func (o *CreateSpoeDefault) Error() string {
 	return fmt.Sprintf("[POST /services/haproxy/spoe/spoe_files][%d] createSpoe default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *CreateSpoeDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *CreateSpoeDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 

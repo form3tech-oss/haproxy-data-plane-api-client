@@ -38,17 +38,20 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
+// ClientOption is the option for Client methods
+type ClientOption func(*runtime.ClientOperation)
+
 // ClientService is the interface for Client methods
 type ClientService interface {
-	CommitTransaction(params *CommitTransactionParams, authInfo runtime.ClientAuthInfoWriter) (*CommitTransactionOK, *CommitTransactionAccepted, error)
+	CommitTransaction(params *CommitTransactionParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*CommitTransactionOK, *CommitTransactionAccepted, error)
 
-	DeleteTransaction(params *DeleteTransactionParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteTransactionNoContent, error)
+	DeleteTransaction(params *DeleteTransactionParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*DeleteTransactionNoContent, error)
 
-	GetTransaction(params *GetTransactionParams, authInfo runtime.ClientAuthInfoWriter) (*GetTransactionOK, error)
+	GetTransaction(params *GetTransactionParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetTransactionOK, error)
 
-	GetTransactions(params *GetTransactionsParams, authInfo runtime.ClientAuthInfoWriter) (*GetTransactionsOK, error)
+	GetTransactions(params *GetTransactionsParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetTransactionsOK, error)
 
-	StartTransaction(params *StartTransactionParams, authInfo runtime.ClientAuthInfoWriter) (*StartTransactionCreated, error)
+	StartTransaction(params *StartTransactionParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*StartTransactionCreated, error)
 
 	SetTransport(transport runtime.ClientTransport)
 }
@@ -58,13 +61,12 @@ type ClientService interface {
 
   Commit transaction, execute all operations in transaction and return msg
 */
-func (a *Client) CommitTransaction(params *CommitTransactionParams, authInfo runtime.ClientAuthInfoWriter) (*CommitTransactionOK, *CommitTransactionAccepted, error) {
+func (a *Client) CommitTransaction(params *CommitTransactionParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*CommitTransactionOK, *CommitTransactionAccepted, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewCommitTransactionParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "commitTransaction",
 		Method:             "PUT",
 		PathPattern:        "/services/haproxy/transactions/{id}",
@@ -76,7 +78,12 @@ func (a *Client) CommitTransaction(params *CommitTransactionParams, authInfo run
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -96,13 +103,12 @@ func (a *Client) CommitTransaction(params *CommitTransactionParams, authInfo run
 
   Deletes a transaction.
 */
-func (a *Client) DeleteTransaction(params *DeleteTransactionParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteTransactionNoContent, error) {
+func (a *Client) DeleteTransaction(params *DeleteTransactionParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*DeleteTransactionNoContent, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewDeleteTransactionParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "deleteTransaction",
 		Method:             "DELETE",
 		PathPattern:        "/services/haproxy/transactions/{id}",
@@ -114,7 +120,12 @@ func (a *Client) DeleteTransaction(params *DeleteTransactionParams, authInfo run
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -132,13 +143,12 @@ func (a *Client) DeleteTransaction(params *DeleteTransactionParams, authInfo run
 
   Returns one HAProxy configuration transactions.
 */
-func (a *Client) GetTransaction(params *GetTransactionParams, authInfo runtime.ClientAuthInfoWriter) (*GetTransactionOK, error) {
+func (a *Client) GetTransaction(params *GetTransactionParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetTransactionOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewGetTransactionParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "getTransaction",
 		Method:             "GET",
 		PathPattern:        "/services/haproxy/transactions/{id}",
@@ -150,7 +160,12 @@ func (a *Client) GetTransaction(params *GetTransactionParams, authInfo runtime.C
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -168,13 +183,12 @@ func (a *Client) GetTransaction(params *GetTransactionParams, authInfo runtime.C
 
   Returns a list of HAProxy configuration transactions. Transactions can be filtered by their status.
 */
-func (a *Client) GetTransactions(params *GetTransactionsParams, authInfo runtime.ClientAuthInfoWriter) (*GetTransactionsOK, error) {
+func (a *Client) GetTransactions(params *GetTransactionsParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetTransactionsOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewGetTransactionsParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "getTransactions",
 		Method:             "GET",
 		PathPattern:        "/services/haproxy/transactions",
@@ -186,7 +200,12 @@ func (a *Client) GetTransactions(params *GetTransactionsParams, authInfo runtime
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -204,13 +223,12 @@ func (a *Client) GetTransactions(params *GetTransactionsParams, authInfo runtime
 
   Starts a new transaction and returns it's id
 */
-func (a *Client) StartTransaction(params *StartTransactionParams, authInfo runtime.ClientAuthInfoWriter) (*StartTransactionCreated, error) {
+func (a *Client) StartTransaction(params *StartTransactionParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*StartTransactionCreated, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewStartTransactionParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "startTransaction",
 		Method:             "POST",
 		PathPattern:        "/services/haproxy/transactions",
@@ -222,7 +240,12 @@ func (a *Client) StartTransaction(params *StartTransactionParams, authInfo runti
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}

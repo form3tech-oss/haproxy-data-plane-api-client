@@ -31,59 +31,73 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// NewGetRuntimeServersParams creates a new GetRuntimeServersParams object
-// with the default values initialized.
+// NewGetRuntimeServersParams creates a new GetRuntimeServersParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetRuntimeServersParams() *GetRuntimeServersParams {
-	var ()
 	return &GetRuntimeServersParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewGetRuntimeServersParamsWithTimeout creates a new GetRuntimeServersParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewGetRuntimeServersParamsWithTimeout(timeout time.Duration) *GetRuntimeServersParams {
-	var ()
 	return &GetRuntimeServersParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewGetRuntimeServersParamsWithContext creates a new GetRuntimeServersParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewGetRuntimeServersParamsWithContext(ctx context.Context) *GetRuntimeServersParams {
-	var ()
 	return &GetRuntimeServersParams{
-
 		Context: ctx,
 	}
 }
 
 // NewGetRuntimeServersParamsWithHTTPClient creates a new GetRuntimeServersParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewGetRuntimeServersParamsWithHTTPClient(client *http.Client) *GetRuntimeServersParams {
-	var ()
 	return &GetRuntimeServersParams{
 		HTTPClient: client,
 	}
 }
 
-/*GetRuntimeServersParams contains all the parameters to send to the API endpoint
-for the get runtime servers operation typically these are written to a http.Request
+/* GetRuntimeServersParams contains all the parameters to send to the API endpoint
+   for the get runtime servers operation.
+
+   Typically these are written to a http.Request.
 */
 type GetRuntimeServersParams struct {
 
-	/*Backend
-	  Parent backend name
+	/* Backend.
 
+	   Parent backend name
 	*/
 	Backend string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the get runtime servers params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetRuntimeServersParams) WithDefaults() *GetRuntimeServersParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the get runtime servers params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetRuntimeServersParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the get runtime servers params
@@ -142,6 +156,7 @@ func (o *GetRuntimeServersParams) WriteToRequest(r runtime.ClientRequest, reg st
 	qrBackend := o.Backend
 	qBackend := qrBackend
 	if qBackend != "" {
+
 		if err := r.SetQueryParam("backend", qBackend); err != nil {
 			return err
 		}

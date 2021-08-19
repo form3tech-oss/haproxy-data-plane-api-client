@@ -32,78 +32,102 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewReplaceStorageSSLCertificateParams creates a new ReplaceStorageSSLCertificateParams object
-// with the default values initialized.
+// NewReplaceStorageSSLCertificateParams creates a new ReplaceStorageSSLCertificateParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewReplaceStorageSSLCertificateParams() *ReplaceStorageSSLCertificateParams {
-	var (
-		forceReloadDefault = bool(false)
-	)
 	return &ReplaceStorageSSLCertificateParams{
-		ForceReload: &forceReloadDefault,
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewReplaceStorageSSLCertificateParamsWithTimeout creates a new ReplaceStorageSSLCertificateParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewReplaceStorageSSLCertificateParamsWithTimeout(timeout time.Duration) *ReplaceStorageSSLCertificateParams {
-	var (
-		forceReloadDefault = bool(false)
-	)
 	return &ReplaceStorageSSLCertificateParams{
-		ForceReload: &forceReloadDefault,
-
 		timeout: timeout,
 	}
 }
 
 // NewReplaceStorageSSLCertificateParamsWithContext creates a new ReplaceStorageSSLCertificateParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewReplaceStorageSSLCertificateParamsWithContext(ctx context.Context) *ReplaceStorageSSLCertificateParams {
-	var (
-		forceReloadDefault = bool(false)
-	)
 	return &ReplaceStorageSSLCertificateParams{
-		ForceReload: &forceReloadDefault,
-
 		Context: ctx,
 	}
 }
 
 // NewReplaceStorageSSLCertificateParamsWithHTTPClient creates a new ReplaceStorageSSLCertificateParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewReplaceStorageSSLCertificateParamsWithHTTPClient(client *http.Client) *ReplaceStorageSSLCertificateParams {
-	var (
-		forceReloadDefault = bool(false)
-	)
 	return &ReplaceStorageSSLCertificateParams{
-		ForceReload: &forceReloadDefault,
-		HTTPClient:  client,
+		HTTPClient: client,
 	}
 }
 
-/*ReplaceStorageSSLCertificateParams contains all the parameters to send to the API endpoint
-for the replace storage s s l certificate operation typically these are written to a http.Request
+/* ReplaceStorageSSLCertificateParams contains all the parameters to send to the API endpoint
+   for the replace storage s s l certificate operation.
+
+   Typically these are written to a http.Request.
 */
 type ReplaceStorageSSLCertificateParams struct {
 
-	/*Data*/
+	// Data.
 	Data string
-	/*ForceReload
-	  If set, do a force reload, do not wait for the configured reload-delay. Cannot be used when transaction is specified, as changes in transaction are not applied directly to configuration.
 
+	/* ForceReload.
+
+	   If set, do a force reload, do not wait for the configured reload-delay. Cannot be used when transaction is specified, as changes in transaction are not applied directly to configuration.
 	*/
 	ForceReload *bool
-	/*Name
-	  SSL certificate name
 
+	/* Name.
+
+	   SSL certificate name
 	*/
 	Name string
+
+	/* SkipReload.
+
+	   If set, no reload will be initiated after update
+	*/
+	SkipReload *bool
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the replace storage s s l certificate params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *ReplaceStorageSSLCertificateParams) WithDefaults() *ReplaceStorageSSLCertificateParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the replace storage s s l certificate params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *ReplaceStorageSSLCertificateParams) SetDefaults() {
+	var (
+		forceReloadDefault = bool(false)
+
+		skipReloadDefault = bool(false)
+	)
+
+	val := ReplaceStorageSSLCertificateParams{
+		ForceReload: &forceReloadDefault,
+		SkipReload:  &skipReloadDefault,
+	}
+
+	val.timeout = o.timeout
+	val.Context = o.Context
+	val.HTTPClient = o.HTTPClient
+	*o = val
 }
 
 // WithTimeout adds the timeout to the replace storage s s l certificate params
@@ -172,6 +196,17 @@ func (o *ReplaceStorageSSLCertificateParams) SetName(name string) {
 	o.Name = name
 }
 
+// WithSkipReload adds the skipReload to the replace storage s s l certificate params
+func (o *ReplaceStorageSSLCertificateParams) WithSkipReload(skipReload *bool) *ReplaceStorageSSLCertificateParams {
+	o.SetSkipReload(skipReload)
+	return o
+}
+
+// SetSkipReload adds the skipReload to the replace storage s s l certificate params
+func (o *ReplaceStorageSSLCertificateParams) SetSkipReload(skipReload *bool) {
+	o.SkipReload = skipReload
+}
+
 // WriteToRequest writes these params to a swagger request
 func (o *ReplaceStorageSSLCertificateParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
@@ -179,7 +214,6 @@ func (o *ReplaceStorageSSLCertificateParams) WriteToRequest(r runtime.ClientRequ
 		return err
 	}
 	var res []error
-
 	if err := r.SetBodyParam(o.Data); err != nil {
 		return err
 	}
@@ -188,21 +222,39 @@ func (o *ReplaceStorageSSLCertificateParams) WriteToRequest(r runtime.ClientRequ
 
 		// query param force_reload
 		var qrForceReload bool
+
 		if o.ForceReload != nil {
 			qrForceReload = *o.ForceReload
 		}
 		qForceReload := swag.FormatBool(qrForceReload)
 		if qForceReload != "" {
+
 			if err := r.SetQueryParam("force_reload", qForceReload); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	// path param name
 	if err := r.SetPathParam("name", o.Name); err != nil {
 		return err
+	}
+
+	if o.SkipReload != nil {
+
+		// query param skip_reload
+		var qrSkipReload bool
+
+		if o.SkipReload != nil {
+			qrSkipReload = *o.SkipReload
+		}
+		qSkipReload := swag.FormatBool(qrSkipReload)
+		if qSkipReload != "" {
+
+			if err := r.SetQueryParam("skip_reload", qSkipReload); err != nil {
+				return err
+			}
+		}
 	}
 
 	if len(res) > 0 {

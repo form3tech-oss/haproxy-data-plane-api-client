@@ -24,12 +24,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
-	"github.com/haproxytech/models"
+	"github.com/form3tech-oss/haproxy-data-plane-api-client/models"
 )
 
 // DeleteStickRuleReader is a Reader for the DeleteStickRule structure.
@@ -75,12 +73,13 @@ func NewDeleteStickRuleAccepted() *DeleteStickRuleAccepted {
 	return &DeleteStickRuleAccepted{}
 }
 
-/*DeleteStickRuleAccepted handles this case with default header values.
+/* DeleteStickRuleAccepted describes a response with status code 202, with default header values.
 
 Configuration change accepted and reload requested
 */
 type DeleteStickRuleAccepted struct {
-	/*ID of the requested reload
+
+	/* ID of the requested reload
 	 */
 	ReloadID string
 }
@@ -91,8 +90,12 @@ func (o *DeleteStickRuleAccepted) Error() string {
 
 func (o *DeleteStickRuleAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Reload-ID
-	o.ReloadID = response.GetHeader("Reload-ID")
+	// hydrates response header Reload-ID
+	hdrReloadID := response.GetHeader("Reload-ID")
+
+	if hdrReloadID != "" {
+		o.ReloadID = hdrReloadID
+	}
 
 	return nil
 }
@@ -102,7 +105,7 @@ func NewDeleteStickRuleNoContent() *DeleteStickRuleNoContent {
 	return &DeleteStickRuleNoContent{}
 }
 
-/*DeleteStickRuleNoContent handles this case with default header values.
+/* DeleteStickRuleNoContent describes a response with status code 204, with default header values.
 
 Stick Rule deleted
 */
@@ -120,19 +123,18 @@ func (o *DeleteStickRuleNoContent) readResponse(response runtime.ClientResponse,
 
 // NewDeleteStickRuleNotFound creates a DeleteStickRuleNotFound with default headers values
 func NewDeleteStickRuleNotFound() *DeleteStickRuleNotFound {
-	return &DeleteStickRuleNotFound{
-		ConfigurationVersion: 0,
-	}
+	return &DeleteStickRuleNotFound{}
 }
 
-/*DeleteStickRuleNotFound handles this case with default header values.
+/* DeleteStickRuleNotFound describes a response with status code 404, with default header values.
 
 The specified resource was not found
 */
 type DeleteStickRuleNotFound struct {
-	/*Configuration file version
+
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -140,19 +142,18 @@ type DeleteStickRuleNotFound struct {
 func (o *DeleteStickRuleNotFound) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/configuration/stick_rules/{index}][%d] deleteStickRuleNotFound  %+v", 404, o.Payload)
 }
-
 func (o *DeleteStickRuleNotFound) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *DeleteStickRuleNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 
@@ -167,21 +168,20 @@ func (o *DeleteStickRuleNotFound) readResponse(response runtime.ClientResponse, 
 // NewDeleteStickRuleDefault creates a DeleteStickRuleDefault with default headers values
 func NewDeleteStickRuleDefault(code int) *DeleteStickRuleDefault {
 	return &DeleteStickRuleDefault{
-		_statusCode:          code,
-		ConfigurationVersion: 0,
+		_statusCode: code,
 	}
 }
 
-/*DeleteStickRuleDefault handles this case with default header values.
+/* DeleteStickRuleDefault describes a response with status code -1, with default header values.
 
 General Error
 */
 type DeleteStickRuleDefault struct {
 	_statusCode int
 
-	/*Configuration file version
+	/* Configuration file version
 	 */
-	ConfigurationVersion int64
+	ConfigurationVersion string
 
 	Payload *models.Error
 }
@@ -194,19 +194,18 @@ func (o *DeleteStickRuleDefault) Code() int {
 func (o *DeleteStickRuleDefault) Error() string {
 	return fmt.Sprintf("[DELETE /services/haproxy/configuration/stick_rules/{index}][%d] deleteStickRule default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *DeleteStickRuleDefault) GetPayload() *models.Error {
 	return o.Payload
 }
 
 func (o *DeleteStickRuleDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	// response header Configuration-Version
-	configurationVersion, err := swag.ConvertInt64(response.GetHeader("Configuration-Version"))
-	if err != nil {
-		return errors.InvalidType("Configuration-Version", "header", "int64", response.GetHeader("Configuration-Version"))
+	// hydrates response header Configuration-Version
+	hdrConfigurationVersion := response.GetHeader("Configuration-Version")
+
+	if hdrConfigurationVersion != "" {
+		o.ConfigurationVersion = hdrConfigurationVersion
 	}
-	o.ConfigurationVersion = configurationVersion
 
 	o.Payload = new(models.Error)
 

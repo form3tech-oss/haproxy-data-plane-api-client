@@ -31,64 +31,79 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// NewGetPeerSectionParams creates a new GetPeerSectionParams object
-// with the default values initialized.
+// NewGetPeerSectionParams creates a new GetPeerSectionParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetPeerSectionParams() *GetPeerSectionParams {
-	var ()
 	return &GetPeerSectionParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewGetPeerSectionParamsWithTimeout creates a new GetPeerSectionParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewGetPeerSectionParamsWithTimeout(timeout time.Duration) *GetPeerSectionParams {
-	var ()
 	return &GetPeerSectionParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewGetPeerSectionParamsWithContext creates a new GetPeerSectionParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewGetPeerSectionParamsWithContext(ctx context.Context) *GetPeerSectionParams {
-	var ()
 	return &GetPeerSectionParams{
-
 		Context: ctx,
 	}
 }
 
 // NewGetPeerSectionParamsWithHTTPClient creates a new GetPeerSectionParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewGetPeerSectionParamsWithHTTPClient(client *http.Client) *GetPeerSectionParams {
-	var ()
 	return &GetPeerSectionParams{
 		HTTPClient: client,
 	}
 }
 
-/*GetPeerSectionParams contains all the parameters to send to the API endpoint
-for the get peer section operation typically these are written to a http.Request
+/* GetPeerSectionParams contains all the parameters to send to the API endpoint
+   for the get peer section operation.
+
+   Typically these are written to a http.Request.
 */
 type GetPeerSectionParams struct {
 
-	/*Name
-	  Peer name
+	/* Name.
 
+	   Peer name
 	*/
 	Name string
-	/*TransactionID
-	  ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 
+	/* TransactionID.
+
+	   ID of the transaction where we want to add the operation. Cannot be used when version is specified.
 	*/
 	TransactionID *string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the get peer section params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetPeerSectionParams) WithDefaults() *GetPeerSectionParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the get peer section params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *GetPeerSectionParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the get peer section params
@@ -163,16 +178,17 @@ func (o *GetPeerSectionParams) WriteToRequest(r runtime.ClientRequest, reg strfm
 
 		// query param transaction_id
 		var qrTransactionID string
+
 		if o.TransactionID != nil {
 			qrTransactionID = *o.TransactionID
 		}
 		qTransactionID := qrTransactionID
 		if qTransactionID != "" {
+
 			if err := r.SetQueryParam("transaction_id", qTransactionID); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if len(res) > 0 {

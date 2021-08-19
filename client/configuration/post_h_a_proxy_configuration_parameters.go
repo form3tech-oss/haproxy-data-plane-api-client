@@ -32,122 +32,126 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewPostHAProxyConfigurationParams creates a new PostHAProxyConfigurationParams object
-// with the default values initialized.
+// NewPostHAProxyConfigurationParams creates a new PostHAProxyConfigurationParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewPostHAProxyConfigurationParams() *PostHAProxyConfigurationParams {
-	var (
-		forceReloadDefault  = bool(false)
-		onlyValidateDefault = bool(false)
-		skipReloadDefault   = bool(false)
-		skipVersionDefault  = bool(false)
-	)
 	return &PostHAProxyConfigurationParams{
-		ForceReload:  &forceReloadDefault,
-		OnlyValidate: &onlyValidateDefault,
-		SkipReload:   &skipReloadDefault,
-		SkipVersion:  &skipVersionDefault,
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewPostHAProxyConfigurationParamsWithTimeout creates a new PostHAProxyConfigurationParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewPostHAProxyConfigurationParamsWithTimeout(timeout time.Duration) *PostHAProxyConfigurationParams {
-	var (
-		forceReloadDefault  = bool(false)
-		onlyValidateDefault = bool(false)
-		skipReloadDefault   = bool(false)
-		skipVersionDefault  = bool(false)
-	)
 	return &PostHAProxyConfigurationParams{
-		ForceReload:  &forceReloadDefault,
-		OnlyValidate: &onlyValidateDefault,
-		SkipReload:   &skipReloadDefault,
-		SkipVersion:  &skipVersionDefault,
-
 		timeout: timeout,
 	}
 }
 
 // NewPostHAProxyConfigurationParamsWithContext creates a new PostHAProxyConfigurationParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewPostHAProxyConfigurationParamsWithContext(ctx context.Context) *PostHAProxyConfigurationParams {
-	var (
-		forceReloadDefault  = bool(false)
-		onlyValidateDefault = bool(false)
-		skipReloadDefault   = bool(false)
-		skipVersionDefault  = bool(false)
-	)
 	return &PostHAProxyConfigurationParams{
-		ForceReload:  &forceReloadDefault,
-		OnlyValidate: &onlyValidateDefault,
-		SkipReload:   &skipReloadDefault,
-		SkipVersion:  &skipVersionDefault,
-
 		Context: ctx,
 	}
 }
 
 // NewPostHAProxyConfigurationParamsWithHTTPClient creates a new PostHAProxyConfigurationParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewPostHAProxyConfigurationParamsWithHTTPClient(client *http.Client) *PostHAProxyConfigurationParams {
-	var (
-		forceReloadDefault  = bool(false)
-		onlyValidateDefault = bool(false)
-		skipReloadDefault   = bool(false)
-		skipVersionDefault  = bool(false)
-	)
 	return &PostHAProxyConfigurationParams{
-		ForceReload:  &forceReloadDefault,
-		OnlyValidate: &onlyValidateDefault,
-		SkipReload:   &skipReloadDefault,
-		SkipVersion:  &skipVersionDefault,
-		HTTPClient:   client,
+		HTTPClient: client,
 	}
 }
 
-/*PostHAProxyConfigurationParams contains all the parameters to send to the API endpoint
-for the post h a proxy configuration operation typically these are written to a http.Request
+/* PostHAProxyConfigurationParams contains all the parameters to send to the API endpoint
+   for the post h a proxy configuration operation.
+
+   Typically these are written to a http.Request.
 */
 type PostHAProxyConfigurationParams struct {
 
-	/*XRuntimeActions
-	  List of Runtime API commands with parameters separated by ';'
+	/* XRuntimeActions.
 
+	   List of Runtime API commands with parameters separated by ';'
 	*/
 	XRuntimeActions *string
-	/*Data*/
-	Data string
-	/*ForceReload
-	  If set, do a force reload, do not wait for the configured reload-delay. Cannot be used when transaction is specified, as changes in transaction are not applied directly to configuration.
 
+	// Data.
+	Data string
+
+	/* ForceReload.
+
+	   If set, do a force reload, do not wait for the configured reload-delay. Cannot be used when transaction is specified, as changes in transaction are not applied directly to configuration.
 	*/
 	ForceReload *bool
-	/*OnlyValidate
-	  If set, only validates configuration, without applying it
 
+	/* OnlyValidate.
+
+	   If set, only validates configuration, without applying it
 	*/
 	OnlyValidate *bool
-	/*SkipReload
-	  If set, no reload will be initiated and runtime actions from X-Runtime-Actions will be applied
 
+	/* SkipReload.
+
+	   If set, no reload will be initiated and runtime actions from X-Runtime-Actions will be applied
 	*/
 	SkipReload *bool
-	/*SkipVersion
-	  If set, no version check will be done and the pushed config will be enforced
 
+	/* SkipVersion.
+
+	   If set, no version check will be done and the pushed config will be enforced
 	*/
 	SkipVersion *bool
-	/*Version
-	  Version used for checking configuration version. Cannot be used when transaction is specified, transaction has it's own version.
 
+	/* Version.
+
+	   Version used for checking configuration version. Cannot be used when transaction is specified, transaction has it's own version.
 	*/
 	Version *int64
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the post h a proxy configuration params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *PostHAProxyConfigurationParams) WithDefaults() *PostHAProxyConfigurationParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the post h a proxy configuration params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *PostHAProxyConfigurationParams) SetDefaults() {
+	var (
+		forceReloadDefault = bool(false)
+
+		onlyValidateDefault = bool(false)
+
+		skipReloadDefault = bool(false)
+
+		skipVersionDefault = bool(false)
+	)
+
+	val := PostHAProxyConfigurationParams{
+		ForceReload:  &forceReloadDefault,
+		OnlyValidate: &onlyValidateDefault,
+		SkipReload:   &skipReloadDefault,
+		SkipVersion:  &skipVersionDefault,
+	}
+
+	val.timeout = o.timeout
+	val.Context = o.Context
+	val.HTTPClient = o.HTTPClient
+	*o = val
 }
 
 // WithTimeout adds the timeout to the post h a proxy configuration params
@@ -274,9 +278,7 @@ func (o *PostHAProxyConfigurationParams) WriteToRequest(r runtime.ClientRequest,
 		if err := r.SetHeaderParam("X-Runtime-Actions", *o.XRuntimeActions); err != nil {
 			return err
 		}
-
 	}
-
 	if err := r.SetBodyParam(o.Data); err != nil {
 		return err
 	}
@@ -285,80 +287,85 @@ func (o *PostHAProxyConfigurationParams) WriteToRequest(r runtime.ClientRequest,
 
 		// query param force_reload
 		var qrForceReload bool
+
 		if o.ForceReload != nil {
 			qrForceReload = *o.ForceReload
 		}
 		qForceReload := swag.FormatBool(qrForceReload)
 		if qForceReload != "" {
+
 			if err := r.SetQueryParam("force_reload", qForceReload); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if o.OnlyValidate != nil {
 
 		// query param only_validate
 		var qrOnlyValidate bool
+
 		if o.OnlyValidate != nil {
 			qrOnlyValidate = *o.OnlyValidate
 		}
 		qOnlyValidate := swag.FormatBool(qrOnlyValidate)
 		if qOnlyValidate != "" {
+
 			if err := r.SetQueryParam("only_validate", qOnlyValidate); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if o.SkipReload != nil {
 
 		// query param skip_reload
 		var qrSkipReload bool
+
 		if o.SkipReload != nil {
 			qrSkipReload = *o.SkipReload
 		}
 		qSkipReload := swag.FormatBool(qrSkipReload)
 		if qSkipReload != "" {
+
 			if err := r.SetQueryParam("skip_reload", qSkipReload); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if o.SkipVersion != nil {
 
 		// query param skip_version
 		var qrSkipVersion bool
+
 		if o.SkipVersion != nil {
 			qrSkipVersion = *o.SkipVersion
 		}
 		qSkipVersion := swag.FormatBool(qrSkipVersion)
 		if qSkipVersion != "" {
+
 			if err := r.SetQueryParam("skip_version", qSkipVersion); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if o.Version != nil {
 
 		// query param version
 		var qrVersion int64
+
 		if o.Version != nil {
 			qrVersion = *o.Version
 		}
 		qVersion := swag.FormatInt64(qrVersion)
 		if qVersion != "" {
+
 			if err := r.SetQueryParam("version", qVersion); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if len(res) > 0 {
