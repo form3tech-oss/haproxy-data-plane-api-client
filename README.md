@@ -9,32 +9,31 @@ Golang client for the HAProxy Data Plane API.
 ## Generating
 
 ```shell
-# Clone https://github.com/haproxytech/models.git.
-$ git clone https://github.com/haproxytech/models.git \
-    $GOPATH/src/github.com/haproxytech/models
-$ cd $GOPATH/src/github.com/haproxytech/models
-$ git checkout acf2bae
-```
+# Generate appropriate client swagger spec
 
-```shell
-# Clone https://github.com/haproxytech/dataplaneapi-specification.git.
-$ git clone ttps://github.com/haproxytech/dataplaneapi-specification.git \
-    $GOPATH/src/github.com/haproxytech/dataplaceapi-specification
-$ cd $GOPATH/src/github.com/haproxytech/dataplaceapi-specification
-$ git checkout 93629aa
-```
+# Download the repository with the spec
+$ git clone https://github.com/haproxytech/client-native.git \
+    $GOPATH/src/github.com/haproxytech/client-native
+$ cd $GOPATH/src/github.com/haproxytech/client-native
 
-```shell
-# Generate the 'haproxy_spec.yaml' file.
-$ cd $GOPATH/src/github.com/haproxytech/dataplaceapi-specification/build
-$ go run build.go -file ../haproxy-spec.yaml > haproxy_spec.yaml
-```
+# Checkout required version - below you can see the version we used to generate the client
+$ git checkout 72c9e92462 
+$ make models
 
-```shell
-# Generate the client.
-$ swagger generate client -f haproxy_spec.yaml \
-    -A "Data Plane" \
-    -t $GOPATH/src/github.com/form3tech-oss/haproxy-data-plane-api-client \
-    --existing-models github.com/haproxytech/models \
-    -r ../copyright.txt
+$ export TARGET_DIR=$GOPATH/src/github.com/form3tech-oss/haproxy-data-plane-api-client
+
+# Copy models to this repo and use them locally
+$ rm -rf ${TARGET_DIR}/models && cp -r models ${TARGET_DIR}
+
+# Generate the client
+
+# First get rid of all old files, as swagger only adds/overrides
+$ rm -rf ${TARGET_DIR}/client 
+
+# Command below will modify the generated models - that's normal
+$ swagger generate client -f specification/build/haproxy_spec.yaml \
+    --name "Data Plane" \
+    --target $TARGET_DIR \
+    --existing-models github.com/form3tech-oss/haproxy-data-plane-api-client/models \
+    --copyright-file specification/copyright.txt
 ```
